@@ -1,4 +1,5 @@
 import { challenges, challengeById, challengesForTrack } from './content.js';
+import { courseById, lessonById } from './learning-content.js';
 
 export const DAILY_BONUS_XP = 30;
 export const STORAGE_KEY = 'biuret-academy-progress-v1';
@@ -11,7 +12,7 @@ export function dayKey(date = new Date()) {
 }
 
 export function emptyProgress() {
-  return { version: 1, completed: {}, activity: {}, dailyAssignments: {}, dailyBonus: {} };
+  return { version: 1, completed: {}, activity: {}, dailyAssignments: {}, dailyBonus: {}, lessons: {} };
 }
 
 export function cleanProgress(value) {
@@ -36,6 +37,9 @@ export function cleanProgress(value) {
   for (const [date, id] of Object.entries(value.dailyBonus || {})) {
     if (/^\d{4}-\d{2}-\d{2}$/.test(date) && challengeById[id]) base.dailyBonus[date] = id;
   }
+  for (const [id, entry] of Object.entries(value.lessons || {})) {
+    if (lessonById[id] && typeof entry === 'string' && !Number.isNaN(Date.parse(entry))) base.lessons[id] = entry;
+  }
   return base;
 }
 
@@ -57,7 +61,34 @@ export function mergeProgress(left, right) {
   }
   merged.dailyAssignments = { ...b.dailyAssignments, ...a.dailyAssignments };
   merged.dailyBonus = { ...b.dailyBonus, ...a.dailyBonus };
+  for (const id of new Set([...Object.keys(a.lessons), ...Object.keys(b.lessons)])) {
+    const first = a.lessons[id], second = b.lessons[id];
+    merged.lessons[id] = !first ? second : !second ? first : first < second ? first : second;
+  }
   return merged;
+}
+
+export function isLessonUnlocked(lessonId, progress) {
+  const lesson = lessonById[lessonId];
+  if (!lesson) return false;
+  const course = courseById[lesson.courseId];
+  const index = course?.lessonIds.indexOf(lessonId) ?? -1;
+  return index === 0 || (index > 0 && Boolean(cleanProgress(progress).lessons[course.lessonIds[index - 1]]));
+}
+
+export function completeLesson(progress, lessonId, today = new Date()) {
+  const safe = cleanProgress(progress);
+  if (!isLessonUnlocked(lessonId, safe) || safe.lessons[lessonId]) return { progress: safe, completed: false };
+  safe.lessons[lessonId] = today.toISOString();
+  return { progress: safe, completed: true };
+}
+
+export function courseLearningProgress(progress, courseId) {
+  const course = courseById[courseId];
+  if (!course) return null;
+  const safe = cleanProgress(progress);
+  return { completed: course.lessonIds.filter((id) => safe.lessons[id]).length, total: course.lessonIds.length,
+    challengeComplete: Boolean(safe.completed[course.challengeId]) };
 }
 
 export function isUnlocked(challenge, progress) {

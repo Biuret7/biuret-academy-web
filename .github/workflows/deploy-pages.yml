@@ -26,7 +26,7 @@ jobs:
       - name: Stage public site
         run: |
           mkdir -p _site/assets
-          cp index.html paths.html challenges.html progress.html style.css app.js auth.js content.js content-en.js i18n.js engine.js robots.txt sitemap.xml _site/
+          cp index.html paths.html challenges.html progress.html course.html lesson.html style.css app.js auth.js content.js content-en.js learning-content.js i18n.js engine.js robots.txt sitemap.xml _site/
           cp assets/* _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:
