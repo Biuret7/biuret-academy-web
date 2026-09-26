@@ -4,7 +4,10 @@ const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
 const PREF_KEY = 'biuretAcademyV1';
 const sdk = window.Appwrite;
-const account = sdk ? new sdk.Account(new sdk.Client().setEndpoint(ENDPOINT).setProject(PROJECT_ID)) : null;
+const client = sdk ? new sdk.Client().setEndpoint(ENDPOINT).setProject(PROJECT_ID) : null;
+const account = client ? new sdk.Account(client) : null;
+const functions = client ? new sdk.Functions(client) : null;
+const PROGRESS_FUNCTION_ID = 'academy-progress';
 let currentUser = null;
 
 export function user() { return currentUser; }
@@ -51,6 +54,23 @@ export async function signOut() {
   await account.deleteSession({ sessionId: 'current' });
   currentUser = null;
 }
+
+async function learningExecution(input) {
+  if (!functions || !currentUser) throw new Error('Sign in to save verified learning progress.');
+  const result = await functions.createExecution({ functionId: PROGRESS_FUNCTION_ID, body: JSON.stringify(input), async: false });
+  let data;
+  try { data = JSON.parse(result.responseBody || '{}'); } catch { data = {}; }
+  if (result.responseStatusCode < 200 || result.responseStatusCode >= 300) {
+    throw new Error(data.error || 'Learning progress is temporarily unavailable.');
+  }
+  if (!Array.isArray(data.awards) || !Number.isSafeInteger(data.xp) || !Number.isSafeInteger(data.coins) || !Number.isSafeInteger(data.level)) {
+    throw new Error('Learning progress returned an invalid response.');
+  }
+  return data;
+}
+
+export function loadLearningRewards() { return learningExecution({ action: 'state' }); }
+export function awardLesson(lessonId, answerIndex) { return learningExecution({ action: 'completeLesson', lessonId, answerIndex }); }
 
 export function cloudProgress() {
   return cleanProgress(currentUser?.prefs?.[PREF_KEY]);

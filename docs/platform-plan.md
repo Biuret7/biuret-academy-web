@@ -16,7 +16,11 @@
 - A future final exam must use a private question bank and grade on the server. Passing criteria, attempt limit, cooldown, and version must be explicit before opening it.
 - A certificate may be issued only after the server verifies all requirements. Its public verification page needs an opaque ID, issue date, issuer, achievement criteria, and revocation status. The learner chooses whether to share the public URL.
 
-## Milestone 2: server-owned progress
+## Milestone 2: server-owned progress and rewards
+
+The first live slice uses `Academy lesson awards` in the existing Biuret Appwrite database and a dedicated `academy-progress` function. Each learner and lesson has one deterministic award row. The function verifies the current account JWT, grades the lesson check, enforces lesson order, and writes the award once. The table has no direct client permissions. A completed lesson grants 100 verified XP and 10 non-transferable Biuret Coins. The level is derived from cumulative verified lesson XP; the coin balance is derived from award rows. Challenge XP remains clearly marked as practice XP and does not affect verified levels or coins. Existing preference-based lesson history is retained as unverified practice; learners retake the quick check to earn the server award.
+
+Deployment: upload `functions/academy-progress` as a `.tar.gz` archive to a Node 22 Appwrite Function, entrypoint `src/main.js`, execute permission `users`, and scoped function key permissions `rows.read` and `rows.write` only. The function ID must be `academy-progress` or `PROGRESS_FUNCTION_ID` in `auth.js` must be updated. The existing licensing function and its tables are unrelated.
 
 Keep the existing Appwrite project and Biuret account. Add tables with row permissions and server functions for state-changing operations. Proposed records:
 

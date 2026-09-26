@@ -16,9 +16,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260926-3">
+  <link rel="stylesheet" href="style.css?v=20260926-4">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
-  <script type="module" src="app.js?v=20260926-3"></script>
+  <script type="module" src="app.js?v=20260926-4"></script>
 </head>
 <body>
 
@@ -42,7 +42,8 @@
       <section class="page-banner section-frame reveal"><div><span class="section-kicker">03 / YOUR MOMENTUM</span><h1>تقدّمك، أمام عينيك.</h1><p>تقدّمك اليوم يصنع عادة تعلّم تدوم. شاهد إنجازاتك وحدّد الخطوة التالية.</p></div><span class="page-banner-note">YOUR LEARNING STORY</span></section>
       <section id="progress" class="content-section progress-section section-frame">
         <div class="section-header reveal"><div><span class="section-kicker">03 / YOUR MOMENTUM</span><h2>كل خطوة <em>تُحسب.</em></h2><p>تتبّع رحلتك، وارجع غداً لتكمل ما بدأته.</p></div><span class="section-side-note">SHOW UP. LEVEL UP.</span></div>
-        <div class="progress-grid"><div class="progress-main panel"><div class="panel-top"><span class="section-kicker">ACTIVITY / LAST 7 DAYS</span><span class="pulse-icon">●</span></div><div class="week-grid" id="week-grid"></div><div class="progress-footer"><span>استمرارية التعلّم</span><strong id="streak-detail">ابدأ اليوم</strong></div></div><div class="progress-stats"><div class="stat-card panel"><span>نقاط الخبرة</span><strong id="xp-stat">0</strong><small>XP EARNED</small></div><div class="stat-card panel"><span>تحديات مكتملة</span><strong id="done-stat">0<span class="stat-total"> / 12</span></strong><small>MISSIONS COMPLETE</small></div><div class="stat-card panel"><span>سلسلة الأيام</span><strong id="streak-stat">0</strong><small>DAYS IN A ROW</small></div></div></div>
+        <div class="reward-dashboard panel" id="reward-dashboard" aria-live="polite"></div>
+        <div class="progress-grid"><div class="progress-main panel"><div class="panel-top"><span class="section-kicker">ACTIVITY / LAST 7 DAYS</span><span class="pulse-icon">●</span></div><div class="week-grid" id="week-grid"></div><div class="progress-footer"><span>استمرارية التعلّم</span><strong id="streak-detail">ابدأ اليوم</strong></div></div><div class="progress-stats"><div class="stat-card panel"><span id="practice-xp-label">XP للتدريب</span><strong id="xp-stat">0</strong><small>PRACTICE ONLY</small></div><div class="stat-card panel"><span>تحديات مكتملة</span><strong id="done-stat">0<span class="stat-total"> / 12</span></strong><small>MISSIONS COMPLETE</small></div><div class="stat-card panel"><span>سلسلة الأيام</span><strong id="streak-stat">0</strong><small>DAYS IN A ROW</small></div></div></div>
         <div class="account-nudge panel" id="account-nudge"><div><span class="section-kicker">KEEP YOUR PROGRESS</span><h3>رحلتك تستحق أن تبقى معك.</h3><p>أنشئ حساب Biuret لتزامن إنجازاتك وتكمل من أي جهاز.</p></div><button class="button button-outline" id="sync-button" type="button">احفظ تقدّمك بحساب <span aria-hidden="true">↗</span></button></div>
         <div class="learning-progress panel" id="learning-progress-card"></div>
       </section>
