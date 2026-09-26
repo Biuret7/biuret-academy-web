@@ -4,8 +4,11 @@ import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut,
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const OWNER_KEY = 'biuret-academy-owner-v1';
+let ownerUserId;
+try { ownerUserId = localStorage.getItem(OWNER_KEY); } catch { ownerUserId = null; }
 let progress;
-try { progress = assignDaily(cleanProgress(JSON.parse(localStorage.getItem(STORAGE_KEY)))); }
+try { progress = ownerUserId ? assignDaily(null) : assignDaily(cleanProgress(JSON.parse(localStorage.getItem(STORAGE_KEY)))); }
 catch { progress = assignDaily(null); }
 let filter = 'all';
 let activeChallenge = null;
@@ -15,7 +18,11 @@ let toastTimer;
 let syncQueue = Promise.resolve();
 
 function persistLocal() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    if (ownerUserId) localStorage.setItem(OWNER_KEY, ownerUserId);
+    else localStorage.removeItem(OWNER_KEY);
+  }
   catch { toast('تعذر حفظ التقدّم على هذا المتصفح.'); }
 }
 
@@ -157,8 +164,16 @@ function showAuth() {
   if (signedIn) {
     $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || 'متعلّم Biuret')}</div><div>${esc(user().email || '')}</div><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">تسجيل الخروج</button></div>`;
     $('#signout-button').addEventListener('click', async () => {
-      try { await signOut(); $('#auth-dialog').close(); render(); toast('تم تسجيل الخروج. تقدّمك محفوظ على هذا الجهاز.'); }
-      catch { toast('تعذر تسجيل الخروج الآن.'); }
+      try {
+        await syncQueue;
+        await saveCloudProgress(progress);
+        await signOut();
+        ownerUserId = null;
+        progress = assignDaily(null);
+        persistLocal();
+        $('#auth-dialog').close(); render();
+        toast('تم تسجيل الخروج. إنجازاتك محفوظة في حسابك.');
+      } catch { toast('تعذر حفظ التقدّم أو تسجيل الخروج الآن. حاول مجدداً.'); }
     });
   }
   $('#auth-dialog').showModal();
@@ -187,7 +202,8 @@ async function handleAuthSubmit(event) {
   try {
     if (signup) await signUp($('#auth-name').value.trim(), $('#auth-email').value.trim(), $('#auth-password').value);
     else await signIn($('#auth-email').value.trim(), $('#auth-password').value);
-    progress = mergeProgress(progress, cloudProgress());
+    progress = mergeProgress(ownerUserId && ownerUserId !== user().$id ? null : progress, cloudProgress());
+    ownerUserId = user().$id;
     persistLocal();
     queueCloudSync();
     $('#auth-dialog').close();
@@ -232,16 +248,28 @@ function initReveal() {
 }
 
 async function init() {
-  persistLocal(); render(); bindEvents(); initReveal();
+  if (!ownerUserId) persistLocal();
+  render(); bindEvents(); initReveal();
   if (new URLSearchParams(location.search).has('auth_error')) {
     toast('تعذر إكمال الدخول عبر المزود. حاول مرة أخرى.');
     history.replaceState(null, '', location.pathname + location.hash);
   }
   if (!available()) return;
-  const signedIn = await loadUser();
+  let signedIn;
+  try { signedIn = await loadUser(); }
+  catch { toast('تعذر الاتصال بالحساب الآن. تقدّمك المحلي محفوظ.'); return; }
   if (signedIn) {
-    progress = mergeProgress(progress, cloudProgress());
+    if (ownerUserId === signedIn.$id) {
+      try { progress = cleanProgress(JSON.parse(localStorage.getItem(STORAGE_KEY))); }
+      catch { progress = assignDaily(null); }
+    }
+    progress = mergeProgress(ownerUserId && ownerUserId !== signedIn.$id ? null : progress, cloudProgress());
+    ownerUserId = signedIn.$id;
     persistLocal(); render(); queueCloudSync();
+  } else if (ownerUserId) {
+    ownerUserId = null;
+    progress = assignDaily(null);
+    persistLocal(); render();
   }
 }
 

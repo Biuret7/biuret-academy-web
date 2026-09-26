@@ -13,7 +13,10 @@ export function available() { return Boolean(account); }
 export async function loadUser() {
   if (!account) return null;
   try { currentUser = await account.get(); }
-  catch { currentUser = null; }
+  catch (error) {
+    if (error?.code !== 401) throw error;
+    currentUser = null;
+  }
   return currentUser;
 }
 
@@ -56,6 +59,7 @@ export function cloudProgress() {
 export async function saveCloudProgress(localProgress) {
   if (!account || !currentUser) return localProgress;
   const fresh = await account.get();
+  if (fresh.$id !== currentUser.$id) throw new Error('تغيّر الحساب النشط. أعد تحميل الصفحة قبل مزامنة التقدّم.');
   const merged = mergeProgress(localProgress, fresh.prefs?.[PREF_KEY]);
   const prefs = { ...fresh.prefs, [PREF_KEY]: merged };
   if (new TextEncoder().encode(JSON.stringify(prefs)).length > 64000) {
