@@ -1,4 +1,4 @@
-import { englishTracks, englishChallenges } from './content-en.js';
+import { englishTracks, englishChallenges } from './content-en.js?v=20260926-2';
 
 const KEY = 'biuret-academy-language';
 let language;
@@ -36,7 +36,7 @@ const staticEnglish = {
   'تعلّم بالمحاولة.': 'Learn by doing.', 'اقرأ الدليل، جرّب إجابتك، ثم افهم السبب. التقدّم يأتي خطوة بخطوة.': 'Read the evidence, try your answer, and understand why. Progress comes one step at a time.',
   'المعرفة تبدأ': 'Knowledge starts', 'بالمحاولة.': 'with practice.', 'اختر تحدّياً، افحص الدليل، ثم اتخذ قرارك. كل تمرين يبني على سابقه.': 'Choose a challenge, inspect the evidence, then make a decision. Each exercise builds on the last.',
   'الكل': 'All', 'الأساسيات': 'Foundations', 'أمان الويب': 'Web security', 'الأدلة الرقمية': 'Digital forensics',
-  'كل خطوة تُحسب.': 'Every step counts.', 'تقدّمك اليوم يصنع عادة تعلّم تدوم. شاهد إنجازاتك وحدّد الخطوة التالية.': 'Today’s progress builds a lasting learning habit. See your achievements and choose what is next.',
+  'تقدّمك، أمام عينيك.': 'See how far you’ve come.', 'كل خطوة تُحسب.': 'Every step counts.', 'تقدّمك اليوم يصنع عادة تعلّم تدوم. شاهد إنجازاتك وحدّد الخطوة التالية.': 'Today’s progress builds a lasting learning habit. See your achievements and choose what is next.',
   'كل خطوة': 'Every step', 'تُحسب.': 'counts.', 'تتبّع رحلتك، وارجع غداً لتكمل ما بدأته.': 'Follow your journey and come back tomorrow to build on it.', 'استمرارية التعلّم': 'Learning streak', 'نقاط الخبرة': 'Experience points', 'تحديات مكتملة': 'Challenges completed', 'سلسلة الأيام': 'Day streak',
   'رحلتك تستحق أن تبقى معك.': 'Your journey is worth keeping.', 'أنشئ حساب Biuret لتزامن إنجازاتك وتكمل من أي جهاز.': 'Create a Biuret account to sync achievements and continue on any device.', 'احفظ تقدّمك بحساب': 'Save progress with an account',
   'خطوتك التالية جاهزة.': 'Your next step is ready.', 'ابدأ بالتحدي التالي المتاح، أو عد إلى المسارات لتختار مجالاً جديداً.': 'Take the next available challenge, or return to paths to explore a new subject.', 'افتح التحدّي التالي ↗': 'Open the next challenge ↗',
