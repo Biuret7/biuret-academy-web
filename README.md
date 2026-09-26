@@ -1,10 +1,11 @@
 # Biuret Academy Web
 
-An Arabic-first, right-to-left micro academy for `academy.biuret.dev`. The site uses the Biuret visual identity and offers 12 short, self-contained challenges across Foundations, Web Security, and Digital Forensics.
+An Arabic-first micro academy for `academy.biuret.dev`, with a complete English interface. The site uses the Biuret visual identity and offers 12 short, self-contained challenges across Foundations, Web Security, and Digital Forensics.
 
 ## Features
 
 - Sequential challenges in three independent tracks, with answer checks, hints, explanations, and next steps.
+- Separate home, paths, challenges, and progress pages. A shared language control switches Arabic/RTL and English/LTR, including mission content.
 - A daily mission, one-time daily bonus, XP, completion count, and seven-day activity view. After finishing the starter challenges, learners can revisit one as a daily drill to keep their streak.
 - Guest progress in `localStorage`. Signing in with the existing Biuret Appwrite account merges local and cloud progress into account preferences.
 - Email/password and Google/GitHub account buttons. OAuth requires `academy.biuret.dev` to be registered as a web platform in the existing Appwrite project.

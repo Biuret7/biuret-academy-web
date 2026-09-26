@@ -16,3 +16,52 @@ dialog{color:var(--text);border:1px solid #4b5f36;background:#101519;border-radi
 @media(max-width:760px){.topbar{height:73px;gap:10px}.desktop-nav{display:none}.brand-word{font-size:16px}.brand-word>span:last-child{font-size:9px}.nav-actions{margin-right:auto}.hero{display:flex;flex-direction:column;align-items:stretch;min-height:auto;padding-top:64px;padding-bottom:55px}.hero-copy>p{font-size:15px}.hero h1{font-size:clamp(54px,10vw,76px)}.hero-meta{margin-top:35px}.hero-visual{height:430px;min-height:0}.mission-band{grid-template-columns:1fr;gap:20px}.mission-cta{grid-column:auto;justify-self:stretch}.mission-current{border-right:0;border-top:1px solid #415127;padding-right:0;padding-top:18px}.content-section{padding-top:80px}.section-side-note{display:none}.track-grid{grid-template-columns:1fr}.track-card{min-height:260px}.track-content p{min-height:0}.challenge-list{grid-template-columns:1fr}.account-nudge{flex-direction:column;align-items:stretch}.progress-stats{grid-template-columns:repeat(2,1fr)}.stat-card:first-child{grid-column:span 2}.footer{flex-wrap:wrap}.footer-end{width:100%}}
 @media(max-width:460px){.section-frame{padding-right:20px;padding-left:20px}.topbar{padding:0 20px}.brand-mark{width:34px;height:34px}.brand-word{font-size:14px}.brand-word>span:last-child{font-size:8px}.account-button{padding:8px 10px;font-size:11px}.account-button span{padding-right:5px}.hero h1{font-size:54px}.hero-actions{align-items:stretch;flex-direction:column}.hero-visual{height:360px}.orbit-one{width:260px;height:260px}.orbit-two{width:340px;height:340px}.core-rings{width:180px;height:180px}.core-glyph{font-size:90px}.core-glyph span{font-size:35px}.core-caption{top:calc(50% + 117px);font-size:8px}.visual-terminal{left:15px;right:15px;bottom:15px}.hero-meta{gap:10px;font-size:10px}.section-header h2{font-size:38px}.filters{gap:5px}.filter{padding:8px 10px;font-size:11px}.challenge-card{padding:15px 13px;gap:10px}.challenge-index{width:39px;height:39px}.challenge-arrow{display:none}.week-grid{gap:5px}.stat-card{padding:15px}.challenge-dialog,.auth-dialog{padding:25px 18px}.dialog-heading h2{font-size:30px}.footer-links{flex-wrap:wrap;gap:10px 18px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+/* Four focused pages share the same visual language and account state. */
+.brand-mark{border-color:#455d22;background:#0a0d0c;padding:0;overflow:hidden;box-shadow:0 0 18px #c9ff391d}
+.brand-mark img{display:block;width:100%;height:100%;object-fit:cover}
+.desktop-nav a[aria-current="page"]{color:var(--lime)}
+.desktop-nav a[aria-current="page"]:after{content:"";display:block;height:2px;margin-top:7px;background:var(--lime);border-radius:2px}
+.nav-actions{gap:10px}
+.portfolio-return,.language-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #3b493b;border-radius:9px;padding:8px 12px;background:#131b18;color:#d5e2d9;font-size:11px;font-weight:700;white-space:nowrap;transition:background .2s,border-color .2s,transform .2s}
+.portfolio-return:hover,.language-toggle:hover{background:#1d2a1c;border-color:#9ab94b;transform:translateY(-2px)}
+.language-toggle{min-width:48px;color:var(--lime);font-family:var(--font-en)}
+.page-banner{min-height:300px;padding-top:72px;padding-bottom:65px;display:flex;align-items:end;justify-content:space-between;gap:25px;border-bottom:1px solid #2d3838;background:radial-gradient(ellipse at 15% 90%,#c9ff390c,transparent 48%)}
+.page-banner h1{max-width:850px;margin:16px 0 10px;font-size:clamp(42px,5vw,68px);line-height:1.16;letter-spacing:-.065em}
+.page-banner p{max-width:650px;margin:0;color:#a9b7bb;font-size:15px;line-height:1.9}
+.page-banner-note{direction:ltr;white-space:nowrap;color:#76868a;font:700 10px var(--font-en);letter-spacing:.15em}
+.site-shell[data-page="paths"] .content-section,.site-shell[data-page="challenges"] .content-section,.site-shell[data-page="progress"] .content-section{padding-top:74px;padding-bottom:70px}
+.site-shell[data-page="challenges"] .mission-band{margin-top:0}
+.site-shell[data-page="challenges"] .challenge-section{padding-top:75px}
+.home-overview{padding-top:106px;padding-bottom:18px}
+.overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.overview-card{position:relative;min-height:270px;display:flex;flex-direction:column;padding:27px;border:1px solid #36423d;border-radius:19px;background:linear-gradient(150deg,#151c1d,#0d1114);overflow:hidden;transition:transform .28s,border-color .28s,box-shadow .28s}
+.overview-card:before{content:"";position:absolute;inset:auto -30% -65% auto;width:240px;height:240px;border-radius:50%;background:#c9ff3911;filter:blur(28px);pointer-events:none}
+.overview-card:hover{transform:translateY(-6px);border-color:#9dbf4b;box-shadow:0 20px 50px #0007}
+.overview-card>span,.curriculum-heading>span{color:var(--lime);font:700 10px var(--font-en);letter-spacing:.14em}
+.overview-card h3{margin:25px 0 8px;font-size:27px;letter-spacing:-.04em}
+.overview-card p{margin:0;color:#a2b0b4;font-size:13px;line-height:1.9}
+.overview-card b{position:relative;margin-top:auto;padding-top:22px;color:var(--lime);font-size:12px}
+.curriculum{padding-top:24px;padding-bottom:105px}
+.curriculum-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.curriculum-card{border:1px solid #334041;border-radius:19px;background:#11171a;overflow:hidden}
+.curriculum-heading{min-height:162px;padding:22px 23px;border-bottom:1px solid #2f3b3e;background:linear-gradient(155deg,#1a241c,#11171a)}
+.curriculum-heading h3{font-size:24px;margin:9px 0 3px;letter-spacing:-.04em}.curriculum-heading p{margin:0;color:#95a4a7;font-size:12px;line-height:1.75}
+.curriculum-item{display:grid;grid-template-columns:32px minmax(0,1fr) 20px;align-items:center;gap:11px;min-height:78px;padding:12px 18px;border-bottom:1px solid #263135;transition:background .2s,color .2s}
+.curriculum-item:last-child{border-bottom:0}.curriculum-item:hover{background:#c9ff390b;color:var(--lime)}
+.curriculum-number,.curriculum-state{font:700 11px var(--font-en);color:var(--lime)}
+.curriculum-item strong,.curriculum-item small{display:block}.curriculum-item strong{font-size:13px}.curriculum-item small{font-size:10px;color:#88979c;margin-top:3px}
+.next-step{display:flex;align-items:center;justify-content:space-between;gap:28px;padding-top:45px;padding-bottom:70px;border-top:1px solid #2d3839}.next-step h2{font-size:clamp(30px,3vw,42px);letter-spacing:-.05em;margin:8px 0}.next-step p{color:#a0afb4;font-size:13px;margin:0}.next-step-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+html[dir="ltr"] body{font-family:var(--font-en)}
+html[dir="ltr"] .eyebrow{justify-content:flex-start}html[dir="ltr"] .eyebrow-index{margin-left:auto;margin-right:0}
+html[dir="ltr"] .section-kicker,html[dir="ltr"] .mission-label{text-align:left}
+html[dir="ltr"] .mission-current{border-right:0;border-left:1px solid #415127;padding-right:0;padding-left:30px}
+html[dir="ltr"] .challenge-card{text-align:left}html[dir="ltr"] .challenge-meta{justify-content:flex-start}
+html[dir="ltr"] .hero-meta b{margin-left:0;margin-right:6px}
+html[dir="ltr"] .dialog-heading{padding-left:0;padding-right:44px}
+html[dir="ltr"] .hint-box{border-right:0;border-left:2px solid var(--cyan)}
+html[dir="ltr"] .account-button span,html[dir="ltr"] .mission-cta span{padding-right:0;padding-left:12px}
+dialog[dir="ltr"]{direction:ltr}
+@media(max-width:1120px){.topbar{gap:18px}.desktop-nav{gap:17px}.brand-word{font-size:16px}.portfolio-return{display:none}}
+@media(max-width:760px){.topbar{height:auto;min-height:108px;padding-top:14px;padding-bottom:10px;flex-wrap:wrap;gap:8px 10px}.desktop-nav{display:flex;order:3;width:100%;justify-content:space-between;gap:8px;margin:0;padding-top:5px}.desktop-nav a{font-size:11px}.nav-actions{margin-inline-start:auto;margin-right:0}.portfolio-return{display:none}.page-banner{min-height:255px;padding-top:50px;padding-bottom:45px}.page-banner-note{display:none}.overview-grid,.curriculum-grid{grid-template-columns:1fr}.overview-card{min-height:210px}.next-step{align-items:flex-start;flex-direction:column}.home-overview{padding-top:75px}html[dir="ltr"] .mission-current{border-left:0;border-top:1px solid #415127;padding-left:0}}
+@media(max-width:460px){.brand-word{font-size:14px}.brand-word>span:last-child{font-size:8px}.language-toggle{min-width:40px;padding:6px}.account-button{padding:7px 8px}.page-banner h1{font-size:42px}}
