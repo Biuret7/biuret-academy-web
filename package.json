@@ -1,0 +1,9 @@
+{
+  "name": "biuret-academy-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check app.js && node --check auth.js && node --check content.js && node --check engine.js"
+  }
+}

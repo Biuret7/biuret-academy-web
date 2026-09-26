@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0d">
+  <meta name="description" content="Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.">
+  <title>Biuret Academy — تعلّم الأمن السيبراني بالتحدي</title>
+  <link rel="icon" href="assets/biuret-brand-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Biuret Academy - الرئيسية">
+        <span class="brand-mark"><img src="assets/biuret-brand-mark.svg" alt=""></span>
+        <span class="brand-word" dir="ltr">BIURET<span class="brand-divider">/</span><span>ACADEMY</span></span>
+      </a>
+      <nav class="desktop-nav" aria-label="التنقل الرئيسي">
+        <a href="#paths">المسارات</a><a href="#challenges">التحديات</a><a href="#progress">تقدّمك</a>
+      </nav>
+      <div class="nav-actions">
+        <span class="nav-status"><span class="status-dot"></span> LEARNING SYSTEM ONLINE</span>
+        <button class="account-button" id="account-button" type="button">حسابي <span aria-hidden="true">↗</span></button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="top" class="hero section-frame">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="eyebrow-line"></span> THE NEXT GENERATION OF CYBER LEARNING <span class="eyebrow-index">01 / 03</span></div>
+          <h1>كل يوم،<br><span>مهارة أمنية</span><br>جديدة.</h1>
+          <p>تعلّم الأمن السيبراني بالطريقة التي تُشبه العمل الحقيقي: دليل صغير، قرار واضح، وتحدٍّ يأخذ دقائق من يومك.</p>
+          <div class="hero-actions"><button class="button button-primary" id="start-button" type="button">ابدأ أول تحدٍّ <span aria-hidden="true">↗</span></button><a class="button button-text" href="#paths">استكشف المسارات <span aria-hidden="true">↓</span></a></div>
+          <div class="hero-meta"><span><b>03</b> مسارات</span><i></i><span><b>12</b> تحدّياً عملياً</span><i></i><span>مناسب للبداية</span></div>
+        </div>
+        <div class="hero-visual reveal" aria-label="تصميم يوضح رحلة التعلم في الأكاديمية">
+          <div class="visual-grid"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="visual-header"><span class="visual-tiny">BIURET / TRAINING ENVIRONMENT</span><span class="live-pill"><i></i> LIVE</span></div>
+          <div class="visual-core"><div class="core-rings"><div class="core-glyph">B<span>7</span></div></div><span class="core-caption">GROW THROUGH CURIOSITY</span></div>
+          <div class="visual-terminal"><span class="terminal-prompt">&gt;_</span><span class="terminal-line">learn.scan<span class="terminal-fade">("your-next-move")</span></span><span class="terminal-cursor"></span></div>
+          <span class="visual-coord visual-coord-a">31° 46′ N</span><span class="visual-coord visual-coord-b">SYS. READY _</span>
+        </div>
+      </section>
+
+      <section class="mission-band section-frame reveal" aria-label="تحدي اليوم">
+        <div class="mission-main"><span class="section-kicker">/// DAILY SIGNAL</span><div class="mission-heading"><span class="mission-symbol" aria-hidden="true">✳</span><div><h2>تحدّي اليوم</h2><p>خطوة صغيرة اليوم. معرفة أقوى غداً.</p></div></div></div>
+        <div class="mission-current"><span class="mission-label">المهمة المقترحة لك</span><strong id="daily-title">...</strong><span id="daily-meta">...</span></div>
+        <button class="mission-cta" id="daily-button" type="button">افتح التحدّي <span aria-hidden="true">↗</span></button>
+      </section>
+
+      <section id="paths" class="content-section section-frame">
+        <div class="section-header reveal"><div><span class="section-kicker">01 / YOUR PATHS</span><h2>اختر نقطة <em>البداية.</em></h2><p>ثلاثة مسارات قصيرة. ابدأ من أي مسار، وسيفتح كل تحدٍّ الباب للذي يليه.</p></div><span class="section-side-note">LEARN / PRACTICE / REPEAT</span></div>
+        <div class="track-grid" id="track-grid"></div>
+      </section>
+
+      <section id="challenges" class="content-section challenge-section section-frame">
+        <div class="section-header reveal"><div><span class="section-kicker">02 / THE CHALLENGES</span><h2>المعرفة تبدأ <em>بالمحاولة.</em></h2><p>اختر تحدّياً، افحص الدليل، ثم اتخذ قرارك. كل تمرين يبني على سابقه.</p></div><span class="section-side-note">12 HANDCRAFTED MISSIONS</span></div>
+        <div class="challenge-toolbar"><div class="filters" id="filters" role="group" aria-label="تصفية التحديات"><button class="filter active" data-filter="all" type="button" aria-pressed="true">الكل</button><button class="filter" data-filter="foundations" type="button" aria-pressed="false">الأساسيات</button><button class="filter" data-filter="web" type="button" aria-pressed="false">أمان الويب</button><button class="filter" data-filter="forensics" type="button" aria-pressed="false">الأدلة الرقمية</button></div><span id="challenge-count">12 تحدّياً</span></div>
+        <div class="challenge-list" id="challenge-list"></div>
+      </section>
+
+      <section id="progress" class="content-section progress-section section-frame">
+        <div class="section-header reveal"><div><span class="section-kicker">03 / YOUR MOMENTUM</span><h2>كل خطوة <em>تُحسب.</em></h2><p>تتبّع رحلتك، وارجع غداً لتكمل ما بدأته.</p></div><span class="section-side-note">SHOW UP. LEVEL UP.</span></div>
+        <div class="progress-grid"><div class="progress-main panel"><div class="panel-top"><span class="section-kicker">ACTIVITY / LAST 7 DAYS</span><span class="pulse-icon">●</span></div><div class="week-grid" id="week-grid"></div><div class="progress-footer"><span>استمرارية التعلّم</span><strong id="streak-detail">ابدأ اليوم</strong></div></div><div class="progress-stats"><div class="stat-card panel"><span>نقاط الخبرة</span><strong id="xp-stat">0</strong><small>XP EARNED</small></div><div class="stat-card panel"><span>تحديات مكتملة</span><strong id="done-stat">0<span class="stat-total"> / 12</span></strong><small>MISSIONS COMPLETE</small></div><div class="stat-card panel"><span>سلسلة الأيام</span><strong id="streak-stat">0</strong><small>DAYS IN A ROW</small></div></div></div>
+        <div class="account-nudge panel" id="account-nudge"><div><span class="section-kicker">KEEP YOUR PROGRESS</span><h3>رحلتك تستحق أن تبقى معك.</h3><p>أنشئ حساب Biuret لتزامن إنجازاتك وتكمل من أي جهاز.</p></div><button class="button button-outline" id="sync-button" type="button">احفظ تقدّمك بحساب <span aria-hidden="true">↗</span></button></div>
+      </section>
+
+      <section class="closing-section section-frame reveal"><div class="closing-orb"></div><span class="section-kicker">YOUR NEXT CHAPTER STARTS HERE</span><h2>الفضول هو أول<br><em>أداة أمنية.</em></h2><p>خصص بضع دقائق. افتح تحدياً. تعلّم شيئاً يبقى معك.</p><button class="button button-primary" id="closing-button" type="button">ابدأ التعلّم الآن <span aria-hidden="true">↗</span></button></section>
+    </main>
+
+    <footer class="footer section-frame"><div><a class="footer-brand" href="https://biuret.dev" dir="ltr">BIURET<span>7</span></a><p>مساحة صغيرة للتعلّم الكبير.</p></div><div class="footer-links"><a href="https://biuret.dev">موقع Biuret</a><a href="https://biuret.dev/privacy.html">سياسة الخصوصية</a><a href="https://biuret.dev/terms.html">شروط الاستخدام</a></div><span class="footer-end">© 2026 BIURET ACADEMY</span></footer>
+  </div>
+
+  <dialog class="challenge-dialog" id="challenge-dialog" aria-labelledby="challenge-dialog-title"><button class="dialog-close" id="challenge-close" type="button" aria-label="إغلاق التحدي">×</button><div id="challenge-dialog-content"></div></dialog>
+  <dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-title"><button class="dialog-close" id="auth-close" type="button" aria-label="إغلاق نافذة الحساب">×</button><div class="auth-heading"><span class="section-kicker">BIURET ACCOUNT</span><h2 id="auth-title">احفظ تقدّمك.</h2><p id="auth-subtitle">حساب واحد لموقع Biuret والأكاديمية.</p></div><div id="signed-in-box" hidden></div><div id="auth-forms"><div class="auth-tabs" role="tablist" aria-label="نوع الحساب"><button class="auth-tab active" id="signin-tab" type="button" role="tab" aria-selected="true">تسجيل الدخول</button><button class="auth-tab" id="signup-tab" type="button" role="tab" aria-selected="false">إنشاء حساب</button></div><form id="auth-form"><div class="auth-field" id="name-field" hidden><label for="auth-name">الاسم</label><input id="auth-name" name="name" type="text" autocomplete="name" maxlength="128"></div><div class="auth-field"><label for="auth-email">البريد الإلكتروني</label><input id="auth-email" name="email" type="email" autocomplete="email" required></div><div class="auth-field"><label for="auth-password">كلمة المرور</label><input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" required></div><button class="button button-primary auth-submit" id="auth-submit" type="submit">تسجيل الدخول <span aria-hidden="true">↗</span></button><p class="auth-error" id="auth-error" role="alert" hidden></p></form><div class="auth-separator"><span>أو أكمل باستخدام</span></div><div class="social-buttons"><button class="social-button" data-provider="google" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.21c0-.71-.06-1.4-.19-2.06H12v3.89h5.23a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.7 2.92-4.2 2.92-7.22Z"/><path fill="#34A853" d="M12 21.6c2.63 0 4.84-.87 6.43-2.36l-3.14-2.45c-.87.59-1.98.94-3.29.94-2.53 0-4.68-1.71-5.45-4.02H3.3v2.53A9.7 9.7 0 0 0 12 21.6Z"/><path fill="#FBBC05" d="M6.55 13.71a5.86 5.86 0 0 1 0-3.42V7.76H3.3a9.7 9.7 0 0 0 0 8.48l3.25-2.53Z"/><path fill="#EA4335" d="M12 6.27c1.43 0 2.71.49 3.72 1.46l2.79-2.79A9.27 9.27 0 0 0 12 2.4a9.7 9.7 0 0 0-8.7 5.36l3.25 2.53C7.32 7.98 9.47 6.27 12 6.27Z"/></svg> Google</button><button class="social-button" data-provider="github" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.07c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.23-1.63-1.23-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .17 1.3.76 3.2.53.1-.72.4-1.2.72-1.47-2.48-.28-5.08-1.24-5.08-5.53 0-1.22.44-2.22 1.15-3a4.16 4.16 0 0 1 .1-2.96s.94-.3 3.08 1.14A10.7 10.7 0 0 1 12 6.47c.95 0 1.9.13 2.8.38 2.14-1.44 3.08-1.14 3.08-1.14.41.94.45 2 .11 2.96.72.78 1.14 1.78 1.14 3 0 4.3-2.6 5.24-5.09 5.52.41.36.78 1.04.78 2.1v2.8c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg> GitHub</button></div><p class="auth-note">باستخدامك للأكاديمية، فإنك توافق على <a href="https://biuret.dev/terms.html" target="_blank" rel="noopener">شروط الاستخدام</a> و<a href="https://biuret.dev/privacy.html" target="_blank" rel="noopener">سياسة الخصوصية</a>.</p></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
