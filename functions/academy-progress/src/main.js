@@ -4,11 +4,14 @@ const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.clou
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
 const DATABASE_ID = '6aa56477002e28054068';
 const TABLE_ID = '6ab81dce000e6188b664';
-const LESSONS = [
-  { id: 'url-parts', answer: 1 },
-  { id: 'url-traps', answer: 1 },
-  { id: 'url-decision', answer: 2 },
+// Published lesson checks are formative and their answers are public. Formal
+// exams require a separate private bank before they can issue credentials.
+const COURSE_LESSONS = [
+  [{ id: 'url-parts', answer: 1 }, { id: 'url-traps', answer: 1 }, { id: 'url-decision', answer: 2 }],
+  [{ id: 'identity-passwords', answer: 1 }, { id: 'identity-sessions', answer: 1 }, { id: 'identity-least-privilege', answer: 1 }],
+  [{ id: 'evidence-logs', answer: 1 }, { id: 'evidence-integrity', answer: 0 }, { id: 'evidence-triage', answer: 2 }],
 ];
+const LESSONS = COURSE_LESSONS.flat();
 const LESSON_XP = 100;
 const LESSON_COINS = 10;
 
@@ -71,10 +74,11 @@ async function getState(key, userId) {
 }
 
 async function complete(key, userId, lessonId, answerIndex) {
-  const index = LESSONS.findIndex((lesson) => lesson.id === lessonId);
+  const course = COURSE_LESSONS.find((items) => items.some((lesson) => lesson.id === lessonId));
+  const index = course?.findIndex((lesson) => lesson.id === lessonId) ?? -1;
   if (index < 0 || !Number.isInteger(answerIndex)) return { status: 400, body: { error: 'Invalid lesson submission' } };
-  if (LESSONS[index].answer !== answerIndex) return { status: 422, body: { error: 'Incorrect answer' } };
-  if (index > 0 && !await getAward(key, userId, LESSONS[index - 1].id)) {
+  if (course[index].answer !== answerIndex) return { status: 422, body: { error: 'Incorrect answer' } };
+  if (index > 0 && !await getAward(key, userId, course[index - 1].id)) {
     return { status: 409, body: { error: 'Complete the previous lesson first' } };
   }
   if (await getAward(key, userId, lessonId)) return { status: 200, body: { ...await getState(key, userId), awarded: false } };

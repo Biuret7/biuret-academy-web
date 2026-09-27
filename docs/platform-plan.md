@@ -1,11 +1,11 @@
 # Biuret Academy: platform implementation plan
 
-## What is live in milestone 1
+## Published learning content
 
 - The Foundations path has a visual roadmap with honest published and planned states.
-- The first course, **Understand URLs before you trust them**, contains three Arabic/English lessons, quick checks, and a link to the existing practical challenge.
-- Lesson completion is sequential, is idempotent, and syncs through the existing Biuret account preferences. Existing challenge progress remains intact.
-- Lesson completion is a learning aid. It does **not** issue credentials, credits, exam results, or paid access.
+- Three Foundations courses — **Understand URLs before you trust them**, **Identity and access**, and **Evidence and response** — contain nine Arabic/English lessons, quick checks, and links to practical challenges.
+- Signed-in lesson completion is sequential and idempotent, with verified awards in the existing Biuret Appwrite project. Earlier preference history and challenge progress remain intact.
+- Lesson completion is a learning aid. It awards non-transferable Biuret Coins but does **not** issue credentials, exam results, or paid access.
 
 ## Learning contract
 
@@ -18,7 +18,7 @@
 
 ## Milestone 2: server-owned progress and rewards
 
-The first live slice uses `Academy lesson awards` in the existing Biuret Appwrite database and a dedicated `academy-progress` function. Each learner and lesson has one deterministic award row. The function verifies the current account JWT, grades the lesson check, enforces lesson order, and writes the award once. The table has no direct client permissions. A completed lesson grants 100 verified XP and 10 non-transferable Biuret Coins. The level is derived from cumulative verified lesson XP; the coin balance is derived from award rows. Challenge XP remains clearly marked as practice XP and does not affect verified levels or coins. Existing preference-based lesson history is retained as unverified practice; learners retake the quick check to earn the server award.
+The live slice uses `Academy lesson awards` in the existing Biuret Appwrite database and a dedicated `academy-progress` function. Each learner and lesson has one deterministic award row. The function verifies the current account JWT, grades the lesson check, enforces order within each course, and writes the award once. The table has no direct client permissions. A completed lesson grants 100 verified XP and 10 non-transferable Biuret Coins. The level is derived from cumulative verified lesson XP; the coin balance is derived from award rows. Challenge XP remains clearly marked as practice XP and does not affect verified levels or coins. Existing preference-based lesson history is retained as unverified practice; learners retake the quick check to earn the server award.
 
 Deployment: upload `functions/academy-progress` as a `.tar.gz` archive to Node 22 Appwrite Function `6ab8ae03001025f97f37`, entrypoint `src/main.js`, execute permission `users`, and scoped function key permissions `rows.read` and `rows.write` only. The existing licensing function and its tables are unrelated.
 
@@ -38,7 +38,7 @@ Read access is scoped to each learner, except published course content. No clien
 
 ## Milestone 3: one complete path
 
-Publish the Identity and Access and Evidence and Response courses, each with lessons, practice, accessible transcripts, and Arabic/English editorial review. Add an end-of-path exam only after server grading is deployed. Pilot with a small cohort and inspect completion, errors, and question quality before issuing credentials.
+The Identity and Access and Evidence and Response courses are published with bilingual text lessons, examples, checks, and practice challenge links. Text is the primary medium, so no video transcript is needed. The public formative answers are suitable for learning rewards only. Remaining gates: editorial review with a subject-matter expert; a private, server-graded end-of-path exam with attempt policy; and a small-cohort pilot to inspect completion, errors, and question quality before credentials are issued.
 
 ## Milestone 4: credentials and administration
 

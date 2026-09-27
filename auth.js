@@ -1,4 +1,4 @@
-import { cleanProgress, mergeProgress } from './engine.js';
+import { cleanProgress, mergeProgress } from './engine.js?v=20260927-2';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';

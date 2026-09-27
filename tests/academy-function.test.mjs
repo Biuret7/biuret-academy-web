@@ -43,9 +43,14 @@ test('one verified lesson gives 100 XP and 10 coins once; users remain isolated'
     assert.deepEqual([first.body.xp, first.body.coins, first.body.level, first.body.awarded], [100, 10, 2, true]);
     const repeat = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
     assert.deepEqual([repeat.body.xp, repeat.body.coins, repeat.body.awarded], [100, 10, false]);
+    assert.equal((await invoke({ action: 'completeLesson', lessonId: 'identity-sessions', answerIndex: 1 })).status, 409);
+    assert.equal((await invoke({ action: 'completeLesson', lessonId: 'evidence-integrity', answerIndex: 0 })).status, 409);
+    const identity = await invoke({ action: 'completeLesson', lessonId: 'identity-passwords', answerIndex: 1 });
+    assert.deepEqual([identity.status, identity.body.xp, identity.body.coins], [200, 200, 20]);
+    assert.equal((await invoke({ action: 'completeLesson', lessonId: 'evidence-logs', answerIndex: 0 })).status, 422);
     userId = 'learner-b';
     const other = await invoke({ action: 'state' });
     assert.deepEqual([other.body.xp, other.body.coins, other.body.awards.length], [0, 0, 0]);
-    assert.equal(rows.size, 1);
+    assert.equal(rows.size, 2);
   } finally { globalThis.fetch = priorFetch; }
 });
