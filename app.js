@@ -1,7 +1,7 @@
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js';
 import { learningPath, courseById, lessonById, localized } from './learning-content.js';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js?v=20260927-1';
 import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260926-3';
 
 const $ = (selector) => document.querySelector(selector);
@@ -103,7 +103,7 @@ function renderProgress() {
     const xp = rewards?.xp || 0, coins = rewards?.coins || 0, level = rewards?.level || 1;
     const into = rewards?.xpIntoLevel || 0, next = rewards?.xpToNextLevel || 100;
     const unresolved = Boolean(user()) && rewardStatus !== 'ready';
-    const note = !user() ? ll('signInReward') : rewardStatus === 'loading' ? ll('loading') : rewardStatus === 'error' ? ll('rewardError') : Object.keys(progress.lessons).some((id) => !rewards.awards.some((award) => award.lessonId === id)) ? ll('legacy') : `${next - into} XP ${ll('nextLevel')}`;
+    const note = !user() ? ll('signInReward') : rewardStatus !== 'ready' ? ll(rewardStatus === 'error' ? 'rewardError' : 'loading') : Object.keys(progress.lessons).some((id) => !rewards.awards.some((award) => award.lessonId === id)) ? ll('legacy') : `${next - into} XP ${ll('nextLevel')}`;
     $('#reward-dashboard').innerHTML = `<div class="reward-heading"><span class="section-kicker">VERIFIED LEARNING / BIURET ACADEMY</span><span class="reward-spark" aria-hidden="true">✦</span></div><div class="reward-values"><div><small>${ll('level')}</small><strong>${unresolved ? '—' : level.toString().padStart(2, '0')}</strong></div><div><small>XP</small><strong>${unresolved ? '—' : xp}</strong></div><div><small>${ll('coins')}</small><strong>${unresolved ? '—' : coins}<span> BC</span></strong></div></div><div class="reward-meter" role="progressbar" aria-valuemin="0" aria-valuemax="${next}" aria-valuenow="${into}" aria-label="${ll('nextLevel')}"><span style="width:${unresolved ? 0 : Math.min(100, into / next * 100)}%"></span></div><p>${esc(note)}</p><small class="reward-fineprint">${ll('coinNote')}</small>`;
   }
   if ($('#done-stat')) $('#done-stat').innerHTML = `${Object.keys(progress.completed).length}<span class="stat-total"> / ${challenges.length}</span>`;

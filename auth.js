@@ -7,7 +7,7 @@ const sdk = window.Appwrite;
 const client = sdk ? new sdk.Client().setEndpoint(ENDPOINT).setProject(PROJECT_ID) : null;
 const account = client ? new sdk.Account(client) : null;
 const functions = client ? new sdk.Functions(client) : null;
-const PROGRESS_FUNCTION_ID = 'academy-progress';
+const PROGRESS_FUNCTION_ID = '6ab8ae03001025f97f37';
 let currentUser = null;
 
 export function user() { return currentUser; }
