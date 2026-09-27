@@ -10,8 +10,11 @@ if (mainStart < 0 || mainEnd < mainStart) throw new Error('Could not find page m
 for (const [page, title, description] of [
   ['course', 'الكورس — Biuret Academy', 'تعلّم أساسيات الأمن السيبراني خطوة بخطوة في كورسات Biuret Academy.'],
   ['lesson', 'الدرس — Biuret Academy', 'دروس تفاعلية قصيرة لتعلّم الأمن السيبراني في Biuret Academy.'],
+  ['exam', 'امتحان المسار — Biuret Academy', 'امتحان أساسيات الأمن السيبراني بعد إكمال الدروس الموثقة.'],
+  ['certificate', 'إثبات الإنجاز — Biuret Academy', 'عرض إثبات الإنجاز والتحقق منه عبر Biuret Academy.'],
 ]) {
-  const main = '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
+  const assessment = page === 'exam' || page === 'certificate';
+  const main = assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
   const html = (template.slice(0, mainStart) + main + template.slice(mainEnd))
     .replace('data-page="paths"', `data-page="${page}"`)
     .replace(/  <link rel="canonical"[^>]+>\r?\n/, '')
@@ -20,6 +23,7 @@ for (const [page, title, description] of [
     .replace('Biuret Academy — تعلّم الأمن السيبراني بالتحدي', title)
     .replace('Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.', description)
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
-    .replace('aria-current="page"', '');
+    .replace('aria-current="page"', '')
+    .replace('</head>', assessment ? '  <script type="module" src="assessment.js?v=20260927-3"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }

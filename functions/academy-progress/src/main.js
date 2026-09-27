@@ -1,11 +1,11 @@
 import { createHash } from 'node:crypto';
+import { examService } from './exam.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
 const DATABASE_ID = '6aa56477002e28054068';
 const TABLE_ID = '6ab81dce000e6188b664';
-// Published lesson checks are formative and their answers are public. Formal
-// exams require a separate private bank before they can issue credentials.
+// Published lesson checks are formative; final exam answers live only in the function deployment.
 const COURSE_LESSONS = [
   [{ id: 'url-parts', answer: 1 }, { id: 'url-traps', answer: 1 }, { id: 'url-decision', answer: 2 }],
   [{ id: 'identity-passwords', answer: 1 }, { id: 'identity-sessions', answer: 1 }, { id: 'identity-least-privilege', answer: 1 }],
@@ -104,6 +104,24 @@ export default async ({ req, res, error }) => {
     if (input.action === 'completeLesson') {
       const result = await complete(key, account.$id, input.lessonId, input.answerIndex);
       return res.json(result.body, result.status);
+    }
+    const exam = examService({
+      base: ENDPOINT,
+      request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
+      getLessonState: (userId) => getState(key, userId),
+    });
+    if (input.action === 'examState') return res.json(await exam.state(account.$id));
+    if (input.action === 'submitExam') {
+      const result = await exam.submit(account.$id, account.name, input.answers);
+      return res.json(result.data, result.code);
+    }
+    if (input.action === 'credential') {
+      const result = await exam.credential(account.$id);
+      return res.json(result.data, result.code);
+    }
+    if (input.action === 'shareCredential' && typeof input.enabled === 'boolean') {
+      const result = await exam.share(account.$id, input.enabled);
+      return res.json(result.data, result.code);
     }
     return res.json({ error: 'Unknown action' }, 400);
   } catch (cause) {

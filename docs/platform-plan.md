@@ -5,7 +5,7 @@
 - The Foundations path has a visual roadmap with honest published and planned states.
 - Three Foundations courses — **Understand URLs before you trust them**, **Identity and access**, and **Evidence and response** — contain nine Arabic/English lessons, quick checks, and links to practical challenges.
 - Signed-in lesson completion is sequential and idempotent, with verified awards in the existing Biuret Appwrite project. Earlier preference history and challenge progress remain intact.
-- Lesson completion is a learning aid. It awards non-transferable Biuret Coins but does **not** issue credentials, exam results, or paid access.
+- Lesson completion is a learning aid. It awards non-transferable Biuret Coins but does **not** issue credentials or paid access by itself.
 
 ## Learning contract
 
@@ -13,8 +13,8 @@
 
 - A lesson can be revisited. A correct formative answer marks it complete once.
 - A course can show learning progress as lessons completed plus its challenge result. This is not a formal assessment.
-- A future final exam must use a private question bank and grade on the server. Passing criteria, attempt limit, cooldown, and version must be explicit before opening it.
-- A certificate may be issued only after the server verifies all requirements. Its public verification page needs an opaque ID, issue date, issuer, achievement criteria, and revocation status. The learner chooses whether to share the public URL.
+- The Foundations final exam uses a private question bank and grades on the server. It requires all nine verified lesson awards, 8/10 to pass, at most three attempts per version, and a 24-hour pause after an unsuccessful attempt.
+- An achievement credential is issued only after the server verifies all requirements. It has an opaque ID, issue date, issuer, achievement criteria, and revocation status. The learner chooses whether to share or withdraw the public URL. The displayed name is an account display name, not a verified legal identity.
 
 ## Milestone 2: server-owned progress and rewards
 
@@ -38,11 +38,13 @@ Read access is scoped to each learner, except published course content. No clien
 
 ## Milestone 3: one complete path
 
-The Identity and Access and Evidence and Response courses are published with bilingual text lessons, examples, checks, and practice challenge links. Text is the primary medium, so no video transcript is needed. The public formative answers are suitable for learning rewards only. Remaining gates: editorial review with a subject-matter expert; a private, server-graded end-of-path exam with attempt policy; and a small-cohort pilot to inspect completion, errors, and question quality before credentials are issued.
+The Identity and Access and Evidence and Response courses are published with bilingual text lessons, examples, checks, and practice challenge links. Text is the primary medium, so no video transcript is needed. The public formative answers are suitable for learning rewards only. The final exam and achievement credential now use the private server path. Remaining gates before marketing this as a formal certification: editorial review with a subject-matter expert and a small-cohort pilot to inspect completion, errors, and question quality.
 
 ## Milestone 4: credentials and administration
 
-Create a content admin workflow with draft, review, publish, version, and rollback. Add server-issued credentials with public verification and revocation. Consider Open Badges 3.0 export after the core certificate flow is reliable.
+The server-issued Foundations achievement credential has opt-in public verification and an active/revoked state. Owners can withdraw public access at any time. Next, create a content admin workflow with draft, review, publish, version, rollback, and a controlled revocation interface. Consider Open Badges 3.0 export after the core flow is reliable.
+
+The private question bank is `functions/academy-progress/exam-bank.private.json`, ignored by Git and included only in the function deployment archive. A deployer can alternatively set `ACADEMY_EXAM_BANK` in Appwrite. Never add answers to the GitHub Pages bundle. Rebuild the function archive with `package.json`, `src/main.js`, `src/exam.js`, and the private bank before each manual deployment. Appwrite tables: exam attempts `6ab933b6001be5900662` (private), credentials `6ab93416002801b57b3f` (row security on; no table permissions). Private credential rows start with no client permissions, and only the owner may grant or remove public read through the function.
 
 ## Milestone 5: subscription and internal credits
 

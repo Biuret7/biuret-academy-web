@@ -1,4 +1,4 @@
-// Published courses are short and bilingual. The final exam remains planned.
+// Published courses are short and bilingual. Exam answers stay in the private function deployment.
 export const learningPath = {
   id: 'foundations',
   title: { ar: 'أساسيات الأمن السيبراني', en: 'Cybersecurity Foundations' },
@@ -7,7 +7,7 @@ export const learningPath = {
     { id: 'url-safety', type: 'course', state: 'published', title: { ar: 'افهم الروابط قبل أن تثق بها', en: 'Understand URLs before you trust them' }, description: { ar: 'ثلاثة دروس قصيرة وتحدٍّ عملي.', en: 'Three short lessons and a practical challenge.' } },
     { id: 'identity-access', type: 'course', state: 'published', title: { ar: 'الهوية والصلاحيات', en: 'Identity and access' }, description: { ar: 'ثلاثة دروس عن كلمات المرور، الجلسات، وأقل صلاحية.', en: 'Three lessons on passwords, sessions, and least privilege.' } },
     { id: 'evidence-response', type: 'course', state: 'published', title: { ar: 'الأدلة والاستجابة', en: 'Evidence and response' }, description: { ar: 'ثلاثة دروس عن قراءة السجلات، سلامة الدليل، والاستجابة.', en: 'Three lessons on logs, evidence integrity, and response.' } },
-    { id: 'foundations-final', type: 'exam', state: 'planned', title: { ar: 'امتحان المسار وشهادة الإنجاز', en: 'Path exam and achievement certificate' }, description: { ar: 'سيُتاح بعد إطلاق التصحيح وإصدار الشهادات على الخادم.', en: 'Available after server-side grading and credential issuance launch.' } },
+    { id: 'foundations-final', type: 'exam', state: 'published', title: { ar: 'امتحان المسار وإثبات الإنجاز', en: 'Path exam and achievement credential' }, description: { ar: '10 أسئلة تُصحح على الخادم بعد إكمال الدروس التسعة الموثقة.', en: '10 server-graded questions after all nine verified lessons.' } },
   ],
 };
 

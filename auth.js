@@ -1,4 +1,4 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20260927-2';
+import { cleanProgress, mergeProgress } from './engine.js?v=20260927-3';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -55,7 +55,7 @@ export async function signOut() {
   currentUser = null;
 }
 
-async function learningExecution(input) {
+async function learningExecution(input, learningState = true) {
   if (!functions || !currentUser) throw new Error('Sign in to save verified learning progress.');
   const result = await functions.createExecution({ functionId: PROGRESS_FUNCTION_ID, body: JSON.stringify(input), async: false });
   let data;
@@ -63,7 +63,7 @@ async function learningExecution(input) {
   if (result.responseStatusCode < 200 || result.responseStatusCode >= 300) {
     throw new Error(data.error || 'Learning progress is temporarily unavailable.');
   }
-  if (!Array.isArray(data.awards) || !Number.isSafeInteger(data.xp) || !Number.isSafeInteger(data.coins) || !Number.isSafeInteger(data.level)) {
+  if (learningState && (!Array.isArray(data.awards) || !Number.isSafeInteger(data.xp) || !Number.isSafeInteger(data.coins) || !Number.isSafeInteger(data.level))) {
     throw new Error('Learning progress returned an invalid response.');
   }
   return data;
@@ -71,6 +71,10 @@ async function learningExecution(input) {
 
 export function loadLearningRewards() { return learningExecution({ action: 'state' }); }
 export function awardLesson(lessonId, answerIndex) { return learningExecution({ action: 'completeLesson', lessonId, answerIndex }); }
+export function loadExam() { return learningExecution({ action: 'examState' }, false); }
+export function submitExam(answers) { return learningExecution({ action: 'submitExam', answers }, false); }
+export function loadCredential() { return learningExecution({ action: 'credential' }, false); }
+export function shareCredential(enabled) { return learningExecution({ action: 'shareCredential', enabled }, false); }
 
 export function cloudProgress() {
   return cleanProgress(currentUser?.prefs?.[PREF_KEY]);

@@ -1,8 +1,8 @@
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260927-2';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260927-2';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js?v=20260927-2';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260927-2';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260927-3';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260927-3';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js?v=20260927-3';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260927-3';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -126,7 +126,7 @@ function renderRoadmap() {
   const states = courses.map((course) => courseLearningProgress(learningProgress(), course.id));
   const done = states.reduce((sum, state) => sum + state.completed, 0);
   const total = states.reduce((sum, state) => sum + state.total, 0);
-  root.innerHTML = `<div class="roadmap-intro"><div><span class="section-kicker">BIURET / LEARNING PATH 01</span><h2>${esc(lc(learningPath.title))}</h2><p>${esc(lc(learningPath.summary))}</p></div><span class="roadmap-pill">${done} / ${total} ${ll('lessons')}</span></div><ol class="roadmap-list">${learningPath.nodes.map((node, index) => `<li class="roadmap-node ${node.state === 'planned' ? 'is-planned' : ''}"><span class="roadmap-index">${String(index + 1).padStart(2, '0')}</span><div><span class="roadmap-meta">${node.type === 'exam' ? ll('exam') : ll('course')} · ${node.state === 'published' ? ll('available') : ll('planned')}</span><h3>${esc(lc(node.title))}</h3><p>${esc(lc(node.description))}</p>${node.state === 'published' ? `<a class="roadmap-link" href="course.html?id=${encodeURIComponent(node.id)}">${ll('start')} ↗</a>` : `<span class="roadmap-pending">${ll('readOnly')}</span>`}</div></li>`).join('')}</ol><p class="roadmap-note">${ll('verifiedLater')}</p>`;
+  root.innerHTML = `<div class="roadmap-intro"><div><span class="section-kicker">BIURET / LEARNING PATH 01</span><h2>${esc(lc(learningPath.title))}</h2><p>${esc(lc(learningPath.summary))}</p></div><span class="roadmap-pill">${done} / ${total} ${ll('lessons')}</span></div><ol class="roadmap-list">${learningPath.nodes.map((node, index) => `<li class="roadmap-node ${node.state === 'planned' ? 'is-planned' : ''}"><span class="roadmap-index">${String(index + 1).padStart(2, '0')}</span><div><span class="roadmap-meta">${node.type === 'exam' ? ll('exam') : ll('course')} · ${node.state === 'published' ? ll('available') : ll('planned')}</span><h3>${esc(lc(node.title))}</h3><p>${esc(lc(node.description))}</p>${node.state === 'published' ? `<a class="roadmap-link" href="${node.type === 'exam' ? 'exam.html' : `course.html?id=${encodeURIComponent(node.id)}`}">${node.type === 'exam' ? ll('exam') : ll('start')} ↗</a>` : `<span class="roadmap-pending">${ll('readOnly')}</span>`}</div></li>`).join('')}</ol><p class="roadmap-note">${isEnglish() ? 'Final results and credentials are verified on the server.' : 'تُوثق نتائج الامتحان وإثباتات الإنجاز على الخادم.'}</p>`;
 }
 function renderCourse() {
   const root = $('#learning-main');
@@ -219,7 +219,7 @@ function showAuth() {
   if (signedIn) {
     $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || t('learner'))}</div><div>${esc(user().email || '')}</div><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">${t('signOut')}</button></div>`;
     $('#signout-button').addEventListener('click', async () => {
-      try { await syncQueue; await saveCloudProgress(progress); await signOut(); ownerUserId = null; progress = assignDaily(null); rewards = null; rewardStatus = 'idle'; persistLocal(); $('#auth-dialog').close(); render(); toast(t('signedOut')); }
+      try { await syncQueue; await saveCloudProgress(progress); await signOut(); ownerUserId = null; progress = assignDaily(null); rewards = null; rewardStatus = 'idle'; persistLocal(); $('#auth-dialog').close(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedOut')); }
       catch { toast(t('signOutError')); }
     });
   }
@@ -242,7 +242,7 @@ async function handleAuthSubmit(event) {
     if (signup) await signUp($('#auth-name').value.trim(), $('#auth-email').value.trim(), $('#auth-password').value);
     else await signIn($('#auth-email').value.trim(), $('#auth-password').value);
     progress = mergeProgress(ownerUserId && ownerUserId !== user().$id ? null : progress, cloudProgress());
-    ownerUserId = user().$id; persistLocal(); queueCloudSync(); $('#auth-dialog').close(); render(); toast(t('signedIn')); await refreshRewards();
+    ownerUserId = user().$id; persistLocal(); queueCloudSync(); $('#auth-dialog').close(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedIn')); await refreshRewards();
   } catch (cause) { error.textContent = cause?.message || t('loginError'); error.hidden = false; }
   finally { button.disabled = false; }
 }

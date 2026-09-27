@@ -1,2 +1,3 @@
-functions/**/*.tar.gz
+functions/academy-progress/exam-bank.private.json
+*.tar.gz
 _site/
