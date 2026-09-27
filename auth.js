@@ -1,4 +1,4 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20260927-3';
+import { cleanProgress, mergeProgress } from './engine.js?v=20260927-4';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -75,6 +75,9 @@ export function loadExam() { return learningExecution({ action: 'examState' }, f
 export function submitExam(answers) { return learningExecution({ action: 'submitExam', answers }, false); }
 export function loadCredential() { return learningExecution({ action: 'credential' }, false); }
 export function shareCredential(enabled) { return learningExecution({ action: 'shareCredential', enabled }, false); }
+export function academyAdminStatus() { return learningExecution({ action: 'adminStatus' }, false); }
+export function academyAdminCredential(credentialId) { return learningExecution({ action: 'adminCredential', credentialId }, false); }
+export function academyAdminRevoke(credentialId, reason) { return learningExecution({ action: 'adminRevokeCredential', credentialId, reason }, false); }
 
 export function cloudProgress() {
   return cleanProgress(currentUser?.prefs?.[PREF_KEY]);

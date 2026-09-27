@@ -42,9 +42,22 @@ The Identity and Access and Evidence and Response courses are published with bil
 
 ## Milestone 4: credentials and administration
 
-The server-issued Foundations achievement credential has opt-in public verification and an active/revoked state. Owners can withdraw public access at any time. Next, create a content admin workflow with draft, review, publish, version, rollback, and a controlled revocation interface. Consider Open Badges 3.0 export after the core flow is reliable.
+The server-issued Foundations achievement credential has opt-in public verification and an active/revoked state. Owners can withdraw public access at any time. An administrator allowlist in the Appwrite function controls targeted credential lookup and permanent revocation; a private audit row records the actor, reason, and time before the credential state changes. The reason is never placed in the public credential payload. The admin interface is at `/admin.html` and has no public navigation link; access is enforced by the function, not by page visibility. Appwrite table `Academy credential audit` is `6ab93e390011ce106893`, with no client permissions. Its `payload` column is not encrypted at rest because the Free plan rejects encrypted columns; access is restricted by table permissions.
 
-The private question bank is `functions/academy-progress/exam-bank.private.json`, ignored by Git and included only in the function deployment archive. A deployer can alternatively set `ACADEMY_EXAM_BANK` in Appwrite. Never add answers to the GitHub Pages bundle. Rebuild the function archive with `package.json`, `src/main.js`, `src/exam.js`, and the private bank before each manual deployment. Appwrite tables: exam attempts `6ab933b6001be5900662` (private), credentials `6ab93416002801b57b3f` (row security on; no table permissions). Private credential rows start with no client permissions, and only the owner may grant or remove public read through the function.
+Published Foundations lessons now have a versioned content release workflow in `scripts/content-release.mjs`. `content/active.json` points to a saved release and its checksum. Authors start a JSON draft, edit bilingual copy, record a separate reviewer, and publish a new immutable release. Publication regenerates `learning-content.js` from reviewed JSON. Rollback switches the active pointer to an earlier saved release and regenerates the module without deleting history. CI checks the checksum and generated module before publishing. The validator blocks changes to published lesson IDs, order, and formative answers because those are also enforced by the Appwrite function. GitHub PR approval by a separate editor remains the editorial gate; the reviewer name in metadata is an audit hint, not a substitute for a code-host approval rule. Consider Open Badges 3.0 export after the core flow is reliable.
+
+Example content commands (use a reviewer different from the draft author):
+
+```text
+node scripts/content-release.mjs start url-copy-refresh Author
+# Edit content/drafts/url-copy-refresh.json and submit for editorial review.
+node scripts/content-release.mjs review url-copy-refresh Reviewer
+node scripts/content-release.mjs publish url-copy-refresh foundations-2026-10-copy
+node scripts/content-release.mjs verify
+node scripts/content-release.mjs rollback foundations-2026-09-27
+```
+
+The private question bank is `functions/academy-progress/exam-bank.private.json`, ignored by Git and included only in the function deployment archive. A deployer can alternatively set `ACADEMY_EXAM_BANK` in Appwrite. Never add answers to the GitHub Pages bundle. Rebuild the function archive with `package.json`, `src/main.js`, `src/exam.js`, `src/admin.js`, and the private bank before each manual deployment. Set `ACADEMY_ADMIN_USER_IDS` to a comma-separated list of exact Appwrite user IDs; an empty value denies all admin actions. Appwrite tables: exam attempts `6ab933b6001be5900662` (private), credentials `6ab93416002801b57b3f` (row security on; no table permissions). Private credential rows start with no client permissions, and only the owner may grant or remove public read through the function.
 
 ## Milestone 5: subscription and internal credits
 

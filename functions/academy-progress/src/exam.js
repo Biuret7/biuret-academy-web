@@ -114,6 +114,7 @@ export function examService({ base, request, getLessonState }) {
     const record = await credential(userId);
     if (record.code !== 200) return record;
     const id = record.data.id;
+    if (enabled && record.data.status !== 'active') return { code: 409, data: { error: 'Revoked credentials cannot be shared' } };
     const row = await getRow(`${credentialBase}/rows/${id}`);
     const result = await request(`${credentialBase}/rows/${id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: row.payload }, permissions: enabled ? ['read("any")'] : [] }) });
     if (result.status !== 200) throw new Error('Credential sharing update failed');

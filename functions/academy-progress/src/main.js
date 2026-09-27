@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { examService } from './exam.js';
+import { credentialAdminService, isAcademyAdmin } from './admin.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
@@ -121,6 +122,18 @@ export default async ({ req, res, error }) => {
     }
     if (input.action === 'shareCredential' && typeof input.enabled === 'boolean') {
       const result = await exam.share(account.$id, input.enabled);
+      return res.json(result.data, result.code);
+    }
+    if (['adminStatus', 'adminCredential', 'adminRevokeCredential'].includes(input.action)) {
+      if (!isAcademyAdmin(account)) return res.json({ error: 'Academy admin access required' }, 403);
+      if (input.action === 'adminStatus') return res.json({ admin: true });
+      const admin = credentialAdminService({
+        base: ENDPOINT,
+        request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
+      });
+      const result = input.action === 'adminCredential'
+        ? await admin.lookup(input.credentialId)
+        : await admin.revoke(input.credentialId, account.$id, input.reason);
       return res.json(result.data, result.code);
     }
     return res.json({ error: 'Unknown action' }, 400);

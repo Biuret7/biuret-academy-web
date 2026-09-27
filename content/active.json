@@ -1,0 +1,12 @@
+{
+  "activeRelease": "foundations-2026-09-27",
+  "activeDigest": "3c71479b1c9e44bb501a9eda5549e3062c61b9f22b3da6118d20b16d70675678",
+  "history": [
+    {
+      "action": "adopt",
+      "releaseId": "foundations-2026-09-27",
+      "digest": "3c71479b1c9e44bb501a9eda5549e3062c61b9f22b3da6118d20b16d70675678",
+      "at": "2026-09-27T16:13:20.214Z"
+    }
+  ]
+}

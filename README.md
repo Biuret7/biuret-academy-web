@@ -7,6 +7,7 @@ An Arabic-first academy for `academy.biuret.dev`, with a complete English interf
 - Sequential challenges in three independent tracks, with answer checks, hints, explanations, and next steps.
 - A Foundations roadmap with nine bilingual lessons across URL safety, identity and access, and evidence and response. Each course has ordered self-checks and a practical challenge link.
 - A server-graded Foundations final exam with a private question bank, three-attempt policy, and a shareable achievement credential after a passing result.
+- Reviewed, versioned Foundations content releases with checksum verification and rollback, plus a restricted credential revocation page with a private audit trail.
 - Separate home, paths, challenges, and progress pages. A shared language control switches Arabic/RTL and English/LTR, including mission content.
 - A daily mission, one-time daily bonus, XP, completion count, and seven-day activity view. After finishing the starter challenges, learners can revisit one as a daily drill to keep their streak.
 - Guest progress in `localStorage`. Signing in with the existing Biuret Appwrite account merges local and cloud progress into account preferences.
@@ -24,7 +25,7 @@ python -m http.server 8080
 ```
 
 Run logic tests with `node --test tests/*.test.mjs`. No build step or package installation is needed.
-If the shared page shell changes, regenerate `course.html`, `lesson.html`, `exam.html`, and `certificate.html` with `node scripts/build-learning-pages.mjs`.
+If the shared page shell changes, regenerate `course.html`, `lesson.html`, `exam.html`, `certificate.html`, and `admin.html` with `node scripts/build-learning-pages.mjs`. Use `node scripts/content-release.mjs verify` to check the active reviewed content bundle; see [the platform plan](docs/platform-plan.md) for authoring and rollback commands.
 
 ## Publishing
 
