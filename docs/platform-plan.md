@@ -61,14 +61,18 @@ The private question bank is `functions/academy-progress/exam-bank.private.json`
 
 ## Milestone 5: subscription and internal credits
 
-Choose a payment provider after confirming business country, supported markets, taxes, refund policy, and recurring billing terms. Verify signed provider events, deduplicate event IDs, and drive entitlements from the server's subscription state. Never grant access solely from a checkout return URL.
+The first slice is a private Appwrite table, `Academy coin ledger` (`6ab94864000f11a04188`), with a required `payload` text column and no client permissions. Each verified lesson award creates one deterministic `lesson-earned` event for 10 BC. Existing verified awards are backfilled on the learner's next authenticated state request. Duplicate requests cannot create duplicate credit. The function derives the displayed balance from these events and returns the transaction history to that learner. XP remains a separate learning measure. Spending, transfers, withdrawals, and cash conversion are not enabled. The table's payload is not encrypted at rest on the current Free plan; table permissions prevent direct client access.
 
-Keep `XP` (learning display) separate from `credits` (internal utility). Credits require a server-owned append-only ledger, event ID, reason, and balance derived from transactions. Start with non-transferable, non-withdrawable credits for hints or cosmetic features. Credits cannot buy exam passes or certificates.
+The business is currently in Palestine and intends to display prices in USD. As of 2026-09-27, [Stripe's supported business countries](https://stripe.com/global) do not include Palestine. [Paddle's supplier-country page](https://www.paddle.com/help/start/intro-to-paddle/which-countries-are-supported-by-paddle) does not list Palestine among its unsupported countries, but onboarding and payout eligibility still require confirmation with Paddle. The broader Biuret project has a Paddle integration for BiuLock; Academy subscriptions should be isolated from that product's entitlements. No Academy payment or recurring charge is active yet.
+
+Before enabling subscriptions, confirm provider onboarding and payout route, taxes, refund policy, and recurring billing terms. Then verify signed provider events, deduplicate event IDs, and drive entitlements from server subscription state. Never grant access solely from a checkout return URL.
+
+Keep `XP` (learning display) separate from `credits` (internal utility). Future debit events need an atomic balance guard to prevent concurrent overspending; until then, the ledger accepts earning events only. Potential uses are hints or cosmetic features, never exam passes or certificates. The user chose to defer spending until a later stage.
 
 ## Release gates
 
 1. Content and localization review, including Arabic/English parity.
 2. Keyboard/mobile/accessibility checks and reduced-motion behavior.
-3. Permission tests for cross-account reads/writes and direct API calls.
+3. Permission tests for cross-account reads/writes and direct API calls, including the coin ledger.
 4. Migration test for an existing Biuret learner account.
 5. Backups, monitoring, and rollback for database and content releases.

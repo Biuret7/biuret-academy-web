@@ -34,6 +34,7 @@ jobs:
           node --check functions/academy-progress/src/main.js
           node --check functions/academy-progress/src/exam.js
           node --check functions/academy-progress/src/admin.js
+          node --check functions/academy-progress/src/coins.js
           node scripts/content-release.mjs verify
           node --test tests/*.test.mjs
       - uses: actions/configure-pages@v5

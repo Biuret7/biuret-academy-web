@@ -25,6 +25,6 @@ for (const [page, title, description] of [
     .replace('Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.', description)
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
     .replace('aria-current="page"', '')
-    .replace('</head>', assessment ? '  <script type="module" src="assessment.js?v=20260927-4"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260927-4"></script>\n</head>' : '</head>');
+    .replace('</head>', assessment ? '  <script type="module" src="assessment.js?v=20260927-7"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260927-7"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }

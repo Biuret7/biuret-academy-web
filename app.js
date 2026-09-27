@@ -1,8 +1,8 @@
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260927-4';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260927-4';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js?v=20260927-4';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260927-4';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260927-7';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260927-7';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js?v=20260927-7';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260927-7';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -53,6 +53,11 @@ const learningLabels = {
   en: { roadmap: 'Learning roadmap', available: 'Available now', planned: 'In development', course: 'Course', exam: 'Exam', lessons: 'lessons', finished: 'Complete', start: 'Open course', open: 'Open lesson', continue: 'Continue learning', check: 'Check your understanding', wrong: 'Try again. Review the explanation before choosing.', done: 'You completed this lesson', next: 'Next lesson', practice: 'Practical challenge', practiceNote: 'Challenge points are for practice and do not count toward your verified level.', challengePrerequisite: 'Complete the previous challenge in the challenges path to unlock it.', selfCheck: 'Quick check', intro: 'What you will learn', back: 'Back to path', locked: 'Complete the previous lesson first.', missing: 'This content is unavailable.', min: 'min', of: 'of', lesson: 'Lesson', launch: 'Available content', readOnly: 'This stage is in development and will open when its content is ready.', seePath: 'View roadmap', verifiedLater: 'The exam and certificate will follow server-side verification.', rewardError: 'Learning rewards could not load. Refresh and try again.', rewardFail: 'Could not save this lesson. Please try again.', signInReward: 'Sign in to earn XP and Biuret Coins when you complete a lesson.', guestDone: 'Completed as practice. Sign in and take the check again to earn the reward.', rewardEarned: 'Great work! You earned 100 XP and 10 Biuret Coins.', rewardOnce: 'This lesson reward is already saved.', loading: 'Loading your achievements…', legacy: 'Earlier device progress is practice history. Retake the lesson check to verify it and earn rewards.', level: 'Level', coins: 'Biuret Coins', nextLevel: 'to next level', practiceXp: 'Practice XP', coinNote: 'Academy only. Coins cannot be transferred or exchanged for cash.' },
 };
 const ll = (key) => learningLabels[currentLanguage()][key];
+const walletLabels = {
+  ar: { title: 'سجل عملاتك', description: 'كل مكافأة درس موثّق تظهر هنا مرة واحدة. العملات داخل الأكاديمية ولا تُصرف حالياً.', lesson: 'إكمال درس موثّق', empty: 'أكمل أول درس موثّق لتظهر أول معاملة.', pending: 'جارٍ تحميل سجل العملات…', syncing: 'سجل العملات قيد التحديث. حدّث الصفحة بعد قليل.', unavailable: 'تعذر تحميل السجل الآن. حدّث الصفحة للمحاولة مجدداً.' },
+  en: { title: 'Your coin history', description: 'Each verified lesson reward appears once. Coins stay in the Academy and cannot be spent yet.', lesson: 'Verified lesson completed', empty: 'Complete a verified lesson to see your first transaction.', pending: 'Loading coin history…', syncing: 'Coin history is updating. Refresh shortly.', unavailable: 'Coin history is unavailable. Refresh to try again.' },
+};
+const wl = (key) => walletLabels[currentLanguage()][key];
 
 function renderTracks() {
   if (!$('#track-grid')) return;
@@ -105,6 +110,18 @@ function renderProgress() {
     const unresolved = Boolean(user()) && rewardStatus !== 'ready';
     const note = !user() ? ll('signInReward') : rewardStatus !== 'ready' ? ll(rewardStatus === 'error' ? 'rewardError' : 'loading') : Object.keys(progress.lessons).some((id) => !rewards.awards.some((award) => award.lessonId === id)) ? ll('legacy') : `${next - into} XP ${ll('nextLevel')}`;
     $('#reward-dashboard').innerHTML = `<div class="reward-heading"><span class="section-kicker">VERIFIED LEARNING / BIURET ACADEMY</span><span class="reward-spark" aria-hidden="true">✦</span></div><div class="reward-values"><div><small>${ll('level')}</small><strong>${unresolved ? '—' : level.toString().padStart(2, '0')}</strong></div><div><small>XP</small><strong>${unresolved ? '—' : xp}</strong></div><div><small>${ll('coins')}</small><strong>${unresolved ? '—' : coins}<span> BC</span></strong></div></div><div class="reward-meter" role="progressbar" aria-valuemin="0" aria-valuemax="${next}" aria-valuenow="${into}" aria-label="${ll('nextLevel')}"><span style="width:${unresolved ? 0 : Math.min(100, into / next * 100)}%"></span></div><p>${esc(note)}</p><small class="reward-fineprint">${ll('coinNote')}</small>`;
+  }
+  if ($('#coin-ledger')) {
+    const panel = $('#coin-ledger');
+    panel.hidden = !user();
+    if (user()) {
+      const transactions = rewards?.transactions;
+      const body = rewardStatus !== 'ready' ? `<p>${wl(rewardStatus === 'error' ? 'unavailable' : 'pending')}</p>`
+        : !Array.isArray(transactions) ? `<p>${wl('syncing')}</p>`
+        : !transactions.length ? `<p>${wl('empty')}</p>`
+        : `<ol class="coin-ledger-list">${transactions.map((entry) => `<li><span class="coin-ledger-icon" aria-hidden="true">✦</span><span class="coin-ledger-copy"><strong>${wl('lesson')}</strong><small>${esc(lc(lessonById[entry.reference]?.title || entry.reference))} · ${esc(new Date(entry.earnedAt).toLocaleDateString(isEnglish() ? 'en-US' : 'ar'))}</small></span><b dir="ltr">+${entry.delta} BC</b></li>`).join('')}</ol>`;
+      panel.innerHTML = `<div class="coin-ledger-head"><div><span class="section-kicker">BIURET COINS / LEDGER</span><h3>${wl('title')}</h3><p>${wl('description')}</p></div><strong dir="ltr">${rewardStatus === 'ready' ? rewards.coins : '—'} BC</strong></div>${body}`;
+    }
   }
   if ($('#done-stat')) $('#done-stat').innerHTML = `${Object.keys(progress.completed).length}<span class="stat-total"> / ${challenges.length}</span>`;
   const days = streak(progress);

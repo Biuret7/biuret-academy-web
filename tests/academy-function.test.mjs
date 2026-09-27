@@ -41,6 +41,7 @@ test('one verified lesson gives 100 XP and 10 coins once; users remain isolated'
     const first = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
     assert.equal(first.status, 200);
     assert.deepEqual([first.body.xp, first.body.coins, first.body.level, first.body.awarded], [100, 10, 2, true]);
+    assert.deepEqual(first.body.transactions.map(({ kind, reference, delta }) => [kind, reference, delta]), [['lesson-earned', 'url-parts', 10]]);
     const repeat = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
     assert.deepEqual([repeat.body.xp, repeat.body.coins, repeat.body.awarded], [100, 10, false]);
     assert.equal((await invoke({ action: 'completeLesson', lessonId: 'identity-sessions', answerIndex: 1 })).status, 409);
@@ -51,6 +52,6 @@ test('one verified lesson gives 100 XP and 10 coins once; users remain isolated'
     userId = 'learner-b';
     const other = await invoke({ action: 'state' });
     assert.deepEqual([other.body.xp, other.body.coins, other.body.awards.length], [0, 0, 0]);
-    assert.equal(rows.size, 2);
+    assert.equal(rows.size, 4); // Two immutable awards and two matching ledger events.
   } finally { globalThis.fetch = priorFetch; }
 });
