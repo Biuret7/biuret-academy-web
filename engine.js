@@ -1,4 +1,4 @@
-import { challenges, challengeById, challengesForTrack } from './content.js';
+import { challenges, challengeById, challengesForTrack } from './content.js?v=20260928-4';
 import { courseById, lessonById } from './learning-content.js?v=20260928-1';
 
 export const DAILY_BONUS_XP = 30;

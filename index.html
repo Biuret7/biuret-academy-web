@@ -16,9 +16,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260928-2">
+  <link rel="stylesheet" href="style.css?v=20260928-4">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
-  <script type="module" src="app.js?v=20260928-3"></script>
+  <script type="module" src="app.js?v=20260928-4"></script>
 </head>
 <body>
 
@@ -43,10 +43,10 @@
       <section id="top" class="hero section-frame">
         <div class="hero-copy reveal">
           <div class="eyebrow"><span class="eyebrow-line"></span> THE NEXT GENERATION OF CYBER LEARNING <span class="eyebrow-index">01 / 03</span></div>
-          <h1>كل يوم،<br><span>مهارة أمنية</span><br>جديدة.</h1>
-          <p>تعلّم الأمن السيبراني بالطريقة التي تُشبه العمل الحقيقي: دليل صغير، قرار واضح، وتحدٍّ يأخذ دقائق من يومك.</p>
-          <div class="hero-actions"><button class="button button-primary" id="start-button" type="button">ابدأ أول تحدٍّ <span aria-hidden="true">↗</span></button><a class="button button-text" href="paths.html">استكشف المسارات <span aria-hidden="true">↓</span></a></div>
-          <div class="hero-meta"><span><b>03</b> مسارات</span><i></i><span><b>12</b> تحدّياً عملياً</span><i></i><span>مناسب للبداية</span></div>
+          <h1>أساس قوي.<br><span>طريق واضح.</span><br>تخصصك القادم.</h1>
+          <p>تعلم الأمن السيبراني خطوة بخطوة: دروس الأساسيات، تطبيقات عملية، امتحان موثق، ثم استكشف المجال الذي تريد التعمق فيه.</p>
+          <div class="hero-actions"><button class="button button-primary" id="start-button" type="button">ابدأ الأساسيات <span aria-hidden="true">↗</span></button><a class="button button-text" href="paths.html">شاهد خطة التعلّم <span aria-hidden="true">↓</span></a></div>
+          <div class="hero-meta"><span><b>09</b> دروس أساسية</span><i></i><span>امتحان وإثبات إنجاز</span><i></i><span>تخصصات بعد الأساسيات</span></div>
         </div>
         <div class="hero-visual reveal" aria-label="تصميم يوضح رحلة التعلم في الأكاديمية">
           <div class="visual-grid"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -57,16 +57,18 @@
         </div>
       </section>
 
+      <section class="section-frame journey-section"><div class="journey-guide" id="journey-guide" aria-live="polite"></div></section>
+
       <section class="mission-band section-frame reveal" aria-label="تحدي اليوم">
-        <div class="mission-main"><span class="section-kicker">/// DAILY SIGNAL</span><div class="mission-heading"><span class="mission-symbol" aria-hidden="true">✳</span><div><h2>تحدّي اليوم</h2><p>خطوة صغيرة اليوم. معرفة أقوى غداً.</p></div></div></div>
+        <div class="mission-main"><span class="section-kicker">/// OPTIONAL PRACTICE</span><div class="mission-heading"><span class="mission-symbol" aria-hidden="true">✳</span><div><h2>تدريب اليوم الاختياري</h2><p>بعد درسك الأساسي، جرّب تدريباً قصيراً لتثبيت الفكرة.</p></div></div></div>
         <div class="mission-current"><span class="mission-label">المهمة المقترحة لك</span><strong id="daily-title">...</strong><span id="daily-meta">...</span></div>
         <button class="mission-cta" id="daily-button" type="button">افتح التحدّي <span aria-hidden="true">↗</span></button>
       </section>
 
-      <section class="academy-course-callout section-frame reveal"><div><span class="section-kicker">NEW / LEARNING PATH</span><h2>ابدأ بكورس، وتقدّم بخطوات واضحة.</h2><p>تسعة دروس في الروابط والهوية والأدلة الرقمية، مع تمارين قصيرة ومكافآت موثقة.</p></div><a class="button button-outline" href="paths.html#foundations-roadmap">استكشف الكورسات ↗</a></section>
+      <section class="academy-course-callout section-frame reveal"><div><span class="section-kicker">FOUNDATIONS / HANDS-ON</span><h2>جرّب مختبراً آمناً بعد الدرس.</h2><p>افحص طلباً واستجابة HTTP داخل محاكاة قصيرة، ثم اشرح الدليل والقرار المناسب.</p></div><a class="button button-outline" href="lab.html?id=http-basics">افتح المختبر ↗</a></section>
 
-      <section class="home-overview section-frame"><div class="section-header reveal"><div><span class="section-kicker">EXPLORE THE ACADEMY</span><h2>رحلتك، <em>بخطوات واضحة.</em></h2><p>لكل جزء مساحة مستقلة، لتتعلم وتجرّب وتتابع تقدّمك براحة.</p></div></div><div class="overview-grid"><a class="overview-card reveal" href="paths.html"><span>01 / LEARN</span><h3>المسارات</h3><p>ثلاث خرائط تعلّم مرتبة تبدأ من الأساسيات وتصل إلى قرارات أمنية واقعية.</p><b>استكشف المسارات ↗</b></a><a class="overview-card reveal" href="challenges.html"><span>02 / PRACTICE</span><h3>التحديات</h3><p>اثنا عشر تمريناً قصيراً بأدلة وتلميحات وشرح بعد كل إجابة.</p><b>افتح التحديات ↗</b></a><a class="overview-card reveal" href="progress.html"><span>03 / GROW</span><h3>تقدّمك</h3><p>اعرف ما أنجزته، واستمر في بناء عادة تعلّم يومية.</p><b>تابع تقدّمك ↗</b></a></div></section>
-      <section class="closing-section section-frame reveal"><div class="closing-orb"></div><span class="section-kicker">YOUR NEXT CHAPTER STARTS HERE</span><h2>الفضول هو أول<br><em>أداة أمنية.</em></h2><p>خصص بضع دقائق. افتح تحدياً. تعلّم شيئاً يبقى معك.</p><button class="button button-primary" id="closing-button" type="button">ابدأ التعلّم الآن <span aria-hidden="true">↗</span></button></section>
+      <section class="home-overview section-frame"><div class="section-header reveal"><div><span class="section-kicker">EXPLORE THE ACADEMY</span><h2>رحلتك، <em>بخطوات واضحة.</em></h2><p>لكل جزء مساحة مستقلة، لتتعلم وتجرّب وتتابع تقدّمك براحة.</p></div></div><div class="overview-grid"><a class="overview-card reveal" href="paths.html"><span>01 / LEARN</span><h3>المسارات</h3><p>ابدأ بخارطة الأساسيات، ثم انظر إلى خرائط التخصصات بعد إتمام الامتحان.</p><b>استكشف المسارات ↗</b></a><a class="overview-card reveal" href="challenges.html"><span>02 / PRACTICE</span><h3>التحديات</h3><p>خمسة عشر تمريناً قصيراً بأدلة وتلميحات وشرح بعد كل إجابة.</p><b>افتح التحديات ↗</b></a><a class="overview-card reveal" href="progress.html"><span>03 / GROW</span><h3>تقدّمك</h3><p>اعرف ما أنجزته، واستمر في بناء عادة تعلّم يومية.</p><b>تابع تقدّمك ↗</b></a></div></section>
+      <section class="closing-section section-frame reveal"><div class="closing-orb"></div><span class="section-kicker">YOUR NEXT CHAPTER STARTS HERE</span><h2>الفضول هو أول<br><em>أداة أمنية.</em></h2><p>خصص بضع دقائق. أكمل خطوتك التالية. تعلّم شيئاً يبقى معك.</p><button class="button button-primary" id="closing-button" type="button">تابع طريق التعلّم <span aria-hidden="true">↗</span></button></section>
     </main>
 
     <footer class="footer section-frame"><div><a class="footer-brand" href="https://biuret.dev" dir="ltr">BIURET<span>7</span></a><p>مساحة صغيرة للتعلّم الكبير.</p></div><div class="footer-links"><a href="https://biuret.dev">موقع Biuret</a><a href="https://biuret.dev/privacy.html">سياسة الخصوصية</a><a href="https://biuret.dev/terms.html">شروط الاستخدام</a></div><span class="footer-end">© 2026 BIURET ACADEMY</span></footer>

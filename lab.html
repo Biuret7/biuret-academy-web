@@ -4,14 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0d">
-  <meta name="description" content="Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.">
-  <link rel="canonical" href="https://academy.biuret.dev/challenges.html">
+  <meta name="description" content="مختبرات آمنة وموجّهة لتطبيق دروس أساسيات الأمن السيبراني.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Biuret Academy — تعلّم الأمن السيبراني بالتحدي">
-  <meta property="og:description" content="ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.">
-  <meta property="og:url" content="https://academy.biuret.dev/challenges.html">
+  <meta property="og:title" content="مختبر عملي — Biuret Academy">
+  <meta property="og:description" content="مختبرات آمنة وموجّهة لتطبيق دروس أساسيات الأمن السيبراني.">
   <meta name="twitter:card" content="summary">
-  <title>التحديات — Biuret Academy</title>
+  <title>مختبر عملي — Biuret Academy</title>
   <link rel="icon" href="assets/biuret-wordmark-icon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,18 +17,19 @@
   <link rel="stylesheet" href="style.css?v=20260928-4">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
   <script type="module" src="app.js?v=20260928-4"></script>
+  <script type="module" src="lab.js?v=20260928-4"></script>
 </head>
 <body>
 
   <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
-  <div class="site-shell" data-page="challenges">
+  <div class="site-shell" data-page="lab">
     <header class="topbar">
       <a class="brand" href="index.html" aria-label="Biuret Academy - الرئيسية">
         <span class="brand-mark"><img src="assets/biuret-wordmark-icon.png" alt=""></span>
         <span class="brand-word" dir="ltr">BIURET<span class="brand-divider">/</span><span>ACADEMY</span></span>
       </a>
       <nav class="desktop-nav" aria-label="التنقل الرئيسي">
-        <a href="paths.html">المسارات</a><a href="challenges.html" aria-current="page">التحديات</a><a href="progress.html">تقدّمك</a><a href="membership.html">العضوية</a>
+        <a href="paths.html" >المسارات</a><a href="challenges.html">التحديات</a><a href="progress.html">تقدّمك</a><a href="membership.html">العضوية</a>
       </nav>
       <div class="nav-actions">
         <a class="portfolio-return" href="https://biuret.dev" data-static>موقع Biuret ↗</a><button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English" aria-pressed="false"><span aria-hidden="true">EN</span></button>
@@ -38,21 +37,7 @@
       </div>
     </header>
 
-    <main id="main">
-      <section class="page-banner section-frame reveal"><div><span class="section-kicker">02 / THE CHALLENGES</span><h1>تعلّم بالمحاولة.</h1><p>اقرأ الدليل، جرّب إجابتك، ثم افهم السبب. التقدّم يأتي خطوة بخطوة.</p></div><span class="page-banner-note">15 SHORT MISSIONS</span></section>
-      <section class="mission-band section-frame reveal" aria-label="تحدي اليوم">
-        <div class="mission-main"><span class="section-kicker">/// DAILY SIGNAL</span><div class="mission-heading"><span class="mission-symbol" aria-hidden="true">✳</span><div><h2>تحدّي اليوم</h2><p>خطوة صغيرة اليوم. معرفة أقوى غداً.</p></div></div></div>
-        <div class="mission-current"><span class="mission-label">المهمة المقترحة لك</span><strong id="daily-title">...</strong><span id="daily-meta">...</span></div>
-        <button class="mission-cta" id="daily-button" type="button">افتح التحدّي <span aria-hidden="true">↗</span></button>
-      </section>
-
-      <section id="challenges" class="content-section challenge-section section-frame">
-        <div class="section-header reveal"><div><span class="section-kicker">02 / THE CHALLENGES</span><h2>المعرفة تبدأ <em>بالمحاولة.</em></h2><p>اختر تحدّياً، افحص الدليل، ثم اتخذ قرارك. كل تمرين يبني على سابقه.</p></div><span class="section-side-note">15 HANDCRAFTED MISSIONS</span></div>
-        <div class="challenge-toolbar"><div class="filters" id="filters" role="group" aria-label="تصفية التحديات"><button class="filter active" data-filter="all" type="button" aria-pressed="true">الكل</button><button class="filter" data-filter="foundations" type="button" aria-pressed="false">الأساسيات</button><button class="filter" data-filter="web" type="button" aria-pressed="false">أمان الويب</button><button class="filter" data-filter="forensics" type="button" aria-pressed="false">الأدلة الرقمية</button></div><span id="challenge-count">12 تحدّياً</span></div>
-        <div class="challenge-list" id="challenge-list"></div>
-      </section>
-
-    </main>
+    <main id="main"><div id="lab-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>
 
     <footer class="footer section-frame"><div><a class="footer-brand" href="https://biuret.dev" dir="ltr">BIURET<span>7</span></a><p>مساحة صغيرة للتعلّم الكبير.</p></div><div class="footer-links"><a href="https://biuret.dev">موقع Biuret</a><a href="https://biuret.dev/privacy.html">سياسة الخصوصية</a><a href="https://biuret.dev/terms.html">شروط الاستخدام</a></div><span class="footer-end">© 2026 BIURET ACADEMY</span></footer>
   </div>

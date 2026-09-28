@@ -1,4 +1,4 @@
-import { englishTracks, englishChallenges } from './content-en.js?v=20260926-3';
+import { englishTracks, englishChallenges } from './content-en.js?v=20260928-4';
 
 const KEY = 'biuret-academy-language';
 let language;
@@ -20,13 +20,27 @@ export function trackText(track) { return language === 'en' ? { ...track, ...eng
 export function challengeText(challenge) { return language === 'en' ? { ...challenge, ...englishChallenges[challenge.id] } : challenge; }
 
 const staticEnglish = {
+  'أساس قوي.': 'Strong foundations.', 'طريق واضح.': 'A clear route.', 'تخصصك القادم.': 'Your next specialty.',
+  'تعلم الأمن السيبراني خطوة بخطوة: دروس الأساسيات، تطبيقات عملية، امتحان موثق، ثم استكشف المجال الذي تريد التعمق فيه.': 'Learn cybersecurity step by step: foundations lessons, guided practice, a verified exam, then explore the field you want to pursue.',
+  'ابدأ الأساسيات': 'Start Foundations', 'شاهد خطة التعلّم': 'View the learning route', 'دروس أساسية': 'foundation lessons', 'امتحان وإثبات إنجاز': 'Exam and credential', 'تخصصات بعد الأساسيات': 'Specialties after Foundations',
+  'جرّب مختبراً آمناً بعد الدرس.': 'Try a safe lab after the lesson.', 'افحص طلباً واستجابة HTTP داخل محاكاة قصيرة، ثم اشرح الدليل والقرار المناسب.': 'Inspect a synthetic HTTP request and response, then explain the evidence and the right decision.', 'افتح المختبر ↗': 'Open the lab ↗',
+  'تعلّم بالترتيب. اختر تخصصك بثقة.': 'Learn in order. Choose your specialty with confidence.',
+  'ابدأ بأساسيات الأمن السيبراني، وثبّت فهمك بامتحان، ثم استكشف المجال الذي يناسبك. كل مرحلة تخبرك بما تتعلمه وما تطبقه بعدها.': 'Start with cybersecurity foundations, verify your understanding in an exam, then explore the field that fits you. Each stage shows what to learn and practice next.',
+  'تخصصاتك': 'Your next', 'التالية.': 'specialties.',
+  'هذه خرائط المجالات المستمدة من برنامج Biuret Academy. التدريب التمهيدي المتاح واضح، أما الكورسات والمختبرات والامتحانات المتخصصة فسننشرها تدريجياً بعد مراجعتها.': 'These field roadmaps come from the Biuret Academy desktop curriculum. Available introductory practice is marked; specialized courses, labs and exams will be released after review.',
+  'تحديات': 'Practice', 'تدريبية.': 'challenges.', 'هذه التمارين القصيرة لتثبيت الفكرة. اتبع درسَك التالي أولاً، ثم عد إلى التدريب عندما تحتاج تطبيقاً إضافياً.': 'These short exercises reinforce ideas. Follow your next lesson first, then return when you want extra practice.',
+  'مختبرات آمنة وموجّهة لتطبيق دروس أساسيات الأمن السيبراني.': 'Safe guided labs for applying the Foundations lessons.',
+  'ابدأ بخارطة الأساسيات، ثم انظر إلى خرائط التخصصات بعد إتمام الامتحان.': 'Start with the Foundations roadmap, then explore specializations after the exam.',
+  'خمسة عشر تمريناً قصيراً بأدلة وتلميحات وشرح بعد كل إجابة.': 'Fifteen short exercises with evidence, hints and feedback after every answer.',
+  'تدريب اليوم الاختياري': 'Optional daily practice', 'بعد درسك الأساسي، جرّب تدريباً قصيراً لتثبيت الفكرة.': 'After your core lesson, try a short exercise to reinforce the idea.',
+  'خصص بضع دقائق. أكمل خطوتك التالية. تعلّم شيئاً يبقى معك.': 'Set aside a few minutes. Complete your next step and learn something that stays with you.', 'تابع طريق التعلّم': 'Continue learning',
   'انتقل إلى المحتوى': 'Skip to content', 'المسارات': 'Paths', 'التحديات': 'Challenges', 'تقدّمك': 'Your progress', 'العضوية': 'Membership', 'موقع Biuret ↗': 'Biuret site ↗', 'Biuret Academy - الرئيسية': 'Biuret Academy - home', 'تحدي اليوم': 'Daily challenge',
   'كل يوم،': 'Every day,', 'مهارة أمنية': 'sharpen your', 'جديدة.': 'security skills.',
   'تعلّم الأمن السيبراني بالطريقة التي تُشبه العمل الحقيقي: دليل صغير، قرار واضح، وتحدٍّ يأخذ دقائق من يومك.': 'Learn cybersecurity through the kind of decisions real work calls for: a small clue, a clear choice, and a challenge that fits your day.',
   'ابدأ أول تحدٍّ': 'Start the first challenge', 'استكشف المسارات': 'Explore paths', 'مسارات': 'paths', 'تحدّياً عملياً': 'hands-on challenges', 'مناسب للبداية': 'Made for beginners',
   'تحدّي اليوم': 'Daily challenge', 'خطوة صغيرة اليوم. معرفة أقوى غداً.': 'A small step today. Stronger skills tomorrow.', 'المهمة المقترحة لك': 'Your suggested mission', 'افتح التحدّي': 'Open challenge',
   'رحلتك،': 'Your journey,', 'بخطوات واضحة.': 'one clear step at a time.', 'لكل جزء مساحة مستقلة، لتتعلم وتجرّب وتتابع تقدّمك براحة.': 'Each part has its own space to learn, practice, and follow your progress.',
-  'ثلاث خرائط تعلّم مرتبة تبدأ من الأساسيات وتصل إلى قرارات أمنية واقعية.': 'Three structured learning maps, from fundamentals to practical security decisions.',
+  'ثلاث خرائط تعلّم مرتبة تبدأ من الأساسيات وتصل إلى قرارات أمنية واقعية.': 'A clear Foundations route, followed by specialty roadmaps.',
   'استكشف المسارات ↗': 'Explore paths ↗', 'اثنا عشر تمريناً قصيراً بأدلة وتلميحات وشرح بعد كل إجابة.': 'Twelve short exercises with evidence, hints, and explanations after each answer.',
   'افتح التحديات ↗': 'Open challenges ↗', 'اعرف ما أنجزته، واستمر في بناء عادة تعلّم يومية.': 'See what you have completed and keep building a daily learning habit.', 'تابع تقدّمك ↗': 'View progress ↗',
   'الفضول هو أول': 'Curiosity is your first', 'أداة أمنية.': 'security tool.', 'خصص بضع دقائق. افتح تحدياً. تعلّم شيئاً يبقى معك.': 'Set aside a few minutes. Open a challenge. Learn something that stays with you.', 'ابدأ التعلّم الآن': 'Start learning now',
@@ -68,7 +82,7 @@ function translateStatic() {
     }
   }
   const page = document.querySelector('.site-shell')?.dataset.page || 'home';
-  document.title = language === 'en' ? ({ home: 'Biuret Academy — Learn cybersecurity by doing', paths: 'Learning paths — Biuret Academy', challenges: 'Challenges — Biuret Academy', progress: 'Your progress — Biuret Academy', course: 'Course — Biuret Academy', lesson: 'Lesson — Biuret Academy', membership: 'Membership — Biuret Academy' }[page]) : ({ home: 'Biuret Academy — تعلّم الأمن السيبراني بالتحدي', paths: 'المسارات — Biuret Academy', challenges: 'التحديات — Biuret Academy', progress: 'تقدّمك — Biuret Academy', course: 'الكورس — Biuret Academy', lesson: 'الدرس — Biuret Academy', membership: 'العضوية — Biuret Academy' }[page]);
+  document.title = language === 'en' ? ({ home: 'Biuret Academy — A clear cybersecurity learning route', paths: 'Learning paths — Biuret Academy', challenges: 'Challenges — Biuret Academy', progress: 'Your progress — Biuret Academy', course: 'Course — Biuret Academy', lesson: 'Lesson — Biuret Academy', lab: 'Guided lab — Biuret Academy', membership: 'Membership — Biuret Academy' }[page]) : ({ home: 'Biuret Academy — طريق واضح لتعلّم الأمن السيبراني', paths: 'المسارات — Biuret Academy', challenges: 'التحديات — Biuret Academy', progress: 'تقدّمك — Biuret Academy', course: 'الكورس — Biuret Academy', lesson: 'الدرس — Biuret Academy', lab: 'مختبر عملي — Biuret Academy', membership: 'العضوية — Biuret Academy' }[page]);
   const learningTitle = document.querySelector('#learning-main h1')?.textContent;
   if ((page === 'course' || page === 'lesson') && learningTitle) document.title = `${learningTitle} — Biuret Academy`;
   document.documentElement.lang = language;

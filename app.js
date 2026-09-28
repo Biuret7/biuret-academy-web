@@ -1,8 +1,9 @@
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260928-4';
 import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260928-1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson } from './auth.js?v=20260928-2';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260928-4';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-4';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260928-4';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-4';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -18,6 +19,7 @@ let activeChallenge, attempts = 0, hintUsed = false, toastTimer;
 let syncQueue = Promise.resolve();
 let rewards = null;
 let rewardStatus = 'idle';
+let examPassed = false;
 
 function learningProgress() {
   if (!user()) return progress;
@@ -25,11 +27,15 @@ function learningProgress() {
   return { ...progress, lessons };
 }
 async function refreshRewards() {
-  if (!user()) { rewards = null; rewardStatus = 'idle'; render(); return; }
+  if (!user()) { rewards = null; rewardStatus = 'idle'; examPassed = false; render(); return; }
   rewardStatus = 'loading'; render();
   try { rewards = await loadLearningRewards(); rewardStatus = 'ready'; }
   catch (cause) { rewards = null; rewardStatus = 'error'; console.warn('Learning rewards unavailable:', cause); toast(ll('rewardError')); }
   render();
+  if (rewardStatus === 'ready' && foundationsCount(learningProgress().lessons).completed === 9) {
+    try { examPassed = Boolean((await loadExam()).passed); } catch { examPassed = false; }
+    render();
+  }
 }
 
 function toast(message) {
@@ -59,6 +65,33 @@ const walletLabels = {
   en: { title: 'Your coin history', description: 'Each verified lesson reward appears once. Coins stay in the Academy and cannot be spent yet.', lesson: 'Verified lesson completed', empty: 'Complete a lesson with Plus or Pro to see your first transaction.', pending: 'Loading coin history…', syncing: 'Coin history is updating. Refresh shortly.', unavailable: 'Coin history is unavailable. Refresh to try again.' },
 };
 const wl = (key) => walletLabels[currentLanguage()][key];
+const j = (ar, en) => isEnglish() ? en : ar;
+
+function renderJourney() {
+  const root = $('#journey-guide');
+  if (!root) return;
+  const count = foundationsCount(learningProgress().lessons);
+  const pending = Boolean(user()) && rewardStatus !== 'ready';
+  const next = nextLearningStep(learningProgress().lessons, examPassed);
+  const title = pending ? j('نجهّز خطوتك التالية', 'Preparing your next step') : next.kind === 'lesson' ? lc(next.lesson.title) : next.kind === 'exam' ? j('اختبر أساسياتك', 'Test your foundations') : j('حان وقت اختيار التخصص', 'Time to choose a specialization');
+  const action = next.kind === 'lesson' ? j('تابع هذا الدرس', 'Continue this lesson') : next.kind === 'exam' ? j('افتح الامتحان', 'Open the exam') : j('استكشف التخصصات', 'Explore specializations');
+  const detail = next.kind === 'lesson' ? j('أكمل الدرس ثم طبّق الفكرة في تمرين مرتبط به.', 'Finish the lesson, then apply it in a related exercise.') : next.kind === 'exam' ? j('أنهيت الدروس التسعة. اجتز الامتحان لتحصل على إثبات إنجاز الأساسيات.', 'You finished all nine lessons. Pass the exam for your Foundations credential.') : j('أنجزت الأساسيات. استكشف خرائط التخصصات ومحتواها المتاح.', 'Foundations complete. Explore specialization roadmaps and available content.');
+  root.innerHTML = `<div class="journey-heading"><span class="section-kicker">YOUR LEARNING ROUTE / 01 → 03</span><span class="journey-percent" dir="ltr">${pending ? '…' : `${count.completed} / ${count.total}`}</span></div><h2>${j('طريقك واضح من أول يوم.', 'A clear route from day one.')}</h2><p>${j('الأساسيات أولاً، ثم امتحان قصير، وبعدها اختر المجال الذي تريد التعمق فيه. التحديات اليومية تدريب إضافي ولا تعطل مسارك.', 'Learn the foundations first, take the exam, then choose a field to go deeper. Daily challenges are optional practice.')}</p><div class="journey-stages"><div class="journey-stage is-current"><b>01</b><span>${j('الأساسيات', 'Foundations')}</span><small>${count.completed}/${count.total} ${j('دروس', 'lessons')}</small></div><div class="journey-stage ${count.completed === count.total ? 'is-current' : ''}"><b>02</b><span>${j('امتحان وإثبات إنجاز', 'Exam and credential')}</span><small>${count.completed === count.total ? j('جاهز لك', 'Ready for you') : j('بعد إكمال الدروس', 'After the lessons')}</small></div><div class="journey-stage ${examPassed ? 'is-current' : ''}"><b>03</b><span>${j('اختر تخصصك', 'Choose a specialty')}</span><small>${examPassed ? j('استكشف الآن', 'Explore now') : j('بعد الأساسيات', 'After Foundations')}</small></div></div><div class="journey-next"><div><small>${j('خطوتك التالية', 'Your next step')}</small><h3>${esc(title)}</h3><p>${detail}</p></div>${pending ? '' : `<a class="button button-primary" href="${next.href}">${action} ↗</a>`}</div>`;
+  const start = $('#start-button');
+  if (start && !pending) start.innerHTML = `${action} <span aria-hidden="true">↗</span>`;
+}
+
+function renderSpecializations() {
+  const root = $('#specialization-grid');
+  if (!root) return;
+  root.innerHTML = specializations.map((item, index) => {
+    const practice = item.challengeTrack && examPassed
+      ? `<a href="challenges.html?track=${encodeURIComponent(item.challengeTrack)}">${j('جرّب التدريب التمهيدي', 'Try introductory practice')} ↗</a>`
+      : `<span>${item.challengeTrack ? j('أكمل الأساسيات والامتحان لبدء التدريب التمهيدي', 'Complete Foundations and the exam to start introductory practice') : j('الكورسات والمختبرات قيد الإعداد', 'Courses and labs in development')}</span>`;
+    const status = item.challengeTrack ? examPassed ? j('تدريب تمهيدي متاح', 'Intro practice available') : j('بعد امتحان الأساسيات', 'After the Foundations exam') : j('الخطة قيد التطوير', 'Curriculum in development');
+    return `<article class="specialization-card"><div class="specialization-top"><span>PATH / ${String(index + 2).padStart(2, '0')}</span><span>${status}</span></div><h3>${esc(lc(item.title))}</h3><p>${esc(lc(item.summary))}</p><ol>${item.topics.map((topic) => `<li>${esc(lc(topic))}</li>`).join('')}</ol><div class="specialization-bottom">${practice}</div></article>`;
+  }).join('');
+}
 
 function renderTracks() {
   if (!$('#track-grid')) return;
@@ -70,7 +103,7 @@ function renderTracks() {
 }
 function renderCurriculum() {
   if (!$('#curriculum-grid')) return;
-  $('#curriculum-grid').innerHTML = tracks.map((track) => {
+  $('#curriculum-grid').innerHTML = tracks.filter((track) => examPassed || track.id === 'foundations').map((track) => {
     const copy = trackText(track);
     const items = challengesForTrack(track.id).map((item) => {
       const translated = challengeText(item), done = Boolean(progress.completed[item.id]), locked = !isUnlocked(item, progress);
@@ -155,6 +188,10 @@ function renderCourse() {
   const state = courseLearningProgress(view, course.id);
   root.innerHTML = `<section class="learning-hero section-frame"><a class="learning-back" href="paths.html#foundations-roadmap">← ${ll('back')}</a><span class="section-kicker">COURSE 01 / FOUNDATIONS</span><h1>${esc(lc(course.title))}</h1><p>${esc(lc(course.summary))}</p><div class="learning-facts"><span>${course.minutes} ${ll('min')}</span><span>${state.completed} / ${state.total} ${ll('lessons')}</span><span>${ll('available')}</span></div></section><section class="learning-body section-frame"><div class="learning-panel"><span class="section-kicker">${ll('intro')}</span><ul>${course.outcomes.map((outcome) => `<li>${esc(lc(outcome))}</li>`).join('')}</ul></div><div class="learning-panel"><span class="section-kicker">${ll('lessons')}</span><div class="lesson-list">${course.lessonIds.map((id, index) => { const lesson = lessonById[id], done = Boolean(view.lessons[id]), unlocked = isLessonUnlocked(id, view); return `<a class="lesson-row ${unlocked ? '' : 'is-locked'}" href="${unlocked ? `lesson.html?id=${encodeURIComponent(id)}` : '#'}" ${unlocked ? '' : 'aria-disabled="true" tabindex="-1"'}><span class="lesson-number">${String(index + 1).padStart(2, '0')}</span><span><strong>${esc(lc(lesson.title))}</strong><small>${esc(lc(lesson.summary))} · ${lesson.minutes} ${ll('min')}</small></span><b>${done ? '✓' : unlocked ? '↗' : '○'}</b></a>`; }).join('')}</div></div><div class="learning-panel practice-panel"><span class="section-kicker">${ll('practice')}</span><h2>${esc(challengeText(challengeById[course.challengeId]).title)}</h2><p>${ll('practiceNote')}</p><a class="button button-outline" href="challenges.html?challenge=${encodeURIComponent(course.challengeId)}">${ll('practice')} ↗</a></div></section>`;
   root.querySelector('.learning-facts').insertAdjacentHTML('beforeend', `<span class="lesson-reward">${lessonRewardText()} / LESSON</span>`);
+  const nextLessonId = course.lessonIds.find((id) => !view.lessons[id]);
+  if (nextLessonId && isLessonUnlocked(nextLessonId, view)) root.querySelector('.learning-hero').insertAdjacentHTML('beforeend', `<a class="button button-primary course-next" href="lesson.html?id=${encodeURIComponent(nextLessonId)}">${j('تابع الدرس التالي', 'Continue to the next lesson')} ↗</a>`);
+  const labId = { 'url-safety': 'http-basics', 'evidence-response': 'log-triage' }[course.id];
+  if (labId) root.querySelector('.practice-panel').insertAdjacentHTML('beforeend', `<a class="button button-outline" href="lab.html?id=${labId}">${j('مختبر عملي موجّه', 'Guided hands-on lab')} ↗</a>`);
   root.querySelector('.learning-hero .section-kicker').textContent = `COURSE ${String(courses.indexOf(course) + 1).padStart(2, '0')} / FOUNDATIONS`;
   if (!isUnlocked(challengeById[course.challengeId], progress)) root.querySelector('.practice-panel p').textContent += ` ${ll('challengePrerequisite')}`;
   if (user() && rewardStatus !== 'ready') root.querySelector('.learning-hero').insertAdjacentHTML('beforeend', `<p class="lesson-reward-note">${ll(rewardStatus === 'error' ? 'rewardError' : 'loading')}</p>`);
@@ -174,9 +211,15 @@ function renderLesson() {
   root.innerHTML = `<section class="learning-hero section-frame"><a class="learning-back" href="course.html?id=${encodeURIComponent(course.id)}">← ${esc(lc(course.title))}</a><span class="section-kicker">${ll('lesson')} ${String(lesson.order).padStart(2, '0')} / ${course.lessonIds.length}</span><h1>${esc(lc(lesson.title))}</h1><p>${esc(lc(lesson.summary))}</p><div class="learning-facts"><span>${lesson.minutes} ${ll('min')}</span><span>${done ? '✓ ' + ll('finished') : ll('available')}</span></div></section><article class="lesson-article section-frame">${lesson.sections.map((section) => `<section class="lesson-copy"><h2>${esc(lc(section.title))}</h2><p>${esc(lc(section.body))}</p></section>`).join('')}<div class="lesson-example"><span>EXAMPLE / URL</span><code dir="ltr">${esc(lesson.example)}</code></div><div class="learning-panel lesson-check"><span class="section-kicker">${ll('selfCheck')}</span><h2>${esc(lc(lesson.check.question))}</h2>${done ? `<p class="answer-feedback success">✓ ${ll('done')} — ${esc(lc(lesson.check.explanation))}</p>` : `<form id="lesson-check-form" data-lesson="${lesson.id}"><fieldset><legend class="sr-only">${esc(lc(lesson.check.question))}</legend>${lesson.check.options.map((option, index) => `<label class="option-label"><input type="radio" name="answer" value="${index}" required><span>${esc(lc(option))}</span></label>`).join('')}</fieldset><button class="button button-primary" type="submit">${ll('check')} ↗</button><p class="answer-feedback error" id="lesson-feedback" role="status" hidden></p></form>`}${done && nextId ? `<a class="button button-outline" href="lesson.html?id=${encodeURIComponent(nextId)}">${ll('next')} ↗</a>` : done ? `<a class="button button-outline" href="challenges.html?challenge=${encodeURIComponent(course.challengeId)}">${ll('practice')} ↗</a>` : ''}</div></article>`;
   root.querySelector('.learning-facts').insertAdjacentHTML('beforeend', `<span class="lesson-reward">${lessonRewardText()}</span>`);
   root.querySelector('.lesson-example span').textContent = lc(lesson.exampleLabel) || 'EXAMPLE / URL';
+  if (done && !nextId) {
+    const following = courses[courses.indexOf(course) + 1];
+    const href = following ? `course.html?id=${encodeURIComponent(following.id)}` : 'exam.html';
+    const label = following ? j('انتقل إلى الكورس التالي', 'Continue to the next course') : j('افتح امتحان الأساسيات', 'Open the Foundations exam');
+    root.querySelector('.lesson-check > a')?.insertAdjacentHTML('beforebegin', `<a class="button button-primary" href="${href}">${label} ↗</a>`);
+  }
   if (!user()) root.querySelector('.lesson-check').insertAdjacentHTML('beforeend', `<p class="lesson-reward-note">${ll('signInReward')}</p>`);
 }
-function render() { renderTracks(); renderCurriculum(); renderChallenges(); renderProgress(); renderRoadmap(); renderCourse(); renderLesson(); }
+function render() { renderJourney(); renderSpecializations(); renderTracks(); renderCurriculum(); renderChallenges(); renderProgress(); renderRoadmap(); renderCourse(); renderLesson(); }
 
 function openChallenge(id) {
   const challenge = challengeById[id];
@@ -266,8 +309,8 @@ async function handleAuthSubmit(event) {
 }
 function bindEvents() {
   const onChallengesPage = Boolean($('#challenge-list'));
-  $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => visitChallenge((nextChallenge(progress) || dailyChallenge(progress)).id));
-  $('#closing-button')?.addEventListener('click', () => visitChallenge((nextChallenge(progress) || dailyChallenge(progress)).id));
+  $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });
+  $('#closing-button')?.addEventListener('click', () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });
   $('#daily-button')?.addEventListener('click', () => onChallengesPage ? openChallenge(dailyChallenge(progress).id) : visitChallenge(dailyChallenge(progress).id));
   $('#challenge-list')?.addEventListener('click', (event) => { const card = event.target.closest('[data-challenge]'); if (card) openChallenge(card.dataset.challenge); });
   $('#filters')?.addEventListener('click', (event) => { const button = event.target.closest('[data-filter]'); if (button) setFilter(button.dataset.filter); });

@@ -137,6 +137,36 @@ export const challenges = [
     explanation: 'توثيق الإشارة وجمع سياقها يمكّن الفريق من التحقق والاحتواء المناسب لاحقاً. المحاولات الفاشلة وحدها لا تثبت اختراقاً.',
     takeaway: 'استجب بحذر، واحفظ الدليل، وميّز بين الإشارة والاستنتاج.',
   },
+  {
+    id: 'f-sender', track: 'foundations', order: 5, title: 'اسم مرسل أم دليل؟',
+    subtitle: 'افصل الاسم الظاهر عن عنوان البريد', difficulty: 'مبتدئ', minutes: 5, xp: 100, kind: 'text',
+    scenario: 'وصلتك رسالة تدريبية بعنوان «فريق الدعم» تطلب تحديث كلمة المرور. افحص عنوان المرسل قبل أي تفاعل.',
+    artifactLabel: 'رأس رسالة صناعية', artifact: 'From: "Biuret Support" <help@biuret.example.net>\nReply-To: reset@other.example.net\nSubject: Verify your account',
+    question: 'ما النطاق الموجود بعد @ في عنوان From؟', answers: ['biuret.example.net'], placeholder: 'اكتب النطاق فقط',
+    hint: 'تجاهل الاسم بين علامتي الاقتباس. اقرأ ما يأتي بعد @ داخل الأقواس الزاوية.',
+    explanation: 'عنوان From ينتهي بـ biuret.example.net؛ الاسم الظاهر «Biuret Support» لا يثبت هوية الجهة. اختلاف Reply-To إشارة إضافية للفحص.',
+    takeaway: 'تحقق من العنوان الفعلي وتواصل مع الجهة عبر قناة معروفة، ولا تعتمد على اسم العرض وحده.',
+  },
+  {
+    id: 'w-private-cache', track: 'web', order: 5, title: 'استجابة شخصية في الذاكرة المؤقتة',
+    subtitle: 'راجع ترويسة التخزين لبيانات حساب', difficulty: 'متوسط', minutes: 6, xp: 110, kind: 'choice',
+    scenario: 'تعرض خدمة تدريبية بيانات حساب شخصي. راجع ترويسة التخزين قبل أن تسمح للوسائط المشتركة بحفظ الاستجابة.',
+    artifactLabel: 'HTTP response — محاكاة', artifact: 'GET /account/profile\nHTTP/1.1 200 OK\nCache-Control: public, max-age=3600\nContent-Type: application/json\n{ "email": "student@example.net" }',
+    question: 'أي تغيير يناسب استجابة شخصية حساسة؟', options: ['Cache-Control: private, no-store', 'زيادة max-age إلى يوم كامل', 'حذف Content-Type فقط'], answer: 'Cache-Control: private, no-store',
+    hint: 'فكر في الفرق بين تخزين عام لعدة مستخدمين واستجابة يجب ألا تُحفظ.',
+    explanation: 'public يسمح بتخزين الاستجابة في مخابئ مشتركة؛ private, no-store يمنع حفظ هذا المحتوى الحساس. القرار النهائي يعتمد على طبيعة البيانات.',
+    takeaway: 'سياسات التخزين المؤقت جزء من حماية البيانات، إضافة إلى المصادقة والتفويض.',
+  },
+  {
+    id: 'd-correlation', track: 'forensics', order: 5, title: 'اربط الأحداث بحذر',
+    subtitle: 'لا تنسب حدثين لبعضهما دون دليل', difficulty: 'متوسط', minutes: 6, xp: 110, kind: 'choice',
+    scenario: 'لاحظ المحلل فشل دخول متكرر لحساب ثم دخولاً ناجحاً لحساب آخر من عنوان مختلف. يحتاج ملخصاً لا يتجاوز ما تثبته السجلات.',
+    artifactLabel: 'سجل تدريب صناعي', artifact: '10:00  LOGIN_FAIL user=adam src=198.51.100.42\n10:01  LOGIN_FAIL user=adam src=198.51.100.42\n10:04  LOGIN_OK   user=sara src=203.0.113.7',
+    question: 'أي وصف دقيق لهذه العينة وحدها؟', options: ['فشلان لحساب adam ودخول ناجح مختلف لحساب sara', 'نجح المهاجم في دخول حساب adam', 'دخول sara يثبت أن المصدرين شخص واحد'], answer: 'فشلان لحساب adam ودخول ناجح مختلف لحساب sara',
+    hint: 'قارن اسم الحساب وعنوان المصدر في كل حدث، ثم افصل الملاحظة عن الفرضية.',
+    explanation: 'لا يوجد LOGIN_OK لحساب adam، كما أن المصدر والحساب مختلفان في الحدث الثالث. الربط بينهما يحتاج سياقاً إضافياً.',
+    takeaway: 'التقارب الزمني وحده لا يثبت علاقة سببية بين أحداث مختلفة.',
+  },
 ];
 
 export const challengeById = Object.fromEntries(challenges.map((challenge) => [challenge.id, challenge]));
