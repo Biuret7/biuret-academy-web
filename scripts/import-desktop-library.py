@@ -148,7 +148,6 @@ def main():
             previous = title
 
     main_file = SOURCE / "main.py"
-    store_categories = literal(assignment(main_file, "_STORE_CATS"))
     roadmap_paths = literal(assignment(main_file, "_ROADMAP_PATHS"))
     main_tree = ast.parse(main_file.read_text(encoding="utf-8"))
     cert_node = next(node.value for node in ast.walk(main_tree)
@@ -172,7 +171,6 @@ def main():
         "challenges": challenges,
         "labs": labs,
         "operations": operations,
-        "storeCategories": store_categories,
         "roadmapPaths": roadmap_paths,
         "certifications": [
             {"name": row[0], "provider": row[1], "difficulty": row[2],

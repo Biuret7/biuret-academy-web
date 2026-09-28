@@ -1,5 +1,5 @@
-import { user, loadUser, academyAdminStatus, academyAdminCredential, academyAdminRevoke } from './auth.js?v=20260928-4';
-import { currentLanguage, applyLanguage } from './i18n.js?v=20260928-14';
+import { user, loadUser, academyAdminStatus, academyAdminCredential, academyAdminRevoke } from './auth.js?v=20260929-1';
+import { currentLanguage, applyLanguage } from './i18n.js?v=20260929-1';
 
 const root = document.querySelector('#admin-main');
 const tr = (ar, en) => currentLanguage() === 'en' ? en : ar;

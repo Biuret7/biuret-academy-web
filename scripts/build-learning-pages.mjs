@@ -13,6 +13,7 @@ for (const [page, title, description] of [
   ['course', 'الكورس — Biuret Academy', 'تعلّم أساسيات الأمن السيبراني خطوة بخطوة في كورسات Biuret Academy.'],
   ['lesson', 'الدرس — Biuret Academy', 'دروس تفاعلية قصيرة لتعلّم الأمن السيبراني في Biuret Academy.'],
   ['exam', 'امتحان المسار — Biuret Academy', 'امتحان أساسيات الأمن السيبراني بعد إكمال الدروس الموثقة.'],
+  ['path-exam', 'امتحان التخصص — Biuret Academy', 'امتحان مسار تخصصي وإثبات إنجازه بعد إكمال دروسه.'],
   ['certificate', 'إثبات الإنجاز — Biuret Academy', 'عرض إثبات الإنجاز والتحقق منه عبر Biuret Academy.'],
   ['admin', 'إدارة الإنجازات — Biuret Academy', 'إدارة إثباتات الإنجاز بحساب Biuret المصرح له.'],
   ['membership', 'العضوية — Biuret Academy', 'خطط عضوية Biuret Academy ومزايا التعلّم المتاحة والمخطط لها.'],
@@ -41,8 +42,8 @@ for (const [page, title, description] of [
   const assessment = page === 'exam' || page === 'certificate';
   const catalog = ['courses', 'labs', 'quizzes', 'tools', 'shop'].includes(page);
   const desktop = ['review', 'operations', 'operation', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'profile', 'library-course', 'library-lesson', 'practice-quiz', 'practice-lab', 'practice-challenge'].includes(page);
-  const main = desktop ? '    <main id="main"><div id="desktop-main" aria-live="polite"></div></main>' : catalog ? '    <main id="main"><div id="catalog-main"></div></main>' : page === 'lab' ? '    <main id="main"><div id="lab-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : page === 'membership' ? '    <main id="main"><div id="membership-main" class="membership-main section-frame" aria-live="polite"></div></main>' : page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
-  const activeSection = ({ course: 'courses', lesson: 'courses', lab: 'labs', 'library-course': 'courses', 'library-lesson': 'courses', 'practice-quiz': 'quizzes', 'practice-lab': 'labs', 'practice-challenge': 'challenges', operation: 'operations' })[page] || page;
+  const main = desktop ? '    <main id="main"><div id="desktop-main" aria-live="polite"></div></main>' : catalog ? '    <main id="main"><div id="catalog-main"></div></main>' : page === 'path-exam' ? '    <main id="main"><div id="path-assessment-main" aria-live="polite"></div></main>' : page === 'lab' ? '    <main id="main"><div id="lab-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : page === 'membership' ? '    <main id="main"><div id="membership-main" class="membership-main section-frame" aria-live="polite"></div></main>' : page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
+  const activeSection = ({ course: 'courses', lesson: 'courses', lab: 'labs', 'library-course': 'courses', 'library-lesson': 'courses', 'practice-quiz': 'quizzes', 'practice-lab': 'labs', 'practice-challenge': 'challenges', operation: 'operations', 'path-exam': 'paths' })[page] || page;
   const html = (template.slice(0, mainStart) + main + template.slice(mainEnd))
     .replace('data-page="paths"', `data-page="${page}"`)
     .replace(/<div class="page-header-context">[\s\S]*?<\/div>/, pageContext(page))
@@ -54,15 +55,18 @@ for (const [page, title, description] of [
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
     .replace('href="paths.html" aria-current="page"', 'href="paths.html"')
     .replace(`href="${activeSection}.html"`, `href="${activeSection}.html" aria-current="page"`)
-    .replace('</head>', desktop ? '  <script type="module" src="desktop.js?v=20260928-15"></script>\n</head>' : catalog ? '  <script type="module" src="catalog.js?v=20260928-14"></script>\n  <script type="module" src="desktop.js?v=20260928-15"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-14"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-14"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-14"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-14"></script>\n</head>' : '</head>');
+    .replace('</head>', desktop ? '  <script type="module" src="desktop.js?v=20260929-1"></script>\n</head>' : catalog ? `  <script type="module" src="catalog.js?v=20260929-1"></script>\n${page === 'shop' ? '' : '  <script type="module" src="desktop.js?v=20260929-1"></script>\n'}</head>` : page === 'path-exam' ? '  <script type="module" src="path-assessment.js?v=20260929-1"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260929-1"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260929-1"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260929-1"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260929-1"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }
 
-const desktop = JSON.parse(readFileSync(new URL('../content/desktop-library.json', import.meta.url), 'utf8'));
+const desktop = JSON.parse(readFileSync(new URL('../content/desktop-catalog.json', import.meta.url), 'utf8'));
 const oldSitemap = readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const urls = new Set([...oldSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]));
 for (const page of ['review', 'operations', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'profile']) {
   urls.add(`https://academy.biuret.dev/${page}.html`);
+}
+for (const path of ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc']) {
+  urls.add(`https://academy.biuret.dev/path-exam.html?id=${path}`);
 }
 for (const course of desktop.categories) {
   urls.add(`https://academy.biuret.dev/library-course.html?id=${course.id}`);

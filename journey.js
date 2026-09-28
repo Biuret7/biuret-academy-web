@@ -1,4 +1,4 @@
-import { courses, lessonById } from './learning-content.js?v=20260928-1';
+import { courses, lessonById } from './learning-content.js?v=20260929-1';
 
 // The desktop Biuret Academy curriculum supplies the subjects. A subject is
 // advertised here only as a roadmap until reviewed web lessons are released.

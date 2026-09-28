@@ -11,6 +11,7 @@ export const pageContexts = {
   tools: ['TOOLS', 'تعرّف إلى الأدوات وطريقة استخدامها.', 'Explore tools and how to use them.'],
   progress: ['PROGRESS', 'تابع ما أنجزته والخطوة القادمة.', 'Track what you completed and what comes next.'],
   exam: ['EXAM', 'اختبر أساسياتك بعد إكمال الدروس.', 'Test your foundations after the lessons.'],
+  'path-exam': ['PATH EXAM', 'امتحان تخصصك وإثبات إنجازه.', 'Your specialty exam and credential.'],
   certificate: ['CREDENTIAL', 'اعرض إثبات إنجازك وتحقّق منه.', 'View and verify your achievement.'],
   membership: ['MEMBERSHIP', 'اختر مزايا التعلّم المناسبة لك.', 'Explore the learning benefits that fit you.'],
   shop: ['SHOP', 'استكشف مزايا عملات Biuret.', 'Explore Biuret Coins benefits.'],

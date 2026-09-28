@@ -1,33 +1,55 @@
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20260928-14';
-import { user } from './auth.js?v=20260928-4';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20260929-1';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice } from './auth.js?v=20260929-1';
+import { requiredPlan, canAccess } from './plan-access.js?v=20260929-1';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');
 const params = new URLSearchParams(location.search);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const tr = (ar, en) => currentLanguage() === 'en' ? en : ar;
-const key = 'biuret-academy-desktop-library-v1';
-let data;
-let state;
-try { state = JSON.parse(localStorage.getItem(key)) || {}; } catch { state = {}; }
-state.completed ||= {};
-state.favorites ||= [];
-state.notes ||= {};
-state.practice ||= {};
-state.reviewed ||= {};
-state.reviewCards ||= {};
-const save = () => { try { localStorage.setItem(key, JSON.stringify(state)); } catch { announce(tr('تعذر حفظ البيانات على هذا المتصفح.', 'Could not save data in this browser.')); } };
+const key = () => `biuret-academy-desktop-library-v2:${user()?.$id || 'guest'}`;
+let data, dataAr, dataEn;
+let membership;
+let foundationsPassed = false;
+let libraryOwner = null;
+const languageLoads = new Map();
+let state = {};
+function loadPersonalState() {
+  try { state = JSON.parse(localStorage.getItem(key())) || {}; } catch { state = {}; }
+  state.completed ||= {};
+  state.favorites ||= [];
+  state.notes ||= {};
+  state.practice ||= {};
+  state.reviewed ||= {};
+  state.reviewCards ||= {};
+}
+loadPersonalState();
+const save = () => { if (!user()) return; try { localStorage.setItem(key(), JSON.stringify(state)); } catch { announce(tr('تعذر حفظ البيانات على هذا المتصفح.', 'Could not save data in this browser.')); } };
 const announce = (message) => { const toast = document.querySelector('#toast'); if (toast) { toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3800); } };
 const allLessons = () => data.categories.flatMap((category) => category.lessons.map((lesson) => ({ ...lesson, category })));
 const lessonById = (id) => allLessons().find((item) => item.id === id);
 const categoryById = (id) => data.categories.find((item) => item.id === id);
-const notice = () => `<div class="catalog-callout library-notice"><strong>${tr('مكتبة برنامج الأكاديمية', 'Academy program library')}</strong><p>${tr('هذه مواد البرنامج الأصلية باللغة العربية. القراءة والاختبارات والمختبرات هنا تدريب ذاتي محفوظ على هذا المتصفح؛ لا تمنح XP أو عملات أو شهادة موثقة. ابدأ بالمسار الأساسي الموثق أولاً إذا كنت جديداً.', 'Original Arabic program material. Reading, quizzes and labs here are self practice saved in this browser; they do not award verified XP, coins or credentials. Start with the verified Foundations route if you are new.')}</p><a href="paths.html">${tr('خطة التعلّم', 'Learning route')} ↗</a></div>`;
+const localizedTitle = (source, kind, id, field) => {
+  const items = kind === 'lesson' ? source?.categories?.flatMap((item) => item.lessons) : source?.[kind];
+  return items?.find((item) => item.id === id)?.[field] || id;
+};
+const titles = (kind, id, field = 'title') => ({
+  ar: localizedTitle(dataAr || data, kind, id, field),
+  en: localizedTitle(dataEn || data, kind, id, field),
+});
+const allowed = (kind, index) => Boolean(membership?.admin || (canAccess(kind, index, membership) && (requiredPlan(kind, index) === 'free' || foundationsPassed)));
+const tierBadge = (kind, index) => `<span class="library-tier tier-${requiredPlan(kind, index)}">${requiredPlan(kind, index).toUpperCase()}</span>`;
+const lockedBody = (kind, index) => `<div class="library-locked"><span class="section-kicker">${requiredPlan(kind, index).toUpperCase()} / BIURET ACADEMY</span><h2>${tr('خطوة التعلّم التالية مقفلة حالياً.', 'Your next learning step is locked.')}</h2><p>${!foundationsPassed && !membership?.admin && requiredPlan(kind, index) !== 'free' ? tr('أكمل دروس الأساسيات وامتحانها أولاً، ثم اختر تخصصك حسب خطة عضويتك.', 'Complete Foundations and its exam first, then choose a specialty within your plan.') : tr('هذا المحتوى يتطلب خطة أعلى. راجع العضويات والمحتوى المتاح في خطتك.', 'This content requires a higher plan. Compare membership options and available content.')}</p><a class="button button-primary" href="${!foundationsPassed && requiredPlan(kind, index) !== 'free' ? 'paths.html#foundations-roadmap' : 'membership.html'}">${!foundationsPassed && requiredPlan(kind, index) !== 'free' ? tr('ابدأ الأساسيات', 'Start Foundations') : tr('قارن الخطط', 'Compare plans')} ↗</a></div>`;
+const notice = () => `<div class="catalog-callout library-notice"><strong>${tr('من برنامج Biuret Academy', 'From the Biuret Academy program')}</strong><p>${tr('ابدأ بدروس الأساسيات وامتحانها، ثم انتقل إلى كورسات تخصصك وتطبيقاتها. تُوثّق قراءة دروس البرنامج في حسابك للتأهل لامتحان المسار؛ وتبقى الملاحظات والمراجعة التدريبية على هذا المتصفح.', 'Start with Foundations and its exam, then move to your specialty courses and practice. Program lesson reading is recorded in your account for path exam eligibility; notes and practice review stay in this browser.')}</p><a href="paths.html">${tr('خطة التعلّم', 'Learning route')} ↗</a></div>`;
 const frame = (label, title, intro, body) => `<section class="catalog-hero section-frame"><a class="learning-back" href="paths.html">← ${tr('خطة التعلّم', 'Learning route')}</a><span class="section-kicker">${label}</span><h1>${esc(title)}</h1><p>${intro}</p></section><section class="catalog-body section-frame">${body}</section>`;
 const section = (title, body) => `<section class="library-section"><h2>${title}</h2>${body}</section>`;
 const empty = (message) => `<p class="library-empty">${message}</p>`;
-const courseCard = (category) => `<a class="library-card" href="library-course.html?id=${encodeURIComponent(category.id)}"><span>${esc(category.icon)} &nbsp; COURSE / ${String(category.order).padStart(2, '0')}</span><h3>${esc(category.title)}</h3><p>${esc(category.description)}</p><small>${category.lessons.length} ${tr('دروس', 'lessons')} · ${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة', 'read')}</small><b>${tr('افتح الكورس', 'Open course')} ↗</b></a>`;
-const lessonCard = (lesson) => `<a class="library-row" href="library-lesson.html?id=${encodeURIComponent(lesson.id)}"><span>${String(lesson.order).padStart(2, '0')}</span><strong>${esc(lesson.title)}</strong><small>${state.completed[lesson.id] ? tr('مقروء', 'Read') : esc(lesson.difficulty)}</small><b>↗</b></a>`;
-const simpleCards = (items, target, titleOf, descOf) => `<div class="library-grid">${items.map((item, index) => `<a class="library-card" href="${target}.html?id=${index}"><span>${String(index + 1).padStart(2, '0')} / ${target.toUpperCase()}</span><h3>${esc(titleOf(item))}</h3><p>${esc(descOf(item))}</p><b>${tr('افتح التدريب', 'Open practice')} ↗</b></a>`).join('')}</div>`;
+const courseCard = (category) => `<a class="library-card ${allowed('course', category.order) ? '' : 'is-locked'}" href="library-course.html?id=${encodeURIComponent(category.id)}"><span>${esc(category.icon)} &nbsp; COURSE / ${String(category.order).padStart(2, '0')} ${tierBadge('course', category.order)}</span><h3>${esc(category.title)}</h3><p>${esc(category.description)}</p><small>${category.lessons.length} ${tr('دروس', 'lessons')} · ${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة', 'read')}</small><b>${allowed('course', category.order) ? tr('افتح الكورس', 'Open course') : tr('شاهد شروط الوصول', 'View access')} ↗</b></a>`;
+const lessonCard = (lesson) => `<a class="library-row ${allowed('course', lesson.category?.order ?? data.categories.find((category) => category.lessons.some((item) => item.id === lesson.id))?.order) ? '' : 'is-locked'}" href="library-lesson.html?id=${encodeURIComponent(lesson.id)}"><span>${String(lesson.order).padStart(2, '0')}</span><strong>${esc(lesson.title)}</strong><small>${state.completed[lesson.id] ? tr('مقروء', 'Read') : esc(lesson.difficulty)}</small><b>↗</b></a>`;
+const simpleCards = (items, target, titleOf, descOf) => {
+  const kind = ({ 'practice-lab': 'lab', 'practice-quiz': 'quiz', 'practice-challenge': 'challenge', operation: 'operation' })[target];
+  return `<div class="library-grid">${items.map((item, index) => `<a class="library-card ${allowed(kind, index) ? '' : 'is-locked'}" href="${target}.html?id=${index}"><span>${String(index + 1).padStart(2, '0')} / ${target.toUpperCase()} ${tierBadge(kind, index)}</span><h3>${esc(titleOf(item))}</h3><p>${esc(descOf(item))}</p><b>${allowed(kind, index) ? tr('افتح التدريب', 'Open practice') : tr('شاهد شروط الوصول', 'View access')} ↗</b></a>`).join('')}</div>`;
+};
 
 function renderCatalogExtras() {
   const target = document.querySelector('#catalog-main');
@@ -37,8 +59,7 @@ function renderCatalogExtras() {
   if (page === 'courses') body = section(tr('كورسات برنامج Biuret Academy', 'Biuret Academy program courses'), `${notice()}<div class="library-grid">${data.categories.map(courseCard).join('')}</div>`);
   if (page === 'labs') body = section(tr('مختبرات البرنامج', 'Program labs'), `${notice()}${simpleCards(data.labs, 'practice-lab', (x) => x.name, (x) => x.desc)}`);
   if (page === 'quizzes') body = section(tr('اختبارات البرنامج التدريبية', 'Program practice quizzes'), `${notice()}${simpleCards(data.quizzes, 'practice-quiz', (x) => x.name, (x) => x.topics)}`);
-  if (page === 'tools') body = section(tr('دليل أدوات البرنامج', 'Program tool guides'), `${notice()}<div class="tool-guide-list">${data.tools.map((tool) => `<details class="tool-guide"><summary><span>${esc(tool.category)}</span><strong>${esc(tool.name)}</strong><i aria-hidden="true">+</i></summary><div class="tool-guide-body"><p>${esc(tool.description)}</p><p>${esc(tool.usage)}</p><code dir="ltr">${esc(tool.example)}</code><p>${esc(tool.platform)}</p></div></details>`).join('')}</div>`);
-  if (page === 'shop') body = section(tr('عناصر متجر برنامج الأكاديمية', 'Program shop items'), `${notice()}<p class="library-note">${tr('هذا كتالوج لأفكار المتجر الموجودة في برنامج سطح المكتب. لا يمكن شراء العناصر أو صرف العملات عبر الموقع حالياً، والأسعار الأصلية ليست أسعاراً منشورة للموقع.', 'This previews item ideas from the desktop program. Web purchasing and coin redemption are not active, and original desktop prices are not published web prices.')}</p><div class="tool-guide-list">${data.storeCategories.map(([icon, name, description, items]) => `<details class="tool-guide"><summary><span>${esc(icon)}</span><strong>${esc(name)}</strong><i aria-hidden="true">+</i></summary><div class="tool-guide-body"><p>${esc(description)}</p><ul class="library-bullets">${items.map(([itemIcon, itemName]) => `<li>${esc(itemIcon)} ${esc(itemName)}</li>`).join('')}</ul></div></details>`).join('')}</div>`);
+  if (page === 'tools') body = section(tr('دليل أدوات البرنامج', 'Program tool guides'), `${notice()}<div class="tool-guide-list">${data.tools.map((tool, index) => `<details class="tool-guide" ${allowed('tool', index) ? '' : 'data-locked="true"'}><summary><span>${esc(tool.category)} ${tierBadge('tool', index)}</span><strong>${esc(tool.name)}</strong><i aria-hidden="true">${allowed('tool', index) ? '+' : '🔒'}</i></summary><div class="tool-guide-body">${allowed('tool', index) ? `<p>${esc(tool.description)}</p><p>${esc(tool.usage)}</p><code dir="ltr">${esc(tool.example)}</code><p>${esc(tool.platform)}</p>` : lockedBody('tool', index)}</div></details>`).join('')}</div>`);
   if (body) target.insertAdjacentHTML('beforeend', `<div id="desktop-append" class="section-frame">${body}</div>`);
 }
 
@@ -53,15 +74,16 @@ function renderRoadmapExtras() {
   const main = document.querySelector('#main');
   if (!main) return;
   main.querySelector('#desktop-append')?.remove();
-  const cards = data.roadmapPaths.map(([icon, title, , steps, certs, , categoryIds]) => `<article class="library-card"><span>${esc(icon)} &nbsp; ROADMAP</span><h3>${esc(title)}</h3><ol class="library-bullets">${steps.map((step) => `<li>${esc(step)}</li>`).join('')}</ol><p>${tr('مسار شهادات مقترح في البرنامج:', 'Program certification suggestion:')} ${esc(certs)}</p><div class="library-sources">${categoryIds.map((id) => data.categories.find((category) => category.order === id)).filter(Boolean).map((category) => `<a href="library-course.html?id=${encodeURIComponent(category.id)}">${esc(category.title)} ↗</a>`).join('')}</div></article>`).join('');
+  const cards = data.roadmapPaths.map(([icon, title, pathId, steps, certs, , categoryIds]) => `<article class="library-card"><span>${esc(icon)} &nbsp; ROADMAP</span><h3>${esc(title)}</h3><ol class="library-bullets">${steps.map((step) => `<li>${esc(step)}</li>`).join('')}</ol><p>${tr('شهادات خارجية مقترحة في البرنامج:', 'Suggested external certifications:')} ${esc(certs)}</p><div class="library-sources">${categoryIds.map((id) => data.categories.find((category) => category.order === id)).filter(Boolean).map((category) => `<a href="library-course.html?id=${encodeURIComponent(category.id)}">${esc(category.title)} ↗</a>`).join('')}</div><a class="button button-outline" href="path-exam.html?id=${encodeURIComponent(pathId)}">${tr('امتحان المسار وإثبات Biuret', 'Path exam and Biuret credential')} ↗</a></article>`).join('');
   main.insertAdjacentHTML('beforeend', `<div id="desktop-append" class="section-frame">${section(tr('خرائط تخصصات برنامج الأكاديمية', 'Academy program specialty roadmaps'), `${notice()}<div class="library-grid">${cards}</div>`)}</div>`);
 }
 
 function renderCourse() {
   const category = categoryById(params.get('id'));
   if (!category) return frame('LIBRARY / COURSE', tr('الكورس غير موجود', 'Course not found'), '', `<a href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
-  setPageHeaderTitle({ ar: category.title, en: category.title });
-  return frame('LIBRARY / COURSE', category.title, esc(category.description), `${notice()}<div class="library-summary"><span>${category.lessons.length} ${tr('دروس', 'lessons')}</span><span>${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة محلياً', 'read locally')}</span></div><div class="library-list">${category.lessons.map(lessonCard).join('')}</div><a class="button button-outline" href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
+  setPageHeaderTitle(titles('categories', category.id));
+  const linkedPaths = data.roadmapPaths.filter((path) => path[6].includes(category.order));
+  return frame('LIBRARY / COURSE', category.title, esc(category.description), `${notice()}<div class="library-summary"><span>${category.lessons.length} ${tr('دروس', 'lessons')}</span><span>${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة', 'read')}</span></div><div class="library-list">${category.lessons.map(lessonCard).join('')}</div>${linkedPaths.length ? section(tr('هذا الكورس ضمن مسارات', 'This course is part of'), `<div class="library-sources">${linkedPaths.map((path) => `<a href="path-exam.html?id=${encodeURIComponent(path[2])}">${esc(path[1])} · ${tr('الامتحان والشهادة', 'Exam and credential')} ↗</a>`).join('')}</div>`) : ''}<a class="button button-outline" href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
 }
 
 function renderLesson() {
@@ -71,9 +93,9 @@ function renderLesson() {
   const position = siblings.findIndex((item) => item.id === lesson.id);
   const previous = siblings[position - 1];
   const next = siblings[position + 1];
-  setPageHeaderTitle({ ar: lesson.title, en: lesson.title });
+  setPageHeaderTitle(titles('lesson', lesson.id));
   const favorite = state.favorites.includes(lesson.id);
-  return frame('LIBRARY / LESSON', lesson.title, `<a href="library-course.html?id=${encodeURIComponent(lesson.category.id)}">${esc(lesson.category.title)} ↗</a> · ${esc(lesson.difficulty)}`, `${notice()}<div class="library-lesson-layout"><article class="library-reading" dir="rtl"><span class="catalog-soon">${tr('النص الأصلي بالعربية', 'Original Arabic lesson')}</span>${esc(lesson.content).split(/\n\s*\n/).map((block) => `<p>${block.replace(/\n/g, '<br>')}</p>`).join('')}</article><aside class="library-lesson-tools"><button class="button button-outline" id="favorite-button" type="button">${favorite ? tr('★ محفوظ في المفضلة', '★ Saved to favorites') : tr('☆ أضف للمفضلة', '☆ Add to favorites')}</button><button class="button button-primary" id="complete-button" type="button">${state.completed[lesson.id] ? tr('✓ قرأته', '✓ Marked as read') : tr('حدد الدرس كمقروء', 'Mark lesson as read')}</button><label for="lesson-note">${tr('ملاحظتك الخاصة', 'Your private note')}</label><textarea id="lesson-note" rows="9" placeholder="${tr('اكتب ما تريد تذكره…', 'Write what you want to remember…')}">${esc(state.notes[lesson.id] || '')}</textarea><button class="button button-outline" id="save-note" type="button">${tr('احفظ الملاحظة', 'Save note')}</button><small>${tr('هذه البيانات محفوظة على هذا المتصفح فقط.', 'This data is stored in this browser only.')}</small></aside></div><nav class="library-next">${previous ? `<a href="library-lesson.html?id=${encodeURIComponent(previous.id)}">← ${esc(previous.title)}</a>` : '<span></span>'}${next ? `<a href="library-lesson.html?id=${encodeURIComponent(next.id)}">${esc(next.title)} →</a>` : `<a href="library-course.html?id=${encodeURIComponent(lesson.category.id)}">${tr('الكورس', 'Course')} ↗</a>`}</nav>`);
+  return frame('LIBRARY / LESSON', lesson.title, `<a href="library-course.html?id=${encodeURIComponent(lesson.category.id)}">${esc(lesson.category.title)} ↗</a> · ${esc(lesson.difficulty)}`, `${notice()}<div class="library-lesson-layout"><article class="library-reading" dir="${currentLanguage() === 'en' ? 'ltr' : 'rtl'}">${esc(lesson.content).split(/\n\s*\n/).map((block) => `<p>${block.replace(/\n/g, '<br>')}</p>`).join('')}</article><aside class="library-lesson-tools"><button class="button button-outline" id="favorite-button" type="button">${favorite ? tr('★ محفوظ في المفضلة', '★ Saved to favorites') : tr('☆ أضف للمفضلة', '☆ Add to favorites')}</button><button class="button button-primary" id="complete-button" type="button">${state.completed[lesson.id] ? tr('✓ قرأته', '✓ Marked as read') : tr('حدد الدرس كمقروء', 'Mark lesson as read')}</button><label for="lesson-note">${tr('ملاحظتك الخاصة', 'Your private note')}</label><textarea id="lesson-note" rows="9" placeholder="${tr('اكتب ما تريد تذكره…', 'Write what you want to remember…')}">${esc(state.notes[lesson.id] || '')}</textarea><button class="button button-outline" id="save-note" type="button">${tr('احفظ الملاحظة', 'Save note')}</button><small>${tr('هذه البيانات محفوظة على هذا المتصفح فقط.', 'This data is stored in this browser only.')}</small></aside></div><nav class="library-next">${previous ? `<a href="library-lesson.html?id=${encodeURIComponent(previous.id)}">← ${esc(previous.title)}</a>` : '<span></span>'}${next ? `<a href="library-lesson.html?id=${encodeURIComponent(next.id)}">${esc(next.title)} →</a>` : `<a href="library-course.html?id=${encodeURIComponent(lesson.category.id)}">${tr('الكورس', 'Course')} ↗</a>`}</nav>`);
 }
 
 function renderQuiz() {
@@ -89,7 +111,7 @@ function renderLab() {
   const lab = data.labs[index];
   if (!lab) return frame('PRACTICE / LAB', tr('المختبر غير موجود', 'Lab not found'), '', '<a href="labs.html">Labs ↗</a>');
   setPageHeaderTitle({ ar: lab.name, en: lab.name });
-  return frame('PRACTICE / LAB', lab.name, esc(lab.desc), `${notice()}<div class="library-lab-grid"><div>${section(tr('الأهداف', 'Objectives'), `<ul class="library-bullets">${lab.objectives.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`)}${section(tr('خطوات البرنامج الأصلية', 'Original program steps'), `<ol class="library-bullets" dir="rtl">${lab.steps.map((step) => `<li>${esc(step[0])}<code>${esc(step[1])}</code></li>`).join('')}</ol>`)}<p class="library-note">${tr('الأوامر أمثلة من البرنامج الأصلي. استخدمها فقط في بيئة تدريب مصرح بها؛ هذا الموقع يعرض عينة صناعية للتحليل ولا يشغّل أدوات.', 'Commands are examples from the original program. Use them only in an authorized lab; this site presents synthetic evidence for analysis and does not run tools.')}</p></div><div>${section(tr('العينة الصناعية', 'Synthetic sample'), `<pre class="library-sample" dir="ltr">${esc(lab.sample)}</pre>`)}</div></div>${singleCheck(lab.verify_q, lab.verify_opts, `lab-${index}`)}`);
+  return frame('PRACTICE / LAB', lab.name, esc(lab.desc), `${notice()}<div class="library-lab-grid"><div>${section(tr('الأهداف', 'Objectives'), `<ul class="library-bullets">${lab.objectives.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`)}${section(tr('خطوات البرنامج الأصلية', 'Program steps'), `<ol class="library-bullets" dir="${currentLanguage() === 'en' ? 'ltr' : 'rtl'}">${lab.steps.map((step) => `<li>${esc(step[0])}<code dir="ltr">${esc(step[1])}</code></li>`).join('')}</ol>`)}<p class="library-note">${tr('الأوامر أمثلة من البرنامج الأصلي. استخدمها فقط في بيئة تدريب مصرح بها؛ هذا الموقع يعرض عينة صناعية للتحليل ولا يشغّل أدوات.', 'Commands are examples from the original program. Use them only in an authorized lab; this site presents synthetic evidence for analysis and does not run tools.')}</p></div><div>${section(tr('العينة الصناعية', 'Synthetic sample'), `<pre class="library-sample" dir="ltr">${esc(lab.sample)}</pre>`)}</div></div>${singleCheck(lab.verify_q, lab.verify_opts, `lab-${index}`)}`);
 }
 
 function renderChallenge() {
@@ -123,7 +145,7 @@ function renderReview() {
   const lessons = allLessons().filter((item) => state.completed[item.id]);
   const due = lessons.filter((item) => Date.now() - new Date(state.reviewed[item.id] || state.completed[item.id]).getTime() >= 86400000);
   const cards = Object.entries(state.reviewCards).filter(([, card]) => new Date(card.dueAt).getTime() <= Date.now());
-  const cardHtml = cards.map(([id, card]) => `<article class="review-card"><span class="section-kicker">${esc(card.quiz)}</span><h3>${esc(card.question)}</h3><details><summary>${tr('أظهر الإجابة', 'Show answer')}</summary><p>${esc(card.answer)}</p></details><div><button type="button" data-recall="${esc(id)}" data-rating="hard">${tr('صعب عليّ', 'Still difficult')}</button><button type="button" data-recall="${esc(id)}" data-rating="remembered">${tr('تذكرت', 'Remembered')}</button></div></article>`).join('');
+  const cardHtml = cards.map(([id, card]) => `<article class="review-card"><span class="section-kicker">${esc(card.quizTitles?.[currentLanguage()] || card.quiz)}</span><h3>${esc(card.text?.[currentLanguage()]?.question || card.question)}</h3><details><summary>${tr('أظهر الإجابة', 'Show answer')}</summary><p>${esc(card.text?.[currentLanguage()]?.answer || card.answer)}</p></details><div><button type="button" data-recall="${esc(id)}" data-rating="hard">${tr('صعب عليّ', 'Still difficult')}</button><button type="button" data-recall="${esc(id)}" data-rating="remembered">${tr('تذكرت', 'Remembered')}</button></div></article>`).join('');
   return frame('LEARN / REVIEW', tr('المراجعة الذكية', 'Smart review'), tr('تُنشأ بطاقات من أخطائك في الاختبارات التدريبية، وتعود بعد 1 و3 و7 و14 و30 و60 يوماً. راجع أيضاً الدروس التي قرأتها.', 'Cards are created from practice quiz mistakes and return after 1, 3, 7, 14, 30 and 60 days. Revisit lessons you have read too.'), `${notice()}<div class="library-summary"><span>${lessons.length} ${tr('دروس مقروءة', 'read lessons')}</span><span>${cards.length} ${tr('بطاقات مستحقة', 'due cards')}</span><span>${due.length} ${tr('دروس للمراجعة', 'lessons to revisit')}</span></div>${section(tr('بطاقات من أخطائك', 'Cards from your mistakes'), cards.length ? `<div class="review-grid">${cardHtml}</div>` : empty(tr('لا توجد بطاقات مستحقة. أكمل اختباراً تدريبياً لتنشأ بطاقات من أخطائك.', 'No cards are due. Take a practice quiz to create cards from missed questions.')))}${section(tr('دروس تستحق العودة إليها', 'Lessons worth revisiting'), due.length ? `<div class="library-list">${due.map((lesson) => `<div class="library-row"><span>↻</span><a href="library-lesson.html?id=${encodeURIComponent(lesson.id)}">${esc(lesson.title)}</a><button type="button" data-review="${esc(lesson.id)}">${tr('راجعت الدرس', 'Reviewed')}</button></div>`).join('')}</div>` : empty(tr('لا توجد دروس مستحقة الآن.', 'No lessons are due now.')))}<a class="button button-outline" href="courses.html">${tr('افتح الكورسات', 'Open courses')} ↗</a>`);
 }
 
@@ -157,18 +179,19 @@ function searchResults(query) {
 }
 
 function renderCertifications() {
-  const career = data.categories.find((item) => item.title === 'مسارات الاحتراف');
-  return frame('CAREER / CERTIFICATIONS', tr('الشهادات والمسارات المهنية', 'Certifications and career paths'), tr('تعرف إلى المهارات والمخرجات العملية اللازمة لكل دور، ثم ارجع إلى المحتوى المرتبط بها.', 'Explore skills and practical outcomes for each role, then return to the related content.'), `${notice()}<div class="catalog-callout"><strong>${tr('إثبات Biuret الحالي', 'Current Biuret credential')}</strong><p>${tr('إثبات إنجاز الأساسيات متاح بعد تسعة دروس موثقة وامتحان الخادم. هذه الصفحة مرجع للمسارات المهنية ولا تصدر شهادات خارجية.', 'The Foundations credential is available after nine verified lessons and the server exam. This page is a career reference and does not issue third-party certifications.')}</p><a href="certificate.html">${tr('إثبات الإنجاز', 'Achievement credential')} ↗</a></div>${section(tr('دليل الشهادات من البرنامج', 'Program certification guide'), `<p class="library-note">${tr('المعلومات التالية مقتبسة من دليل برنامج سطح المكتب وقد تتغير. راجع الجهة المصدرة قبل التخطيط للامتحان أو دفع أي رسوم.', 'This reference comes from the desktop program and may change. Check the issuing organization before planning an exam or paying fees.')}</p><div class="library-grid">${data.certifications.map((item) => `<article class="library-card"><span>${esc(item.provider)} · ${esc(item.difficulty)}</span><h3>${esc(item.name)}</h3><p>${esc(item.description)}</p><small>${esc(item.note)}</small></article>`).join('')}</div>`)}${section(tr('دروس المسار المهني', 'Career path lessons'), `<div class="library-list">${career.lessons.map(lessonCard).join('')}</div>`)}`);
+  const career = data.categories.find((item) => item.order === 8);
+  const paths = data.roadmapPaths.map((path) => `<a class="library-row" href="path-exam.html?id=${encodeURIComponent(path[2])}"><span>EXAM</span><strong>${esc(path[1])}</strong><small>${tr('بعد إكمال دروس المسار', 'After completing the path lessons')}</small><b>↗</b></a>`).join('');
+  return frame('CAREER / CERTIFICATIONS', tr('الشهادات والمسارات المهنية', 'Certifications and career paths'), tr('أكمل كورسات التخصص واجتز امتحانه للحصول على إثبات إنجاز Biuret، ثم استكشف الشهادات المهنية الخارجية.', 'Finish a specialty path and pass its exam for a Biuret achievement credential, then explore external professional certifications.'), `${notice()}${section(tr('إثباتات إنجاز Biuret', 'Biuret achievement credentials'), `<div class="catalog-callout"><strong>${tr('ابدأ بإثبات الأساسيات', 'Start with the Foundations credential')}</strong><p>${tr('تسعة دروس موثقة وامتحان خادم، ثم مسارات تخصصية لكل منها امتحانها الخاص.', 'Nine verified lessons and a server exam, followed by specialty paths with their own exams.')}</p><a href="certificate.html">${tr('إثبات الأساسيات', 'Foundations credential')} ↗</a></div><div class="library-list">${paths}</div>`)}${section(tr('دليل الشهادات الخارجية', 'External certification guide'), `<p class="library-note">${tr('هذه جهات خارجية مستقلة عن إثباتات Biuret. راجع الجهة المصدرة قبل التخطيط للامتحان أو دفع الرسوم.', 'These external certifications are separate from Biuret credentials. Check each issuer before planning an exam or paying fees.')}</p><div class="library-grid">${data.certifications.map((item) => `<article class="library-card"><span>${esc(item.provider)} · ${esc(item.difficulty)}</span><h3>${esc(item.name)}</h3><p>${esc(item.description)}</p><small>${esc(item.note)}</small></article>`).join('')}</div>`)}${section(tr('دروس المسار المهني', 'Career path lessons'), `<div class="library-list">${career.lessons.map(lessonCard).join('')}</div>`)}`);
 }
 
 function renderProfessional() {
-  const career = data.categories.find((item) => item.title === 'مسارات الاحتراف');
-  const practice = data.categories.filter((item) => ['عمليات الدفاع المتقدم', 'أمن البرمجيات وDevSecOps'].includes(item.title));
+  const career = data.categories.find((item) => item.order === 8);
+  const practice = data.categories.filter((item) => [17, 18].includes(item.order));
   return frame('CAREER / HUB', tr('المركز الاحترافي', 'Professional hub'), tr('اربط ما تتعلمه بأدوار ومشاريع صغيرة تثبت مهارتك.', 'Connect what you learn to roles and small projects that demonstrate skill.'), `${notice()}${section(tr('ابدأ من المخرجات المهنية', 'Start with professional outcomes'), `<div class="library-list">${career.lessons.map(lessonCard).join('')}</div>`)}${section(tr('مجالات متقدمة', 'Advanced fields'), `<div class="library-grid">${practice.map(courseCard).join('')}</div>`)}${section(tr('طبّق في غرفة العمليات', 'Practice in operations'), `<p>${tr('حلل سيناريو حادث، واكتب قرارك والأدلة التي بنيته عليها.', 'Analyze an incident scenario and document your decision and evidence.')}</p><a class="button button-outline" href="operations.html">${tr('افتح غرفة العمليات', 'Open operations')} ↗</a>`)}`);
 }
 
 function renderSettings() {
-  return frame('ACCOUNT / SETTINGS', tr('الإعدادات', 'Settings'), tr('اضبط اللغة وبيانات مكتبة التدريب المحلية.', 'Adjust language and local practice library data.'), `<div class="library-settings">${section(tr('اللغة', 'Language'), `<p>${tr('واجهة الموقع متاحة بالعربية والإنجليزية. محتوى البرنامج المستورد معروض بلغته العربية الأصلية.', 'The site interface is available in Arabic and English. Imported program lessons retain their original Arabic text.')}</p><button class="button button-outline" id="settings-language" type="button">${tr('التبديل إلى الإنجليزية', 'Switch to Arabic')}</button>`)}${section(tr('بيانات التدريب المحلية', 'Local practice data'), `<p>${tr('الدروس المقروءة، المفضلة، الملاحظات ونتائج التدريب محفوظة في هذا المتصفح فقط. حذفها لا يؤثر على XP أو العملات الموثقة في حسابك.', 'Read lessons, favorites, notes and practice results live in this browser only. Clearing them does not affect verified XP or coins in your account.')}</p><button class="button button-outline" id="clear-library" type="button">${tr('حذف بيانات المكتبة المحلية', 'Clear local library data')}</button>`)}</div>`);
+  return frame('ACCOUNT / SETTINGS', tr('الإعدادات', 'Settings'), tr('اضبط اللغة وبيانات مكتبة التدريب المحلية.', 'Adjust language and local practice library data.'), `<div class="library-settings">${section(tr('اللغة', 'Language'), `<p>${tr('المحتوى والواجهة متاحان بالعربية والإنجليزية، مع اتجاه مناسب لكل لغة.', 'The content and interface are available in Arabic and English, with the correct direction for each language.')}</p><button class="button button-outline" id="settings-language" type="button">${tr('التبديل إلى الإنجليزية', 'Switch to Arabic')}</button>`)}${section(tr('بيانات التدريب المحلية', 'Local practice data'), `<p>${tr('المفضلة والملاحظات وبطاقات المراجعة ونتائج التدريب محفوظة لهذا الحساب على هذا المتصفح. حذفها لا يمس قراءة الدروس المسجلة في حسابك أو XP أو العملات.', 'Favorites, notes, review cards and practice results stay on this browser for your account. Clearing them does not remove server-recorded lesson reading, XP or coins.')}</p><button class="button button-outline" id="clear-library" type="button">${tr('حذف بيانات المكتبة المحلية', 'Clear local library data')}</button>`)}</div>`);
 }
 
 function renderProfile() {
@@ -177,11 +200,24 @@ function renderProfile() {
 }
 
 function render() {
-  if (!data) return;
-  if (['courses', 'labs', 'quizzes', 'tools', 'shop'].includes(page)) return renderCatalogExtras();
+  if (!data || !user() || !membership) return;
+  if (['courses', 'labs', 'quizzes', 'tools'].includes(page)) return renderCatalogExtras();
   if (page === 'challenges') return renderChallengeExtras();
   if (page === 'paths') return renderRoadmapExtras();
   if (!root) return;
+  const selected = params.get('id');
+  const restricted = {
+    'library-course': ['course', categoryById(selected)?.order],
+    'library-lesson': ['course', lessonById(selected)?.category?.order],
+    'practice-quiz': ['quiz', Number(selected)],
+    'practice-lab': ['lab', Number(selected)],
+    'practice-challenge': ['challenge', Number(selected)],
+    operation: ['operation', Number(selected)],
+  }[page];
+  if (restricted && Number.isInteger(restricted[1]) && !allowed(...restricted)) {
+    root.innerHTML = frame('ACCESS / MEMBERSHIP', tr('المحتوى مقفل', 'Content locked'), '', lockedBody(...restricted));
+    return;
+  }
   const renderer = {
     'library-course': renderCourse, 'library-lesson': renderLesson,
     'practice-quiz': renderQuiz, 'practice-lab': renderLab,
@@ -207,17 +243,21 @@ function render() {
   }
 }
 
-document.addEventListener('click', (event) => {
+document.addEventListener('click', async (event) => {
   const button = event.target.closest('button');
-  if (!button || !data) return;
+  if (!button || !data || !user() || !membership) return;
   const lessonId = params.get('id');
   if (button.id === 'favorite-button') {
     state.favorites = state.favorites.includes(lessonId) ? state.favorites.filter((id) => id !== lessonId) : [...state.favorites, lessonId];
     save(); render();
   }
   if (button.id === 'complete-button') {
-    state.completed[lessonId] ||= new Date().toISOString(); save(); render();
-    announce(tr('حُفظت القراءة محلياً. ارجع للمراجعة غداً.', 'Reading saved locally. Review it tomorrow.'));
+    button.disabled = true;
+    try {
+      await markProgramLesson(lessonId);
+      state.completed[lessonId] ||= new Date().toISOString(); save(); render();
+      announce(tr('حُفظت قراءتك في حسابك. ارجع للمراجعة غداً.', 'Your reading is saved to your account. Review it tomorrow.'));
+    } catch (error) { button.disabled = false; announce(error.message || tr('تعذر حفظ الدرس.', 'Could not save this lesson.')); }
   }
   if (button.id === 'save-note') {
     state.notes[lessonId] = document.querySelector('#lesson-note')?.value || ''; save();
@@ -237,7 +277,7 @@ document.addEventListener('click', (event) => {
   }
   if (button.id === 'settings-language') document.querySelector('#language-toggle')?.click();
   if (button.id === 'clear-library' && confirm(tr('هل تريد حذف بيانات مكتبة التدريب المحلية؟', 'Clear local practice library data?'))) {
-    localStorage.removeItem(key); state = { completed: {}, favorites: [], notes: {}, practice: {}, reviewed: {} }; render();
+    localStorage.removeItem(key()); loadPersonalState(); render();
   }
   if (button.id === 'profile-signin') document.querySelector('#account-button')?.click();
   if (button.dataset.choice) {
@@ -251,54 +291,95 @@ document.addEventListener('click', (event) => {
   }
 });
 
-document.addEventListener('submit', (event) => {
-  if (event.target.id !== 'practice-form' || !data) return;
+document.addEventListener('submit', async (event) => {
+  if (event.target.id !== 'practice-form' || !data || !user() || !membership) return;
   event.preventDefault();
   const form = event.target;
   const result = document.querySelector('#practice-result');
-  let correct = 0, count = 1, answer = 0, id = '';
+  let correct = 0, count = 1, id = '';
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  try {
   if (page === 'practice-quiz') {
     const index = Number(params.get('id'));
     const quiz = data.quizzes[index];
-    count = quiz.questions.length;
-    correct = quiz.questions.reduce((total, question, questionIndex) => total + (Number(new FormData(form).get(`q${questionIndex}`)) === question.ans ? 1 : 0), 0);
-    quiz.questions.forEach((question, questionIndex) => {
+    const answers = quiz.questions.map((question, questionIndex) => Number(new FormData(form).get(`q${questionIndex}`)));
+    const scored = await checkProgramPractice('quiz', index, answers, currentLanguage());
+    count = scored.count; correct = scored.correct;
+    scored.review.forEach((question, questionIndex) => {
       const cardId = `quiz-${index}-question-${questionIndex}`;
-      if (Number(new FormData(form).get(`q${questionIndex}`)) !== question.ans) {
+      if (question.missed) {
         state.reviewCards[cardId] = {
-          quiz: quiz.name, question: question.q, answer: question.opts[question.ans],
+          quiz: quiz.name, quizTitles: { ar: dataAr?.quizzes[index]?.name || quiz.name, en: dataEn?.quizzes[index]?.name || quiz.name },
+          question: question.question, answer: question.answer, text: question.text,
           stage: 0, dueAt: new Date().toISOString(),
         };
       }
     });
     id = `quiz-${index}`;
-    result.innerHTML = `<strong>${correct} / ${count}</strong><ol>${quiz.questions.map((question, index) => `<li>${esc(question.q)}<br><small>${tr('الإجابة:', 'Answer:')} ${esc(question.opts[question.ans])}</small></li>`).join('')}</ol>`;
+    result.innerHTML = `<strong>${correct} / ${count}</strong><ol>${scored.review.map((question) => `<li>${esc(question.question)}<br><small>${tr('الإجابة:', 'Answer:')} ${esc(question.answer)}</small></li>`).join('')}</ol>`;
   } else {
     const index = Number(params.get('id'));
-    const item = page === 'practice-lab' ? data.labs[index] : data.challenges[index];
-    answer = item.verify_ans;
-    correct = Number(new FormData(form).get('answer')) === answer ? 1 : 0;
+    const scored = await checkProgramPractice(page === 'practice-lab' ? 'lab' : 'challenge', index, Number(new FormData(form).get('answer')), currentLanguage());
+    correct = scored.correct; count = scored.count;
     id = `${page}-${index}`;
     result.innerHTML = `<strong>${correct ? tr('إجابة صحيحة', 'Correct answer') : tr('راجع العينة وحاول ثانية', 'Review the sample and try again')}</strong>${correct ? `<p>${tr('هذا تدريب ذاتي فقط، لا يمنح XP أو عملات.', 'This is self practice only; no XP or coins are awarded.')}</p>` : ''}`;
   }
   result.className = `library-feedback ${correct === count ? 'success' : ''}`;
   state.practice[id] = { correct, count, date: new Date().toISOString() }; save();
   result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } catch (error) { announce(error.message || tr('تعذر تصحيح التدريب.', 'Could not check this practice.')); }
+  finally { submitButton.disabled = false; }
 });
 
 document.addEventListener('input', (event) => {
+  if (!user() || !membership) return;
   if (event.target.id === 'library-search') searchResults(event.target.value);
   if (event.target.id === 'lesson-note') {
     state.notes[params.get('id')] = event.target.value;
     save();
   }
 });
-document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(render, 0));
+document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(async () => {
+  const language = currentLanguage();
+  if (!(language === 'en' ? dataEn : dataAr)) {
+    if (root) root.innerHTML = frame('LIBRARY', tr('جارٍ تحميل الترجمة…', 'Loading translation…'), '', '');
+    try { await ensureLanguage(language); } catch (error) { announce(error.message); return; }
+  }
+  data = language === 'en' ? dataEn : dataAr;
+  render();
+}, 0));
 
-fetch('content/desktop-library.json?v=20260928-15')
-  .then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
-  .then((result) => { data = result; render(); })
-  .catch((error) => {
-    console.error('Desktop library unavailable:', error);
+async function ensureLanguage(language) {
+  if (languageLoads.has(language)) return languageLoads.get(language);
+  const owner = user()?.$id;
+  const loading = loadProgramLibrary(language).then(({ membership: plan, foundationsPassed: passed, library }) => {
+    if (!owner || user()?.$id !== owner || libraryOwner !== owner) return;
+    if (!['free', 'plus', 'pro'].includes(plan.effectivePlan || plan.plan)) throw new Error('Invalid membership state');
+    membership = plan; foundationsPassed = Boolean(passed);
+    if (language === 'en') dataEn = library; else dataAr = library;
+  }).catch((error) => { languageLoads.delete(language); throw error; });
+  languageLoads.set(language, loading);
+  return loading;
+}
+
+async function loadLibrary() {
+  try {
+    if (!user()) await loadUser();
+    if (!user()) { membership = null; data = null; libraryOwner = null; languageLoads.clear(); dataAr = dataEn = null; return; }
+    if (root) root.innerHTML = frame('LIBRARY', tr('جارٍ تجهيز محتواك…', 'Preparing your content…'), '', '');
+    if (libraryOwner !== user().$id) { libraryOwner = user().$id; languageLoads.clear(); dataAr = dataEn = null; }
+    loadPersonalState();
+    await ensureLanguage(currentLanguage());
+    data = currentLanguage() === 'en' ? dataEn : dataAr;
+    render();
+    ensureLanguage(currentLanguage() === 'en' ? 'ar' : 'en').catch((error) => console.warn('Second library language unavailable:', error));
+  } catch (error) {
+    console.error('Academy library unavailable:', error);
+    membership = null;
     if (root) root.innerHTML = frame('LIBRARY', tr('تعذر تحميل المكتبة', 'Library unavailable'), tr('حدّث الصفحة للمحاولة من جديد.', 'Refresh to try again.'), '');
-  });
+  }
+}
+
+window.addEventListener('biuret-auth-changed', loadLibrary);
+loadLibrary();

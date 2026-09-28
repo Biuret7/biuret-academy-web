@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+  <symbol id="home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM9 21v-7h6v7"/></symbol>
+  <symbol id="paths" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="19" cy="7" r="2"/><circle cx="8" cy="19" r="2"/><path d="M7 5h6a5 5 0 0 1 5 5v2a5 5 0 0 1-5 5h-3"/></symbol>
+  <symbol id="review" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 2.6 6.4M3 17v-5h5M12 7v5l3 2"/></symbol>
+  <symbol id="courses" viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22zM4 4.5V19a2.5 2.5 0 0 1 2.5-2.5H20M8 7h8M8 11h6"/></symbol>
+  <symbol id="operations" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 2v5m0 10v5M2 12h5m10 0h5"/></symbol>
+  <symbol id="labs" viewBox="0 0 24 24"><path d="M9 2h6M10 2v7L4 19a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3L14 9V2M7 16h10M10 19h4"/></symbol>
+  <symbol id="quizzes" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3.5h6M9 9h6m-6 4h4m-4 4 2 2 4-4"/></symbol>
+  <symbol id="challenges" viewBox="0 0 24 24"><path d="M8 4H5v5c0 5 3 9 7 11 4-2 7-6 7-11V4h-3M8 4a4 4 0 0 0 8 0H8ZM9 12l2 2 4-4"/></symbol>
+  <symbol id="tools" viewBox="0 0 24 24"><path d="M14 4a5 5 0 0 0-5.5 6.5L3 16a3 3 0 1 0 5 5l5.5-5.5A5 5 0 0 0 20 10l-4 2-3-3z"/></symbol>
+  <symbol id="progress" viewBox="0 0 24 24"><path d="M4 20V12h4v8M10 20V8h4v12M16 20V4h4v16M3 21h18"/></symbol>
+  <symbol id="certifications" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="m8 14-2 8 6-3 6 3-2-8M9.5 9l2 2 3-3"/></symbol>
+  <symbol id="professional" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18M10 13v2h4v-2"/></symbol>
+  <symbol id="notes" viewBox="0 0 24 24"><path d="M4 3h16v18H4zM8 8h8m-8 4h8m-8 4h5"/></symbol>
+  <symbol id="favorites" viewBox="0 0 24 24"><path d="m12 2 3 6 6.6 1-4.8 4.7 1.2 6.5L12 17l-6 3.2 1.2-6.5L2.4 9 9 8z"/></symbol>
+  <symbol id="exam" viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H5V3zM15 3v5h4M8 13l2 2 4-4m-6 8h8"/></symbol>
+  <symbol id="certificate" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="15" rx="2"/><path d="M7 8h10M7 12h6m1 6 2 4 2-4m-4-3a2 2 0 1 0 4 0 2 2 0 0 0-4 0"/></symbol>
+  <symbol id="membership" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 9h20M6 15h4m6 0h3"/></symbol>
+  <symbol id="shop" viewBox="0 0 24 24"><path d="M4 8h16l-1 13H5zM8 9V6a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></symbol>
+  <symbol id="settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M10 2h4l.5 2.2 2 1 2.1-.8 2.8 2.8-.8 2.1 1 2L24 12l-2.4.7-1 2 .8 2.1-2.8 2.8-2.1-.8-2 1L14 22h-4l-.5-2.2-2-1-2.1.8-2.8-2.8.8-2.1-1-2L0 12l2.4-.7 1-2-.8-2.1 2.8-2.8 2.1.8 2-1z"/></symbol>
+  <symbol id="profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 22a8 8 0 0 1 16 0"/></symbol>
+</svg>

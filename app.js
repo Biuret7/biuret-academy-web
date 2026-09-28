@@ -1,9 +1,10 @@
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260928-4';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260928-1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260928-4';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-4';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260928-4';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20260928-14';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260929-1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260929-1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260929-1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260929-1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260929-1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20260929-1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20260929-1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -21,6 +22,27 @@ let rewards = null;
 let rewardStatus = 'idle';
 let examPassed = false;
 let quizAnchorFocused = false;
+const currentPage = document.querySelector('.site-shell')?.dataset.page || 'home';
+const publicCredential = currentPage === 'certificate' && /^c_[a-f0-9]{32}$/.test(new URLSearchParams(location.search).get('id') || '');
+const learningPage = !['home', 'membership'].includes(currentPage) && !publicCredential;
+
+function updateLearningGate() {
+  const main = $('#main');
+  if (!main || !learningPage) { document.documentElement.classList.add('academy-auth-ready'); return; }
+  let gate = $('#learning-access-gate');
+  if (!gate) {
+    gate = document.createElement('section');
+    gate.id = 'learning-access-gate';
+    gate.className = 'learning-access-gate section-frame';
+    main.before(gate);
+  }
+  const locked = !user();
+  main.hidden = locked;
+  gate.hidden = !locked;
+  if (locked) gate.innerHTML = `<div class="access-panel"><span class="section-kicker">BIURET / ACADEMY</span><h1>${isEnglish() ? 'Sign in to start learning.' : 'سجّل دخولك لتبدأ التعلّم.'}</h1><p>${isEnglish() ? 'Your route, lessons, labs and progress open with your Biuret account. Every new account starts on the Free plan.' : 'مسارك ودروسك ومختبراتك وتقدّمك تفتح عبر حساب Biuret. يبدأ كل حساب جديد بخطة Free.'}</p><div class="access-actions"><button type="button" class="button button-primary" id="gate-signin">${isEnglish() ? 'Sign in or create account' : 'تسجيل الدخول أو إنشاء حساب'} ↗</button><a class="button button-outline" href="membership.html">${isEnglish() ? 'Compare plans' : 'قارن الخطط'} ↗</a></div></div>`;
+  gate.querySelector('#gate-signin')?.addEventListener('click', showAuth);
+  document.documentElement.classList.add('academy-auth-ready');
+}
 
 function learningProgress() {
   if (!user()) return progress;
@@ -85,11 +107,12 @@ function renderJourney() {
 function renderSpecializations() {
   const root = $('#specialization-grid');
   if (!root) return;
+  const programCourse = { web: 'desktop-10', soc: 'desktop-v5-category-1', pentest: 'desktop-3', forensics: 'desktop-7', cloud: 'desktop-13', malware: 'desktop-12' };
   root.innerHTML = specializations.map((item, index) => {
-    const practice = item.challengeTrack && examPassed
-      ? `<a href="challenges.html?track=${encodeURIComponent(item.challengeTrack)}">${j('جرّب التدريب التمهيدي', 'Try introductory practice')} ↗</a>`
-      : `<span>${item.challengeTrack ? j('أكمل الأساسيات والامتحان لبدء التدريب التمهيدي', 'Complete Foundations and the exam to start introductory practice') : j('الكورسات والمختبرات قيد الإعداد', 'Courses and labs in development')}</span>`;
-    const status = item.challengeTrack ? examPassed ? j('تدريب تمهيدي متاح', 'Intro practice available') : j('بعد امتحان الأساسيات', 'After the Foundations exam') : j('الخطة قيد التطوير', 'Curriculum in development');
+    const practice = examPassed
+      ? `<a href="library-course.html?id=${encodeURIComponent(programCourse[item.id])}">${j('افتح كورس البرنامج', 'Open program course')} ↗</a>${item.challengeTrack ? ` <a href="challenges.html?track=${encodeURIComponent(item.challengeTrack)}">${j('تدريب تمهيدي', 'Intro practice')} ↗</a>` : ''}`
+      : `<a href="paths.html#foundations-roadmap">${j('أكمل الأساسيات والامتحان أولاً', 'Complete Foundations and its exam first')} ↗</a>`;
+    const status = examPassed ? j('كورس البرنامج متاح حسب العضوية', 'Program course by membership') : j('بعد امتحان الأساسيات', 'After the Foundations exam');
     return `<article class="specialization-card"><div class="specialization-top"><span>PATH / ${String(index + 2).padStart(2, '0')}</span><span>${status}</span></div><h3>${esc(lc(item.title))}</h3><p>${esc(lc(item.summary))}</p><ol>${item.topics.map((topic) => `<li>${esc(lc(topic))}</li>`).join('')}</ol><div class="specialization-bottom">${practice}</div></article>`;
   }).join('');
 }
@@ -118,9 +141,11 @@ function renderChallenges() {
   const listed = filter === 'all' ? challenges : challengesForTrack(filter);
   $('#challenge-count').textContent = isEnglish() ? `${listed.length} challenges` : `${listed.length} ${listed.length > 10 ? 'تحدّياً' : 'تحديات'}`;
   $('#challenge-list').innerHTML = listed.map((challenge) => {
-    const copy = challengeText(challenge), done = Boolean(progress.completed[challenge.id]), locked = !isUnlocked(challenge, progress);
+    const copy = challengeText(challenge), done = Boolean(progress.completed[challenge.id]), tier = requiredPlan('coreChallenge', challenges.indexOf(challenge));
+    const planLocked = !canAccess('coreChallenge', challenges.indexOf(challenge), rewards);
+    const locked = planLocked || !isUnlocked(challenge, progress);
     const track = trackText(tracks.find((item) => item.id === challenge.track));
-    return `<button class="challenge-card ${done ? 'done' : ''} ${locked ? 'locked' : ''}" type="button" data-challenge="${challenge.id}" aria-label="${esc(copy.title)}${isEnglish() ? ', ' : '، '}${done ? t('completed') : locked ? t('locked') : t('available')}"><span class="challenge-index">${done ? '✓' : locked ? '⌁' : String(challenge.order).padStart(2, '0')}</span><span class="challenge-body"><h3>${esc(copy.title)}</h3><p>${esc(copy.subtitle)}</p><span class="challenge-meta"><span>${esc(track.name)}</span><span>${challenge.minutes} MIN</span><span>+${challenge.xp} PRACTICE XP</span></span></span><span class="challenge-arrow" aria-hidden="true">${locked ? '○' : '↗'}</span></button>`;
+    return `<button class="challenge-card ${done ? 'done' : ''} ${locked ? 'locked' : ''}" type="button" data-challenge="${challenge.id}" aria-label="${esc(copy.title)}${isEnglish() ? ', ' : '، '}${done ? t('completed') : locked ? t('locked') : t('available')}"><span class="challenge-index">${done ? '✓' : locked ? '⌁' : String(challenge.order).padStart(2, '0')}</span><span class="challenge-body"><h3>${esc(copy.title)}</h3><p>${esc(copy.subtitle)}</p><span class="challenge-meta"><span>${esc(track.name)}</span><span>${challenge.minutes} MIN</span><span>+${challenge.xp} PRACTICE XP</span><span>${tier.toUpperCase()}</span></span></span><span class="challenge-arrow" aria-hidden="true">${locked ? '○' : '↗'}</span></button>`;
   }).join('');
   for (const button of document.querySelectorAll('.filter')) {
     const selected = button.dataset.filter === filter;
@@ -231,6 +256,11 @@ function render() { renderJourney(); renderSpecializations(); renderTracks(); re
 function openChallenge(id) {
   const challenge = challengeById[id];
   if (!challenge) return;
+  if (!user()) { showAuth(); return; }
+  if (!canAccess('coreChallenge', challenges.indexOf(challenge), rewards)) {
+    toast(isEnglish() ? `This challenge requires ${requiredPlan('coreChallenge', challenges.indexOf(challenge)).toUpperCase()}. Compare plans in Membership.` : `هذا التحدي يتطلب خطة ${requiredPlan('coreChallenge', challenges.indexOf(challenge)).toUpperCase()}. راجع صفحة العضوية.`);
+    return;
+  }
   if (!isUnlocked(challenge, progress)) { toast(t('previousFirst')); return; }
   const copy = challengeText(challenge);
   activeChallenge = challenge; attempts = 0; hintUsed = false;
@@ -254,6 +284,7 @@ function renderNextButton() {
 }
 function checkAnswer(event) {
   event.preventDefault();
+  if (!user()) { $('#challenge-dialog').close(); showAuth(); return; }
   const challenge = activeChallenge;
   let correct;
   if (challenge.kind === 'choice') {
@@ -287,7 +318,7 @@ function showAuth() {
   if (signedIn) {
     $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || t('learner'))}</div><div>${esc(user().email || '')}</div><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">${t('signOut')}</button></div>`;
     $('#signout-button').addEventListener('click', async () => {
-      try { await syncQueue; await saveCloudProgress(progress); await signOut(); ownerUserId = null; progress = assignDaily(null); rewards = null; rewardStatus = 'idle'; persistLocal(); $('#auth-dialog').close(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedOut')); }
+      try { await syncQueue; await saveCloudProgress(progress); await signOut(); ownerUserId = null; progress = assignDaily(null); rewards = null; rewardStatus = 'idle'; persistLocal(); $('#auth-dialog').close(); $('#challenge-dialog').close(); updateLearningGate(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedOut')); }
       catch { toast(t('signOutError')); }
     });
   }
@@ -310,13 +341,16 @@ async function handleAuthSubmit(event) {
     if (signup) await signUp($('#auth-name').value.trim(), $('#auth-email').value.trim(), $('#auth-password').value);
     else await signIn($('#auth-email').value.trim(), $('#auth-password').value);
     progress = mergeProgress(ownerUserId && ownerUserId !== user().$id ? null : progress, cloudProgress());
-    ownerUserId = user().$id; persistLocal(); queueCloudSync(); $('#auth-dialog').close(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedIn')); await refreshRewards();
+    ownerUserId = user().$id; persistLocal(); queueCloudSync(); $('#auth-dialog').close(); updateLearningGate(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedIn')); await refreshRewards();
   } catch (cause) { error.textContent = cause?.message || t('loginError'); error.hidden = false; }
   finally { button.disabled = false; }
 }
 function bindEvents() {
   const onChallengesPage = Boolean($('#challenge-list'));
-  $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });
+  $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => {
+    if (!user()) { showAuth(); return; }
+    location.href = nextLearningStep(learningProgress().lessons, examPassed).href;
+  });
   $('#closing-button')?.addEventListener('click', () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });
   $('#daily-button')?.addEventListener('click', () => onChallengesPage ? openChallenge(dailyChallenge(progress).id) : visitChallenge(dailyChallenge(progress).id));
   $('#challenge-list')?.addEventListener('click', (event) => { const card = event.target.closest('[data-challenge]'); if (card) openChallenge(card.dataset.challenge); });
@@ -355,7 +389,7 @@ function bindEvents() {
       button.disabled = false;
     }
   });
-  $('#language-toggle').addEventListener('click', () => { toggleLanguage(); render(); applyLanguage(); });
+  $('#language-toggle').addEventListener('click', () => { toggleLanguage(); render(); applyLanguage(); updateLearningGate(); });
   const navToggle = $('#nav-toggle');
   const siteNavigation = document.getElementById(navToggle.getAttribute('aria-controls'));
   const sidebarScrim = $('#sidebar-scrim');
@@ -427,14 +461,15 @@ async function init() {
   const query = new URLSearchParams(location.search);
   if (query.has('auth_error')) { toast(t('oauthError')); const url = new URL(location.href); url.searchParams.delete('auth_error'); history.replaceState(null, '', url); }
   const requestedChallenge = $('#challenge-list') ? query.get('challenge') : null;
-  if (!available()) { if (requestedChallenge) openChallenge(requestedChallenge); return; }
+  if (!available()) { updateLearningGate(); return; }
   let signedIn;
-  try { signedIn = await loadUser(); } catch { toast(t('accountError')); if (requestedChallenge) openChallenge(requestedChallenge); return; }
+  try { signedIn = await loadUser(); } catch { toast(t('accountError')); updateLearningGate(); return; }
+  updateLearningGate();
   if (signedIn) {
     if (ownerUserId === signedIn.$id) { try { progress = cleanProgress(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch { progress = assignDaily(null); } }
     progress = mergeProgress(ownerUserId && ownerUserId !== signedIn.$id ? null : progress, cloudProgress());
     ownerUserId = signedIn.$id; persistLocal(); render(); queueCloudSync(); await refreshRewards();
   } else if (ownerUserId) { ownerUserId = null; progress = assignDaily(null); persistLocal(); render(); }
-  if (requestedChallenge) openChallenge(requestedChallenge);
+  if (requestedChallenge && signedIn) openChallenge(requestedChallenge);
 }
 init();

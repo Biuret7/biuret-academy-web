@@ -19,8 +19,10 @@ export function credentialAdminService({ base, request }) {
     if (result.status === 404) return { code: 404, data: { error: 'Credential not found' } };
     if (result.status !== 200) throw new Error('Credential lookup failed');
     const payload = JSON.parse(result.data.payload);
-    if (payload.pathId !== 'foundations' || payload.version !== 'foundations-v1') throw new Error('Credential data invalid');
-    return { code: 200, data: { id, holderName: payload.holderName, issuedAt: payload.issuedAt, status: payload.status, revokedAt: payload.revokedAt || null, shared: result.data.$permissions?.includes('read("any")') || false }, row: result.data, payload };
+    const valid = (payload.pathId === 'foundations' && payload.version === 'foundations-v1') ||
+      (payload.version === 'program-path-v1' && ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(payload.pathId));
+    if (!valid) throw new Error('Credential data invalid');
+    return { code: 200, data: { id, pathId: payload.pathId, holderName: payload.holderName, issuedAt: payload.issuedAt, status: payload.status, revokedAt: payload.revokedAt || null, shared: result.data.$permissions?.includes('read("any")') || false }, row: result.data, payload };
   }
 
   async function revoke(id, actorId, reason) {

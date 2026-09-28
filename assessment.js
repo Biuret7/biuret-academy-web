@@ -1,5 +1,5 @@
-import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential } from './auth.js?v=20260928-4';
-import { currentLanguage, applyLanguage } from './i18n.js?v=20260928-14';
+import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential } from './auth.js?v=20260929-1';
+import { currentLanguage, applyLanguage } from './i18n.js?v=20260929-1';
 
 const root = document.querySelector('#assessment-main');
 const isExam = document.querySelector('.site-shell')?.dataset.page === 'exam';
@@ -36,9 +36,16 @@ async function refreshExam() {
 
 function credentialCard(data, publicView = false) {
   const active = data.status === 'active';
+  const pathNames = {
+    path_pentest: ['اختبار الاختراق', 'Penetration testing'], path_soc: ['تحليل SOC', 'SOC analysis'],
+    path_dfir: ['التحقيق الجنائي الرقمي', 'Digital forensics'], path_cloud: ['أمن السحابة', 'Cloud security'],
+    path_grc: ['الحوكمة والمخاطر والامتثال', 'Governance, risk and compliance'],
+  };
+  const program = data.version === 'program-path-v1';
+  const subject = program ? pathNames[data.pathId]?.[currentLanguage() === 'en' ? 1 : 0] : tr('أساسيات الأمن السيبراني', 'Cybersecurity Foundations');
   const verifyUrl = new URL('certificate.html', location.href); verifyUrl.searchParams.set('id', data.id);
   const label = active ? tr('إنجاز موثّق', 'Verified achievement') : tr('إنجاز ملغى', 'Revoked credential');
-  return `<div class="credential-card ${active ? '' : 'revoked'}"><div class="credential-head"><span class="section-kicker">BIURET / ACADEMY</span><span class="credential-seal" aria-hidden="true">✦</span></div><p class="credential-kind">CYBERSECURITY FOUNDATIONS / ${esc(data.version)}</p><h2>${label}</h2><p>${tr('ممنوح إلى', 'Awarded to')}</p><strong class="credential-name">${esc(data.holderName)}</strong><div class="credential-rule"></div><p>${tr('أكمل 9 دروس موثقة واجتاز الامتحان النهائي بنتيجة لا تقل عن 8/10.', 'Completed 9 verified lessons and passed the final exam with at least 8/10.')}</p><div class="credential-meta"><span>${tr('تاريخ الإصدار', 'Issued')}<strong>${esc(formatDate(data.issuedAt))}</strong></span><span>${tr('المُصدر', 'Issuer')}<strong>Biuret Academy</strong></span></div><code dir="ltr">${esc(data.id)}</code></div>${!publicView ? `<div class="assessment-card share-card"><h2>${tr('المشاركة بإذنك', 'Share with your permission')}</h2><p>${tr('عند تفعيل الرابط العام يستطيع أي شخص لديه الرابط رؤية اسم العرض وتاريخ الإنجاز وحالته. يمكنك إيقاف المشاركة لاحقاً.', 'When you enable the public link, anyone with it can see your display name, issue date, and status. You can turn sharing off later.')}</p><button class="button ${data.shared ? 'button-outline' : 'button-primary'}" id="share-credential" type="button">${data.shared ? tr('إيقاف المشاركة', 'Stop sharing') : tr('تفعيل رابط التحقق', 'Enable verification link')}</button>${data.shared ? `<p class="verification-link"><a href="${esc(verifyUrl.href)}">${esc(verifyUrl.href)}</a></p>` : ''}</div>` : ''}`;
+  return `<div class="credential-card ${active ? '' : 'revoked'}"><div class="credential-head"><span class="section-kicker">BIURET / ACADEMY</span><span class="credential-seal" aria-hidden="true">✦</span></div><p class="credential-kind">${esc(subject || data.pathId)} / ${esc(data.version)}</p><h2>${label}</h2><p>${tr('ممنوح إلى', 'Awarded to')}</p><strong class="credential-name">${esc(data.holderName)}</strong><div class="credential-rule"></div><p>${program ? tr('أكمل دروس مسار التخصص واجتاز امتحانه بنتيجة لا تقل عن 8/10.', 'Completed the specialty path lessons and passed its exam with at least 8/10.') : tr('أكمل 9 دروس موثقة واجتاز الامتحان النهائي بنتيجة لا تقل عن 8/10.', 'Completed 9 verified lessons and passed the final exam with at least 8/10.')}</p><div class="credential-meta"><span>${tr('تاريخ الإصدار', 'Issued')}<strong>${esc(formatDate(data.issuedAt))}</strong></span><span>${tr('المُصدر', 'Issuer')}<strong>Biuret Academy</strong></span></div><code dir="ltr">${esc(data.id)}</code></div>${!publicView ? `<div class="assessment-card share-card"><h2>${tr('المشاركة بإذنك', 'Share with your permission')}</h2><p>${tr('عند تفعيل الرابط العام يستطيع أي شخص لديه الرابط رؤية اسم العرض وتاريخ الإنجاز وحالته. يمكنك إيقاف المشاركة لاحقاً.', 'When you enable the public link, anyone with it can see your display name, issue date, and status. You can turn sharing off later.')}</p><button class="button ${data.shared ? 'button-outline' : 'button-primary'}" id="share-credential" type="button">${data.shared ? tr('إيقاف المشاركة', 'Stop sharing') : tr('تفعيل رابط التحقق', 'Enable verification link')}</button>${data.shared ? `<p class="verification-link"><a href="${esc(verifyUrl.href)}">${esc(verifyUrl.href)}</a></p>` : ''}</div>` : ''}`;
 }
 
 async function refreshCredential() {
@@ -51,7 +58,7 @@ async function refreshCredential() {
       if (!response.ok) throw new Error(tr('لم نجد إنجازاً عاماً بهذا الرابط، أو أوقف صاحبه المشاركة.', 'No public credential was found at this link, or its owner stopped sharing.'));
       const row = await response.json();
       const data = JSON.parse(row.payload);
-      if (data.version !== 'foundations-v1' || data.pathId !== 'foundations') throw new Error(tr('بيانات الإنجاز غير صحيحة.', 'Credential data is invalid.'));
+      if (!((data.version === 'foundations-v1' && data.pathId === 'foundations') || (data.version === 'program-path-v1' && ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(data.pathId)))) throw new Error(tr('بيانات الإنجاز غير صحيحة.', 'Credential data is invalid.'));
       root.innerHTML = frame(credentialCard({ ...data, id }, true));
     } catch (error) { notice(tr('تعذر التحقق', 'Verification unavailable'), errorMessage(error)); }
     return;

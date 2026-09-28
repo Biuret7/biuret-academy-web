@@ -1,3 +1,8 @@
 functions/academy-progress/exam-bank.private.json
+functions/academy-progress/path-exam-bank.private.json
+functions/academy-progress/desktop-library.*.private.json
+content/desktop-library.json
+content/desktop-library.en.json
 *.tar.gz
 _site/
+.translation-venv/

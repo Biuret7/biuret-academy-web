@@ -1,5 +1,5 @@
-import { loadUser, loadMembership } from './auth.js?v=20260928-4';
-import { currentLanguage } from './i18n.js?v=20260928-14';
+import { loadUser, loadMembership } from './auth.js?v=20260929-1';
+import { currentLanguage } from './i18n.js?v=20260929-1';
 
 const root = document.querySelector('#membership-main');
 let signedIn = false;
@@ -10,33 +10,33 @@ let failed = false;
 const copy = {
   ar: {
     eyebrow: 'BIURET ACADEMY / MEMBERSHIP', title: 'اختر العمق الذي يناسب رحلتك.',
-    intro: 'ابدأ بالأساسيات مجاناً، وانتقل لاحقاً إلى Plus أو Pro عندما نفتح الاشتراكات. تقدمك وXP يبقيان مع حسابك في كل خطة.',
+    intro: 'يبدأ كل حساب جديد بخطة Free تلقائياً. أكمل الأساسيات وامتحانها أولاً، ثم اختر تخصصك. تحدد خطتك مقدار المحتوى الذي يمكنك فتحه.',
     yourPlan: 'عضويتك الحالية', guest: 'سجّل الدخول لعرض حالة عضويتك.', loading: 'جارٍ التحقق من العضوية…', failed: 'تعذّر التحقق من العضوية الآن. حاول تحديث الصفحة.',
-    statuses: { free: 'الخطة المجانية مفعّلة', plus: 'عضوية Plus مفعّلة', pro: 'عضوية Pro مفعّلة' }, until: 'حتى',
+    statuses: { free: 'خطة Free مفعّلة تلقائياً', plus: 'عضوية Plus مفعّلة', pro: 'عضوية Pro مفعّلة' }, admin: 'صلاحية الإدارة: جميع المحتويات مفتوحة', until: 'حتى',
     free: 'Free', plus: 'Plus', pro: 'Pro', available: 'متاحة الآن', planned: 'قيد الإعداد', featured: 'الأكثر شمولاً',
     freePrice: 'مجاناً', perMonth: 'شهرياً',
-    freeDesc: 'الأساسيات الضرورية لتبدأ بثقة.', plusDesc: 'خطوة إضافية في التطبيق والمكافآت.', proDesc: 'تجربة كاملة لمن يريد التدريب بعمق.',
-    freeItems: ['مسار الأساسيات ودروسه التسعة', 'XP ومستويات تقدّم موثقة', 'امتحان الأساسيات وإثبات الإنجاز'],
-    plusItems: ['جميع مزايا Free', '10 عملات Biuret عند إكمال كل درس جديد', 'مهام تدريب أسبوعية إضافية', 'تحديات تطبيقية موسعة', 'لوحة أهداف تعلّم أسبوعية'],
-    proItems: ['جميع مزايا Free وPlus', 'اكتساب عملات Biuret من الدروس', 'وصول غير محدود للمختبرات المتقدمة', 'مسارات أمن سيبراني تخصصية', 'مشاريع عملية مع مراحل واضحة', 'تحديات متقدمة وسيناريوهات واقعية', 'تتبّع تقدّم المشاريع داخل الحساب', 'تقييمات ومراجعات أعمق', 'إثباتات إنجاز للمسارات المتقدمة', 'مكتبة موارد وقوالب احترافية'],
+    freeDesc: 'بداية مرتبة ومحدودة دون دفع.', plusDesc: 'تخصصات وتطبيقات أكثر بقليل.', proDesc: 'الوصول الكامل لمكتبة التعلم والتطبيق.',
+    freeItems: ['3 كورسات الأساسيات و9 دروس موثقة', 'امتحان الأساسيات وإثبات إنجازها', 'كورس تمهيدي واحد من البرنامج', 'مختبر تدريبي واحد و3 تحديات برنامج', '5 تحديات يومية أساسية', 'XP ومستويات؛ دون كسب عملات جديدة'],
+    plusItems: ['كل ما في Free', '8 كورسات برنامج و8 اختبارات تدريبية', '4 مختبرات و8 تحديات برنامج', '10 أدلة أدوات و3 سيناريوهات عمليات', '10 تحديات يومية من المسارات الأساسية', '10 عملات Biuret لكل درس أساسي موثق جديد'],
+    proItems: ['كل ما في Free وPlus', 'جميع كورسات البرنامج الـ18 ودروسه الـ99', 'المختبرات الثمانية وكل تحديات البرنامج الـ13', 'جميع الاختبارات التدريبية الـ12', 'جميع أدلة الأدوات الـ15 وسيناريوهات العمليات الستة', 'كل تحديات الأكاديمية اليومية الـ15', 'وصول غير محدود للمحتوى المنشور ضمن الخطة', 'كسب عملات Biuret من الدروس الأساسية الموثقة'],
     freeCta: 'ابدأ المسار المجاني ↗', plusCta: 'اشتراكات Plus ستفتح لاحقاً', proCta: 'اشتراكات Pro ستفتح لاحقاً',
-    note: 'أسعار مخططة: Plus بسعر 5 دولارات وPro بسعر 10 دولارات شهرياً. المزايا الإضافية قيد التطوير، ولا يوجد شراء أو رسوم متكررة الآن. سنعرض الشروط النهائية قبل فتح الاشتراكات.',
-    principle: 'XP للجميع، والعملات للأعضاء', principleText: 'تُمنح نقاط XP والمستويات عند إكمال الدروس في كل الخطط. بدءاً من هذا التحديث، لا يكسب حساب Free عملات Biuret جديدة؛ كسب العملات عند إكمال الدروس مخصص لعضويتي Plus وPro. العملات السابقة تبقى في السجل، وهي منفصلة عن الدولار ولا تُصرف حالياً.',
+    note: 'Plus بسعر مخطط 5 دولارات وPro بسعر مخطط 10 دولارات شهرياً. الدفع والاشتراك الجديد غير متاحين بعد؛ لن تُخصم أي رسوم الآن. صلاحيات العضويات المدفوعة المفعّلة مسبقاً تعمل وفق خطتها.',
+    principle: 'طريقك قبل خطتك', principleText: 'تبدأ بدروس الأساسيات التسعة وامتحانها. بعدها تفتح مواد التخصص المتاحة حسب عضويتك. XP والمستويات متاحان للجميع عند إكمال الدروس الأساسية الموثقة، وعملات Biuret الجديدة لعضويتي Plus وPro فقط. العملات السابقة محفوظة ولا يمكن صرفها حالياً.',
   },
   en: {
     eyebrow: 'BIURET ACADEMY / MEMBERSHIP', title: 'Choose how deep you want to go.',
-    intro: 'Start Foundations for free, then move to Plus or Pro when subscriptions open. Your progress and XP stay with your account on every plan.',
+    intro: 'Every new account starts on Free automatically. Finish Foundations and its exam first, then choose a specialty. Your plan determines how much content opens.',
     yourPlan: 'Your current membership', guest: 'Sign in to view your membership status.', loading: 'Checking your membership…', failed: 'Membership status is unavailable. Refresh to try again.',
-    statuses: { free: 'Free plan active', plus: 'Plus membership active', pro: 'Pro membership active' }, until: 'until',
+    statuses: { free: 'Free plan active automatically', plus: 'Plus membership active', pro: 'Pro membership active' }, admin: 'Administrator access: all content unlocked', until: 'until',
     free: 'Free', plus: 'Plus', pro: 'Pro', available: 'Available now', planned: 'In development', featured: 'Most complete',
     freePrice: 'Free', perMonth: 'per month',
-    freeDesc: 'The essentials to get started with confidence.', plusDesc: 'More practice and lesson rewards.', proDesc: 'A complete experience for deeper practice.',
-    freeItems: ['Nine lessons in the Foundations path', 'Verified XP and learning levels', 'Foundations exam and achievement credential'],
-    plusItems: ['Everything in Free', '10 Biuret Coins for each newly completed lesson', 'Extra weekly practice missions', 'Expanded hands-on challenges', 'Weekly learning goals dashboard'],
-    proItems: ['Everything in Free and Plus', 'Earn Biuret Coins from lessons', 'Unlimited access to advanced labs', 'Specialist cybersecurity paths', 'Practical projects with clear milestones', 'Advanced challenges and realistic scenarios', 'Project progress tracked in your account', 'Deeper assessments and reviews', 'Achievement credentials for advanced paths', 'Professional resource and template library'],
+    freeDesc: 'An ordered, limited start at no cost.', plusDesc: 'A little more depth and practice.', proDesc: 'Full access to the published learning library.',
+    freeItems: ['3 Foundations courses and 9 verified lessons', 'Foundations exam and achievement credential', '1 introductory program course', '1 program lab and 3 program challenges', '5 core daily challenges', 'XP and levels; no new coin earnings'],
+    plusItems: ['Everything in Free', '8 program courses and 8 practice quizzes', '4 program labs and 8 program challenges', '10 tool guides and 3 operations scenarios', '10 core daily challenges', '10 Biuret Coins per newly verified Foundations lesson'],
+    proItems: ['Everything in Free and Plus', 'All 18 program courses and 99 lessons', 'All 8 program labs and 13 program challenges', 'All 12 program practice quizzes', 'All 15 tool guides and 6 operations scenarios', 'All 15 core daily challenges', 'Unlimited access to published content in the plan', 'Earn Biuret Coins from verified Foundations lessons'],
     freeCta: 'Start the free path ↗', plusCta: 'Plus subscriptions open later', proCta: 'Pro subscriptions open later',
-    note: 'Planned prices: Plus at USD 5 and Pro at USD 10 per month. Additional features are in development. There is no purchase or recurring charge yet; final terms will be shown before subscriptions open.',
-    principle: 'XP for everyone. Coins for members.', principleText: 'Completing lessons earns XP and levels on every plan. From this update, Free accounts cannot earn new Biuret Coins; lesson coin rewards require Plus or Pro. Previously earned coins remain in the ledger. Coins are separate from USD and cannot be spent yet.',
+    note: 'Planned monthly prices: Plus USD 5 and Pro USD 10. New subscriptions and payment are not available yet; no charge will be made now. Previously activated paid memberships retain their plan access.',
+    principle: 'Your route comes first.', principleText: 'Begin with nine Foundations lessons and their exam. Then open specialty content included in your membership. XP and levels are available for verified Foundations lessons on every plan; new Biuret Coins require Plus or Pro. Earlier coins remain saved and cannot be spent yet.',
   },
 };
 
@@ -55,7 +55,7 @@ function render() {
   if (!root) return;
   const c = copy[currentLanguage()];
   const plan = ['free', 'plus', 'pro'].includes(state?.plan) ? state.plan : 'free';
-  const label = loading ? c.loading : failed ? c.failed : !signedIn ? c.guest : c.statuses[plan];
+  const label = loading ? c.loading : failed ? c.failed : !signedIn ? c.guest : state?.admin ? c.admin : c.statuses[plan];
   const end = plan !== 'free' && state?.currentPeriodEnd ? ` · ${c.until} ${new Date(state.currentPeriodEnd).toLocaleDateString(currentLanguage() === 'ar' ? 'ar' : 'en-US')}` : '';
   root.innerHTML = `
     <section class="membership-hero reveal visible"><span class="section-kicker">${c.eyebrow}</span><h1>${c.title}</h1><p>${c.intro}</p></section>
