@@ -26,8 +26,16 @@ test('Academy pages use one navigation with every section available', () => {
   for (const page of allPages) {
     const html = read(`${page}.html`);
     assert.equal((html.match(/<nav\b/g) || []).length, 1, `${page} must have one navigation`);
-    assert.match(html, /id="nav-toggle"[^>]*aria-controls="site-navigation"[^>]*aria-expanded="false"/);
-    assert.match(html, /<nav class="desktop-nav" id="site-navigation"/);
+    if (page === 'index') {
+      assert.match(html, /<aside class="academy-sidebar" id="academy-sidebar"/);
+      assert.match(html, /id="nav-toggle"[^>]*aria-controls="academy-sidebar"[^>]*aria-expanded="false"/);
+      assert.match(html, /<nav class="sidebar-nav"/);
+      assert.match(html, /sidebar-brand-mark"><img src="assets\/biuret-wordmark-icon\.png"/);
+      for (const destination of ['index', 'exam', 'certificate']) assert.match(html, new RegExp(`href="${destination}\\.html"`));
+    } else {
+      assert.match(html, /id="nav-toggle"[^>]*aria-controls="site-navigation"[^>]*aria-expanded="false"/);
+      assert.match(html, /<nav class="desktop-nav" id="site-navigation"/);
+    }
     for (const section of sections) assert.match(html, new RegExp(`href="${section}\\.html"`));
   }
 });

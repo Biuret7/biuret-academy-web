@@ -3,7 +3,7 @@ import { learningPath, courses, courseById, lessonById, localized } from './lear
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260928-4';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-4';
 import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260928-4';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-6';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-7';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -355,25 +355,37 @@ function bindEvents() {
   });
   $('#language-toggle').addEventListener('click', () => { toggleLanguage(); render(); applyLanguage(); });
   const navToggle = $('#nav-toggle');
-  const siteNavigation = $('#site-navigation');
-  navToggle.addEventListener('click', () => {
-    const open = navToggle.getAttribute('aria-expanded') !== 'true';
+  const siteNavigation = document.getElementById(navToggle.getAttribute('aria-controls'));
+  const sidebarScrim = $('#sidebar-scrim');
+  const sidebarClose = $('#sidebar-close');
+  const setMenuOpen = (open, restoreFocus = false) => {
     navToggle.setAttribute('aria-expanded', String(open));
     siteNavigation.classList.toggle('is-open', open);
-  });
+    sidebarScrim?.classList.toggle('is-open', open);
+    if (sidebarScrim) document.body.classList.toggle('academy-menu-open', open);
+    if (open && sidebarClose) setTimeout(() => sidebarClose.focus(), 0);
+    if (restoreFocus) navToggle.focus();
+  };
+  navToggle.addEventListener('click', () => setMenuOpen(navToggle.getAttribute('aria-expanded') !== 'true'));
+  sidebarClose?.addEventListener('click', () => setMenuOpen(false, true));
+  sidebarScrim?.addEventListener('click', () => setMenuOpen(false, true));
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
-      navToggle.setAttribute('aria-expanded', 'false');
-      siteNavigation.classList.remove('is-open');
-      navToggle.focus();
+      setMenuOpen(false, true);
+    }
+    if (event.key === 'Tab' && sidebarClose && navToggle.getAttribute('aria-expanded') === 'true') {
+      const focusable = [...siteNavigation.querySelectorAll('a[href],button:not([disabled])')];
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!siteNavigation.contains(document.activeElement)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
+      else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
   });
   document.addEventListener('click', (event) => {
-    if (!event.target.closest('.topbar') && navToggle.getAttribute('aria-expanded') === 'true') {
-      navToggle.setAttribute('aria-expanded', 'false');
-      siteNavigation.classList.remove('is-open');
-    }
+    if (!event.target.closest('.topbar, .academy-sidebar') && navToggle.getAttribute('aria-expanded') === 'true') setMenuOpen(false);
   });
+  if (sidebarScrim) window.addEventListener('resize', () => { if (window.innerWidth > 1180 && navToggle.getAttribute('aria-expanded') === 'true') setMenuOpen(false); });
   document.querySelectorAll('[data-provider]').forEach((button) => button.addEventListener('click', () => {
     try { signInWithProvider(button.dataset.provider); }
     catch (cause) { $('#auth-error').textContent = cause.message; $('#auth-error').hidden = false; }

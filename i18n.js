@@ -20,6 +20,8 @@ export function trackText(track) { return language === 'en' ? { ...track, ...eng
 export function challengeText(challenge) { return language === 'en' ? { ...challenge, ...englishChallenges[challenge.id] } : challenge; }
 
 const staticEnglish = {
+  'قائمة الأكاديمية': 'Academy navigation', 'إغلاق القائمة': 'Close menu', 'الرئيسية': 'Home', 'ابدأ هنا': 'Start here', 'التعلّم والتطبيق': 'Learn and practice', 'إنجازاتك': 'Your achievements', 'المزايا': 'Benefits', 'الامتحان النهائي': 'Final exam', 'إثبات الإنجاز': 'Achievement credential',
+  'كل ما تحتاجه للتعلّم، بخطوات واضحة.': 'Everything you need to learn, one clear step at a time.', 'طريقك في الأكاديمية يبدأ هنا.': 'Your Academy journey starts here.', 'رحلة التعلّم تبدأ هنا.': 'Your learning journey starts here.',
   'أقسام الأكاديمية': 'Academy sections', 'الكورسات': 'Courses', 'المختبرات': 'Labs', 'الاختبارات': 'Quizzes', 'الأدوات': 'Tools', 'المتجر': 'Shop',
   'أساس قوي.': 'Strong foundations.', 'طريق واضح.': 'A clear route.', 'تخصصك القادم.': 'Your next specialty.',
   'تعلم الأمن السيبراني خطوة بخطوة: دروس الأساسيات، تطبيقات عملية، امتحان موثق، ثم استكشف المجال الذي تريد التعمق فيه.': 'Learn cybersecurity step by step: foundations lessons, guided practice, a verified exam, then explore the field you want to pursue.',
