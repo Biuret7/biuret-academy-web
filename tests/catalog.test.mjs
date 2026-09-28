@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { pageContexts } from '../scripts/page-context.mjs';
 
 const pages = ['courses', 'labs', 'quizzes', 'tools', 'shop'];
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -33,6 +34,9 @@ test('Academy pages use one navigation with every section available', () => {
     assert.match(html, /id="nav-toggle"[^>]*aria-controls="academy-sidebar"[^>]*aria-expanded="false"/);
     assert.match(html, /sidebar-brand-mark"><img src="assets\/biuret-wordmark-icon\.png"/);
     assert.match(html, /id="sidebar-scrim"/);
+    const [label, arabic, english] = pageContexts[page === 'index' ? 'home' : page];
+    assert.match(html, new RegExp(`ACADEMY / ${label}`));
+    assert.ok(html.includes(`data-ar="${arabic}" data-en="${english}"`), `${page} must have a bilingual page heading`);
     const sidebar = html.match(/<nav class="sidebar-nav"[\s\S]*?<\/nav>/)?.[0];
     assert.ok(sidebar, `${page} must contain sidebar navigation`);
     assert.equal(sidebar.replace(/ aria-current="page"/g, ''), homeSidebar.replace(/ aria-current="page"/g, ''), `${page} must match the home navigation`);

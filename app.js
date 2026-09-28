@@ -3,7 +3,7 @@ import { learningPath, courses, courseById, lessonById, localized } from './lear
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260928-4';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-4';
 import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260928-4';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-13';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20260928-14';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -185,6 +185,7 @@ function renderCourse() {
   if (!root || document.querySelector('.site-shell')?.dataset.page !== 'course') return;
   const course = courseById[new URLSearchParams(location.search).get('id')];
   if (!course) { root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll('missing')}</h1><a href="paths.html">${ll('seePath')} ↗</a></section>`; return; }
+  setPageHeaderTitle(course.title);
   const view = learningProgress();
   const state = courseLearningProgress(view, course.id);
   root.innerHTML = `<section class="learning-hero section-frame"><a class="learning-back" href="paths.html#foundations-roadmap">← ${ll('back')}</a><span class="section-kicker">COURSE 01 / FOUNDATIONS</span><h1>${esc(lc(course.title))}</h1><p>${esc(lc(course.summary))}</p><div class="learning-facts"><span>${course.minutes} ${ll('min')}</span><span>${state.completed} / ${state.total} ${ll('lessons')}</span><span>${ll('available')}</span></div></section><section class="learning-body section-frame"><div class="learning-panel"><span class="section-kicker">${ll('intro')}</span><ul>${course.outcomes.map((outcome) => `<li>${esc(lc(outcome))}</li>`).join('')}</ul></div><div class="learning-panel"><span class="section-kicker">${ll('lessons')}</span><div class="lesson-list">${course.lessonIds.map((id, index) => { const lesson = lessonById[id], done = Boolean(view.lessons[id]), unlocked = isLessonUnlocked(id, view); return `<a class="lesson-row ${unlocked ? '' : 'is-locked'}" href="${unlocked ? `lesson.html?id=${encodeURIComponent(id)}` : '#'}" ${unlocked ? '' : 'aria-disabled="true" tabindex="-1"'}><span class="lesson-number">${String(index + 1).padStart(2, '0')}</span><span><strong>${esc(lc(lesson.title))}</strong><small>${esc(lc(lesson.summary))} · ${lesson.minutes} ${ll('min')}</small></span><b>${done ? '✓' : unlocked ? '↗' : '○'}</b></a>`; }).join('')}</div></div><div class="learning-panel practice-panel"><span class="section-kicker">${ll('practice')}</span><h2>${esc(challengeText(challengeById[course.challengeId]).title)}</h2><p>${ll('practiceNote')}</p><a class="button button-outline" href="challenges.html?challenge=${encodeURIComponent(course.challengeId)}">${ll('practice')} ↗</a></div></section>`;
@@ -202,6 +203,7 @@ function renderLesson() {
   if (!root || document.querySelector('.site-shell')?.dataset.page !== 'lesson') return;
   const lesson = lessonById[new URLSearchParams(location.search).get('id')];
   if (!lesson) { root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll('missing')}</h1><a href="paths.html">${ll('seePath')} ↗</a></section>`; return; }
+  setPageHeaderTitle(lesson.title);
   if (user() && rewardStatus !== 'ready') { quizAnchorFocused = false; root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll(rewardStatus === 'error' ? 'rewardError' : 'loading')}</h1>${rewardStatus === 'error' ? `<a href="${esc(location.href)}">${ll('continue')} ↗</a>` : ''}</section>`; return; }
   const course = courseById[lesson.courseId];
   const view = learningProgress();
@@ -392,6 +394,27 @@ function bindEvents() {
   }));
   for (const dialog of [$('#challenge-dialog'), $('#auth-dialog')]) dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
 }
+function initNavigationPrefetch() {
+  if (navigator.connection?.saveData) return;
+  const prefetched = new Set();
+  const prefetch = (target) => {
+    const anchor = target?.closest?.('a[href]');
+    if (!anchor || anchor.hasAttribute('download') || anchor.target) return;
+    const url = new URL(anchor.href, location.href);
+    if (url.origin !== location.origin || !url.pathname.endsWith('.html')) return;
+    if (url.pathname === location.pathname && url.search === location.search) return;
+    url.hash = '';
+    if (prefetched.has(url.href)) return;
+    prefetched.add(url.href);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = url.href;
+    document.head.append(link);
+  };
+  document.addEventListener('pointerover', (event) => prefetch(event.target));
+  document.addEventListener('focusin', (event) => prefetch(event.target));
+  document.addEventListener('touchstart', (event) => prefetch(event.target), { passive: true });
+}
 function initReveal() {
   const nodes = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { nodes.forEach((node) => node.classList.add('visible')); return; }
@@ -400,7 +423,7 @@ function initReveal() {
 }
 async function init() {
   if (!ownerUserId) persistLocal();
-  render(); applyLanguage(); bindEvents(); initReveal();
+  render(); applyLanguage(); bindEvents(); initNavigationPrefetch(); initReveal();
   const query = new URLSearchParams(location.search);
   if (query.has('auth_error')) { toast(t('oauthError')); const url = new URL(location.href); url.searchParams.delete('auth_error'); history.replaceState(null, '', url); }
   const requestedChallenge = $('#challenge-list') ? query.get('challenge') : null;

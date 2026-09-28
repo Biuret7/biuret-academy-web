@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
+import { pageContext } from './page-context.mjs';
 
 // Reuse the existing account and navigation shell until the static pages move
 // to a shared component system. The generated pages are committed for Pages.
@@ -27,6 +28,7 @@ for (const [page, title, description] of [
   const activeSection = ({ course: 'courses', lesson: 'courses', lab: 'labs' })[page] || page;
   const html = (template.slice(0, mainStart) + main + template.slice(mainEnd))
     .replace('data-page="paths"', `data-page="${page}"`)
+    .replace(/<div class="page-header-context">[\s\S]*?<\/div>/, pageContext(page))
     .replace(/  <link rel="canonical"[^>]+>\r?\n/, catalog ? `  <link rel="canonical" href="https://academy.biuret.dev/${page}.html">\n` : '')
     .replace(/  <meta property="og:url"[^>]+>\r?\n/, catalog ? `  <meta property="og:url" content="https://academy.biuret.dev/${page}.html">\n` : '')
     .replace('<title>المسارات — Biuret Academy</title>', `<title>${title}</title>`)
@@ -35,6 +37,6 @@ for (const [page, title, description] of [
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
     .replace('href="paths.html" aria-current="page"', 'href="paths.html"')
     .replace(`href="${activeSection}.html"`, `href="${activeSection}.html" aria-current="page"`)
-    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-13"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-13"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-13"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-13"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-13"></script>\n</head>' : '</head>');
+    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-14"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-14"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-14"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-14"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-14"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }

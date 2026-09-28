@@ -84,8 +84,11 @@ function translateStatic() {
       element.setAttribute(name, language === 'en' ? staticEnglish[value] || value : value);
     }
   }
+  for (const element of document.querySelectorAll('.page-header-context strong[data-ar][data-en]')) {
+    element.textContent = element.dataset[language];
+  }
   const page = document.querySelector('.site-shell')?.dataset.page || 'home';
-  document.title = language === 'en' ? ({ home: 'Biuret Academy — A clear cybersecurity learning route', paths: 'Learning paths — Biuret Academy', challenges: 'Challenges — Biuret Academy', progress: 'Your progress — Biuret Academy', course: 'Course — Biuret Academy', lesson: 'Lesson — Biuret Academy', lab: 'Guided lab — Biuret Academy', courses: 'Courses — Biuret Academy', labs: 'Labs — Biuret Academy', quizzes: 'Quizzes — Biuret Academy', tools: 'Tools — Biuret Academy', shop: 'Shop — Biuret Academy', membership: 'Membership — Biuret Academy' }[page]) : ({ home: 'Biuret Academy — طريق واضح لتعلّم الأمن السيبراني', paths: 'المسارات — Biuret Academy', challenges: 'التحديات — Biuret Academy', progress: 'تقدّمك — Biuret Academy', course: 'الكورس — Biuret Academy', lesson: 'الدرس — Biuret Academy', lab: 'مختبر عملي — Biuret Academy', courses: 'الكورسات — Biuret Academy', labs: 'المختبرات — Biuret Academy', quizzes: 'الاختبارات — Biuret Academy', tools: 'الأدوات — Biuret Academy', shop: 'المتجر — Biuret Academy', membership: 'العضوية — Biuret Academy' }[page]);
+  document.title = language === 'en' ? ({ home: 'Biuret Academy — A clear cybersecurity learning route', paths: 'Learning paths — Biuret Academy', challenges: 'Challenges — Biuret Academy', progress: 'Your progress — Biuret Academy', course: 'Course — Biuret Academy', lesson: 'Lesson — Biuret Academy', lab: 'Guided lab — Biuret Academy', courses: 'Courses — Biuret Academy', labs: 'Labs — Biuret Academy', quizzes: 'Quizzes — Biuret Academy', tools: 'Tools — Biuret Academy', shop: 'Shop — Biuret Academy', membership: 'Membership — Biuret Academy', exam: 'Foundations exam — Biuret Academy', certificate: 'Achievement credential — Biuret Academy', admin: 'Credential operations — Biuret Academy' }[page]) : ({ home: 'Biuret Academy — طريق واضح لتعلّم الأمن السيبراني', paths: 'المسارات — Biuret Academy', challenges: 'التحديات — Biuret Academy', progress: 'تقدّمك — Biuret Academy', course: 'الكورس — Biuret Academy', lesson: 'الدرس — Biuret Academy', lab: 'مختبر عملي — Biuret Academy', courses: 'الكورسات — Biuret Academy', labs: 'المختبرات — Biuret Academy', quizzes: 'الاختبارات — Biuret Academy', tools: 'الأدوات — Biuret Academy', shop: 'المتجر — Biuret Academy', membership: 'العضوية — Biuret Academy', exam: 'امتحان الأساسيات — Biuret Academy', certificate: 'إثبات الإنجاز — Biuret Academy', admin: 'إدارة الإنجازات — Biuret Academy' }[page]);
   const learningTitle = document.querySelector('#learning-main h1')?.textContent;
   if ((page === 'course' || page === 'lesson') && learningTitle) document.title = `${learningTitle} — Biuret Academy`;
   document.documentElement.lang = language;
@@ -95,6 +98,14 @@ function translateStatic() {
 }
 
 export function applyLanguage() { translateStatic(); }
+export function setPageHeaderTitle(title) {
+  const heading = document.querySelector('.page-header-context strong');
+  if (!heading || !title?.ar || !title?.en) return;
+  heading.dataset.ar = title.ar;
+  heading.dataset.en = title.en;
+  heading.textContent = title[language];
+  document.title = `${title[language]} — Biuret Academy`;
+}
 export function toggleLanguage() {
   language = language === 'ar' ? 'en' : 'ar';
   try { localStorage.setItem(KEY, language); } catch {}
