@@ -1,4 +1,4 @@
-import { user, loadUser, academyAdminStatus, academyAdminCredential, academyAdminRevoke } from './auth.js?v=20260928-1';
+import { user, loadUser, academyAdminStatus, academyAdminCredential, academyAdminRevoke } from './auth.js?v=20260928-2';
 import { currentLanguage, applyLanguage } from './i18n.js?v=20260928-1';
 
 const root = document.querySelector('#admin-main');

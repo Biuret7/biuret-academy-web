@@ -75,14 +75,22 @@ async function getAwardState(key, userId) {
   return { awards, xp, ...levelForXp(xp) };
 }
 
-async function getState(key, userId) {
+function membershipFor(key) {
+  return membershipService({
+    base: ENDPOINT,
+    request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
+  });
+}
+
+async function getState(key, userId, membership) {
+  membership ||= await membershipFor(key).state(userId);
   const learning = await getAwardState(key, userId);
   const ledger = coinLedgerService({
     base: ENDPOINT,
     request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
   });
-  const { coins, transactions } = await ledger.state(userId, learning.awards);
-  return { ...learning, coins, transactions };
+  const { coins, transactions } = await ledger.state(userId, learning.awards, { canEarn: membership.access.coinEarning });
+  return { ...learning, coins, transactions, coinEarning: membership.access.coinEarning, plan: membership.plan };
 }
 
 async function complete(key, userId, lessonId, answerIndex) {
@@ -93,15 +101,16 @@ async function complete(key, userId, lessonId, answerIndex) {
   if (index > 0 && !await getAward(key, userId, course[index - 1].id)) {
     return { status: 409, body: { error: 'Complete the previous lesson first' } };
   }
-  if (await getAward(key, userId, lessonId)) return { status: 200, body: { ...await getState(key, userId), awarded: false } };
+  const membership = await membershipFor(key).state(userId);
+  if (await getAward(key, userId, lessonId)) return { status: 200, body: { ...await getState(key, userId, membership), awarded: false } };
 
   const result = await appwrite(`${ENDPOINT}/tablesdb/${DATABASE_ID}/tables/${TABLE_ID}/rows`, {
     method: 'POST',
     headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ rowId: awardId(userId, lessonId), data: { userId, lessonId, xp: LESSON_XP, coins: LESSON_COINS }, permissions: [] }),
+    body: JSON.stringify({ rowId: awardId(userId, lessonId), data: { userId, lessonId, xp: LESSON_XP, coins: membership.access.coinEarning ? LESSON_COINS : 0 }, permissions: [] }),
   });
   if (result.status !== 201 && result.status !== 409) throw new Error('Award creation failed');
-  return { status: 200, body: { ...await getState(key, userId), awarded: result.status === 201 } };
+  return { status: 200, body: { ...await getState(key, userId, membership), awarded: result.status === 201 } };
 }
 
 export default async ({ req, res, error }) => {
@@ -113,11 +122,7 @@ export default async ({ req, res, error }) => {
     if (!key) throw new Error('Function key unavailable');
     const input = req.bodyJson || JSON.parse(req.bodyText || '{}');
     if (input.action === 'membershipState') {
-      const membership = membershipService({
-        base: ENDPOINT,
-        request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
-      });
-      return res.json(await membership.state(account.$id));
+      return res.json(await membershipFor(key).state(account.$id));
     }
     if (input.action === 'state') return res.json(await getState(key, account.$id));
     if (input.action === 'completeLesson') {

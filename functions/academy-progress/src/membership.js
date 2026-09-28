@@ -9,24 +9,27 @@ export function membershipRowId(userId) {
 }
 
 export function membershipFromRecord(record, userId, now = new Date()) {
-  const free = { plan: 'free', status: 'free', currentPeriodEnd: null, access: { foundations: true, advancedLabs: false } };
+  const free = { plan: 'free', status: 'free', currentPeriodEnd: null, access: { foundations: true, advancedLabs: false, coinEarning: false } };
   if (!record) return free;
   let payload;
   try { payload = JSON.parse(record.payload); }
   catch { throw new Error('Invalid membership record'); }
   if (payload.version !== 1 || payload.userId !== userId || payload.provider !== 'paddle' ||
       typeof payload.subscriptionId !== 'string' || !payload.subscriptionId.startsWith('sub_') ||
-      !KNOWN_STATUSES.has(payload.status) || typeof payload.currentPeriodEnd !== 'string') {
+      !KNOWN_STATUSES.has(payload.status) || typeof payload.currentPeriodEnd !== 'string' ||
+      (payload.plan !== undefined && !['plus', 'pro'].includes(payload.plan))) {
     throw new Error('Membership record mismatch');
   }
   const end = Date.parse(payload.currentPeriodEnd);
   if (!Number.isFinite(end)) throw new Error('Invalid membership period');
   const active = payload.status === 'active' && end > now.getTime();
+  // Records created before Plus existed represented Pro; keep their access intact.
+  const paidPlan = payload.plan || 'pro';
   return {
-    plan: active ? 'pro' : 'free',
+    plan: active ? paidPlan : 'free',
     status: payload.status,
     currentPeriodEnd: payload.currentPeriodEnd,
-    access: { foundations: true, advancedLabs: active },
+    access: { foundations: true, advancedLabs: active && paidPlan === 'pro', coinEarning: active },
   };
 }
 

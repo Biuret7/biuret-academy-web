@@ -18,11 +18,11 @@ export function coinLedgerService({ base, request }) {
     return result.data;
   }
 
-  async function ensureLessonEvent(userId, award) {
+  async function ensureLessonEvent(userId, award, canEarn) {
     if (award.coins !== LESSON_COINS) throw new Error('Lesson coin award mismatch');
     const id = lessonCoinEventId(userId, award.lessonId);
     let row = await read(id);
-    if (!row) {
+    if (!row && canEarn) {
       const payload = JSON.stringify({ version: 1, userId, kind: 'lesson-earned', reference: award.lessonId, delta: LESSON_COINS, awardedAt: award.completedAt });
       const created = await request(rows, {
         method: 'POST',
@@ -32,7 +32,7 @@ export function coinLedgerService({ base, request }) {
       else if (created.status === 409) row = await read(id);
       else throw new Error('Coin ledger write failed');
     }
-    if (!row) throw new Error('Coin ledger event unavailable');
+    if (!row) return null;
     let event;
     try { event = JSON.parse(row.payload); }
     catch { throw new Error('Coin ledger event invalid'); }
@@ -44,8 +44,10 @@ export function coinLedgerService({ base, request }) {
     return { id, kind: event.kind, reference: event.reference, delta: event.delta, earnedAt: event.awardedAt || award.completedAt, recordedAt: row.$createdAt || award.completedAt };
   }
 
-  async function state(userId, awards) {
-    const transactions = await Promise.all(awards.map((award) => ensureLessonEvent(userId, award)));
+  async function state(userId, awards, { canEarn = false } = {}) {
+    if (awards.some((award) => ![0, LESSON_COINS].includes(award.coins))) throw new Error('Lesson coin award mismatch');
+    const transactions = (await Promise.all(awards.filter((award) => award.coins === LESSON_COINS)
+      .map((award) => ensureLessonEvent(userId, award, canEarn)))).filter(Boolean);
     transactions.sort((a, b) => b.earnedAt.localeCompare(a.earnedAt) || a.id.localeCompare(b.id));
     return { coins: transactions.reduce((sum, event) => sum + event.delta, 0), transactions };
   }

@@ -36,10 +36,12 @@ test('membership state follows the verified account, never a submitted user ID',
   } finally { globalThis.fetch = priorFetch; }
 });
 
-test('one verified lesson gives 100 XP and 10 coins once; users remain isolated', async () => {
+test('Free earns XP without coins; Plus earns coins once; users remain isolated', async () => {
   const priorFetch = globalThis.fetch;
   const rows = new Map();
   let userId = 'learner-a';
+  rows.set(membershipRowId('learner-plus'), { payload: JSON.stringify({ version: 1, userId: 'learner-plus', provider: 'paddle', subscriptionId: 'sub_plus', status: 'active', currentPeriodEnd: '2099-01-01T00:00:00Z', plan: 'plus' }) });
+  rows.set(membershipRowId('learner-pro'), { payload: JSON.stringify({ version: 1, userId: 'learner-pro', provider: 'paddle', subscriptionId: 'sub_pro', status: 'active', currentPeriodEnd: '2099-01-01T00:00:00Z', plan: 'pro' }) });
   globalThis.fetch = async (url, options = {}) => {
     const path = new URL(url).pathname;
     if (path === '/v1/account') return response(200, { $id: userId });
@@ -62,18 +64,26 @@ test('one verified lesson gives 100 XP and 10 coins once; users remain isolated'
     assert.equal((await invoke({ action: 'completeLesson', lessonId: 'url-traps', answerIndex: 1 })).status, 409);
     const first = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
     assert.equal(first.status, 200);
-    assert.deepEqual([first.body.xp, first.body.coins, first.body.level, first.body.awarded], [100, 10, 2, true]);
-    assert.deepEqual(first.body.transactions.map(({ kind, reference, delta }) => [kind, reference, delta]), [['lesson-earned', 'url-parts', 10]]);
+    assert.deepEqual([first.body.xp, first.body.coins, first.body.level, first.body.awarded, first.body.coinEarning], [100, 0, 2, true, false]);
+    assert.deepEqual(first.body.transactions, []);
+    assert.equal(rows.get(awardId('learner-a', 'url-parts')).coins, 0);
     const repeat = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
-    assert.deepEqual([repeat.body.xp, repeat.body.coins, repeat.body.awarded], [100, 10, false]);
+    assert.deepEqual([repeat.body.xp, repeat.body.coins, repeat.body.awarded], [100, 0, false]);
     assert.equal((await invoke({ action: 'completeLesson', lessonId: 'identity-sessions', answerIndex: 1 })).status, 409);
     assert.equal((await invoke({ action: 'completeLesson', lessonId: 'evidence-integrity', answerIndex: 0 })).status, 409);
     const identity = await invoke({ action: 'completeLesson', lessonId: 'identity-passwords', answerIndex: 1 });
-    assert.deepEqual([identity.status, identity.body.xp, identity.body.coins], [200, 200, 20]);
+    assert.deepEqual([identity.status, identity.body.xp, identity.body.coins], [200, 200, 0]);
     assert.equal((await invoke({ action: 'completeLesson', lessonId: 'evidence-logs', answerIndex: 0 })).status, 422);
+    userId = 'learner-plus';
+    const paid = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
+    assert.deepEqual([paid.status, paid.body.xp, paid.body.coins, paid.body.coinEarning, paid.body.plan], [200, 100, 10, true, 'plus']);
+    assert.deepEqual(paid.body.transactions.map(({ kind, reference, delta }) => [kind, reference, delta]), [['lesson-earned', 'url-parts', 10]]);
+    userId = 'learner-pro';
+    const pro = await invoke({ action: 'completeLesson', lessonId: 'url-parts', answerIndex: 1 });
+    assert.deepEqual([pro.status, pro.body.xp, pro.body.coins, pro.body.coinEarning, pro.body.plan], [200, 100, 10, true, 'pro']);
     userId = 'learner-b';
     const other = await invoke({ action: 'state' });
     assert.deepEqual([other.body.xp, other.body.coins, other.body.awards.length], [0, 0, 0]);
-    assert.equal(rows.size, 4); // Two immutable awards and two matching ledger events.
+    assert.equal(rows.size, 8); // Two memberships, four immutable awards, two paid ledger events.
   } finally { globalThis.fetch = priorFetch; }
 });
