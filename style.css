@@ -210,11 +210,11 @@ html[dir="ltr"] .roadmap-node:before{inset-inline-start:44px}
 }
 @media(max-width:390px){.nav-toggle{font-size:0;padding-inline:9px}.nav-toggle span{font-size:17px}.brand-mark{width:30px;height:30px}.brand-word{font-size:12px}.brand-word>span:last-child{font-size:7px}}
 
-/* Home: a grouped Academy navigation anchored to the physical left edge. */
-.site-shell[data-page="home"]{padding-left:280px}
-.site-shell[data-page="home"] .topbar{max-width:none;height:78px;justify-content:space-between}
-.site-shell[data-page="home"] .topbar>.brand,.site-shell[data-page="home"] .nav-toggle{display:none}
-.site-shell[data-page="home"] .nav-actions{margin-inline-start:auto}
+/* Academy-wide navigation anchored to the physical left edge. */
+.site-shell{padding-left:280px}
+.site-shell .topbar{max-width:none;height:78px;justify-content:space-between}
+.site-shell .topbar>.brand,.site-shell .nav-toggle{display:none}
+.site-shell .nav-actions{margin-inline-start:auto}
 .home-header-context{display:grid;gap:2px}
 .home-header-context span{color:var(--lime);font:700 10px var(--font-en);letter-spacing:.16em}
 .home-header-context strong{color:#c6d5ca;font-size:12px;font-weight:600}
@@ -250,7 +250,7 @@ html[dir="ltr"] .roadmap-node:before{inset-inline-start:44px}
 .site-shell[data-page="home"] .hero-visual{height:min(470px,36vw);min-height:390px}
 @keyframes sidebar-arrive{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
 @media(min-width:1181px) and (max-width:1350px){
-  .site-shell[data-page="home"]{padding-left:252px}
+  .site-shell{padding-left:252px}
   .academy-sidebar{width:252px}
   .sidebar-top{padding-inline:14px}
   .sidebar-brand-name{font-size:16px}
@@ -260,10 +260,10 @@ html[dir="ltr"] .roadmap-node:before{inset-inline-start:44px}
 }
 @media(max-width:1180px){
   body.academy-menu-open{overflow:hidden}
-  .site-shell[data-page="home"]{padding-left:0}
-  .site-shell[data-page="home"] .topbar>.brand{display:flex}
-  .site-shell[data-page="home"] .nav-toggle{display:inline-flex}
-  .site-shell[data-page="home"] .nav-actions{margin:0}
+  .site-shell{padding-left:0}
+  .site-shell .topbar>.brand{display:flex}
+  .site-shell .nav-toggle{display:inline-flex}
+  .site-shell .nav-actions{margin:0}
   .home-header-context{display:none}
   .academy-sidebar{width:min(330px,calc(100vw - 36px));visibility:hidden;transform:translateX(-105%);animation:none;transition:transform .34s cubic-bezier(.2,.8,.2,1),visibility .34s}
   .academy-sidebar.is-open{visibility:visible;transform:translateX(0)}

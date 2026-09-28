@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:pages": "node scripts/build-learning-pages.mjs",
+    "build:pages": "node scripts/sync-sidebar.mjs && node scripts/build-learning-pages.mjs",
     "content:verify": "node scripts/content-release.mjs verify",
     "content:status": "node scripts/content-release.mjs status",
     "test": "node --test tests/*.test.mjs",

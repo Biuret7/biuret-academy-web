@@ -12,7 +12,7 @@ test('all Academy catalog pages have a visible route and are included in the pub
     const html = read(`${page}.html`);
     assert.match(html, new RegExp(`data-page="${page}"`));
     assert.match(html, /id="catalog-main"/);
-    assert.match(html, new RegExp(`data-resource="${page}" aria-current="page"`));
+    assert.match(html, new RegExp(`<a href="${page}\\.html" aria-current="page"`));
     assert.match(html, /src="catalog\.js\?v=/);
     assert.match(workflow, new RegExp(`${page}\.html`));
     assert.match(sitemap, new RegExp(`/${page}\.html`));
@@ -21,21 +21,24 @@ test('all Academy catalog pages have a visible route and are included in the pub
 });
 
 test('Academy pages use one navigation with every section available', () => {
-  const sections = ['paths', 'courses', 'labs', 'quizzes', 'challenges', 'tools', 'progress', 'shop', 'membership'];
+  const sections = ['index', 'paths', 'courses', 'labs', 'quizzes', 'challenges', 'tools', 'progress', 'exam', 'certificate', 'membership', 'shop'];
   const allPages = ['index', ...sections, 'course', 'lesson', 'lab', 'exam', 'certificate', 'admin'];
-  for (const page of allPages) {
+  const activeSection = { course: 'courses', lesson: 'courses', lab: 'labs', admin: null };
+  const homeSidebar = read('index.html').match(/<nav class="sidebar-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(homeSidebar);
+  for (const page of new Set(allPages)) {
     const html = read(`${page}.html`);
     assert.equal((html.match(/<nav\b/g) || []).length, 1, `${page} must have one navigation`);
-    if (page === 'index') {
-      assert.match(html, /<aside class="academy-sidebar" id="academy-sidebar"/);
-      assert.match(html, /id="nav-toggle"[^>]*aria-controls="academy-sidebar"[^>]*aria-expanded="false"/);
-      assert.match(html, /<nav class="sidebar-nav"/);
-      assert.match(html, /sidebar-brand-mark"><img src="assets\/biuret-wordmark-icon\.png"/);
-      for (const destination of ['index', 'exam', 'certificate']) assert.match(html, new RegExp(`href="${destination}\\.html"`));
-    } else {
-      assert.match(html, /id="nav-toggle"[^>]*aria-controls="site-navigation"[^>]*aria-expanded="false"/);
-      assert.match(html, /<nav class="desktop-nav" id="site-navigation"/);
-    }
-    for (const section of sections) assert.match(html, new RegExp(`href="${section}\\.html"`));
+    assert.match(html, /<aside class="academy-sidebar" id="academy-sidebar"/);
+    assert.match(html, /id="nav-toggle"[^>]*aria-controls="academy-sidebar"[^>]*aria-expanded="false"/);
+    assert.match(html, /sidebar-brand-mark"><img src="assets\/biuret-wordmark-icon\.png"/);
+    assert.match(html, /id="sidebar-scrim"/);
+    const sidebar = html.match(/<nav class="sidebar-nav"[\s\S]*?<\/nav>/)?.[0];
+    assert.ok(sidebar, `${page} must contain sidebar navigation`);
+    assert.equal(sidebar.replace(/ aria-current="page"/g, ''), homeSidebar.replace(/ aria-current="page"/g, ''), `${page} must match the home navigation`);
+    for (const section of sections) assert.match(sidebar, new RegExp(`href="${section}\\.html"`));
+    const current = [...sidebar.matchAll(/<a href="([^"]+)" aria-current="page"/g)].map((match) => match[1]);
+    const expected = activeSection[page] === null ? [] : [`${activeSection[page] || page}.html`];
+    assert.deepEqual(current, expected, `${page} must highlight its current section`);
   }
 });

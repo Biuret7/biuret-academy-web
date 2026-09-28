@@ -14,24 +14,57 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260928-6">
+  <link rel="stylesheet" href="style.css?v=20260928-13">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
-  <script type="module" src="app.js?v=20260928-6"></script>
-  <script type="module" src="membership.js?v=20260928-6"></script>
+  <script type="module" src="app.js?v=20260928-13"></script>
+  <script type="module" src="membership.js?v=20260928-13"></script>
 </head>
 <body>
 
   <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
   <div class="site-shell" data-page="membership">
+    <aside class="academy-sidebar" id="academy-sidebar" aria-label="قائمة الأكاديمية">
+      <div class="sidebar-top">
+        <a class="sidebar-brand" href="index.html" aria-label="Biuret Academy - الرئيسية">
+          <span class="sidebar-brand-mark"><img src="assets/biuret-wordmark-icon.png" alt=""></span>
+          <span class="sidebar-brand-name" dir="ltr">BIURET <span>/ ACADEMY</span></span>
+        </a>
+        <button class="sidebar-close" id="sidebar-close" type="button" aria-label="إغلاق القائمة">×</button>
+      </div>
+      <div class="sidebar-scroll">
+        <div class="sidebar-intro"><span>YOUR LEARNING SPACE</span><p>كل ما تحتاجه للتعلّم، بخطوات واضحة.</p></div>
+        <nav class="sidebar-nav" aria-label="التنقل الرئيسي">
+          <section class="sidebar-group" aria-labelledby="sidebar-start"><h2 id="sidebar-start">ابدأ هنا</h2>
+            <a href="index.html"><span class="sidebar-link-index" aria-hidden="true">01</span><span>الرئيسية</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="paths.html"><span class="sidebar-link-index" aria-hidden="true">02</span><span>المسارات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+          </section>
+          <section class="sidebar-group" aria-labelledby="sidebar-learn"><h2 id="sidebar-learn">التعلّم والتطبيق</h2>
+            <a href="courses.html"><span class="sidebar-link-index" aria-hidden="true">03</span><span>الكورسات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="labs.html"><span class="sidebar-link-index" aria-hidden="true">04</span><span>المختبرات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="quizzes.html"><span class="sidebar-link-index" aria-hidden="true">05</span><span>الاختبارات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="challenges.html"><span class="sidebar-link-index" aria-hidden="true">06</span><span>التحديات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="tools.html"><span class="sidebar-link-index" aria-hidden="true">07</span><span>الأدوات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+          </section>
+          <section class="sidebar-group" aria-labelledby="sidebar-progress"><h2 id="sidebar-progress">إنجازاتك</h2>
+            <a href="progress.html"><span class="sidebar-link-index" aria-hidden="true">08</span><span>تقدّمك</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="exam.html"><span class="sidebar-link-index" aria-hidden="true">09</span><span>الامتحان النهائي</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="certificate.html"><span class="sidebar-link-index" aria-hidden="true">10</span><span>إثبات الإنجاز</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+          </section>
+          <section class="sidebar-group" aria-labelledby="sidebar-benefits"><h2 id="sidebar-benefits">المزايا</h2>
+            <a href="membership.html" aria-current="page"><span class="sidebar-link-index" aria-hidden="true">11</span><span>العضوية</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="shop.html"><span class="sidebar-link-index" aria-hidden="true">12</span><span>المتجر</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+          </section>
+        </nav>
+      </div>
+      <div class="sidebar-bottom"><span class="sidebar-status-dot" aria-hidden="true"></span><span>طريقك في الأكاديمية يبدأ هنا.</span><small>BIURET / ACADEMY</small></div>
+    </aside>
+    <button class="sidebar-scrim" id="sidebar-scrim" type="button" aria-label="إغلاق القائمة" tabindex="-1"></button>
     <header class="topbar">
       <a class="brand" href="index.html" aria-label="Biuret Academy - الرئيسية">
         <span class="brand-mark"><img src="assets/biuret-wordmark-icon.png" alt=""></span>
         <span class="brand-word" dir="ltr">BIURET<span class="brand-divider">/</span><span>ACADEMY</span></span>
       </a>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="site-navigation" aria-expanded="false">القائمة <span aria-hidden="true">☰</span></button>
-      <nav class="desktop-nav" id="site-navigation" aria-label="التنقل الرئيسي">
-        <a href="paths.html" >المسارات</a><a href="courses.html" data-resource="courses">الكورسات</a><a href="labs.html" data-resource="labs">المختبرات</a><a href="quizzes.html" data-resource="quizzes">الاختبارات</a><a href="challenges.html">التحديات</a><a href="tools.html" data-resource="tools">الأدوات</a><a href="progress.html">تقدّمك</a><a href="shop.html" data-resource="shop">المتجر</a><a href="membership.html" aria-current="page">العضوية</a>
-      </nav>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="academy-sidebar" aria-expanded="false">القائمة <span aria-hidden="true">☰</span></button>
       <div class="nav-actions">
         <a class="portfolio-return" href="https://biuret.dev" data-static>موقع Biuret ↗</a><button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English" aria-pressed="false"><span aria-hidden="true">EN</span></button>
         <button class="account-button" id="account-button" type="button">حسابي <span aria-hidden="true">↗</span></button>

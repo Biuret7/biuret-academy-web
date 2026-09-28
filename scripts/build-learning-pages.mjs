@@ -24,7 +24,7 @@ for (const [page, title, description] of [
   const assessment = page === 'exam' || page === 'certificate';
   const catalog = ['courses', 'labs', 'quizzes', 'tools', 'shop'].includes(page);
   const main = catalog ? '    <main id="main"><div id="catalog-main"></div></main>' : page === 'lab' ? '    <main id="main"><div id="lab-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : page === 'membership' ? '    <main id="main"><div id="membership-main" class="membership-main section-frame" aria-live="polite"></div></main>' : page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
-  const activeResource = ({ course: 'courses', lesson: 'courses', lab: 'labs', exam: 'quizzes' })[page] || page;
+  const activeSection = ({ course: 'courses', lesson: 'courses', lab: 'labs' })[page] || page;
   const html = (template.slice(0, mainStart) + main + template.slice(mainEnd))
     .replace('data-page="paths"', `data-page="${page}"`)
     .replace(/  <link rel="canonical"[^>]+>\r?\n/, catalog ? `  <link rel="canonical" href="https://academy.biuret.dev/${page}.html">\n` : '')
@@ -33,9 +33,8 @@ for (const [page, title, description] of [
     .replace('Biuret Academy — تعلّم الأمن السيبراني بالتحدي', title)
     .replace('Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.', description)
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
-    .replace('aria-current="page"', '')
-    .replace(`data-resource="${activeResource}"`, `data-resource="${activeResource}" aria-current="page"`)
-    .replace('href="membership.html">العضوية</a>', page === 'membership' ? 'href="membership.html" aria-current="page">العضوية</a>' : 'href="membership.html">العضوية</a>')
-    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-6"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-6"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-6"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-6"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-6"></script>\n</head>' : '</head>');
+    .replace('href="paths.html" aria-current="page"', 'href="paths.html"')
+    .replace(`href="${activeSection}.html"`, `href="${activeSection}.html" aria-current="page"`)
+    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-13"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-13"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-13"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-13"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-13"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }
