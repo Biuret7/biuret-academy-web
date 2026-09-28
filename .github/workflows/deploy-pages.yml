@@ -35,6 +35,7 @@ jobs:
           node --check journey.js
           node --check labs.js
           node --check lab.js
+          node --check catalog.js
           node --check functions/academy-progress/src/main.js
           node --check functions/academy-progress/src/exam.js
           node --check functions/academy-progress/src/admin.js
@@ -46,7 +47,7 @@ jobs:
       - name: Stage public site
         run: |
           mkdir -p _site/assets
-          cp index.html paths.html challenges.html progress.html membership.html course.html lesson.html exam.html certificate.html admin.html lab.html style.css app.js auth.js assessment.js admin.js membership.js journey.js labs.js lab.js content.js content-en.js learning-content.js i18n.js engine.js robots.txt sitemap.xml _site/
+          cp index.html paths.html challenges.html progress.html membership.html course.html lesson.html exam.html certificate.html admin.html lab.html courses.html labs.html quizzes.html tools.html shop.html style.css app.js auth.js assessment.js admin.js membership.js journey.js labs.js lab.js catalog.js content.js content-en.js learning-content.js i18n.js engine.js robots.txt sitemap.xml _site/
           cp assets/* _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:

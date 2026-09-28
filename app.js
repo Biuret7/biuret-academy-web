@@ -3,7 +3,7 @@ import { learningPath, courses, courseById, lessonById, localized } from './lear
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260928-4';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-4';
 import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260928-4';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-4';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-5';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -20,6 +20,7 @@ let syncQueue = Promise.resolve();
 let rewards = null;
 let rewardStatus = 'idle';
 let examPassed = false;
+let quizAnchorFocused = false;
 
 function learningProgress() {
   if (!user()) return progress;
@@ -201,16 +202,20 @@ function renderLesson() {
   if (!root || document.querySelector('.site-shell')?.dataset.page !== 'lesson') return;
   const lesson = lessonById[new URLSearchParams(location.search).get('id')];
   if (!lesson) { root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll('missing')}</h1><a href="paths.html">${ll('seePath')} ↗</a></section>`; return; }
-  if (user() && rewardStatus !== 'ready') { root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll(rewardStatus === 'error' ? 'rewardError' : 'loading')}</h1>${rewardStatus === 'error' ? `<a href="${esc(location.href)}">${ll('continue')} ↗</a>` : ''}</section>`; return; }
+  if (user() && rewardStatus !== 'ready') { quizAnchorFocused = false; root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll(rewardStatus === 'error' ? 'rewardError' : 'loading')}</h1>${rewardStatus === 'error' ? `<a href="${esc(location.href)}">${ll('continue')} ↗</a>` : ''}</section>`; return; }
   const course = courseById[lesson.courseId];
   const view = learningProgress();
   const unlocked = isLessonUnlocked(lesson.id, view);
   if (!unlocked) { root.innerHTML = `<section class="section-frame learning-empty"><h1>${ll('locked')}</h1><a href="course.html?id=${encodeURIComponent(course.id)}">${ll('back')} ↗</a></section>`; return; }
   const done = Boolean(view.lessons[lesson.id]);
   const nextId = course.lessonIds[course.lessonIds.indexOf(lesson.id) + 1];
-  root.innerHTML = `<section class="learning-hero section-frame"><a class="learning-back" href="course.html?id=${encodeURIComponent(course.id)}">← ${esc(lc(course.title))}</a><span class="section-kicker">${ll('lesson')} ${String(lesson.order).padStart(2, '0')} / ${course.lessonIds.length}</span><h1>${esc(lc(lesson.title))}</h1><p>${esc(lc(lesson.summary))}</p><div class="learning-facts"><span>${lesson.minutes} ${ll('min')}</span><span>${done ? '✓ ' + ll('finished') : ll('available')}</span></div></section><article class="lesson-article section-frame">${lesson.sections.map((section) => `<section class="lesson-copy"><h2>${esc(lc(section.title))}</h2><p>${esc(lc(section.body))}</p></section>`).join('')}<div class="lesson-example"><span>EXAMPLE / URL</span><code dir="ltr">${esc(lesson.example)}</code></div><div class="learning-panel lesson-check"><span class="section-kicker">${ll('selfCheck')}</span><h2>${esc(lc(lesson.check.question))}</h2>${done ? `<p class="answer-feedback success">✓ ${ll('done')} — ${esc(lc(lesson.check.explanation))}</p>` : `<form id="lesson-check-form" data-lesson="${lesson.id}"><fieldset><legend class="sr-only">${esc(lc(lesson.check.question))}</legend>${lesson.check.options.map((option, index) => `<label class="option-label"><input type="radio" name="answer" value="${index}" required><span>${esc(lc(option))}</span></label>`).join('')}</fieldset><button class="button button-primary" type="submit">${ll('check')} ↗</button><p class="answer-feedback error" id="lesson-feedback" role="status" hidden></p></form>`}${done && nextId ? `<a class="button button-outline" href="lesson.html?id=${encodeURIComponent(nextId)}">${ll('next')} ↗</a>` : done ? `<a class="button button-outline" href="challenges.html?challenge=${encodeURIComponent(course.challengeId)}">${ll('practice')} ↗</a>` : ''}</div></article>`;
+  root.innerHTML = `<section class="learning-hero section-frame"><a class="learning-back" href="course.html?id=${encodeURIComponent(course.id)}">← ${esc(lc(course.title))}</a><span class="section-kicker">${ll('lesson')} ${String(lesson.order).padStart(2, '0')} / ${course.lessonIds.length}</span><h1>${esc(lc(lesson.title))}</h1><p>${esc(lc(lesson.summary))}</p><div class="learning-facts"><span>${lesson.minutes} ${ll('min')}</span><span>${done ? '✓ ' + ll('finished') : ll('available')}</span></div></section><article class="lesson-article section-frame">${lesson.sections.map((section) => `<section class="lesson-copy"><h2>${esc(lc(section.title))}</h2><p>${esc(lc(section.body))}</p></section>`).join('')}<div class="lesson-example"><span>EXAMPLE / URL</span><code dir="ltr">${esc(lesson.example)}</code></div><div class="learning-panel lesson-check" id="lesson-check"><span class="section-kicker">${ll('selfCheck')}</span><h2>${esc(lc(lesson.check.question))}</h2>${done ? `<p class="answer-feedback success">✓ ${ll('done')} — ${esc(lc(lesson.check.explanation))}</p>` : `<form id="lesson-check-form" data-lesson="${lesson.id}"><fieldset><legend class="sr-only">${esc(lc(lesson.check.question))}</legend>${lesson.check.options.map((option, index) => `<label class="option-label"><input type="radio" name="answer" value="${index}" required><span>${esc(lc(option))}</span></label>`).join('')}</fieldset><button class="button button-primary" type="submit">${ll('check')} ↗</button><p class="answer-feedback error" id="lesson-feedback" role="status" hidden></p></form>`}${done && nextId ? `<a class="button button-outline" href="lesson.html?id=${encodeURIComponent(nextId)}">${ll('next')} ↗</a>` : done ? `<a class="button button-outline" href="challenges.html?challenge=${encodeURIComponent(course.challengeId)}">${ll('practice')} ↗</a>` : ''}</div></article>`;
   root.querySelector('.learning-facts').insertAdjacentHTML('beforeend', `<span class="lesson-reward">${lessonRewardText()}</span>`);
   root.querySelector('.lesson-example span').textContent = lc(lesson.exampleLabel) || 'EXAMPLE / URL';
+  if (location.hash === '#lesson-check' && !quizAnchorFocused) {
+    quizAnchorFocused = true;
+    requestAnimationFrame(() => root.querySelector('#lesson-check')?.scrollIntoView({ block: 'start' }));
+  }
   if (done && !nextId) {
     const following = courses[courses.indexOf(course) + 1];
     const href = following ? `course.html?id=${encodeURIComponent(following.id)}` : 'exam.html';

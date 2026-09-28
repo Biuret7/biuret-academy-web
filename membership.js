@@ -1,5 +1,5 @@
 import { loadUser, loadMembership } from './auth.js?v=20260928-4';
-import { currentLanguage } from './i18n.js?v=20260928-4';
+import { currentLanguage } from './i18n.js?v=20260928-5';
 
 const root = document.querySelector('#membership-main');
 let signedIn = false;

@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://academy.biuret.dev/</loc></url>
   <url><loc>https://academy.biuret.dev/paths.html</loc></url>
+  <url><loc>https://academy.biuret.dev/courses.html</loc></url>
+  <url><loc>https://academy.biuret.dev/labs.html</loc></url>
+  <url><loc>https://academy.biuret.dev/quizzes.html</loc></url>
+  <url><loc>https://academy.biuret.dev/tools.html</loc></url>
+  <url><loc>https://academy.biuret.dev/shop.html</loc></url>
   <url><loc>https://academy.biuret.dev/challenges.html</loc></url>
   <url><loc>https://academy.biuret.dev/progress.html</loc></url>
   <url><loc>https://academy.biuret.dev/membership.html</loc></url>
