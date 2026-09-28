@@ -1,4 +1,4 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20260927-7';
+import { cleanProgress, mergeProgress } from './engine.js?v=20260928-1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -70,6 +70,7 @@ async function learningExecution(input, learningState = true) {
 }
 
 export function loadLearningRewards() { return learningExecution({ action: 'state' }); }
+export function loadMembership() { return learningExecution({ action: 'membershipState' }, false); }
 export function awardLesson(lessonId, answerIndex) { return learningExecution({ action: 'completeLesson', lessonId, answerIndex }); }
 export function loadExam() { return learningExecution({ action: 'examState' }, false); }
 export function submitExam(answers) { return learningExecution({ action: 'submitExam', answers }, false); }

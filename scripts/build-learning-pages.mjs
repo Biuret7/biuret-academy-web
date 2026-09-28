@@ -13,9 +13,10 @@ for (const [page, title, description] of [
   ['exam', 'امتحان المسار — Biuret Academy', 'امتحان أساسيات الأمن السيبراني بعد إكمال الدروس الموثقة.'],
   ['certificate', 'إثبات الإنجاز — Biuret Academy', 'عرض إثبات الإنجاز والتحقق منه عبر Biuret Academy.'],
   ['admin', 'إدارة الإنجازات — Biuret Academy', 'إدارة إثباتات الإنجاز بحساب Biuret المصرح له.'],
+  ['membership', 'العضوية — Biuret Academy', 'خطط عضوية Biuret Academy ومزايا التعلّم المتاحة والمخطط لها.'],
 ]) {
   const assessment = page === 'exam' || page === 'certificate';
-  const main = page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
+  const main = page === 'membership' ? '    <main id="main"><div id="membership-main" class="membership-main section-frame" aria-live="polite"></div></main>' : page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
   const html = (template.slice(0, mainStart) + main + template.slice(mainEnd))
     .replace('data-page="paths"', `data-page="${page}"`)
     .replace(/  <link rel="canonical"[^>]+>\r?\n/, '')
@@ -25,6 +26,7 @@ for (const [page, title, description] of [
     .replace('Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.', description)
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
     .replace('aria-current="page"', '')
-    .replace('</head>', assessment ? '  <script type="module" src="assessment.js?v=20260927-7"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260927-7"></script>\n</head>' : '</head>');
+    .replace('href="membership.html">العضوية</a>', page === 'membership' ? 'href="membership.html" aria-current="page">العضوية</a>' : 'href="membership.html">العضوية</a>')
+    .replace('</head>', assessment ? '  <script type="module" src="assessment.js?v=20260928-1"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-1"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-1"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }

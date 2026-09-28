@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import handler, { awardId, levelForXp } from '../functions/academy-progress/src/main.js';
+import { membershipRowId } from '../functions/academy-progress/src/membership.js';
 
 function response(status, data) {
   return { status, json: async () => data };
@@ -12,6 +13,27 @@ test('levels rise with cumulative verified lesson XP', () => {
   assert.deepEqual(levelForXp(300), { level: 3, xpIntoLevel: 50, xpToNextLevel: 200 });
   assert.equal(awardId('user-a', 'url-parts'), awardId('user-a', 'url-parts'));
   assert.notEqual(awardId('user-a', 'url-parts'), awardId('user-b', 'url-parts'));
+});
+
+test('membership state follows the verified account, never a submitted user ID', async () => {
+  const priorFetch = globalThis.fetch;
+  let accountId = 'learner-a';
+  const proRow = { payload: JSON.stringify({ version: 1, userId: 'learner-a', provider: 'paddle', subscriptionId: 'sub_example', status: 'active', currentPeriodEnd: '2099-01-01T00:00:00Z' }) };
+  globalThis.fetch = async (url, options = {}) => {
+    if (new URL(url).pathname === '/v1/account') return options.headers['X-Appwrite-JWT'] === 'valid' ? response(200, { $id: accountId }) : response(401, {});
+    const rowId = new URL(url).pathname.split('/').at(-1);
+    return rowId === membershipRowId('learner-a') ? response(200, proRow) : response(404, {});
+  };
+  const invoke = (jwt) => handler({
+    req: { headers: { 'x-appwrite-user-jwt': jwt, 'x-appwrite-key': 'test-key' }, bodyJson: { action: 'membershipState', userId: 'learner-a' } },
+    res: { json: (body, status = 200) => ({ body, status }) }, error: () => {},
+  });
+  try {
+    assert.equal((await invoke('valid')).body.plan, 'pro');
+    accountId = 'learner-b';
+    assert.equal((await invoke('valid')).body.plan, 'free');
+    assert.equal((await invoke('invalid')).status, 401);
+  } finally { globalThis.fetch = priorFetch; }
 });
 
 test('one verified lesson gives 100 XP and 10 coins once; users remain isolated', async () => {

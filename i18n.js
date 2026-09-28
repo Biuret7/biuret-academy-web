@@ -20,7 +20,7 @@ export function trackText(track) { return language === 'en' ? { ...track, ...eng
 export function challengeText(challenge) { return language === 'en' ? { ...challenge, ...englishChallenges[challenge.id] } : challenge; }
 
 const staticEnglish = {
-  'انتقل إلى المحتوى': 'Skip to content', 'المسارات': 'Paths', 'التحديات': 'Challenges', 'تقدّمك': 'Your progress', 'موقع Biuret ↗': 'Biuret site ↗', 'Biuret Academy - الرئيسية': 'Biuret Academy - home', 'تحدي اليوم': 'Daily challenge',
+  'انتقل إلى المحتوى': 'Skip to content', 'المسارات': 'Paths', 'التحديات': 'Challenges', 'تقدّمك': 'Your progress', 'العضوية': 'Membership', 'موقع Biuret ↗': 'Biuret site ↗', 'Biuret Academy - الرئيسية': 'Biuret Academy - home', 'تحدي اليوم': 'Daily challenge',
   'كل يوم،': 'Every day,', 'مهارة أمنية': 'sharpen your', 'جديدة.': 'security skills.',
   'تعلّم الأمن السيبراني بالطريقة التي تُشبه العمل الحقيقي: دليل صغير، قرار واضح، وتحدٍّ يأخذ دقائق من يومك.': 'Learn cybersecurity through the kind of decisions real work calls for: a small clue, a clear choice, and a challenge that fits your day.',
   'ابدأ أول تحدٍّ': 'Start the first challenge', 'استكشف المسارات': 'Explore paths', 'مسارات': 'paths', 'تحدّياً عملياً': 'hands-on challenges', 'مناسب للبداية': 'Made for beginners',
@@ -68,7 +68,7 @@ function translateStatic() {
     }
   }
   const page = document.querySelector('.site-shell')?.dataset.page || 'home';
-  document.title = language === 'en' ? ({ home: 'Biuret Academy — Learn cybersecurity by doing', paths: 'Learning paths — Biuret Academy', challenges: 'Challenges — Biuret Academy', progress: 'Your progress — Biuret Academy', course: 'Course — Biuret Academy', lesson: 'Lesson — Biuret Academy' }[page]) : ({ home: 'Biuret Academy — تعلّم الأمن السيبراني بالتحدي', paths: 'المسارات — Biuret Academy', challenges: 'التحديات — Biuret Academy', progress: 'تقدّمك — Biuret Academy', course: 'الكورس — Biuret Academy', lesson: 'الدرس — Biuret Academy' }[page]);
+  document.title = language === 'en' ? ({ home: 'Biuret Academy — Learn cybersecurity by doing', paths: 'Learning paths — Biuret Academy', challenges: 'Challenges — Biuret Academy', progress: 'Your progress — Biuret Academy', course: 'Course — Biuret Academy', lesson: 'Lesson — Biuret Academy', membership: 'Membership — Biuret Academy' }[page]) : ({ home: 'Biuret Academy — تعلّم الأمن السيبراني بالتحدي', paths: 'المسارات — Biuret Academy', challenges: 'التحديات — Biuret Academy', progress: 'تقدّمك — Biuret Academy', course: 'الكورس — Biuret Academy', lesson: 'الدرس — Biuret Academy', membership: 'العضوية — Biuret Academy' }[page]);
   const learningTitle = document.querySelector('#learning-main h1')?.textContent;
   if ((page === 'course' || page === 'lesson') && learningTitle) document.title = `${learningTitle} — Biuret Academy`;
   document.documentElement.lang = language;
