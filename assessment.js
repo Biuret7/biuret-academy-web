@@ -1,5 +1,5 @@
 import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential } from './auth.js?v=20260928-4';
-import { currentLanguage, applyLanguage } from './i18n.js?v=20260928-5';
+import { currentLanguage, applyLanguage } from './i18n.js?v=20260928-6';
 
 const root = document.querySelector('#assessment-main');
 const isExam = document.querySelector('.site-shell')?.dataset.page === 'exam';

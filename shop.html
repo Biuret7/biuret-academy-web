@@ -16,10 +16,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260928-5">
+  <link rel="stylesheet" href="style.css?v=20260928-6">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
-  <script type="module" src="app.js?v=20260928-5"></script>
-  <script type="module" src="catalog.js?v=20260928-5"></script>
+  <script type="module" src="app.js?v=20260928-6"></script>
+  <script type="module" src="catalog.js?v=20260928-6"></script>
 </head>
 <body>
 
@@ -30,15 +30,15 @@
         <span class="brand-mark"><img src="assets/biuret-wordmark-icon.png" alt=""></span>
         <span class="brand-word" dir="ltr">BIURET<span class="brand-divider">/</span><span>ACADEMY</span></span>
       </a>
-      <nav class="desktop-nav" aria-label="التنقل الرئيسي">
-        <a href="paths.html" >المسارات</a><a href="challenges.html">التحديات</a><a href="progress.html">تقدّمك</a><a href="membership.html">العضوية</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="site-navigation" aria-expanded="false">القائمة <span aria-hidden="true">☰</span></button>
+      <nav class="desktop-nav" id="site-navigation" aria-label="التنقل الرئيسي">
+        <a href="paths.html" >المسارات</a><a href="courses.html" data-resource="courses">الكورسات</a><a href="labs.html" data-resource="labs">المختبرات</a><a href="quizzes.html" data-resource="quizzes">الاختبارات</a><a href="challenges.html">التحديات</a><a href="tools.html" data-resource="tools">الأدوات</a><a href="progress.html">تقدّمك</a><a href="shop.html" data-resource="shop" aria-current="page">المتجر</a><a href="membership.html">العضوية</a>
       </nav>
       <div class="nav-actions">
         <a class="portfolio-return" href="https://biuret.dev" data-static>موقع Biuret ↗</a><button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English" aria-pressed="false"><span aria-hidden="true">EN</span></button>
         <button class="account-button" id="account-button" type="button">حسابي <span aria-hidden="true">↗</span></button>
       </div>
     </header>
-    <nav class="resource-nav" aria-label="أقسام الأكاديمية"><div class="resource-nav-inner"><a href="courses.html" data-resource="courses">الكورسات</a><a href="labs.html" data-resource="labs">المختبرات</a><a href="quizzes.html" data-resource="quizzes">الاختبارات</a><a href="tools.html" data-resource="tools">الأدوات</a><a href="shop.html" data-resource="shop" aria-current="page">المتجر</a></div></nav>
 
     <main id="main"><div id="catalog-main"></div></main>
 

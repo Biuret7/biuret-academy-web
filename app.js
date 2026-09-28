@@ -3,7 +3,7 @@ import { learningPath, courses, courseById, lessonById, localized } from './lear
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260928-4';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260928-4';
 import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260928-4';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-5';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText } from './i18n.js?v=20260928-6';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -354,6 +354,26 @@ function bindEvents() {
     }
   });
   $('#language-toggle').addEventListener('click', () => { toggleLanguage(); render(); applyLanguage(); });
+  const navToggle = $('#nav-toggle');
+  const siteNavigation = $('#site-navigation');
+  navToggle.addEventListener('click', () => {
+    const open = navToggle.getAttribute('aria-expanded') !== 'true';
+    navToggle.setAttribute('aria-expanded', String(open));
+    siteNavigation.classList.toggle('is-open', open);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+      navToggle.setAttribute('aria-expanded', 'false');
+      siteNavigation.classList.remove('is-open');
+      navToggle.focus();
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.topbar') && navToggle.getAttribute('aria-expanded') === 'true') {
+      navToggle.setAttribute('aria-expanded', 'false');
+      siteNavigation.classList.remove('is-open');
+    }
+  });
   document.querySelectorAll('[data-provider]').forEach((button) => button.addEventListener('click', () => {
     try { signInWithProvider(button.dataset.provider); }
     catch (cause) { $('#auth-error').textContent = cause.message; $('#auth-error').hidden = false; }

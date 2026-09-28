@@ -35,7 +35,7 @@ const staticEnglish = {
   'خمسة عشر تمريناً قصيراً بأدلة وتلميحات وشرح بعد كل إجابة.': 'Fifteen short exercises with evidence, hints and feedback after every answer.',
   'تدريب اليوم الاختياري': 'Optional daily practice', 'بعد درسك الأساسي، جرّب تدريباً قصيراً لتثبيت الفكرة.': 'After your core lesson, try a short exercise to reinforce the idea.',
   'خصص بضع دقائق. أكمل خطوتك التالية. تعلّم شيئاً يبقى معك.': 'Set aside a few minutes. Complete your next step and learn something that stays with you.', 'تابع طريق التعلّم': 'Continue learning',
-  'انتقل إلى المحتوى': 'Skip to content', 'المسارات': 'Paths', 'التحديات': 'Challenges', 'تقدّمك': 'Your progress', 'العضوية': 'Membership', 'موقع Biuret ↗': 'Biuret site ↗', 'Biuret Academy - الرئيسية': 'Biuret Academy - home', 'تحدي اليوم': 'Daily challenge',
+  'انتقل إلى المحتوى': 'Skip to content', 'القائمة': 'Menu', 'المسارات': 'Paths', 'التحديات': 'Challenges', 'تقدّمك': 'Your progress', 'العضوية': 'Membership', 'موقع Biuret ↗': 'Biuret site ↗', 'Biuret Academy - الرئيسية': 'Biuret Academy - home', 'تحدي اليوم': 'Daily challenge',
   'كل يوم،': 'Every day,', 'مهارة أمنية': 'sharpen your', 'جديدة.': 'security skills.',
   'تعلّم الأمن السيبراني بالطريقة التي تُشبه العمل الحقيقي: دليل صغير، قرار واضح، وتحدٍّ يأخذ دقائق من يومك.': 'Learn cybersecurity through the kind of decisions real work calls for: a small clue, a clear choice, and a challenge that fits your day.',
   'ابدأ أول تحدٍّ': 'Start the first challenge', 'استكشف المسارات': 'Explore paths', 'مسارات': 'paths', 'تحدّياً عملياً': 'hands-on challenges', 'مناسب للبداية': 'Made for beginners',

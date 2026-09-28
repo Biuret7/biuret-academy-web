@@ -19,3 +19,15 @@ test('all Academy catalog pages have a visible route and are included in the pub
     for (const destination of pages) assert.match(html, new RegExp(`href="${destination}\.html"`));
   }
 });
+
+test('Academy pages use one navigation with every section available', () => {
+  const sections = ['paths', 'courses', 'labs', 'quizzes', 'challenges', 'tools', 'progress', 'shop', 'membership'];
+  const allPages = ['index', ...sections, 'course', 'lesson', 'lab', 'exam', 'certificate', 'admin'];
+  for (const page of allPages) {
+    const html = read(`${page}.html`);
+    assert.equal((html.match(/<nav\b/g) || []).length, 1, `${page} must have one navigation`);
+    assert.match(html, /id="nav-toggle"[^>]*aria-controls="site-navigation"[^>]*aria-expanded="false"/);
+    assert.match(html, /<nav class="desktop-nav" id="site-navigation"/);
+    for (const section of sections) assert.match(html, new RegExp(`href="${section}\\.html"`));
+  }
+});

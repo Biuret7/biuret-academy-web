@@ -36,6 +36,6 @@ for (const [page, title, description] of [
     .replace('aria-current="page"', '')
     .replace(`data-resource="${activeResource}"`, `data-resource="${activeResource}" aria-current="page"`)
     .replace('href="membership.html">العضوية</a>', page === 'membership' ? 'href="membership.html" aria-current="page">العضوية</a>' : 'href="membership.html">العضوية</a>')
-    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-5"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-5"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-5"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-5"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-5"></script>\n</head>' : '</head>');
+    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-6"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-6"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-6"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-6"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-6"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }
