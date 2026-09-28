@@ -3,7 +3,8 @@ import { pageContext } from './page-context.mjs';
 
 // Reuse the existing account and navigation shell until the static pages move
 // to a shared component system. The generated pages are committed for Pages.
-const template = readFileSync(new URL('../paths.html', import.meta.url), 'utf8');
+const template = readFileSync(new URL('../paths.html', import.meta.url), 'utf8')
+  .replace(/^  <script type="module" src="desktop\.js[^\n]+\n/m, '');
 const mainStart = template.indexOf('    <main id="main">');
 const mainEnd = template.indexOf('    </main>', mainStart) + '    </main>'.length;
 if (mainStart < 0 || mainEnd < mainStart) throw new Error('Could not find page main area');
@@ -21,11 +22,27 @@ for (const [page, title, description] of [
   ['quizzes', 'الاختبارات — Biuret Academy', 'اختبارات فهم قصيرة وامتحان أساسيات الأمن السيبراني.'],
   ['tools', 'الأدوات — Biuret Academy', 'دليل مبسط لأدوات الأمن السيبراني وتطبيقها في بيئة تدريبية.'],
   ['shop', 'المتجر — Biuret Academy', 'استكشف الاستخدامات المخطط لها لعملات Biuret داخل الأكاديمية.'],
+  ['review', 'المراجعة الذكية — Biuret Academy', 'راجع دروسك ومفاهيمك الأساسية بانتظام.'],
+  ['operations', 'غرفة العمليات — Biuret Academy', 'ستة سيناريوهات تدريبية لتحليل الحوادث الأمنية.'],
+  ['operation', 'سيناريو العمليات — Biuret Academy', 'حلل الأدلة واتخذ القرار في سيناريو أمني تدريبي.'],
+  ['certifications', 'الشهادات — Biuret Academy', 'خارطة الشهادات والمسارات المهنية في الأمن السيبراني.'],
+  ['professional', 'المركز الاحترافي — Biuret Academy', 'مشاريع ومهارات وخطوات مهنية عملية.'],
+  ['notes', 'ملاحظاتي — Biuret Academy', 'احفظ ملاحظاتك الخاصة أثناء التعلم.'],
+  ['favorites', 'المفضلة — Biuret Academy', 'ارجع إلى الدروس التي حفظتها.'],
+  ['search', 'البحث — Biuret Academy', 'ابحث في كورسات ودروس برنامج Biuret Academy.'],
+  ['settings', 'الإعدادات — Biuret Academy', 'خصص تجربة التعلم واللغة.'],
+  ['profile', 'الملف الشخصي — Biuret Academy', 'ملفك وتقدمك في Biuret Academy.'],
+  ['library-course', 'كورس البرنامج — Biuret Academy', 'دروس الكورس المستوردة من برنامج Biuret Academy.'],
+  ['library-lesson', 'درس البرنامج — Biuret Academy', 'محتوى الدرس المستورد من برنامج Biuret Academy.'],
+  ['practice-quiz', 'اختبار تدريبي — Biuret Academy', 'اختبر فهمك في مكتبة التدريب.'],
+  ['practice-lab', 'مختبر تدريبي — Biuret Academy', 'حلل عينة صناعية في مختبر تدريبي.'],
+  ['practice-challenge', 'تحدي تدريبي — Biuret Academy', 'تحدي فهم إضافي من برنامج الأكاديمية.'],
 ]) {
   const assessment = page === 'exam' || page === 'certificate';
   const catalog = ['courses', 'labs', 'quizzes', 'tools', 'shop'].includes(page);
-  const main = catalog ? '    <main id="main"><div id="catalog-main"></div></main>' : page === 'lab' ? '    <main id="main"><div id="lab-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : page === 'membership' ? '    <main id="main"><div id="membership-main" class="membership-main section-frame" aria-live="polite"></div></main>' : page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
-  const activeSection = ({ course: 'courses', lesson: 'courses', lab: 'labs' })[page] || page;
+  const desktop = ['review', 'operations', 'operation', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'profile', 'library-course', 'library-lesson', 'practice-quiz', 'practice-lab', 'practice-challenge'].includes(page);
+  const main = desktop ? '    <main id="main"><div id="desktop-main" aria-live="polite"></div></main>' : catalog ? '    <main id="main"><div id="catalog-main"></div></main>' : page === 'lab' ? '    <main id="main"><div id="lab-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : page === 'membership' ? '    <main id="main"><div id="membership-main" class="membership-main section-frame" aria-live="polite"></div></main>' : page === 'admin' ? '    <main id="main"><div id="admin-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : assessment ? '    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>' : '    <main id="main"><div id="learning-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>';
+  const activeSection = ({ course: 'courses', lesson: 'courses', lab: 'labs', 'library-course': 'courses', 'library-lesson': 'courses', 'practice-quiz': 'quizzes', 'practice-lab': 'labs', 'practice-challenge': 'challenges', operation: 'operations' })[page] || page;
   const html = (template.slice(0, mainStart) + main + template.slice(mainEnd))
     .replace('data-page="paths"', `data-page="${page}"`)
     .replace(/<div class="page-header-context">[\s\S]*?<\/div>/, pageContext(page))
@@ -37,6 +54,18 @@ for (const [page, title, description] of [
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
     .replace('href="paths.html" aria-current="page"', 'href="paths.html"')
     .replace(`href="${activeSection}.html"`, `href="${activeSection}.html" aria-current="page"`)
-    .replace('</head>', catalog ? '  <script type="module" src="catalog.js?v=20260928-14"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-14"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-14"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-14"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-14"></script>\n</head>' : '</head>');
+    .replace('</head>', desktop ? '  <script type="module" src="desktop.js?v=20260928-15"></script>\n</head>' : catalog ? '  <script type="module" src="catalog.js?v=20260928-14"></script>\n  <script type="module" src="desktop.js?v=20260928-15"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20260928-14"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260928-14"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260928-14"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260928-14"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }
+
+const desktop = JSON.parse(readFileSync(new URL('../content/desktop-library.json', import.meta.url), 'utf8'));
+const oldSitemap = readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
+const urls = new Set([...oldSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]));
+for (const page of ['review', 'operations', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'profile']) {
+  urls.add(`https://academy.biuret.dev/${page}.html`);
+}
+for (const course of desktop.categories) {
+  urls.add(`https://academy.biuret.dev/library-course.html?id=${course.id}`);
+  for (const lesson of course.lessons) urls.add(`https://academy.biuret.dev/library-lesson.html?id=${lesson.id}`);
+}
+writeFileSync(new URL('../sitemap.xml', import.meta.url), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...urls].map((url) => `  <url><loc>${url.replace(/&/g, '&amp;')}</loc></url>`).join('\n')}\n</urlset>\n`);

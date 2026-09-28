@@ -1,6 +1,6 @@
 # Biuret Academy Web
 
-An Arabic-first academy for `academy.biuret.dev`, with a complete English interface. The site uses the Biuret visual identity and offers 12 short challenges across Foundations, Web Security, and Digital Forensics. Three structured Foundations courses are live; see [the platform plan](docs/platform-plan.md) for the staged expansion.
+An Arabic-first academy for `academy.biuret.dev`. The site uses the Biuret visual identity, a bilingual interface, and a verified Foundations route. It also includes the Arabic source curriculum from the Biuret Academy desktop program as a separate self-study library.
 
 ## Features
 
@@ -15,8 +15,11 @@ An Arabic-first academy for `academy.biuret.dev`, with a complete English interf
 - Guest progress in `localStorage`. Signing in with the existing Biuret Appwrite account merges local and cloud progress into account preferences.
 - Email/password and Google/GitHub account buttons. OAuth requires `academy.biuret.dev` to be registered as a web platform in the existing Appwrite project.
 - Responsive layout, keyboard-accessible dialogs, and reduced-motion support.
+- The desktop program library: 18 courses and 99 Arabic lessons with objectives, exercises and references; 5 career roadmaps, 15 tool guides, 12 practice quizzes, 13 practice challenges, 8 synthetic labs, 6 operations simulations, 8 certification references, and a non-purchasable preview of the program shop catalog. The desktop sidebar's review, operations, certifications, professional hub, notes, favorites, search, settings and profile all have web pages.
 
 The challenges use synthetic examples and intentionally teach defensive judgment. Signed-in lesson completions, verified XP, and eligible Biuret Coins are server-owned in Appwrite; public formative answers alone do not qualify for the final exam. The coin balance is derived from private ledger events. Free state reads preserve older ledger events without creating new ones; Free lesson awards now store zero coins and never backfill on upgrade. Challenge progress and practice XP are user-editable client-side values and do not count toward the credential. The achievement credential verifies course and exam completion, not a legal identity or professional certification.
+
+Imported desktop material remains in its original Arabic. English is available for the surrounding interface; editorial translation and review of the imported lesson text are still needed. Its reading status, notes, favorites, practice results and review cards are stored only in this browser and do not grant server-verified XP, Coins or credentials. Store purchases and redemption remain disabled. The public export deliberately excludes desktop user progress, account databases, private keys and server secrets.
 
 ## Local development
 
@@ -27,7 +30,7 @@ python -m http.server 8080
 ```
 
 Run logic tests with `node --test tests/*.test.mjs`. No build step or package installation is needed.
-If the shared page shell changes, regenerate `course.html`, `lesson.html`, `exam.html`, `certificate.html`, `admin.html`, and `membership.html` with `node scripts/build-learning-pages.mjs`. Use `node scripts/content-release.mjs verify` to check the active reviewed content bundle; see [the platform plan](docs/platform-plan.md) for authoring and rollback commands.
+If the shared page shell changes, run `node scripts/sync-sidebar.mjs` followed by `node scripts/build-learning-pages.mjs`. The generated pages and sitemap are committed for GitHub Pages. To refresh the desktop curriculum from the sibling `Biuret_Academy` folder, run `python scripts/import-desktop-library.py` first. That exporter reads `academy.db` in read-only mode and parses curriculum literals without executing the desktop app. Use `node scripts/content-release.mjs verify` to check the active reviewed content bundle; see [the platform plan](docs/platform-plan.md) for authoring and rollback commands.
 
 ## Publishing
 

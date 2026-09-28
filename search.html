@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0d">
-  <meta name="description" content="عرض إثبات الإنجاز والتحقق منه عبر Biuret Academy.">
+  <meta name="description" content="ابحث في كورسات ودروس برنامج Biuret Academy.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="إثبات الإنجاز — Biuret Academy">
-  <meta property="og:description" content="عرض إثبات الإنجاز والتحقق منه عبر Biuret Academy.">
+  <meta property="og:title" content="البحث — Biuret Academy">
+  <meta property="og:description" content="ابحث في كورسات ودروس برنامج Biuret Academy.">
   <meta name="twitter:card" content="summary">
-  <title>إثبات الإنجاز — Biuret Academy</title>
+  <title>البحث — Biuret Academy</title>
   <link rel="icon" href="assets/biuret-wordmark-icon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,12 +17,12 @@
   <link rel="stylesheet" href="style.css?v=20260928-14">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
   <script type="module" src="app.js?v=20260928-14"></script>
-  <script type="module" src="assessment.js?v=20260928-14"></script>
+  <script type="module" src="desktop.js?v=20260928-15"></script>
 </head>
 <body>
 
   <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
-  <div class="site-shell" data-page="certificate">
+  <div class="site-shell" data-page="search">
     <aside class="academy-sidebar" id="academy-sidebar" aria-label="قائمة الأكاديمية">
       <div class="sidebar-top">
         <a class="sidebar-brand" href="index.html" aria-label="Biuret Academy - الرئيسية">
@@ -54,12 +54,12 @@
             <a href="notes.html"><span class="sidebar-link-index" aria-hidden="true">✎</span><span>ملاحظاتي</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="favorites.html"><span class="sidebar-link-index" aria-hidden="true">☆</span><span>المفضلة</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="exam.html"><span class="sidebar-link-index" aria-hidden="true">09</span><span>الامتحان النهائي</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
-            <a href="certificate.html" aria-current="page"><span class="sidebar-link-index" aria-hidden="true">10</span><span>إثبات الإنجاز</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="certificate.html"><span class="sidebar-link-index" aria-hidden="true">10</span><span>إثبات الإنجاز</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
           </section>
           <section class="sidebar-group" aria-labelledby="sidebar-benefits"><h2 id="sidebar-benefits">المزايا</h2>
             <a href="membership.html"><span class="sidebar-link-index" aria-hidden="true">11</span><span>العضوية</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="shop.html"><span class="sidebar-link-index" aria-hidden="true">12</span><span>المتجر</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
-            <a href="search.html"><span class="sidebar-link-index" aria-hidden="true">⌕</span><span>البحث</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="search.html" aria-current="page"><span class="sidebar-link-index" aria-hidden="true">⌕</span><span>البحث</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="settings.html"><span class="sidebar-link-index" aria-hidden="true">⚙</span><span>الإعدادات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="profile.html"><span class="sidebar-link-index" aria-hidden="true">◉</span><span>الملف الشخصي</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
           </section>
@@ -74,14 +74,14 @@
         <span class="brand-word" dir="ltr">BIURET<span class="brand-divider">/</span><span>ACADEMY</span></span>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="academy-sidebar" aria-expanded="false">القائمة <span aria-hidden="true">☰</span></button>
-      <div class="page-header-context"><span>ACADEMY / CREDENTIAL</span><strong data-ar="اعرض إثبات إنجازك وتحقّق منه." data-en="View and verify your achievement.">اعرض إثبات إنجازك وتحقّق منه.</strong></div>
+      <div class="page-header-context"><span>ACADEMY / SEARCH</span><strong data-ar="ابحث في محتوى الأكاديمية." data-en="Search Academy content.">ابحث في محتوى الأكاديمية.</strong></div>
       <div class="nav-actions">
         <a class="portfolio-return" href="https://biuret.dev" data-static>موقع Biuret ↗</a><button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English" aria-pressed="false"><span aria-hidden="true">EN</span></button>
         <button class="account-button" id="account-button" type="button">حسابي <span aria-hidden="true">↗</span></button>
       </div>
     </header>
 
-    <main id="main"><div id="assessment-main"><section class="section-frame learning-empty"><p>جارٍ تحميل المحتوى…</p></section></div></main>
+    <main id="main"><div id="desktop-main" aria-live="polite"></div></main>
 
     <footer class="footer section-frame"><div><a class="footer-brand" href="https://biuret.dev" dir="ltr">BIURET<span>7</span></a><p>مساحة صغيرة للتعلّم الكبير.</p></div><div class="footer-links"><a href="https://biuret.dev">موقع Biuret</a><a href="https://biuret.dev/privacy.html">سياسة الخصوصية</a><a href="https://biuret.dev/terms.html">شروط الاستخدام</a></div><span class="footer-end">© 2026 BIURET ACADEMY</span></footer>
   </div>

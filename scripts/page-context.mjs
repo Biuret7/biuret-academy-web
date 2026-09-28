@@ -15,6 +15,21 @@ export const pageContexts = {
   membership: ['MEMBERSHIP', 'اختر مزايا التعلّم المناسبة لك.', 'Explore the learning benefits that fit you.'],
   shop: ['SHOP', 'استكشف مزايا عملات Biuret.', 'Explore Biuret Coins benefits.'],
   admin: ['ADMIN', 'إدارة إثباتات الإنجاز.', 'Manage achievement credentials.'],
+  review: ['REVIEW', 'راجع دروسك بانتظام.', 'Review your lessons regularly.'],
+  operations: ['OPERATIONS', 'حلل حوادث واقعية بمحاكاة آمنة.', 'Investigate incidents in safe simulations.'],
+  operation: ['OPERATION', 'اتخذ قراراً مبنياً على الدليل.', 'Make an evidence-based decision.'],
+  certifications: ['CERTIFICATIONS', 'استكشف مسارات الشهادات المهنية.', 'Explore professional certification paths.'],
+  professional: ['PROFESSIONAL HUB', 'حوّل تعلمك إلى مهارات عملية.', 'Turn learning into practical skills.'],
+  notes: ['NOTES', 'اجمع أفكارك أثناء التعلّم.', 'Keep your learning notes together.'],
+  favorites: ['FAVORITES', 'ارجع سريعاً إلى ما حفظته.', 'Return to what you saved.'],
+  search: ['SEARCH', 'ابحث في محتوى الأكاديمية.', 'Search Academy content.'],
+  settings: ['SETTINGS', 'اضبط تجربة تعلّمك.', 'Adjust your learning experience.'],
+  profile: ['PROFILE', 'حسابك ومسار تقدّمك.', 'Your account and learning route.'],
+  'library-course': ['COURSE LIBRARY', 'دروس الكورس في مكان واحد.', 'All course lessons in one place.'],
+  'library-lesson': ['LESSON LIBRARY', 'اقرأ الدرس ودوّن ما تعلّمته.', 'Read and capture what you learned.'],
+  'practice-quiz': ['PRACTICE QUIZ', 'اختبار تدريبي من برنامج الأكاديمية.', 'A practice quiz from the Academy program.'],
+  'practice-lab': ['PRACTICE LAB', 'حلل عينة مختبر صناعية.', 'Analyze a synthetic lab sample.'],
+  'practice-challenge': ['PRACTICE CHALLENGE', 'حل تحدياً إضافياً بالتفكير.', 'Solve another reasoning challenge.'],
 };
 
 export function pageContext(page) {
