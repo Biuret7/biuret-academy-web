@@ -49,5 +49,10 @@ test('specialty exam requires accessible, completed path lessons and issues a pr
   assert.equal(credential.data.shared, false);
   const shared = await service.share('learner', 'path_grc', true);
   assert.equal(shared.data.shared, true);
+  const corrected = await service.correctName('learner', 'path_grc', 'Real Learner');
+  assert.equal(corrected.data.holderName, 'Real Learner');
+  assert.equal(corrected.data.score, 10);
+  assert.equal(corrected.data.courseCount > 0, true);
+  assert.equal(corrected.data.shared, true);
   assert.equal((await service.state('learner', 'path_grc')).data.passed, true);
 });

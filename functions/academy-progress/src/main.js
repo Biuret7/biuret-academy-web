@@ -5,6 +5,7 @@ import { coinLedgerService } from './coins.js';
 import { membershipService } from './membership.js';
 import { libraryItem, mayAccessLibrary, publicLibraryFor, scoreLibraryPractice } from './library.js';
 import { pathExamService } from './path-exam.js';
+import { fullName } from './name.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
@@ -159,6 +160,9 @@ export default async ({ req, res, error }) => {
     const key = headers['x-appwrite-key'];
     if (!key) throw new Error('Function key unavailable');
     const input = req.bodyJson || JSON.parse(req.bodyText || '{}');
+    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'submitExam', 'pathSubmitExam'].includes(input.action) && !fullName(account.name)) {
+      return res.json({ error: 'Set your real two or three part name in your Academy account before learning' }, 403);
+    }
     if (input.action === 'membershipState') {
       return res.json(await membershipForAccount(key, account));
     }
@@ -182,7 +186,7 @@ export default async ({ req, res, error }) => {
       const scored = scoreLibraryPractice(kind, index, input.answers, input.language);
       return scored ? res.json(scored) : res.json({ error: 'Invalid practice submission' }, 400);
     }
-    if (['pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential'].includes(input.action)) {
+    if (['pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential', 'pathCorrectCredentialName'].includes(input.action)) {
       const context = await libraryContext(key, account);
       const paths = pathExamService({
         base: ENDPOINT,
@@ -192,9 +196,10 @@ export default async ({ req, res, error }) => {
         foundationsPassed: context.foundationsPassed,
       });
       const result = input.action === 'pathExamState' ? await paths.state(account.$id, input.pathId, input.language)
-        : input.action === 'pathSubmitExam' ? await paths.submit(account.$id, account.name, input.pathId, input.answers)
+        : input.action === 'pathSubmitExam' ? await paths.submit(account.$id, fullName(account.name), input.pathId, input.answers)
           : input.action === 'pathCredential' ? await paths.credential(account.$id, input.pathId)
-            : await paths.share(account.$id, input.pathId, input.enabled);
+            : input.action === 'pathCorrectCredentialName' ? fullName(account.name) ? await paths.correctName(account.$id, input.pathId, fullName(account.name)) : { code: 403, data: { error: 'Set your real full name first' } }
+              : await paths.share(account.$id, input.pathId, input.enabled);
       return res.json(result.data, result.code);
     }
     if (input.action === 'completeLesson') {
@@ -208,11 +213,17 @@ export default async ({ req, res, error }) => {
     });
     if (input.action === 'examState') return res.json(await exam.state(account.$id));
     if (input.action === 'submitExam') {
-      const result = await exam.submit(account.$id, account.name, input.answers);
+      const result = await exam.submit(account.$id, fullName(account.name), input.answers);
       return res.json(result.data, result.code);
     }
     if (input.action === 'credential') {
       const result = await exam.credential(account.$id);
+      return res.json(result.data, result.code);
+    }
+    if (input.action === 'correctCredentialName') {
+      const name = fullName(account.name);
+      if (!name) return res.json({ error: 'Set your real full name first' }, 403);
+      const result = await exam.correctName(account.$id, name);
       return res.json(result.data, result.code);
     }
     if (input.action === 'shareCredential' && typeof input.enabled === 'boolean') {

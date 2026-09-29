@@ -1,5 +1,7 @@
-import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential } from './auth.js?v=20260929-1';
+import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20260929-2';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20260929-1';
+import { credentialFacts, downloadCredential } from './credential-art.js?v=20260929-1';
+import { fullName } from './full-name.js?v=20260929-1';
 
 const root = document.querySelector('#path-assessment-main');
 const pathId = new URLSearchParams(location.search).get('id');
@@ -23,7 +25,15 @@ function date(value) { return new Date(value).toLocaleDateString(currentLanguage
 
 function credentialCard(value) {
   const verify = new URL('certificate.html', location.href); verify.searchParams.set('id', value.id);
-  return `<div class="credential-card ${value.status === 'active' ? '' : 'revoked'}"><div class="credential-head"><span class="section-kicker">BIURET / ACADEMY</span><span class="credential-seal" aria-hidden="true">✦</span></div><p class="credential-kind">${esc(names[pathId]?.[currentLanguage() === 'en' ? 1 : 0] || pathId)} / PROGRAM PATH</p><h2>${tr('إنجاز تخصص موثّق', 'Verified specialty achievement')}</h2><p>${tr('ممنوح إلى', 'Awarded to')}</p><strong class="credential-name">${esc(value.holderName)}</strong><div class="credential-rule"></div><p>${tr('أكمل دروس المسار واجتاز امتحانه بنتيجة لا تقل عن 8 من 10.', 'Completed the path lessons and passed its exam with at least 8 out of 10.')}</p><div class="credential-meta"><span>${tr('تاريخ الإصدار', 'Issued')}<strong>${esc(date(value.issuedAt))}</strong></span><span>${tr('المُصدر', 'Issuer')}<strong>Biuret Academy</strong></span></div><code dir="ltr">${esc(value.id)}</code></div><div class="assessment-card share-card"><h2>${tr('المشاركة بإذنك', 'Share with your permission')}</h2><p>${tr('عند تفعيل الرابط العام، يمكن لصاحب الرابط التحقق من اسمك وحالة إثباتك. تستطيع إيقاف المشاركة لاحقاً.', 'When you enable the public link, people with it can verify your display name and credential status. You can turn sharing off later.')}</p><button class="button ${value.shared ? 'button-outline' : 'button-primary'}" id="path-share" type="button">${value.shared ? tr('إيقاف المشاركة', 'Stop sharing') : tr('تفعيل رابط التحقق', 'Enable verification link')}</button>${value.shared ? `<p class="verification-link"><a href="${esc(verify.href)}">${esc(verify.href)}</a></p>` : ''}</div>`;
+  return `<div class="credential-card ${value.status === 'active' ? '' : 'revoked'}"><div class="credential-head"><span class="section-kicker">BIURET / ACADEMY</span><span class="credential-seal" aria-hidden="true">✦</span></div><p class="credential-kind">${esc(names[pathId]?.[currentLanguage() === 'en' ? 1 : 0] || pathId)} / PROGRAM PATH</p><h2>${tr('شهادة إنجاز التخصص', 'Specialty certificate of achievement')}</h2><p>${tr('ممنوح إلى', 'Awarded to')}</p><strong class="credential-name">${esc(value.holderName)}</strong><div class="credential-rule"></div><p>${tr('أكمل دروس المسار واجتاز امتحانه بنتيجة لا تقل عن 8 من 10.', 'Completed the path lessons and passed its exam with at least 8 out of 10.')}</p><div class="credential-meta"><span>${tr('تاريخ الإصدار', 'Issued')}<strong>${esc(date(value.issuedAt))}</strong></span><span>${tr('المُصدر', 'Issuer')}<strong>Biuret Academy</strong></span></div><code dir="ltr">${esc(value.id)}</code></div><div class="assessment-card share-card"><h2>${tr('المشاركة بإذنك', 'Share with your permission')}</h2><p>${tr('عند تفعيل الرابط العام، يمكن لصاحب الرابط التحقق من اسمك وحالة إثباتك. تستطيع إيقاف المشاركة لاحقاً.', 'When you enable the public link, people with it can verify your display name and credential status. You can turn sharing off later.')}</p><button class="button ${value.shared ? 'button-outline' : 'button-primary'}" id="path-share" type="button">${value.shared ? tr('إيقاف المشاركة', 'Stop sharing') : tr('تفعيل رابط التحقق', 'Enable verification link')}</button>${value.shared ? `<p class="verification-link"><a href="${esc(verify.href)}">${esc(verify.href)}</a></p>` : ''}</div>`;
+}
+
+function enhanceCredential(value) {
+  const card = root.querySelector('.credential-card'); if (!card) return;
+  const f = credentialFacts(value, currentLanguage());
+  card.querySelector('.credential-meta')?.insertAdjacentHTML('beforebegin', `<div class="credential-detail-grid"><span>${f.labels.course}<strong>${esc(f.title)}</strong></span><span>${f.labels.courses}<strong>${esc(f.courses ?? '—')}</strong></span><span>${f.labels.lessons}<strong>${esc(f.lessons ?? '—')}</strong></span><span>${f.labels.score}<strong dir="ltr">${esc(f.score ?? '—')}</strong></span><span class="credential-topics">${f.labels.topics}<strong>${esc(f.topics)}</strong></span></div>`);
+  if (value.status === 'active') card.insertAdjacentHTML('afterend', `<div class="assessment-card credential-downloads"><div><h2>${tr('تنزيل الشهادة', 'Download certificate')}</h2><p>${tr('تضم اسمك الكامل ومعلومات المسار ونتيجة الامتحان.', 'Includes your full name, path details and exam score.')}</p></div><div class="credential-download-actions"><button class="button button-primary" data-download="pdf" type="button">PDF ↓</button><button class="button button-outline" data-download="png" type="button">PNG ↓</button><button class="button button-outline" data-download="jpeg" type="button">JPEG ↓</button></div></div>`);
+  if (fullName(user()?.name) && user().name !== value.holderName) card.insertAdjacentHTML('afterend', `<div class="assessment-card credential-correction"><h2>${tr('الاسم على الشهادة قديم', 'Certificate name needs updating')}</h2><p>${tr('اسم حسابك الحالي:', 'Current account name:')} <strong>${esc(user().name)}</strong></p><button class="button button-outline" id="path-correct-name" type="button">${tr('استخدم اسمي الكامل الحالي', 'Use my current full name')}</button></div>`);
 }
 
 async function refresh() {
@@ -38,6 +48,7 @@ async function refresh() {
     if (status.passed) {
       credential = await loadPathCredential(pathId);
       frame(progress + credentialCard(credential));
+      enhanceCredential(credential);
       return;
     }
     if (!status.access) { frame(`<div class="assessment-card"><h2>${tr('المسار يتطلب الأساسيات وخطة مناسبة', 'This path requires Foundations and an eligible plan')}</h2><p>${tr('أكمل امتحان الأساسيات، ثم تحقق من خطة عضويتك لفتح كورسات هذا التخصص.', 'Pass the Foundations exam, then check your membership to unlock these courses.')}</p><a class="button button-primary" href="membership.html">${tr('شاهد الخطط', 'View plans')} ↗</a></div>`); return; }
@@ -55,6 +66,14 @@ async function refresh() {
 root?.addEventListener('click', async (event) => {
   if (event.target.closest('#path-signin')) document.querySelector('#account-button')?.click();
   if (event.target.closest('#path-retry')) refresh();
+  const download = event.target.closest('[data-download]');
+  if (download && credential) { download.disabled = true; try { await downloadCredential(credential, currentLanguage(), download.dataset.download); } catch (error) { alert(error.message); } finally { download.disabled = false; } }
+  if (event.target.closest('#path-correct-name') && !busy) {
+    busy = true;
+    try { credential = await correctPathCredentialName(pathId); refresh(); }
+    catch (error) { alert(error.message); }
+    finally { busy = false; }
+  }
   if (event.target.closest('#path-share') && !busy) {
     busy = true;
     try { credential = await sharePathCredential(pathId, !credential.shared); refresh(); }

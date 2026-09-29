@@ -32,6 +32,8 @@ python -m http.server 8080
 Run logic tests with `node --test tests/*.test.mjs`. No build step or package installation is needed.
 If the shared page shell changes, run `node scripts/sync-sidebar.mjs` followed by `node scripts/build-learning-pages.mjs`. The generated pages and sitemap are committed for GitHub Pages. To refresh the desktop curriculum from the sibling `Biuret_Academy` folder, run `python scripts/import-desktop-library.py` first. That exporter reads `academy.db` in read-only mode and parses curriculum literals without executing the desktop app. Use `node scripts/content-release.mjs verify` to check the active reviewed content bundle; see [the platform plan](docs/platform-plan.md) for authoring and rollback commands.
 
+Learners enter a self-declared two or three part full name before verified learning. Existing credential owners can correct the certificate name after updating their Appwrite account name; the credential ID and exam result remain unchanged. Active certificates download as PDF, PNG, or JPEG. Name format checks do not verify legal identity.
+
 ## Publishing
 
 Publish this directory from a dedicated public GitHub Pages repository. Set its Pages custom domain to `academy.biuret.dev` first. Then add a `CNAME` record at the domain's DNS provider: host `academy`, target `Biuret7.github.io`. Register `academy.biuret.dev` as a web platform in Appwrite project `6aa55a88003959a536e9`. Never put Appwrite server keys, OAuth client secrets, or other private credentials in this repository.

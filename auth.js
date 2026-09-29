@@ -1,4 +1,5 @@
 import { cleanProgress, mergeProgress } from './engine.js?v=20260929-1';
+import { fullName } from './full-name.js?v=20260929-1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -31,11 +32,21 @@ export async function signIn(email, password) {
 
 export async function signUp(name, email, password) {
   if (!account) throw new Error('خدمة الحساب غير متاحة الآن. حدّث الصفحة وحاول مجدداً.');
+  name = fullName(name);
+  if (!name) throw new Error('اكتب اسمك الحقيقي الثنائي أو الثلاثي لتظهر الشهادة باسمك.');
   await account.create({ userId: sdk.ID.unique(), email, password, name });
   await account.createEmailPasswordSession({ email, password });
   currentUser = await account.get();
   try { await account.createVerification({ url: 'https://biuret.dev/verify.html' }); }
   catch (error) { console.warn('Could not send verification email:', error); }
+  return currentUser;
+}
+
+export async function updateAccountName(name) {
+  if (!account || !currentUser) throw new Error('Sign in first.');
+  name = fullName(name);
+  if (!name) throw new Error('Enter your real first and last name, or three name parts.');
+  currentUser = await account.updateName({ name });
   return currentUser;
 }
 
@@ -83,6 +94,8 @@ export function loadExam() { return learningExecution({ action: 'examState' }, f
 export function submitExam(answers) { return learningExecution({ action: 'submitExam', answers }, false); }
 export function loadCredential() { return learningExecution({ action: 'credential' }, false); }
 export function shareCredential(enabled) { return learningExecution({ action: 'shareCredential', enabled }, false); }
+export function correctCredentialName() { return learningExecution({ action: 'correctCredentialName' }, false); }
+export function correctPathCredentialName(pathId) { return learningExecution({ action: 'pathCorrectCredentialName', pathId }, false); }
 export function academyAdminStatus() { return learningExecution({ action: 'adminStatus' }, false); }
 export function academyAdminCredential(credentialId) { return learningExecution({ action: 'adminCredential', credentialId }, false); }
 export function academyAdminRevoke(credentialId, reason) { return learningExecution({ action: 'adminRevokeCredential', credentialId, reason }, false); }

@@ -44,7 +44,7 @@ test('Free earns XP without coins; Plus earns coins once; users remain isolated'
   rows.set(membershipRowId('learner-pro'), { payload: JSON.stringify({ version: 1, userId: 'learner-pro', provider: 'paddle', subscriptionId: 'sub_pro', status: 'active', currentPeriodEnd: '2099-01-01T00:00:00Z', plan: 'pro' }) });
   globalThis.fetch = async (url, options = {}) => {
     const path = new URL(url).pathname;
-    if (path === '/v1/account') return response(200, { $id: userId });
+    if (path === '/v1/account') return response(200, { $id: userId, name: 'Test Learner' });
     const rowId = path.split('/').at(-1);
     if (options.method === 'POST') {
       const input = JSON.parse(options.body);

@@ -53,6 +53,12 @@ export function pathExamService({ base, request, getRead, membership, foundation
     return source && local ? { source, local } : null;
   }
 
+  function pathDetails(pathId) {
+    const path = pathInfo(pathId);
+    const categories = path?.source[6].map((order) => libraryData('ar').categories.find((item) => item.order === order)).filter(Boolean) || [];
+    return { courseCount: categories.length, lessonCount: categories.reduce((sum, item) => sum + item.lessons.length, 0) };
+  }
+
   async function attemptsFor(userId, pathId) {
     const rows = await Promise.all(Array.from({ length: MAX_ATTEMPTS }, (_, i) => getRow(`${attemptsBase}/rows/${pathAttemptId(userId, pathId, i + 1)}`)));
     return rows.map((row, index) => {
@@ -94,7 +100,7 @@ export function pathExamService({ base, request, getRead, membership, foundation
     const id = attempt.credentialId;
     if (!/^c_[a-f0-9]{32}$/.test(id || '')) throw new Error('Path credential ID invalid');
     if (await getRow(`${credentialsBase}/rows/${id}`)) return;
-    const payload = JSON.stringify({ version: VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt });
+    const payload = JSON.stringify({ version: VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, ...pathDetails(attempt.pathId) });
     const result = await request(`${credentialsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: id, data: { payload }, permissions: [] }) });
     if (![201, 409].includes(result.status)) throw new Error('Path credential creation failed');
   }
@@ -114,12 +120,12 @@ export function pathExamService({ base, request, getRead, membership, foundation
     const passed = score >= 8;
     const slot = current.data.attempts.length + 1;
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
-    const holderName = String(name || 'Biuret learner').trim().slice(0, 100) || 'Biuret learner';
+    const holderName = name;
     const payload = JSON.stringify({ version: VERSION, pathId, slot, score, passed, credentialId, holderName });
     const result = await request(`${attemptsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: pathAttemptId(userId, pathId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Path attempt creation failed');
-    if (passed) await ensureCredential({ credentialId, pathId, holderName, completedAt: result.data.$createdAt });
+    if (passed) await ensureCredential({ credentialId, pathId, holderName, score, completedAt: result.data.$createdAt });
     return { code: 200, data: { score, passed, credentialId, remaining: MAX_ATTEMPTS - slot } };
   }
 
@@ -140,10 +146,21 @@ export function pathExamService({ base, request, getRead, membership, foundation
     if (record.code !== 200) return record;
     if (enabled && record.data.status !== 'active') return { code: 409, data: { error: 'Revoked credentials cannot be shared' } };
     const row = await getRow(`${credentialsBase}/rows/${record.data.id}`);
-    const result = await request(`${credentialsBase}/rows/${record.data.id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: row.payload }, permissions: enabled ? ['read("any")'] : [] }) });
+    const payload = { ...JSON.parse(row.payload), score: record.data.score, total: record.data.total, ...pathDetails(pathId) };
+    const result = await request(`${credentialsBase}/rows/${record.data.id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: JSON.stringify(payload) }, permissions: enabled ? ['read("any")'] : [] }) });
     if (result.status !== 200) throw new Error('Path credential sharing failed');
     return { code: 200, data: { ...record.data, shared: enabled } };
   }
 
-  return { state, submit, credential, share };
+  async function correctName(userId, pathId, holderName) {
+    const record = await credential(userId, pathId);
+    if (record.code !== 200) return record;
+    const row = await getRow(`${credentialsBase}/rows/${record.data.id}`);
+    const payload = { ...JSON.parse(row.payload), holderName, score: record.data.score, total: record.data.total, ...pathDetails(pathId), nameUpdatedAt: new Date().toISOString() };
+    const result = await request(`${credentialsBase}/rows/${record.data.id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: JSON.stringify(payload) }, permissions: row.$permissions || [] }) });
+    if (result.status !== 200) throw new Error('Path credential name correction failed');
+    return { code: 200, data: { ...record.data, ...payload } };
+  }
+
+  return { state, submit, credential, share, correctName };
 }

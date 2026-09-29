@@ -65,9 +65,18 @@ test('exam requires all server awards, grades privately, limits attempts, and sh
     assert.deepEqual([result.status, result.body.score, result.body.passed], [200, 10, true]);
     assert.match(result.body.credentialId, /^c_[a-f0-9]{32}$/);
     assert.equal(rows.get(key(CREDENTIAL_TABLE, result.body.credentialId)).$permissions.length, 0);
+    assert.equal(JSON.parse(rows.get(key(CREDENTIAL_TABLE, result.body.credentialId)).payload).score, 10);
     assert.equal((await invoke({ action: 'submitExam', answers: correct })).status, 409);
     result = await invoke({ action: 'shareCredential', enabled: true });
     assert.equal(result.body.shared, true);
+    assert.deepEqual(rows.get(key(CREDENTIAL_TABLE, result.body.id)).$permissions, ['read("any")']);
+    name = 'Biuret';
+    assert.equal((await invoke({ action: 'correctCredentialName' })).status, 403);
+    name = 'Real Learner';
+    const corrected = await invoke({ action: 'correctCredentialName' });
+    assert.equal(corrected.status, 200);
+    assert.equal(corrected.body.holderName, 'Real Learner');
+    assert.equal(corrected.body.score, 10);
     assert.deepEqual(rows.get(key(CREDENTIAL_TABLE, result.body.id)).$permissions, ['read("any")']);
     await invoke({ action: 'shareCredential', enabled: false });
     assert.deepEqual(rows.get(key(CREDENTIAL_TABLE, result.body.id)).$permissions, []);

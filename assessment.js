@@ -1,11 +1,13 @@
-import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential } from './auth.js?v=20260929-1';
+import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20260929-2';
 import { currentLanguage, applyLanguage } from './i18n.js?v=20260929-1';
+import { credentialFacts, downloadCredential } from './credential-art.js?v=20260929-1';
+import { fullName } from './full-name.js?v=20260929-1';
 
 const root = document.querySelector('#assessment-main');
 const isExam = document.querySelector('.site-shell')?.dataset.page === 'exam';
 const tr = (ar, en) => currentLanguage() === 'en' ? en : ar;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-const frame = (content) => `<section class="assessment-hero section-frame"><a class="learning-back" href="paths.html#foundations-roadmap">← ${tr('خارطة المسار', 'Learning roadmap')}</a><span class="section-kicker">BIURET ACADEMY / FOUNDATIONS</span><h1>${isExam ? tr('امتحان أساسيات الأمن السيبراني', 'Cybersecurity Foundations exam') : tr('إثبات الإنجاز', 'Achievement credential')}</h1><p>${isExam ? tr('اختبر قراراتك الأمنية بعد إكمال الدروس التسعة الموثقة.', 'Test your security decisions after completing all nine verified lessons.') : tr('إنجاز صادر من Biuret Academy باسم العرض المسجل في حسابك.', 'An achievement issued by Biuret Academy using your account display name.')}</p></section><section class="assessment-body section-frame">${content}</section>`;
+const frame = (content) => `<section class="assessment-hero section-frame"><a class="learning-back" href="paths.html#foundations-roadmap">← ${tr('خارطة المسار', 'Learning roadmap')}</a><span class="section-kicker">BIURET ACADEMY / FOUNDATIONS</span><h1>${isExam ? tr('امتحان أساسيات الأمن السيبراني', 'Cybersecurity Foundations exam') : tr('شهادة إنجاز', 'Certificate of achievement')}</h1><p>${isExam ? tr('اختبر قراراتك الأمنية بعد إكمال الدروس التسعة الموثقة.', 'Test your security decisions after completing all nine verified lessons.') : tr('إنجاز موثّق باسم المتعلم الكامل. يمكنك تنزيله والتحقق من حالته.', 'A credential in the learner’s full name. Download it and verify its current status.')}</p></section><section class="assessment-body section-frame">${content}</section>`;
 function notice(title, message, action = '') { root.innerHTML = frame(`<div class="assessment-card"><span class="section-kicker">FOUNDATIONS / 01</span><h2>${title}</h2><p>${message}</p>${action}</div>`); }
 function errorMessage(error) { return esc(error?.message || tr('تعذر تحميل البيانات. حاول مرة أخرى.', 'Could not load the data. Please try again.')); }
 function formatDate(value) { return value ? new Intl.DateTimeFormat(currentLanguage() === 'en' ? 'en' : 'ar', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) : ''; }
@@ -44,9 +46,22 @@ function credentialCard(data, publicView = false) {
   const program = data.version === 'program-path-v1';
   const subject = program ? pathNames[data.pathId]?.[currentLanguage() === 'en' ? 1 : 0] : tr('أساسيات الأمن السيبراني', 'Cybersecurity Foundations');
   const verifyUrl = new URL('certificate.html', location.href); verifyUrl.searchParams.set('id', data.id);
-  const label = active ? tr('إنجاز موثّق', 'Verified achievement') : tr('إنجاز ملغى', 'Revoked credential');
+  const label = active ? tr('شهادة إنجاز موثّقة', 'Certificate of achievement') : tr('إنجاز ملغى', 'Revoked credential');
   return `<div class="credential-card ${active ? '' : 'revoked'}"><div class="credential-head"><span class="section-kicker">BIURET / ACADEMY</span><span class="credential-seal" aria-hidden="true">✦</span></div><p class="credential-kind">${esc(subject || data.pathId)} / ${esc(data.version)}</p><h2>${label}</h2><p>${tr('ممنوح إلى', 'Awarded to')}</p><strong class="credential-name">${esc(data.holderName)}</strong><div class="credential-rule"></div><p>${program ? tr('أكمل دروس مسار التخصص واجتاز امتحانه بنتيجة لا تقل عن 8/10.', 'Completed the specialty path lessons and passed its exam with at least 8/10.') : tr('أكمل 9 دروس موثقة واجتاز الامتحان النهائي بنتيجة لا تقل عن 8/10.', 'Completed 9 verified lessons and passed the final exam with at least 8/10.')}</p><div class="credential-meta"><span>${tr('تاريخ الإصدار', 'Issued')}<strong>${esc(formatDate(data.issuedAt))}</strong></span><span>${tr('المُصدر', 'Issuer')}<strong>Biuret Academy</strong></span></div><code dir="ltr">${esc(data.id)}</code></div>${!publicView ? `<div class="assessment-card share-card"><h2>${tr('المشاركة بإذنك', 'Share with your permission')}</h2><p>${tr('عند تفعيل الرابط العام يستطيع أي شخص لديه الرابط رؤية اسم العرض وتاريخ الإنجاز وحالته. يمكنك إيقاف المشاركة لاحقاً.', 'When you enable the public link, anyone with it can see your display name, issue date, and status. You can turn sharing off later.')}</p><button class="button ${data.shared ? 'button-outline' : 'button-primary'}" id="share-credential" type="button">${data.shared ? tr('إيقاف المشاركة', 'Stop sharing') : tr('تفعيل رابط التحقق', 'Enable verification link')}</button>${data.shared ? `<p class="verification-link"><a href="${esc(verifyUrl.href)}">${esc(verifyUrl.href)}</a></p>` : ''}</div>` : ''}`;
 }
+
+function enhanceCredential(data, publicView = false) {
+  const card = root.querySelector('.credential-card'); if (!card) return;
+  const f = credentialFacts(data, currentLanguage());
+  card.querySelector('.credential-meta')?.insertAdjacentHTML('beforebegin', `<div class="credential-detail-grid"><span>${f.labels.course}<strong>${esc(f.title)}</strong></span><span>${f.labels.courses}<strong>${esc(f.courses ?? '—')}</strong></span><span>${f.labels.lessons}<strong>${esc(f.lessons ?? '—')}</strong></span><span>${f.labels.score}<strong dir="ltr">${esc(f.score ?? '—')}</strong></span><span class="credential-topics">${f.labels.topics}<strong>${esc(f.topics)}</strong></span></div>`);
+  if (data.status === 'active') card.insertAdjacentHTML('afterend', `<div class="assessment-card credential-downloads"><div><h2>${tr('تنزيل الشهادة', 'Download certificate')}</h2><p>${tr('ملف باسمك الحالي وبيانات المسار والامتحان. تحقّق من حالتها دائماً عبر المعرّف.', 'A copy with your name, path and exam details. Verify its current status using the ID.')}</p></div><div class="credential-download-actions"><button class="button button-primary" data-download="pdf" type="button">PDF ↓</button><button class="button button-outline" data-download="png" type="button">PNG ↓</button><button class="button button-outline" data-download="jpeg" type="button">JPEG ↓</button></div></div>`);
+  if (!publicView && user() && fullName(user().name) && user().name !== data.holderName) {
+    card.insertAdjacentHTML('afterend', `<div class="assessment-card credential-correction"><h2>${tr('الاسم على الشهادة قديم', 'Certificate name needs updating')}</h2><p>${tr('اسم حسابك الحالي:', 'Current account name:')} <strong>${esc(user().name)}</strong>. ${tr('تحديث الشهادة يحافظ على معرّفها ونتيجة الامتحان.', 'Updating the certificate keeps its ID and exam result.')}</p><button class="button button-outline" id="correct-credential-name" type="button">${tr('استخدم اسمي الكامل الحالي', 'Use my current full name')}</button></div>`);
+  }
+}
+
+let shownCredential;
+function showCredential(data, publicView = false) { shownCredential = data; root.innerHTML = frame(credentialCard(data, publicView)); enhanceCredential(data, publicView); }
 
 async function refreshCredential() {
   const id = new URLSearchParams(location.search).get('id');
@@ -59,13 +74,13 @@ async function refreshCredential() {
       const row = await response.json();
       const data = JSON.parse(row.payload);
       if (!((data.version === 'foundations-v1' && data.pathId === 'foundations') || (data.version === 'program-path-v1' && ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(data.pathId)))) throw new Error(tr('بيانات الإنجاز غير صحيحة.', 'Credential data is invalid.'));
-      root.innerHTML = frame(credentialCard({ ...data, id }, true));
+      showCredential({ ...data, id }, true);
     } catch (error) { notice(tr('تعذر التحقق', 'Verification unavailable'), errorMessage(error)); }
     return;
   }
   if (!user()) { notice(tr('سجّل الدخول لعرض إنجازك', 'Sign in to view your credential'), tr('يظهر إثبات الإنجاز بعد اجتياز الامتحان النهائي.', 'Your credential appears after you pass the final exam.'), `<a class="button button-outline" href="exam.html">${tr('انتقل إلى الامتحان', 'Go to exam')} ↗</a>`); return; }
   notice(tr('تحميل إثبات الإنجاز…', 'Loading credential…'), tr('نتحقق من النتيجة المحفوظة.', 'Checking your saved result.'));
-  try { credential = await loadCredential(); root.innerHTML = frame(credentialCard(credential)); }
+  try { credential = await loadCredential(); showCredential(credential); }
   catch { notice(tr('لا يوجد إثبات إنجاز بعد', 'No credential yet'), tr('أكمل الدروس واجتز الامتحان لفتح هذه الصفحة.', 'Complete the lessons and pass the exam to unlock this page.'), `<a class="button button-primary" href="exam.html">${tr('افتح الامتحان', 'Open exam')} ↗</a>`); }
 }
 
@@ -73,9 +88,17 @@ root.addEventListener('click', async (event) => {
   if (event.target.closest('#exam-signin')) document.querySelector('#account-button')?.click();
   if (event.target.closest('#assessment-retry')) refreshExam();
   const shareButton = event.target.closest('#share-credential');
+  const download = event.target.closest('[data-download]');
+  if (download && shownCredential) { download.disabled = true; try { await downloadCredential(shownCredential, currentLanguage(), download.dataset.download); } catch (error) { alert(errorMessage(error)); } finally { download.disabled = false; } }
+  if (event.target.closest('#correct-credential-name') && !busy) {
+    busy = true;
+    try { credential = await correctCredentialName(); showCredential(credential); }
+    catch (error) { alert(errorMessage(error)); }
+    finally { busy = false; }
+  }
   if (shareButton && !busy) {
     busy = true; shareButton.disabled = true;
-    try { credential = await shareCredential(!credential.shared); root.innerHTML = frame(credentialCard(credential)); }
+    try { credential = await shareCredential(!credential.shared); showCredential(credential); }
     catch (error) { shareButton.disabled = false; alert(errorMessage(error)); }
     finally { busy = false; }
   }

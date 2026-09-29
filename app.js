@@ -2,7 +2,8 @@ import { tracks, challenges, challengeById, challengesForTrack } from './content
 import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260929-1';
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20260929-1';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260929-1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260929-1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20260929-2';
+import { fullName } from './full-name.js?v=20260929-1';
 import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20260929-1';
 import { canAccess, requiredPlan } from './plan-access.js?v=20260929-1';
 
@@ -36,10 +37,10 @@ function updateLearningGate() {
     gate.className = 'learning-access-gate section-frame';
     main.before(gate);
   }
-  const locked = !user();
+  const locked = !user() || !fullName(user().name);
   main.hidden = locked;
   gate.hidden = !locked;
-  if (locked) gate.innerHTML = `<div class="access-panel"><span class="section-kicker">BIURET / ACADEMY</span><h1>${isEnglish() ? 'Sign in to start learning.' : 'سجّل دخولك لتبدأ التعلّم.'}</h1><p>${isEnglish() ? 'Your route, lessons, labs and progress open with your Biuret account. Every new account starts on the Free plan.' : 'مسارك ودروسك ومختبراتك وتقدّمك تفتح عبر حساب Biuret. يبدأ كل حساب جديد بخطة Free.'}</p><div class="access-actions"><button type="button" class="button button-primary" id="gate-signin">${isEnglish() ? 'Sign in or create account' : 'تسجيل الدخول أو إنشاء حساب'} ↗</button><a class="button button-outline" href="membership.html">${isEnglish() ? 'Compare plans' : 'قارن الخطط'} ↗</a></div></div>`;
+  if (locked) gate.innerHTML = `<div class="access-panel"><span class="section-kicker">BIURET / ACADEMY</span><h1>${user() ? (isEnglish() ? 'Add your full name to continue.' : 'أضف اسمك الكامل للمتابعة.') : (isEnglish() ? 'Sign in to start learning.' : 'سجّل دخولك لتبدأ التعلّم.')}</h1><p>${user() ? (isEnglish() ? 'Use your real two or three part name so future credentials are issued correctly.' : 'اكتب اسمك الحقيقي الثنائي أو الثلاثي ليظهر بشكل صحيح على شهاداتك القادمة.') : (isEnglish() ? 'Your route, lessons, labs and progress open with your Biuret account. Every new account starts on the Free plan.' : 'مسارك ودروسك ومختبراتك وتقدّمك تفتح عبر حساب Biuret. يبدأ كل حساب جديد بخطة Free.')}</p><div class="access-actions"><button type="button" class="button button-primary" id="gate-signin">${user() ? (isEnglish() ? 'Set full name' : 'تعديل الاسم الكامل') : (isEnglish() ? 'Sign in or create account' : 'تسجيل الدخول أو إنشاء حساب')} ↗</button></div></div>`;
   gate.querySelector('#gate-signin')?.addEventListener('click', showAuth);
   document.documentElement.classList.add('academy-auth-ready');
 }
@@ -316,7 +317,20 @@ function showAuth() {
   $('#auth-title').textContent = signedIn ? t('welcomeBack') : t('saveProgress');
   $('#auth-subtitle').textContent = signedIn ? t('synced') : t('oneAccount');
   if (signedIn) {
-    $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || t('learner'))}</div><div>${esc(user().email || '')}</div><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">${t('signOut')}</button></div>`;
+    $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || t('learner'))}</div><div>${esc(user().email || '')}</div><form id="full-name-form" class="full-name-form"><label for="full-name-input">${isEnglish() ? 'Your real full name (two or three parts)' : 'اسمك الحقيقي الثنائي أو الثلاثي'}</label><input id="full-name-input" name="fullName" type="text" autocomplete="name" maxlength="100" value="${esc(user().name || '')}" required><small>${isEnglish() ? 'This name appears on new credentials. For an existing credential, use its correction button after saving.' : 'سيظهر هذا الاسم على الشهادات الجديدة. للشهادة الحالية، استخدم زر تصحيح الاسم بعد الحفظ.'}</small><button class="button button-primary" type="submit">${isEnglish() ? 'Save full name' : 'حفظ الاسم الكامل'}</button><p class="auth-error" id="full-name-error" role="alert" hidden></p></form><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">${t('signOut')}</button></div>`;
+    $('#full-name-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = event.target.querySelector('button[type="submit"]');
+      const error = $('#full-name-error'); error.hidden = true; button.disabled = true;
+      try {
+        const name = fullName($('#full-name-input').value);
+        if (!name) throw new Error(isEnglish() ? 'Enter a real two or three part name using letters.' : 'اكتب اسماً حقيقياً من جزأين أو ثلاثة باستخدام الحروف.');
+        await updateAccountName(name);
+        $('#auth-dialog').close(); updateLearningGate(); render(); window.dispatchEvent(new Event('biuret-auth-changed'));
+        toast(isEnglish() ? 'Full name saved.' : 'تم حفظ الاسم الكامل.');
+      } catch (cause) { error.textContent = cause.message; error.hidden = false; }
+      finally { button.disabled = false; }
+    });
     $('#signout-button').addEventListener('click', async () => {
       try { await syncQueue; await saveCloudProgress(progress); await signOut(); ownerUserId = null; progress = assignDaily(null); rewards = null; rewardStatus = 'idle'; persistLocal(); $('#auth-dialog').close(); $('#challenge-dialog').close(); updateLearningGate(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedOut')); }
       catch { toast(t('signOutError')); }
@@ -327,6 +341,8 @@ function showAuth() {
 function setAuthMode(mode) {
   const signup = mode === 'signup';
   $('#name-field').hidden = !signup; $('#auth-name').required = signup;
+  $('#name-field label').textContent = isEnglish() ? 'Real full name (two or three parts)' : 'الاسم الحقيقي الثنائي أو الثلاثي';
+  $('#auth-name').placeholder = isEnglish() ? 'First Last' : 'الاسم الأول اسم العائلة';
   $('#auth-password').autocomplete = signup ? 'new-password' : 'current-password';
   $('#auth-submit').innerHTML = `${signup ? t('signUp') : t('signIn')} <span aria-hidden="true">↗</span>`;
   $('#signin-tab').classList.toggle('active', !signup); $('#signup-tab').classList.toggle('active', signup);
@@ -341,7 +357,7 @@ async function handleAuthSubmit(event) {
     if (signup) await signUp($('#auth-name').value.trim(), $('#auth-email').value.trim(), $('#auth-password').value);
     else await signIn($('#auth-email').value.trim(), $('#auth-password').value);
     progress = mergeProgress(ownerUserId && ownerUserId !== user().$id ? null : progress, cloudProgress());
-    ownerUserId = user().$id; persistLocal(); queueCloudSync(); $('#auth-dialog').close(); updateLearningGate(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedIn')); await refreshRewards();
+    ownerUserId = user().$id; persistLocal(); queueCloudSync(); $('#auth-dialog').close(); updateLearningGate(); render(); window.dispatchEvent(new Event('biuret-auth-changed')); toast(t('signedIn')); if (!fullName(user().name)) showAuth(); else await refreshRewards();
   } catch (cause) { error.textContent = cause?.message || t('loginError'); error.hidden = false; }
   finally { button.disabled = false; }
 }
@@ -468,7 +484,7 @@ async function init() {
   if (signedIn) {
     if (ownerUserId === signedIn.$id) { try { progress = cleanProgress(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch { progress = assignDaily(null); } }
     progress = mergeProgress(ownerUserId && ownerUserId !== signedIn.$id ? null : progress, cloudProgress());
-    ownerUserId = signedIn.$id; persistLocal(); render(); queueCloudSync(); await refreshRewards();
+    ownerUserId = signedIn.$id; persistLocal(); render(); queueCloudSync(); if (!fullName(signedIn.name)) showAuth(); else await refreshRewards();
   } else if (ownerUserId) { ownerUserId = null; progress = assignDaily(null); persistLocal(); render(); }
   if (requestedChallenge && signedIn) openChallenge(requestedChallenge);
 }

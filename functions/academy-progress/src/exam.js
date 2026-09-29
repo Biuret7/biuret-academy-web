@@ -71,7 +71,7 @@ export function examService({ base, request, getLessonState }) {
     if (!id || !/^c_[a-f0-9]{32}$/.test(id)) throw new Error('Credential ID invalid');
     const existing = await getRow(`${credentialBase}/rows/${id}`);
     if (existing) return;
-    const payload = JSON.stringify({ version: EXAM_VERSION, pathId: 'foundations', holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt });
+    const payload = JSON.stringify({ version: EXAM_VERSION, pathId: 'foundations', holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, courseCount: 3, lessonCount: 9 });
     const created = await request(`${credentialBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: id, data: { payload }, permissions: [] }) });
     if (![201, 409].includes(created.status)) throw new Error('Credential creation failed');
   }
@@ -92,12 +92,12 @@ export function examService({ base, request, getLessonState }) {
     const passed = score >= 8;
     const slot = attempts.length + 1;
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
-    const name = String(holderName || 'Biuret learner').trim().slice(0, 100) || 'Biuret learner';
+    const name = holderName;
     const payload = JSON.stringify({ version: EXAM_VERSION, slot, score, passed, credentialId, holderName: name });
     const result = await request(`${attemptBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: examAttemptId(userId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt was already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Exam attempt creation failed');
-    if (passed) await ensureCredential({ credentialId, holderName: name, completedAt: result.data.$createdAt });
+    if (passed) await ensureCredential({ credentialId, holderName: name, score, completedAt: result.data.$createdAt });
     return { code: 200, data: { ...statusFor(learning.awards, [...attempts, { slot, score, passed, credentialId, completedAt: result.data.$createdAt }]), score, passed } };
   }
 
@@ -116,10 +116,21 @@ export function examService({ base, request, getLessonState }) {
     const id = record.data.id;
     if (enabled && record.data.status !== 'active') return { code: 409, data: { error: 'Revoked credentials cannot be shared' } };
     const row = await getRow(`${credentialBase}/rows/${id}`);
-    const result = await request(`${credentialBase}/rows/${id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: row.payload }, permissions: enabled ? ['read("any")'] : [] }) });
+    const payload = { ...JSON.parse(row.payload), score: record.data.score, total: record.data.total, courseCount: 3, lessonCount: 9 };
+    const result = await request(`${credentialBase}/rows/${id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: JSON.stringify(payload) }, permissions: enabled ? ['read("any")'] : [] }) });
     if (result.status !== 200) throw new Error('Credential sharing update failed');
     return { code: 200, data: { ...record.data, shared: enabled } };
   }
 
-  return { state, submit, credential, share };
+  async function correctName(userId, holderName) {
+    const record = await credential(userId);
+    if (record.code !== 200) return record;
+    const row = await getRow(`${credentialBase}/rows/${record.data.id}`);
+    const payload = { ...JSON.parse(row.payload), holderName, score: record.data.score, total: record.data.total, courseCount: 3, lessonCount: 9, nameUpdatedAt: new Date().toISOString() };
+    const result = await request(`${credentialBase}/rows/${record.data.id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: JSON.stringify(payload) }, permissions: row.$permissions || [] }) });
+    if (result.status !== 200) throw new Error('Credential name correction failed');
+    return { code: 200, data: { ...record.data, ...payload } };
+  }
+
+  return { state, submit, credential, share, correctName };
 }
