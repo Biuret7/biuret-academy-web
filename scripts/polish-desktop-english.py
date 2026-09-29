@@ -34,11 +34,45 @@ for category, (name, lessons) in zip(data["categories"], titles):
     for lesson, title in zip(category["lessons"], lessons):
         lesson["title"] = title
 
+for category, description in zip(data["categories"], [
+    "Build a strong foundation in core concepts, risk management and attack surfaces.",
+    "Understand how data moves, then design segmented networks that you can monitor.",
+    "Plan authorized, evidence-based tests from scope definition to remediation checks.",
+    "Choose appropriate encryption and manage keys and secrets throughout their lifecycle.",
+    "Use security tools as part of a careful workflow, verify findings and reduce mistakes.",
+    "Recognize manipulation and build habits and cultures that resist social engineering.",
+    "Preserve evidence, reconstruct timelines and conduct investigations that can be audited.",
+    "Build a career plan that demonstrates skills through projects and evidence.",
+    "Administer Linux with least privilege, harden systems and detect configuration drift.",
+    "Move from vulnerability classes to verifiable controls for identity and sessions.",
+    "Understand enterprise identity, harden it and monitor privilege paths.",
+    "Analyze malware safely and turn indicators into defensible findings.",
+    "Explore shared responsibility, IAM, infrastructure as code and container security.",
+    "Test privacy, permissions, storage and communications in mobile applications.",
+    "Collect information lawfully, corroborate sources and state your confidence clearly.",
+    "Read program structure and assembly to understand execution flow safely.",
+    "Build log and SIEM pipelines, detection rules, threat hunts and response playbooks.",
+    "Build security into design, code, CI/CD pipelines and the software supply chain.",
+]):
+    category["description"] = description
+
 for index, course_index in enumerate([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12]):
     data["quizzes"][index]["name"] = titles[course_index][0]
 
 for item, name in zip(data["labs"], ["Lab 01: Network discovery", "Lab 02: Packet analysis", "Lab 03: Initial access", "Lab 04: Password security", "Lab 05: Wireless security", "Lab 06: Post-exploitation", "Lab 07: Digital forensics", "Lab 08: Incident response"]):
     item["name"] = name
+
+for item, description in zip(data["labs"], [
+    "Use Nmap to identify hosts, ports and services in an authorized lab network.",
+    "Capture and analyze network traffic to identify unencrypted data.",
+    "Investigate SQL injection and XSS in a controlled DVWA practice environment.",
+    "Practice dictionary attacks against sample MD5 and NTLM hashes.",
+    "Study Wi-Fi security through a captured WPA2 handshake in a lab.",
+    "Investigate Linux privilege escalation in an authorized environment.",
+    "Analyze a memory image to identify suspicious activity.",
+    "Work through an incident from detection to a documented report.",
+]):
+    item["desc"] = description
 
 for item, name in zip(data["operations"], ["Red Ghost", "Identity Echo", "Glass Port", "Black Record", "Inner Shadow", "Frozen Lighthouse"]):
     item["title"] = name
@@ -54,6 +88,23 @@ for item, name in zip(data["challenges"], [
 ]):
     item["name"] = name
 
+for item, description in zip(data["challenges"], [
+    "Inspect a training Linux host, identify open services and determine an initial access path.",
+    "Identify the right approach to sample MD5, SHA-1 and bcrypt hashes.",
+    "Investigate a SQL injection finding and explain its impact on sample data.",
+    "Identify and document reflected, stored and DOM-based XSS in a training app.",
+    "Analyze a simulated network interception and identify exposed plaintext data.",
+    "Start with a limited Linux account and trace a privilege escalation path.",
+    "Analyze a memory image to identify a malicious process and its network activity.",
+    "Trace an Active Directory attack path from a standard user to domain privilege.",
+    "Build an intelligence brief about a fictional target using public sources only.",
+    "Analyze a malware sample safely and extract indicators of compromise.",
+    "Find a cloud misconfiguration that could expose stored data.",
+    "Reverse engineer a small training executable to find its hidden password.",
+    "Inspect a training Android APK for embedded API keys and secrets.",
+]):
+    item["desc"] = description
+
 for item, category in zip(data["tools"], [
     "Reconnaissance", "Exploitation", "Network analysis", "Web application security",
     "Password auditing", "Wireless security", "Web application security",
@@ -61,6 +112,27 @@ for item, category in zip(data["tools"], [
     "Digital forensics", "Digital forensics", "OSINT", "Web scanning", "OSINT",
 ]):
     item["category"] = category
+
+for item, (description, usage) in zip(data["tools"], [
+    ("Discover hosts, open ports, services and operating systems on authorized networks.", "nmap [options] [target]"),
+    ("Penetration testing framework with modules for validation in authorized labs.", "Open msfconsole, then search, select, configure and run a module."),
+    ("Capture and inspect network packets through a graphical interface.", "Choose a network interface, capture traffic, then filter by protocol or IP."),
+    ("Inspect and test web application requests with Proxy, Repeater and related tools.", "Configure the browser proxy at 127.0.0.1:8080 and inspect requests."),
+    ("Audit password hashes with GPU acceleration and supported hash modes.", "hashcat -m [type] -a [mode] [hashfile] [wordlist]"),
+    ("Tool suite for authorized Wi-Fi monitoring, capture and security assessment.", "Use airmon-ng, airodump-ng and related tools only in a lab you control."),
+    ("Automate detection and validation of SQL injection in authorized web applications.", "sqlmap -u [URL] [options]"),
+    ("Audit passwords against sample hashes in several formats.", "john [options] [hashfile]"),
+    ("Discover paths, files and subdomains on systems you are authorized to test.", "gobuster [mode] -u [URL] -w [wordlist]"),
+    ("Test authentication strength against authorized SSH, FTP, HTTP or RDP services.", "hydra -l [user] -P [wordlist] [target] [service]"),
+    ("Analyze memory images as part of a digital forensics investigation.", "vol.py -f [memory.raw] [plugin]"),
+    ("Open-source graphical platform for forensic analysis of disk images and files.", "Create a case, add an image, then inspect the extracted artifacts."),
+    ("Collect publicly available domain, email, IP and URL information.", "theHarvester -d [domain] -b [source] -l [limit]"),
+    ("Scan authorized web servers for unsafe configuration and outdated components.", "nikto -h [target] [options]"),
+    ("Map relationships between domains, IP addresses, people and organizations.", "Create a graph, add entities, then run relevant transforms."),
+]):
+    item["description"] = description
+    item["usage"] = usage
+data["tools"][3]["example"] = "Proxy → Intercept → Repeater → review response"
 
 for path, title in zip(data["roadmapPaths"], [
     "Penetration tester", "SOC analyst", "Digital forensics and incident response",
