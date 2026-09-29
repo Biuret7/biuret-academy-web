@@ -43,6 +43,42 @@ for item, name in zip(data["labs"], ["Lab 01: Network discovery", "Lab 02: Packe
 for item, name in zip(data["operations"], ["Red Ghost", "Identity Echo", "Glass Port", "Black Record", "Inner Shadow", "Frozen Lighthouse"]):
     item["title"] = name
 
+for item, name in zip(data["challenges"], [
+    "Challenge 01: Network discovery", "Challenge 02: Decode the message",
+    "Challenge 03: SQL injection", "Challenge 04: Cross-site scripting",
+    "Challenge 05: Network interception", "Challenge 06: Privilege escalation",
+    "Challenge 07: Memory forensics", "Challenge 08: Active Directory compromise",
+    "Challenge 09: OSINT investigation", "Challenge 10: Malware analysis",
+    "Challenge 11: Cloud security", "Challenge 12: Reverse engineering",
+    "Challenge 13: Mobile security",
+]):
+    item["name"] = name
+
+for item, category in zip(data["tools"], [
+    "Reconnaissance", "Exploitation", "Network analysis", "Web application security",
+    "Password auditing", "Wireless security", "Web application security",
+    "Password auditing", "Content discovery", "Password auditing",
+    "Digital forensics", "Digital forensics", "OSINT", "Web scanning", "OSINT",
+]):
+    item["category"] = category
+
+for path, title in zip(data["roadmapPaths"], [
+    "Penetration tester", "SOC analyst", "Digital forensics and incident response",
+    "Cloud security specialist", "Governance, risk and compliance specialist",
+]):
+    path[1] = title
+
+levels = {"Junior.": "Beginner", "Average": "Intermediate", "Advanced.": "Advanced"}
+for category in data["categories"]:
+    for lesson in category["lessons"]:
+        lesson["difficulty"] = levels.get(lesson.get("difficulty"), lesson.get("difficulty"))
+for group in ("quizzes", "labs", "challenges"):
+    for item in data[group]:
+        item["diff"] = levels.get(item.get("diff"), item.get("diff"))
+for group in ("operations", "certifications"):
+    for item in data[group]:
+        item["difficulty"] = levels.get(item.get("difficulty"), item.get("difficulty"))
+
 replacements = {
     "Terms of Reference (ACLs)": "access control lists (ACLs)",
     "No denial (Non-Repudiation)": "Non-repudiation",
