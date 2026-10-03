@@ -16,7 +16,7 @@ An Arabic-first academy for `academy.biuret.dev`. The site uses the Biuret visua
 - Guest progress in `localStorage`. Signing in with the existing Biuret Appwrite account merges local and cloud progress into account preferences.
 - Email/password and Google/GitHub account buttons. OAuth requires `academy.biuret.dev` to be registered as a web platform in the existing Appwrite project.
 - Responsive layout, keyboard-accessible dialogs, and reduced-motion support.
-- The desktop program library: 18 courses and 99 bilingual lessons with objectives, exercises and references; 5 career roadmaps, 15 tool guides, 12 practice quizzes, 13 practice challenges, 8 synthetic labs, 6 operations simulations, and 8 external certification references. The desktop sidebar's review, operations, certifications, professional hub, notes, favorites, search, settings and profile all have web pages.
+- The desktop program library: 18 courses and 99 bilingual lessons with objectives, exercises and references; 9 specialty roadmaps, 15 tool guides, 12 practice quizzes, 13 practice challenges, 8 synthetic labs, 6 operations simulations, and 8 external certification references. The desktop sidebar's review, operations, certifications, professional hub, notes, favorites, search, settings and profile all have web pages.
 
 The challenges use synthetic examples and intentionally teach defensive judgment. Signed-in lesson completions, verified XP, and eligible Biuret Coins are server-owned in Appwrite; public formative answers alone do not qualify for the final exam. The coin balance is derived from private ledger events. Free state reads preserve older ledger events without creating new ones; Free lesson awards now store zero coins and never backfill on upgrade. Challenge progress and practice XP are user-editable client-side values and do not count toward the credential. The achievement credential verifies course and exam completion, not a legal identity or professional certification.
 
@@ -35,7 +35,7 @@ If the shared page shell changes, run `node scripts/sync-sidebar.mjs` followed b
 
 Learners enter a self-declared two or three part full name before verified learning. Existing credential owners can correct the certificate name after updating their Appwrite account name; the credential ID and exam result remain unchanged. Active certificates download as PDF, PNG, or JPEG. Name format checks do not verify legal identity.
 
-The Appwrite function deployment must include `exam-bank.private.json`, `path-exam-bank.private.json`, `course-exam-bank.private.json`, `practical-bank.private.json`, and both `desktop-library.*.private.json` files. These files are ignored by Git and must never be included in the public Pages artifact. New credentials use `foundations-v2` or `program-path-v2` to record the practical requirement; older v1 credentials stay verifiable.
+The Appwrite function deployment must include `exam-bank.private.json`, `path-exam-bank.private.json`, `course-exam-bank.private.json`, `practical-bank.private.json`, `practice-quiz-bank.private.json`, and both `desktop-library.*.private.json` files. These files are ignored by Git and must never be included in the public Pages artifact. New credentials use `foundations-v2` or `program-path-v2` to record the practical requirement; older v1 credentials stay verifiable. Biuret Academy certificates verify completion inside this platform; they are not external professional accreditation. Owners choose whether to enable a public verification link.
 
 ## Publishing
 

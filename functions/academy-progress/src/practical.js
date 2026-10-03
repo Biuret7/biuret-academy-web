@@ -1,10 +1,11 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { programPathIds } from './library.js';
 
 const VERSION = 'practical-v1';
 const DATABASE = '6aa56477002e28054068';
 const ATTEMPTS = '6ab933b6001be5900662';
-const PATHS = ['foundations', 'path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'];
+const PATHS = ['foundations', ...programPathIds()];
 let privateBank;
 
 function bank() {

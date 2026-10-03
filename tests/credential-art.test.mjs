@@ -5,6 +5,7 @@ import { credentialFacts, downloadCredential, validCredentialRecord } from '../c
 test('public verification accepts current and legacy credential versions only for known paths', () => {
   for (const version of ['foundations-v1', 'foundations-v2']) assert.equal(validCredentialRecord({ version, pathId: 'foundations' }), true);
   for (const version of ['program-path-v1', 'program-path-v2']) assert.equal(validCredentialRecord({ version, pathId: 'path_grc' }), true);
+  for (const pathId of ['path_appsec', 'path_mobile', 'path_threat_intel', 'path_malware']) assert.equal(validCredentialRecord({ version: 'program-path-v2', pathId }), true);
   assert.equal(validCredentialRecord({ version: 'program-path-v2', pathId: 'foundations' }), false);
   assert.equal(validCredentialRecord({ version: 'program-path-v3', pathId: 'path_grc' }), false);
 });

@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { programPathIds } from './library.js';
 
 const DATABASE_ID = '6aa56477002e28054068';
 const CREDENTIAL_TABLE = '6ab93416002801b57b3f';
@@ -20,7 +21,7 @@ export function credentialAdminService({ base, request }) {
     if (result.status !== 200) throw new Error('Credential lookup failed');
     const payload = JSON.parse(result.data.payload);
     const valid = (payload.pathId === 'foundations' && ['foundations-v1', 'foundations-v2'].includes(payload.version)) ||
-      (['program-path-v1', 'program-path-v2'].includes(payload.version) && ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(payload.pathId));
+      (['program-path-v1', 'program-path-v2'].includes(payload.version) && programPathIds().includes(payload.pathId));
     if (!valid) throw new Error('Credential data invalid');
     return { code: 200, data: { id, pathId: payload.pathId, holderName: payload.holderName, issuedAt: payload.issuedAt, status: payload.status, revokedAt: payload.revokedAt || null, shared: result.data.$permissions?.includes('read("any")') || false }, row: result.data, payload };
   }

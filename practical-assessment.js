@@ -10,6 +10,10 @@ const names = {
   path_dfir: ['الأدلة الرقمية والاستجابة', 'Digital forensics and response'],
   path_cloud: ['أمن السحابة', 'Cloud security'],
   path_grc: ['الحوكمة والمخاطر والامتثال', 'Governance, risk and compliance'],
+  path_appsec: ['أمن التطبيقات وDevSecOps', 'Application security and DevSecOps'],
+  path_mobile: ['أمن تطبيقات الهاتف', 'Mobile application security'],
+  path_threat_intel: ['استخبارات التهديدات وOSINT', 'Threat intelligence and OSINT'],
+  path_malware: ['تحليل البرمجيات الخبيثة والهندسة العكسية', 'Malware analysis and reverse engineering'],
 };
 const tr = (ar, en) => currentLanguage() === 'en' ? en : ar;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);

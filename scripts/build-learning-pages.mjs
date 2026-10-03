@@ -58,7 +58,7 @@ for (const [page, title, description] of [
     .replace('ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.', description)
     .replace('href="paths.html" aria-current="page"', 'href="paths.html"')
     .replace(`href="${activeSection}.html"`, `href="${activeSection}.html" aria-current="page"`)
-    .replace('</head>', desktop ? '  <script type="module" src="desktop.js?v=20261003-2"></script>\n</head>' : catalog ? `  <script type="module" src="catalog.js?v=${catalogAssetVersion}"></script>\n${page === 'shop' ? '' : `  <script type="module" src="desktop.js?v=20261003-2"></script>\n`}</head>` : page === 'path-exam' ? '  <script type="module" src="path-assessment.js?v=20261003-2"></script>\n</head>' : page === 'course-exam' ? '  <script type="module" src="course-assessment.js?v=20261003-2"></script>\n</head>' : page === 'practical' ? '  <script type="module" src="practical-assessment.js?v=20261003-2"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20261003-2"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260929-1"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260929-1"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260929-1"></script>\n</head>' : '</head>');
+    .replace('</head>', desktop ? '  <script type="module" src="desktop.js?v=20261004-1"></script>\n</head>' : catalog ? `  <script type="module" src="catalog.js?v=${catalogAssetVersion}"></script>\n${page === 'shop' ? '' : `  <script type="module" src="desktop.js?v=20261004-1"></script>\n`}</head>` : page === 'path-exam' ? '  <script type="module" src="path-assessment.js?v=20261004-1"></script>\n</head>' : page === 'course-exam' ? '  <script type="module" src="course-assessment.js?v=20261003-2"></script>\n</head>' : page === 'practical' ? '  <script type="module" src="practical-assessment.js?v=20261004-1"></script>\n</head>' : assessment ? '  <script type="module" src="assessment.js?v=20261004-1"></script>\n</head>' : page === 'admin' ? '  <meta name="robots" content="noindex, nofollow">\n  <script type="module" src="admin.js?v=20260929-1"></script>\n</head>' : page === 'membership' ? '  <script type="module" src="membership.js?v=20260929-1"></script>\n</head>' : page === 'lab' ? '  <script type="module" src="lab.js?v=20260929-1"></script>\n</head>' : '</head>');
   writeFileSync(new URL(`../${page}.html`, import.meta.url), html);
 }
 
@@ -68,7 +68,7 @@ const urls = new Set([...oldSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match
 for (const page of ['review', 'operations', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'profile']) {
   urls.add(`https://academy.biuret.dev/${page}.html`);
 }
-for (const path of ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc']) {
+for (const path of ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc', 'path_appsec', 'path_mobile', 'path_threat_intel', 'path_malware']) {
   urls.add(`https://academy.biuret.dev/path-exam.html?id=${path}`);
   urls.add(`https://academy.biuret.dev/practical.html?id=${path}`);
 }

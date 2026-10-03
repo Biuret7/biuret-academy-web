@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import handler from '../functions/academy-progress/src/main.js';
 
 const BANK = Array.from({ length: 10 }, (_, i) => ({ id: `q-${i}`, question: { ar: `سؤال تجريبي ${i} طويل`, en: `Test question number ${i}` }, options: Array.from({ length: 3 }, (_, n) => ({ ar: `خيار ${n}`, en: `Option ${n}` })), answer: i % 3 }));
-const PRACTICAL = Object.fromEntries(['foundations', 'path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].map((path) => [path, Array.from({ length: 3 }, (_, i) => ({ id: `task-${i}`, artifact: { ar: `دليل تدريبي افتراضي رقم ${i}`, en: `Synthetic training evidence ${i}` }, question: { ar: `ما القرار الصحيح للدليل رقم ${i}؟`, en: `What is the right decision for evidence ${i}?` }, options: Array.from({ length: 3 }, (_, n) => ({ ar: `قرار ${n}`, en: `Decision ${n}` })), answer: i % 3 }))]));
+const PRACTICAL = Object.fromEntries(['foundations', 'path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc', 'path_appsec', 'path_mobile', 'path_threat_intel', 'path_malware'].map((path) => [path, Array.from({ length: 3 }, (_, i) => ({ id: `task-${i}`, artifact: { ar: `دليل تدريبي افتراضي رقم ${i}`, en: `Synthetic training evidence ${i}` }, question: { ar: `ما القرار الصحيح للدليل رقم ${i}؟`, en: `What is the right decision for evidence ${i}?` }, options: Array.from({ length: 3 }, (_, n) => ({ ar: `قرار ${n}`, en: `Decision ${n}` })), answer: i % 3 }))]));
 const AWARD_TABLE = '6ab81dce000e6188b664';
 const ATTEMPT_TABLE = '6ab933b6001be5900662';
 const CREDENTIAL_TABLE = '6ab93416002801b57b3f';

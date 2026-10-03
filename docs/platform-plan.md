@@ -22,6 +22,8 @@ The live slice uses `Academy lesson awards` in the existing Biuret Appwrite data
 
 Deployment: upload `functions/academy-progress` as a `.tar.gz` archive to Node 22 Appwrite Function `6ab8ae03001025f97f37`, entrypoint `src/main.js`, execute permission `users`, and scoped function key permissions `rows.read` and `rows.write` only. Include all five private question/task banks and both private bilingual desktop libraries in the archive; keep them out of GitHub Pages. The existing licensing function and its tables are unrelated.
 
+The program now offers nine specialty paths. Application security and DevSecOps, mobile security, threat intelligence and OSINT, and malware analysis and reverse engineering use published Pro courses. Each requires all mapped lessons, each course exam, three server-graded practical decisions, and a distinct ten-question path exam (8/10 to pass). Passing issues a Biuret Academy credential with an ID, course and lesson counts, score, issuer and optional owner-enabled public status check. This proves in-platform completion, not third-party accreditation. Public roadmap metadata for the four added paths lives in `functions/academy-progress/src/additional-paths.js`; their exam and practical answers remain in ignored private banks.
+
 Keep the existing Appwrite project and Biuret account. Add tables with row permissions and server functions for state-changing operations. Proposed records:
 
 | Record | Core fields | Writer |

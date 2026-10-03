@@ -1,6 +1,6 @@
 import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261003-1';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20260929-1';
-import { credentialFacts, downloadCredential } from './credential-art.js?v=20261003-2';
+import { credentialFacts, downloadCredential } from './credential-art.js?v=20261004-1';
 import { fullName } from './full-name.js?v=20260929-1';
 
 const root = document.querySelector('#path-assessment-main');
@@ -11,6 +11,10 @@ const names = {
   path_dfir: ['مسار التحقيق الجنائي الرقمي', 'Digital forensics path'],
   path_cloud: ['مسار أمن السحابة', 'Cloud security path'],
   path_grc: ['مسار الحوكمة والمخاطر والامتثال', 'GRC path'],
+  path_appsec: ['مسار أمن التطبيقات وDevSecOps', 'Application security and DevSecOps path'],
+  path_mobile: ['مسار أمن تطبيقات الهاتف', 'Mobile application security path'],
+  path_threat_intel: ['مسار استخبارات التهديدات وOSINT', 'Threat intelligence and OSINT path'],
+  path_malware: ['مسار تحليل البرمجيات الخبيثة والهندسة العكسية', 'Malware analysis and reverse engineering path'],
 };
 const tr = (ar, en) => currentLanguage() === 'en' ? en : ar;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);

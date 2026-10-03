@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { libraryData, mayAccessLibrary } from './library.js';
+import { libraryData, mayAccessLibrary, programPathIds } from './library.js';
 
 const VERSION = 'program-path-v1';
 const DATABASE = '6aa56477002e28054068';
@@ -13,7 +13,7 @@ let privateBank;
 function bank() {
   if (!privateBank) {
     privateBank = JSON.parse(process.env.ACADEMY_PATH_EXAM_BANK || readFileSync(new URL('../path-exam-bank.private.json', import.meta.url), 'utf8'));
-    for (const id of ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc']) {
+    for (const id of programPathIds()) {
       const questions = privateBank[id];
       if (!Array.isArray(questions) || questions.length !== 10 || new Set(questions.map((item) => item.id)).size !== 10 || questions.some((item) =>
         !/^[a-z0-9-]+$/.test(item.id) || !Number.isInteger(item.answer) || item.answer < 0 || item.answer > 2 ||

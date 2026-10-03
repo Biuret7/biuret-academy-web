@@ -1,6 +1,6 @@
 import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261003-1';
 import { currentLanguage, applyLanguage } from './i18n.js?v=20260929-1';
-import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261003-2';
+import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261004-1';
 import { fullName } from './full-name.js?v=20260929-1';
 
 const root = document.querySelector('#assessment-main');
@@ -42,6 +42,10 @@ function credentialCard(data, publicView = false) {
     path_pentest: ['اختبار الاختراق', 'Penetration testing'], path_soc: ['تحليل SOC', 'SOC analysis'],
     path_dfir: ['التحقيق الجنائي الرقمي', 'Digital forensics'], path_cloud: ['أمن السحابة', 'Cloud security'],
     path_grc: ['الحوكمة والمخاطر والامتثال', 'Governance, risk and compliance'],
+    path_appsec: ['أمن التطبيقات وDevSecOps', 'Application security and DevSecOps'],
+    path_mobile: ['أمن تطبيقات الهاتف', 'Mobile application security'],
+    path_threat_intel: ['استخبارات التهديدات وOSINT', 'Threat intelligence and OSINT'],
+    path_malware: ['تحليل البرمجيات الخبيثة والهندسة العكسية', 'Malware analysis and reverse engineering'],
   };
   const program = data.version?.startsWith('program-path-');
   const subject = program ? pathNames[data.pathId]?.[currentLanguage() === 'en' ? 1 : 0] : tr('أساسيات الأمن السيبراني', 'Cybersecurity Foundations');

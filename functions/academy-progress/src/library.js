@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { additionalPaths } from './additional-paths.js';
 
 const ORDER = { free: 0, plus: 1, pro: 2 };
 const FREE = { course: 1, quiz: 1, lab: 1, challenge: 3, tool: 4, operation: 1 };
@@ -38,10 +39,15 @@ export function libraryData(language = 'ar') {
   if (!['ar', 'en'].includes(language)) throw new Error('Invalid library language');
   if (!cached.has(language)) {
     const file = new URL(`../desktop-library.${language}.private.json`, import.meta.url);
-    cached.set(language, JSON.parse(readFileSync(file, 'utf8')));
+    const source = JSON.parse(readFileSync(file, 'utf8'));
+    const existing = new Set(source.roadmapPaths.map((path) => path[2]));
+    source.roadmapPaths.push(...additionalPaths[language].filter((path) => !existing.has(path[2])));
+    cached.set(language, source);
   }
   return cached.get(language);
 }
+
+export const programPathIds = () => libraryData('ar').roadmapPaths.map((path) => path[2]);
 
 export function requiredLibraryPlan(kind, index) {
   if (!Number.isInteger(index) || index < 0 || !(kind in FREE)) return 'pro';

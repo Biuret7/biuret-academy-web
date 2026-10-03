@@ -1,6 +1,6 @@
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260929-1';
 import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260929-1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261003-1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261004-1';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260929-1';
 import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261003-1';
 import { fullName } from './full-name.js?v=20260929-1';
@@ -108,10 +108,10 @@ function renderJourney() {
 function renderSpecializations() {
   const root = $('#specialization-grid');
   if (!root) return;
-  const programCourse = { web: 'desktop-10', soc: 'desktop-v5-category-1', pentest: 'desktop-3', forensics: 'desktop-7', cloud: 'desktop-13', malware: 'desktop-12' };
+  const programCourse = { web: 'desktop-9', soc: 'desktop-2', pentest: 'desktop-2', forensics: 'desktop-7', cloud: 'desktop-13', grc: 'desktop-1', malware: 'desktop-9', mobile: 'desktop-14', intel: 'desktop-15' };
   root.innerHTML = specializations.map((item, index) => {
     const practice = examPassed
-      ? `<a href="library-course.html?id=${encodeURIComponent(programCourse[item.id])}">${j('افتح كورس البرنامج', 'Open program course')} ↗</a>${item.challengeTrack ? ` <a href="challenges.html?track=${encodeURIComponent(item.challengeTrack)}">${j('تدريب تمهيدي', 'Intro practice')} ↗</a>` : ''}`
+      ? `<a href="certifications.html#roadmap-${encodeURIComponent(item.pathId)}">${j('خارطة المسار', 'Path roadmap')} ↗</a> <a href="library-course.html?id=${encodeURIComponent(programCourse[item.id])}">${j('ابدأ أول كورس', 'Start the first course')} ↗</a> <a href="path-exam.html?id=${encodeURIComponent(item.pathId)}">${j('الامتحان والشهادة', 'Exam and certificate')} ↗</a>${item.challengeTrack ? ` <a href="challenges.html?track=${encodeURIComponent(item.challengeTrack)}">${j('تدريب تمهيدي', 'Intro practice')} ↗</a>` : ''}`
       : `<a href="paths.html#foundations-roadmap">${j('أكمل الأساسيات والامتحان أولاً', 'Complete Foundations and its exam first')} ↗</a>`;
     const status = examPassed ? j('كورس البرنامج متاح حسب العضوية', 'Program course by membership') : j('بعد امتحان الأساسيات', 'After the Foundations exam');
     return `<article class="specialization-card"><div class="specialization-top"><span>PATH / ${String(index + 2).padStart(2, '0')}</span><span>${status}</span></div><h3>${esc(lc(item.title))}</h3><p>${esc(lc(item.summary))}</p><ol>${item.topics.map((topic) => `<li>${esc(lc(topic))}</li>`).join('')}</ol><div class="specialization-bottom">${practice}</div></article>`;

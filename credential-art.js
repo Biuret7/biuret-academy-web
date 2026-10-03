@@ -6,6 +6,10 @@ const paths = {
   path_dfir: { ar: 'التحقيق الجنائي الرقمي', en: 'Digital forensics', topics: { ar: 'جمع الأدلة · تحليل الآثار · التحقيق', en: 'Evidence collection · Artifact analysis · Investigation' } },
   path_cloud: { ar: 'أمن السحابة', en: 'Cloud security', topics: { ar: 'الهوية · الإعداد الآمن · المراقبة', en: 'Identity · Secure configuration · Monitoring' } },
   path_grc: { ar: 'الحوكمة والمخاطر والامتثال', en: 'Governance, risk and compliance', topics: { ar: 'الحوكمة · تقييم المخاطر · الامتثال', en: 'Governance · Risk assessment · Compliance' } },
+  path_appsec: { ar: 'أمن التطبيقات وDevSecOps', en: 'Application security and DevSecOps', topics: { ar: 'صلاحيات التطبيقات · الاعتماديات · التسليم الآمن', en: 'Application authorization · Dependencies · Secure delivery' } },
+  path_mobile: { ar: 'أمن تطبيقات الهاتف', en: 'Mobile application security', topics: { ar: 'التخزين · الصلاحيات · واجهات API', en: 'Storage · Permissions · APIs' } },
+  path_threat_intel: { ar: 'استخبارات التهديدات وOSINT', en: 'Threat intelligence and OSINT', topics: { ar: 'المصادر · المؤشرات · مستوى الثقة', en: 'Sources · Indicators · Confidence' } },
+  path_malware: { ar: 'تحليل البرمجيات الخبيثة والهندسة العكسية', en: 'Malware analysis and reverse engineering', topics: { ar: 'التحليل الساكن · السلوك المعزول · المؤشرات', en: 'Static analysis · Isolated behavior · Indicators' } },
 };
 const labels = {
   ar: { title: 'شهادة إنجاز', awarded: 'مُنحت إلى', course: 'مسار التعلم', topics: 'المحاور', courses: 'الكورسات', lessons: 'الدروس', score: 'نتيجة الامتحان', issued: 'تاريخ الإصدار', issuer: 'الجهة المصدرة', verify: 'تحقق من الحالة عبر الرابط', status: 'اجتاز المتعلم امتحان المسار بعد إكمال متطلباته الموثقة.' },
@@ -15,7 +19,7 @@ export function validCredentialRecord(data) {
   if (!data || typeof data !== 'object') return false;
   if (data.pathId === 'foundations') return ['foundations-v1', 'foundations-v2'].includes(data.version);
   return ['program-path-v1', 'program-path-v2'].includes(data.version) &&
-    ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(data.pathId);
+    ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc', 'path_appsec', 'path_mobile', 'path_threat_intel', 'path_malware'].includes(data.pathId);
 }
 export function credentialFacts(data, language = 'en') {
   const lang = language === 'ar' ? 'ar' : 'en';
