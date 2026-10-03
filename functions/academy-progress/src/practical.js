@@ -1,12 +1,16 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { programPathIds } from './library.js';
+import { additionalPathIds } from './additional-paths.js';
 
 const VERSION = 'practical-v1';
 const DATABASE = '6aa56477002e28054068';
 const ATTEMPTS = '6ab933b6001be5900662';
-const PATHS = ['foundations', ...programPathIds()];
 let privateBank;
+const PATHS = ['foundations', 'path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc', ...additionalPathIds];
+
+function isPath(pathId) {
+  return PATHS.includes(pathId);
+}
 
 function bank() {
   if (!privateBank) {
@@ -31,7 +35,7 @@ export function practicalId(userId, pathId) {
 export function practicalService({ base, request }) {
   const rowsBase = `${base}/tablesdb/${DATABASE}/tables/${ATTEMPTS}/rows`;
   async function passed(userId, pathId) {
-    if (!PATHS.includes(pathId)) return null;
+    if (!isPath(pathId)) return null;
     const result = await request(`${rowsBase}/${practicalId(userId, pathId)}`);
     if (result.status === 404) return null;
     if (result.status !== 200) throw new Error('Practical assessment lookup failed');
@@ -41,7 +45,7 @@ export function practicalService({ base, request }) {
     return { ...payload, completedAt: result.data.$createdAt };
   }
   async function state(userId, pathId, language = 'ar', ready = false) {
-    if (!PATHS.includes(pathId)) return { code: 404, data: { error: 'Path not found' } };
+    if (!isPath(pathId)) return { code: 404, data: { error: 'Path not found' } };
     const completion = await passed(userId, pathId);
     const data = { pathId, version: VERSION, ready, passed: Boolean(completion), score: completion?.score ?? null, total: 3 };
     if (ready && !completion) data.tasks = bank()[pathId].map(({ id, artifact, question, options }) => ({ id,
@@ -50,7 +54,7 @@ export function practicalService({ base, request }) {
     return { code: 200, data };
   }
   async function submit(userId, pathId, answers, ready = false) {
-    if (!PATHS.includes(pathId)) return { code: 404, data: { error: 'Path not found' } };
+    if (!isPath(pathId)) return { code: 404, data: { error: 'Path not found' } };
     if (!ready) return { code: 403, data: { error: 'Complete path lessons and course exams first' } };
     if (await passed(userId, pathId)) return { code: 409, data: { error: 'Practical assessment already passed' } };
     const tasks = bank()[pathId];
