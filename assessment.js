@@ -1,6 +1,6 @@
 import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261003-1';
 import { currentLanguage, applyLanguage } from './i18n.js?v=20260929-1';
-import { credentialFacts, downloadCredential } from './credential-art.js?v=20261003-1';
+import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261003-2';
 import { fullName } from './full-name.js?v=20260929-1';
 
 const root = document.querySelector('#assessment-main');
@@ -73,7 +73,7 @@ async function refreshCredential() {
       if (!response.ok) throw new Error(tr('لم نجد إنجازاً عاماً بهذا الرابط، أو أوقف صاحبه المشاركة.', 'No public credential was found at this link, or its owner stopped sharing.'));
       const row = await response.json();
       const data = JSON.parse(row.payload);
-      if (!((data.version === 'foundations-v1' && data.pathId === 'foundations') || (data.version === 'program-path-v1' && ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(data.pathId)))) throw new Error(tr('بيانات الإنجاز غير صحيحة.', 'Credential data is invalid.'));
+      if (!validCredentialRecord(data)) throw new Error(tr('بيانات الإنجاز غير صحيحة.', 'Credential data is invalid.'));
       showCredential({ ...data, id }, true);
     } catch (error) { notice(tr('تعذر التحقق', 'Verification unavailable'), errorMessage(error)); }
     return;

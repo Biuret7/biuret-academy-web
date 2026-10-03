@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { credentialFacts, downloadCredential } from '../credential-art.js';
+import { credentialFacts, downloadCredential, validCredentialRecord } from '../credential-art.js';
+
+test('public verification accepts current and legacy credential versions only for known paths', () => {
+  for (const version of ['foundations-v1', 'foundations-v2']) assert.equal(validCredentialRecord({ version, pathId: 'foundations' }), true);
+  for (const version of ['program-path-v1', 'program-path-v2']) assert.equal(validCredentialRecord({ version, pathId: 'path_grc' }), true);
+  assert.equal(validCredentialRecord({ version: 'program-path-v2', pathId: 'foundations' }), false);
+  assert.equal(validCredentialRecord({ version: 'program-path-v3', pathId: 'path_grc' }), false);
+});
 
 test('certificate facts describe the learning path and retain existing credential IDs', () => {
   const id = `c_${'a'.repeat(32)}`;

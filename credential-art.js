@@ -11,6 +11,12 @@ const labels = {
   ar: { title: 'شهادة إنجاز', awarded: 'مُنحت إلى', course: 'مسار التعلم', topics: 'المحاور', courses: 'الكورسات', lessons: 'الدروس', score: 'نتيجة الامتحان', issued: 'تاريخ الإصدار', issuer: 'الجهة المصدرة', verify: 'تحقق من الحالة عبر الرابط', status: 'اجتاز المتعلم امتحان المسار بعد إكمال متطلباته الموثقة.' },
   en: { title: 'Certificate of Achievement', awarded: 'Awarded to', course: 'Learning path', topics: 'Topics', courses: 'Courses', lessons: 'Lessons', score: 'Exam score', issued: 'Issued', issuer: 'Issued by', verify: 'Verify current status at', status: 'The learner passed the path exam after completing its verified requirements.' },
 };
+export function validCredentialRecord(data) {
+  if (!data || typeof data !== 'object') return false;
+  if (data.pathId === 'foundations') return ['foundations-v1', 'foundations-v2'].includes(data.version);
+  return ['program-path-v1', 'program-path-v2'].includes(data.version) &&
+    ['path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].includes(data.pathId);
+}
 export function credentialFacts(data, language = 'en') {
   const lang = language === 'ar' ? 'ar' : 'en';
   const path = paths[data.pathId] || paths.foundations;
