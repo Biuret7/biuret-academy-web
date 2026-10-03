@@ -85,6 +85,10 @@ export function loadMembership() { return learningExecution({ action: 'membershi
 export function loadProgramLibrary(language) { return learningExecution({ action: 'libraryData', language }, false); }
 export function markProgramLesson(lessonId) { return learningExecution({ action: 'libraryMarkLesson', lessonId }, false); }
 export function checkProgramPractice(kind, index, answers, language) { return learningExecution({ action: 'libraryPractice', kind, index, answers, language }, false); }
+export function loadCourseExam(courseOrder, language) { return learningExecution({ action: 'courseExamState', courseOrder, language }, false); }
+export function submitCourseExam(courseOrder, answers) { return learningExecution({ action: 'courseSubmitExam', courseOrder, answers }, false); }
+export function loadPractical(pathId, language) { return learningExecution({ action: 'practicalState', pathId, language }, false); }
+export function submitPractical(pathId, answers) { return learningExecution({ action: 'submitPractical', pathId, answers }, false); }
 export function loadPathExam(pathId, language) { return learningExecution({ action: 'pathExamState', pathId, language }, false); }
 export function submitPathExam(pathId, answers) { return learningExecution({ action: 'pathSubmitExam', pathId, answers }, false); }
 export function loadPathCredential(pathId) { return learningExecution({ action: 'pathCredential', pathId }, false); }

@@ -5,6 +5,8 @@ import { coinLedgerService } from './coins.js';
 import { membershipService } from './membership.js';
 import { libraryItem, mayAccessLibrary, publicLibraryFor, scoreLibraryPractice } from './library.js';
 import { pathExamService } from './path-exam.js';
+import { courseExamService } from './course-exam.js';
+import { practicalService } from './practical.js';
 import { fullName } from './name.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
@@ -160,7 +162,7 @@ export default async ({ req, res, error }) => {
     const key = headers['x-appwrite-key'];
     if (!key) throw new Error('Function key unavailable');
     const input = req.bodyJson || JSON.parse(req.bodyText || '{}');
-    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'submitExam', 'pathSubmitExam'].includes(input.action) && !fullName(account.name)) {
+    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam'].includes(input.action) && !fullName(account.name)) {
       return res.json({ error: 'Set your real two or three part name in your Academy account before learning' }, 403);
     }
     if (input.action === 'membershipState') {
@@ -186,15 +188,39 @@ export default async ({ req, res, error }) => {
       const scored = scoreLibraryPractice(kind, index, input.answers, input.language);
       return scored ? res.json(scored) : res.json({ error: 'Invalid practice submission' }, 400);
     }
-    if (['pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential', 'pathCorrectCredentialName'].includes(input.action)) {
+    if (['courseExamState', 'courseSubmitExam'].includes(input.action)) {
       const context = await libraryContext(key, account);
-      const paths = pathExamService({
-        base: ENDPOINT,
+      const courses = courseExamService({ base: ENDPOINT,
         request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
         getRead: async (userId, lessonId) => Boolean(await getAward(key, userId, lessonId)),
+        membership: context.membership, foundationsPassed: context.foundationsPassed });
+      const result = input.action === 'courseExamState' ? await courses.state(account.$id, input.courseOrder, input.language)
+        : await courses.submit(account.$id, input.courseOrder, input.answers);
+      return res.json(result.data, result.code);
+    }
+    if (['practicalState', 'submitPractical', 'pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential', 'pathCorrectCredentialName'].includes(input.action)) {
+      const context = await libraryContext(key, account);
+      const request = (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } });
+      const practical = practicalService({ base: ENDPOINT, request });
+      const courses = courseExamService({ base: ENDPOINT, request,
+        getRead: async (userId, lessonId) => Boolean(await getAward(key, userId, lessonId)),
+        membership: context.membership, foundationsPassed: context.foundationsPassed });
+      const paths = pathExamService({
+        base: ENDPOINT,
+        request,
+        getRead: async (userId, lessonId) => Boolean(await getAward(key, userId, lessonId)),
+        getCoursePassed: (userId, order) => courses.passed(userId, order),
+        getPracticalPassed: (userId, pathId) => practical.passed(userId, pathId),
         membership: context.membership,
         foundationsPassed: context.foundationsPassed,
       });
+      if (['practicalState', 'submitPractical'].includes(input.action)) {
+        const ready = input.pathId === 'foundations' ? context.membership.admin || (await getAwardState(key, account.$id)).awards.length === 9
+          : (await paths.state(account.$id, input.pathId)).data.readyForPractical === true;
+        const result = input.action === 'practicalState' ? await practical.state(account.$id, input.pathId, input.language, ready)
+          : await practical.submit(account.$id, input.pathId, input.answers, ready);
+        return res.json(result.data, result.code);
+      }
       const result = input.action === 'pathExamState' ? await paths.state(account.$id, input.pathId, input.language)
         : input.action === 'pathSubmitExam' ? await paths.submit(account.$id, fullName(account.name), input.pathId, input.answers)
           : input.action === 'pathCredential' ? await paths.credential(account.$id, input.pathId)
@@ -206,10 +232,13 @@ export default async ({ req, res, error }) => {
       const result = await complete(key, account, input.lessonId, input.answerIndex);
       return res.json(result.body, result.status);
     }
+    const examRequest = (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } });
+    const practical = practicalService({ base: ENDPOINT, request: examRequest });
     const exam = examService({
       base: ENDPOINT,
-      request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
+      request: examRequest,
       getLessonState: (userId) => getAwardState(key, userId),
+      getPracticalPassed: (userId, pathId) => practical.passed(userId, pathId),
     });
     if (input.action === 'examState') return res.json(await exam.state(account.$id));
     if (input.action === 'submitExam') {

@@ -17,7 +17,7 @@ export function nextLearningStep(lessons = {}, passed = false) {
       if (!lessons[id]) return { kind: 'lesson', courseId: course.id, lessonId: id, lesson: lessonById[id], href: `lesson.html?id=${encodeURIComponent(id)}` };
     }
   }
-  if (!passed) return { kind: 'exam', href: 'exam.html' };
+  if (!passed) return { kind: 'practical', href: 'practical.html?id=foundations' };
   return { kind: 'specialization', href: 'paths.html#specializations' };
 }
 

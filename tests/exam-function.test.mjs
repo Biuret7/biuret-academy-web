@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import handler from '../functions/academy-progress/src/main.js';
 
 const BANK = Array.from({ length: 10 }, (_, i) => ({ id: `q-${i}`, question: { ar: `سؤال تجريبي ${i} طويل`, en: `Test question number ${i}` }, options: Array.from({ length: 3 }, (_, n) => ({ ar: `خيار ${n}`, en: `Option ${n}` })), answer: i % 3 }));
+const PRACTICAL = Object.fromEntries(['foundations', 'path_pentest', 'path_soc', 'path_dfir', 'path_cloud', 'path_grc'].map((path) => [path, Array.from({ length: 3 }, (_, i) => ({ id: `task-${i}`, artifact: { ar: `دليل تدريبي افتراضي رقم ${i}`, en: `Synthetic training evidence ${i}` }, question: { ar: `ما القرار الصحيح للدليل رقم ${i}؟`, en: `What is the right decision for evidence ${i}?` }, options: Array.from({ length: 3 }, (_, n) => ({ ar: `قرار ${n}`, en: `Decision ${n}` })), answer: i % 3 }))]));
 const AWARD_TABLE = '6ab81dce000e6188b664';
 const ATTEMPT_TABLE = '6ab933b6001be5900662';
 const CREDENTIAL_TABLE = '6ab93416002801b57b3f';
@@ -10,7 +11,9 @@ const CREDENTIAL_TABLE = '6ab93416002801b57b3f';
 test('exam requires all server awards, grades privately, limits attempts, and shares only by owner choice', async () => {
   const beforeFetch = globalThis.fetch;
   const beforeBank = process.env.ACADEMY_EXAM_BANK;
+  const beforePracticalBank = process.env.ACADEMY_PRACTICAL_BANK;
   process.env.ACADEMY_EXAM_BANK = JSON.stringify(BANK);
+  process.env.ACADEMY_PRACTICAL_BANK = JSON.stringify(PRACTICAL);
   const rows = new Map();
   let person = 'learner-a';
   let name = 'Academy Learner';
@@ -51,6 +54,16 @@ test('exam requires all server awards, grades privately, limits attempts, and sh
     assert.equal((await invoke({ action: 'submitExam', answers: {} })).status, 409);
     for (const [i, lessonId] of lessons.entries()) rows.set(key(AWARD_TABLE, awardId(person, lessonId)), { userId: person, lessonId, xp: 100, coins: 10, $createdAt: new Date(now - 1000 * (i + 1)).toISOString() });
     result = await invoke({ action: 'examState' });
+    assert.equal(result.body.eligible, false);
+    assert.equal(result.body.practicalPassed, false);
+    const practicalState = await invoke({ action: 'practicalState', pathId: 'foundations', language: 'en' });
+    assert.equal(practicalState.status, 200);
+    assert.equal(practicalState.body.ready, true);
+    assert.equal(JSON.stringify(practicalState.body).includes('"answer"'), false);
+    const practicalAnswers = Object.fromEntries(PRACTICAL.foundations.map((task) => [task.id, task.answer]));
+    const practicalResult = await invoke({ action: 'submitPractical', pathId: 'foundations', answers: practicalAnswers });
+    assert.deepEqual([practicalResult.status, practicalResult.body.score, practicalResult.body.passed], [200, 3, true]);
+    result = await invoke({ action: 'examState' });
     assert.equal(result.body.eligible, true);
     assert.equal(result.body.questions.length, 10);
     assert.equal(JSON.stringify(result.body).includes('"answer"'), false);
@@ -66,6 +79,7 @@ test('exam requires all server awards, grades privately, limits attempts, and sh
     assert.match(result.body.credentialId, /^c_[a-f0-9]{32}$/);
     assert.equal(rows.get(key(CREDENTIAL_TABLE, result.body.credentialId)).$permissions.length, 0);
     assert.equal(JSON.parse(rows.get(key(CREDENTIAL_TABLE, result.body.credentialId)).payload).score, 10);
+    assert.equal(JSON.parse(rows.get(key(CREDENTIAL_TABLE, result.body.credentialId)).payload).version, 'foundations-v2');
     assert.equal((await invoke({ action: 'submitExam', answers: correct })).status, 409);
     result = await invoke({ action: 'shareCredential', enabled: true });
     assert.equal(result.body.shared, true);
@@ -83,12 +97,14 @@ test('exam requires all server awards, grades privately, limits attempts, and sh
     person = 'learner-b'; name = 'Other Learner';
     assert.equal((await invoke({ action: 'credential' })).status, 404);
     assert.equal((await invoke({ action: 'examState' })).body.eligible, false);
-    assert.equal(rows.size, 12);
-    assert.equal([...rows.keys()].filter((item) => item.startsWith(`${ATTEMPT_TABLE}:`)).length, 2);
+    assert.equal(rows.size, 13);
+    assert.equal([...rows.keys()].filter((item) => item.startsWith(`${ATTEMPT_TABLE}:`)).length, 3);
   } finally {
     globalThis.fetch = beforeFetch;
     Date.now = beforeNow;
     if (beforeBank === undefined) delete process.env.ACADEMY_EXAM_BANK;
     else process.env.ACADEMY_EXAM_BANK = beforeBank;
+    if (beforePracticalBank === undefined) delete process.env.ACADEMY_PRACTICAL_BANK;
+    else process.env.ACADEMY_PRACTICAL_BANK = beforePracticalBank;
   }
 });

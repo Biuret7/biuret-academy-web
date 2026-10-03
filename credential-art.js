@@ -14,7 +14,10 @@ const labels = {
 export function credentialFacts(data, language = 'en') {
   const lang = language === 'ar' ? 'ar' : 'en';
   const path = paths[data.pathId] || paths.foundations;
-  return { lang, labels: labels[lang], title: path[lang], topics: path.topics[lang], courses: data.courseCount ?? path.courses ?? null,
+  const details = data.practicalScore === 3 ? { ...labels[lang], status: data.pathId === 'foundations'
+    ? (lang === 'ar' ? 'أكمل المتعلم الدروس الموثقة، واجتاز 3 مهام عملية وامتحان المسار.' : 'The learner completed verified lessons, passed 3 practical tasks and the path exam.')
+    : (lang === 'ar' ? 'أكمل المتعلم الدروس وامتحانات الدورات المطلوبة، واجتاز 3 مهام عملية وامتحان المسار.' : 'The learner completed coursework and course exams, passed 3 practical tasks and the path exam.') } : labels[lang];
+  return { lang, labels: details, title: path[lang], topics: path.topics[lang], courses: data.courseCount ?? path.courses ?? null,
     lessons: data.lessonCount ?? path.lessons ?? null, score: Number.isInteger(data.score) ? `${data.score} / ${data.total || 10}` : null,
     issued: new Intl.DateTimeFormat(lang === 'ar' ? 'ar' : 'en', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(data.issuedAt)),
     verifyUrl: `https://academy.biuret.dev/certificate.html?id=${encodeURIComponent(data.id)}` };

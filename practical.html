@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0d">
-  <meta name="description" content="حلل الأدلة واتخذ القرار في سيناريو أمني تدريبي.">
+  <meta name="description" content="تقييم عملي آمن لمسار التعلم.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="سيناريو العمليات — Biuret Academy">
-  <meta property="og:description" content="حلل الأدلة واتخذ القرار في سيناريو أمني تدريبي.">
+  <meta property="og:title" content="التقييم العملي — Biuret Academy">
+  <meta property="og:description" content="تقييم عملي آمن لمسار التعلم.">
   <meta name="twitter:card" content="summary">
-  <title>سيناريو العمليات — Biuret Academy</title>
+  <title>التقييم العملي — Biuret Academy</title>
   <link rel="icon" href="assets/biuret-wordmark-icon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,12 +17,12 @@
   <link rel="stylesheet" href="style.css?v=20261003-1">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
   <script type="module" src="app.js?v=20261003-1"></script>
-  <script type="module" src="desktop.js?v=20261003-1"></script>
+  <script type="module" src="practical-assessment.js?v=20261003-1"></script>
 </head>
 <body>
 
   <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
-  <div class="site-shell" data-page="operation">
+  <div class="site-shell" data-page="practical">
     <aside class="academy-sidebar" id="academy-sidebar" aria-label="قائمة الأكاديمية">
       <div class="sidebar-top">
         <a class="sidebar-brand" href="index.html" aria-label="Biuret Academy - الرئيسية">
@@ -36,12 +36,12 @@
         <nav class="sidebar-nav" aria-label="التنقل الرئيسي">
           <section class="sidebar-group" aria-labelledby="sidebar-start"><h2 id="sidebar-start">ابدأ هنا</h2>
             <a href="index.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#home"></use></svg></span><span>الرئيسية</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
-            <a href="paths.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#paths"></use></svg></span><span>المسارات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="paths.html" aria-current="page"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#paths"></use></svg></span><span>المسارات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="review.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#review"></use></svg></span><span>المراجعة الذكية</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
           </section>
           <section class="sidebar-group" aria-labelledby="sidebar-learn"><h2 id="sidebar-learn">التعلّم والتطبيق</h2>
             <a href="courses.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#courses"></use></svg></span><span>الكورسات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
-            <a href="operations.html" aria-current="page"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#operations"></use></svg></span><span>غرفة العمليات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="operations.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#operations"></use></svg></span><span>غرفة العمليات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="labs.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#labs"></use></svg></span><span>المختبرات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="quizzes.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#quizzes"></use></svg></span><span>الاختبارات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="challenges.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#challenges"></use></svg></span><span>التحديات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
@@ -74,14 +74,14 @@
         <span class="brand-word" dir="ltr">BIURET<span class="brand-divider">/</span><span>ACADEMY</span></span>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="academy-sidebar" aria-expanded="false">القائمة <span aria-hidden="true">☰</span></button>
-      <div class="page-header-context"><span>ACADEMY / OPERATION</span><strong data-ar="اتخذ قراراً مبنياً على الدليل." data-en="Make an evidence-based decision.">اتخذ قراراً مبنياً على الدليل.</strong></div>
+      <div class="page-header-context"><span>ACADEMY / PRACTICAL</span><strong data-ar="طبّق ما تعلمته على أدلة تدريبية." data-en="Apply your learning to training evidence.">طبّق ما تعلمته على أدلة تدريبية.</strong></div>
       <div class="nav-actions">
         <a class="portfolio-return" href="https://biuret.dev" data-static>موقع Biuret ↗</a><button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English" aria-pressed="false"><span aria-hidden="true">EN</span></button>
         <button class="account-button" id="account-button" type="button">حسابي <span aria-hidden="true">↗</span></button>
       </div>
     </header>
 
-    <main id="main"><div id="desktop-main" aria-live="polite"></div></main>
+    <main id="main"><div id="practical-main" aria-live="polite"></div></main>
 
     <footer class="footer section-frame"><div><a class="footer-brand" href="https://biuret.dev" dir="ltr">BIURET<span>7</span></a><p>مساحة صغيرة للتعلّم الكبير.</p></div><div class="footer-links"><a href="https://biuret.dev">موقع Biuret</a><a href="https://biuret.dev/privacy.html">سياسة الخصوصية</a><a href="https://biuret.dev/terms.html">شروط الاستخدام</a></div><span class="footer-end">© 2026 BIURET ACADEMY</span></footer>
   </div>

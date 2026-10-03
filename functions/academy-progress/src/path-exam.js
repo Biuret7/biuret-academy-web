@@ -35,7 +35,7 @@ export function pathQuestions(pathId, language = 'ar') {
   return bank()[pathId].map((item) => ({ id: item.id, question: item.question[lang], options: item.options.map((option) => option[lang]), answer: item.answer }));
 }
 
-export function pathExamService({ base, request, getRead, membership, foundationsPassed }) {
+export function pathExamService({ base, request, getRead, getCoursePassed = async () => true, getPracticalPassed = async () => true, membership, foundationsPassed }) {
   const attemptsBase = `${base}/tablesdb/${DATABASE}/tables/${ATTEMPTS}`;
   const credentialsBase = `${base}/tablesdb/${DATABASE}/tables/${CREDENTIALS}`;
 
@@ -77,16 +77,21 @@ export function pathExamService({ base, request, getRead, membership, foundation
     if (categories.some((item) => !item)) throw new Error('Path categories missing');
     const access = categories.every((item) => mayAccessLibrary('course', item.order, membership, foundationsPassed));
     const lessons = categories.flatMap((item) => item.lessons);
-    const [read, attempts] = await Promise.all([
+    const [read, courseResults, practical, attempts] = await Promise.all([
       access && !membership.admin ? Promise.all(lessons.map((lesson) => getRead(userId, lesson.id))) : Promise.resolve([]),
+      access && !membership.admin ? Promise.all(categories.map((item) => getCoursePassed(userId, item.order))) : Promise.resolve([]),
+      getPracticalPassed(userId, pathId),
       attemptsFor(userId, pathId),
     ]);
     const completedLessons = membership.admin ? lessons.length : read.filter(Boolean).length;
-    const eligible = access && completedLessons === lessons.length;
+    const completedCourses = membership.admin ? categories.length : courseResults.filter(Boolean).length;
+    const readyForPractical = access && completedLessons === lessons.length && completedCourses === categories.length;
+    const eligible = readyForPractical && Boolean(practical);
     const passed = attempts.find((item) => item.passed);
     const latest = attempts.at(-1);
     const nextAt = !passed && latest && attempts.length < MAX_ATTEMPTS ? new Date(Date.parse(latest.completedAt) + COOLDOWN).toISOString() : null;
-    const data = { pathId, title: path.local[1], categoryIds: path.source[6], access, eligible, completedLessons,
+    const data = { pathId, title: path.local[1], categoryIds: path.source[6], access, eligible, readyForPractical,
+      practicalPassed: Boolean(practical), completedLessons, completedCourses, requiredCourses: categories.length,
       requiredLessons: lessons.length, passScore: 8, totalQuestions: 10, maxAttempts: MAX_ATTEMPTS,
       attempts: attempts.map(({ slot, score, passed, completedAt }) => ({ slot, score, passed, completedAt })),
       remaining: MAX_ATTEMPTS - attempts.length, nextAt, passed: Boolean(passed), credentialId: passed?.credentialId || null };
@@ -100,7 +105,8 @@ export function pathExamService({ base, request, getRead, membership, foundation
     const id = attempt.credentialId;
     if (!/^c_[a-f0-9]{32}$/.test(id || '')) throw new Error('Path credential ID invalid');
     if (await getRow(`${credentialsBase}/rows/${id}`)) return;
-    const payload = JSON.stringify({ version: VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, ...pathDetails(attempt.pathId) });
+    const payload = JSON.stringify({ version: attempt.credentialVersion || VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, ...pathDetails(attempt.pathId),
+      ...(attempt.credentialVersion ? { practicalScore: 3, practicalTotal: 3 } : {}) });
     const result = await request(`${credentialsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: id, data: { payload }, permissions: [] }) });
     if (![201, 409].includes(result.status)) throw new Error('Path credential creation failed');
   }
@@ -108,8 +114,8 @@ export function pathExamService({ base, request, getRead, membership, foundation
   async function submit(userId, name, pathId, answers) {
     const current = await state(userId, pathId);
     if (current.code !== 200) return current;
-    if (!current.data.eligible) return { code: 403, data: { error: 'Complete and unlock all path lessons first' } };
     if (current.data.passed) return { code: 409, data: { error: 'Path exam already passed', ...current.data } };
+    if (!current.data.eligible) return { code: 403, data: { error: 'Complete path lessons, course exams, and practical assessment first' } };
     if (!current.data.remaining || (current.data.nextAt && Date.now() < Date.parse(current.data.nextAt))) return { code: 429, data: { error: 'Path exam is in cooldown', ...current.data } };
     const bank = pathQuestions(pathId, 'ar');
     if (!answers || typeof answers !== 'object' || Array.isArray(answers) || Object.keys(answers).length !== bank.length ||
@@ -121,11 +127,12 @@ export function pathExamService({ base, request, getRead, membership, foundation
     const slot = current.data.attempts.length + 1;
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
     const holderName = name;
-    const payload = JSON.stringify({ version: VERSION, pathId, slot, score, passed, credentialId, holderName });
+    const credentialVersion = 'program-path-v2';
+    const payload = JSON.stringify({ version: VERSION, credentialVersion, pathId, slot, score, passed, credentialId, holderName });
     const result = await request(`${attemptsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: pathAttemptId(userId, pathId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Path attempt creation failed');
-    if (passed) await ensureCredential({ credentialId, pathId, holderName, score, completedAt: result.data.$createdAt });
+    if (passed) await ensureCredential({ credentialId, credentialVersion, pathId, holderName, score, completedAt: result.data.$createdAt });
     return { code: 200, data: { score, passed, credentialId, remaining: MAX_ATTEMPTS - slot } };
   }
 
@@ -136,7 +143,7 @@ export function pathExamService({ base, request, getRead, membership, foundation
     await ensureCredential(passed);
     const row = await getRow(`${credentialsBase}/rows/${passed.credentialId}`);
     const payload = JSON.parse(row.payload);
-    if (payload.version !== VERSION || payload.pathId !== pathId) throw new Error('Path credential mismatch');
+    if (![VERSION, 'program-path-v2'].includes(payload.version) || payload.pathId !== pathId) throw new Error('Path credential mismatch');
     return { code: 200, data: { ...payload, id: passed.credentialId, score: passed.score, total: 10, shared: row.$permissions?.includes('read("any")') || false } };
   }
 

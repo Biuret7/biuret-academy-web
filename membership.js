@@ -1,4 +1,4 @@
-import { loadUser, loadMembership } from './auth.js?v=20260929-2';
+import { loadUser, loadMembership } from './auth.js?v=20261003-1';
 import { currentLanguage } from './i18n.js?v=20260929-1';
 
 const root = document.querySelector('#membership-main');

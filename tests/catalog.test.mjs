@@ -23,8 +23,8 @@ test('all Academy catalog pages have a visible route and are included in the pub
 
 test('Academy pages use one navigation with every section available', () => {
   const sections = ['index', 'paths', 'review', 'courses', 'operations', 'labs', 'quizzes', 'challenges', 'tools', 'progress', 'certifications', 'professional', 'notes', 'favorites', 'exam', 'certificate', 'membership', 'shop', 'search', 'settings', 'profile'];
-  const allPages = ['index', ...sections, 'course', 'lesson', 'lab', 'admin', 'library-course', 'library-lesson', 'practice-quiz', 'practice-lab', 'practice-challenge', 'operation'];
-  const activeSection = { course: 'courses', lesson: 'courses', lab: 'labs', 'library-course': 'courses', 'library-lesson': 'courses', 'practice-quiz': 'quizzes', 'practice-lab': 'labs', 'practice-challenge': 'challenges', operation: 'operations', admin: null };
+  const allPages = ['index', ...sections, 'course', 'lesson', 'lab', 'admin', 'library-course', 'library-lesson', 'practice-quiz', 'practice-lab', 'practice-challenge', 'operation', 'course-exam', 'practical', 'path-exam'];
+  const activeSection = { course: 'courses', lesson: 'courses', lab: 'labs', 'library-course': 'courses', 'library-lesson': 'courses', 'course-exam': 'courses', practical: 'paths', 'path-exam': 'paths', 'practice-quiz': 'quizzes', 'practice-lab': 'labs', 'practice-challenge': 'challenges', operation: 'operations', admin: null };
   const homeSidebar = read('index.html').match(/<nav class="sidebar-nav"[\s\S]*?<\/nav>/)?.[0];
   assert.ok(homeSidebar);
   for (const page of new Set(allPages)) {

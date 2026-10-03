@@ -26,14 +26,21 @@ test('specialty exam requires accessible, completed path lessons and issues a pr
     }
     throw new Error('Unexpected fake request');
   };
-  const create = (plan, getRead) => pathExamService({ base: 'https://example.test/v1', request, getRead,
-    membership: { plan, admin: false }, foundationsPassed: true });
+  const create = (plan, getRead, getCoursePassed = async () => true, getPracticalPassed = async () => true) => pathExamService({ base: 'https://example.test/v1', request, getRead,
+    getCoursePassed, getPracticalPassed, membership: { plan, admin: false }, foundationsPassed: true });
   const denied = await create('free', async () => true).state('learner', 'path_grc');
   assert.equal(denied.data.access, false);
   assert.equal(denied.data.questions, undefined);
   const partial = await create('plus', async (id, lesson) => lesson !== 'desktop-topic-1').state('learner', 'path_grc');
   assert.equal(partial.data.eligible, false);
   assert.equal(partial.data.questions, undefined);
+  const missingCourse = await create('plus', async () => true, async () => false).state('learner', 'path_grc');
+  assert.equal(missingCourse.data.readyForPractical, false);
+  assert.equal(missingCourse.data.eligible, false);
+  const missingPractical = await create('plus', async () => true, async () => true, async () => null).state('learner', 'path_grc');
+  assert.equal(missingPractical.data.readyForPractical, true);
+  assert.equal(missingPractical.data.eligible, false);
+  assert.equal(missingPractical.data.questions, undefined);
   const service = create('plus', async () => true);
   const open = await service.state('learner', 'path_grc', 'en');
   assert.equal(open.data.eligible, true);
@@ -46,6 +53,8 @@ test('specialty exam requires accessible, completed path lessons and issues a pr
   assert.match(passed.data.credentialId, /^c_[a-f0-9]{32}$/);
   const credential = await service.credential('learner', 'path_grc');
   assert.equal(credential.data.pathId, 'path_grc');
+  assert.equal(credential.data.version, 'program-path-v2');
+  assert.equal(credential.data.practicalScore, 3);
   assert.equal(credential.data.shared, false);
   const shared = await service.share('learner', 'path_grc', true);
   assert.equal(shared.data.shared, true);

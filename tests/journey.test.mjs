@@ -14,7 +14,7 @@ test('the recommended route walks every Foundations lesson before the exam and s
     assert.deepEqual(foundationsCount(lessons), { completed: index, total: ordered.length });
     lessons[id] = '2026-09-28T00:00:00.000Z';
   }
-  assert.equal(nextLearningStep(lessons).kind, 'exam');
+  assert.equal(nextLearningStep(lessons).kind, 'practical');
   assert.equal(nextLearningStep(lessons, true).kind, 'specialization');
 });
 
