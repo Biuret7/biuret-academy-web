@@ -4,6 +4,35 @@ const ORDER = { free: 0, plus: 1, pro: 2 };
 const FREE = { course: 1, quiz: 1, lab: 1, challenge: 3, tool: 4, operation: 1 };
 const PLUS = { course: 8, quiz: 8, lab: 4, challenge: 8, tool: 10, operation: 3 };
 const cached = new Map();
+let practiceBankCache;
+
+const normalized = (value) => String(value).trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+function practiceQuizBank() {
+  if (practiceBankCache) return practiceBankCache;
+  const bank = JSON.parse(process.env.ACADEMY_PRACTICE_QUIZ_BANK || readFileSync(new URL('../practice-quiz-bank.private.json', import.meta.url), 'utf8'));
+  const courses = libraryData('ar').quizzes;
+  const exams = Object.fromEntries(['ar', 'en'].map((language) => [language,
+    new Set(libraryData(language).quizzes.flatMap((quiz) => quiz.questions.map((question) => normalized(question.q))))]));
+  if (!Array.isArray(bank) || bank.length !== courses.length) throw new Error('Private practice quiz bank invalid');
+  const ids = new Set();
+  const questions = new Set();
+  for (const group of bank) {
+    if (!Array.isArray(group) || group.length < 3) throw new Error('Private practice quiz bank invalid');
+    for (const item of group) {
+      if (!item || !/^[a-z0-9-]+$/.test(item.id) || ids.has(item.id) || !Number.isInteger(item.answer) ||
+        !Array.isArray(item.options) || item.options.length !== 3 || item.answer < 0 || item.answer >= item.options.length ||
+        !['ar', 'en'].every((language) => typeof item.question?.[language] === 'string' && item.question[language].length > 12 &&
+          item.options.every((option) => typeof option?.[language] === 'string' && option[language].length > 2) &&
+          !exams[language].has(normalized(item.question[language])) && !questions.has(`${language}:${normalized(item.question[language])}`))) {
+        throw new Error('Private practice quiz bank invalid or overlaps course exams');
+      }
+      ids.add(item.id);
+      for (const language of ['ar', 'en']) questions.add(`${language}:${normalized(item.question[language])}`);
+    }
+  }
+  practiceBankCache = bank;
+  return bank;
+}
 
 export function libraryData(language = 'ar') {
   if (!['ar', 'en'].includes(language)) throw new Error('Invalid library language');
@@ -38,7 +67,9 @@ export function publicLibraryFor(language, membership, foundationsPassed) {
   }));
   const tools = source.tools.map((tool, index) => keep('tool', index) ? tool : { name: tool.name, category: tool.category, locked: true });
   const quizzes = source.quizzes.map((quiz, index) => keep('quiz', index)
-    ? { ...quiz, questions: quiz.questions.map(({ ans, ...question }) => question) }
+    ? { name: quiz.name, topics: quiz.topics, questions: practiceQuizBank()[index].map((item) => ({
+      q: item.question[language], opts: item.options.map((option) => option[language]),
+    })) }
     : { name: quiz.name, topics: quiz.topics, questions: [], locked: true });
   const challenges = source.challenges.map((item, index) => keep('challenge', index)
     ? { ...item, verify_ans: undefined }
@@ -61,24 +92,24 @@ export function libraryItem(kind, index) {
     }
     return null;
   }
-  return source[{ quiz: 'quizzes', lab: 'labs', challenge: 'challenges', operation: 'operations', tool: 'tools' }[kind]]?.[index] || null;
+  return source[{ lab: 'labs', challenge: 'challenges', operation: 'operations', tool: 'tools' }[kind]]?.[index] || null;
 }
 
 export function scoreLibraryPractice(kind, index, answers, language = 'ar') {
-  const item = libraryItem(kind, index);
-  if (!item) return null;
-  const localized = language === 'en' ? libraryData('en')[{ quiz: 'quizzes', lab: 'labs', challenge: 'challenges' }[kind]]?.[index] : item;
   if (kind === 'quiz') {
-    if (!Array.isArray(answers) || answers.length !== item.questions.length || answers.some((answer) => !Number.isInteger(answer))) return null;
-    const correct = item.questions.reduce((sum, question, i) => sum + Number(answers[i] === question.ans), 0);
-    const english = libraryData('en').quizzes[index];
-    return { correct, count: item.questions.length, review: item.questions.map((question, i) => ({
-      question: localized.questions[i].q, answer: localized.questions[i].opts[question.ans],
-      text: { ar: { question: question.q, answer: question.opts[question.ans] },
-        en: { question: english.questions[i].q, answer: english.questions[i].opts[question.ans] } },
-      missed: answers[i] !== question.ans,
+    const quiz = practiceQuizBank()[index];
+    if (!quiz || !Array.isArray(answers) || answers.length !== quiz.length || answers.some((answer) => !Number.isInteger(answer) || answer < 0 || answer > 2)) return null;
+    const lang = language === 'en' ? 'en' : 'ar';
+    const correct = quiz.reduce((sum, question, i) => sum + Number(answers[i] === question.answer), 0);
+    return { correct, count: quiz.length, review: quiz.map((question, i) => ({
+      question: question.question[lang], answer: question.options[question.answer][lang],
+      text: { ar: { question: question.question.ar, answer: question.options[question.answer].ar },
+        en: { question: question.question.en, answer: question.options[question.answer].en } },
+      missed: answers[i] !== question.answer,
     })) };
   }
+  const item = libraryItem(kind, index);
+  if (!item) return null;
   if (!['lab', 'challenge'].includes(kind) || !Number.isInteger(answers)) return null;
   return { correct: Number(answers === item.verify_ans), count: 1 };
 }
