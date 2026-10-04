@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { sandboxBillingService, sandboxBillingConfig } from './billing.js';
 import { examService } from './exam.js';
 import { credentialAdminService, isAcademyAdmin } from './admin.js';
 import { coinLedgerService } from './coins.js';
@@ -157,11 +158,26 @@ async function markLibraryLesson(key, account, lessonId) {
 export default async ({ req, res, error }) => {
   try {
     const headers = Object.fromEntries(Object.entries(req.headers || {}).map(([name, value]) => [name.toLowerCase(), value]));
+    const billingConfig = sandboxBillingConfig();
+    const billing = sandboxBillingService({ base: ENDPOINT, config: billingConfig,
+      request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': headers['x-appwrite-key'], 'Content-Type': 'application/json' } }),
+      paddleRequest: async (path, options = {}) => {
+        const response = await fetch(`https://sandbox-api.paddle.com${path}`, { ...options, headers: { Authorization: `Bearer ${billingConfig.key}`, 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(15000) });
+        return { status: response.status, data: await response.json() };
+      },
+    });
+    if (headers['paddle-signature']) {
+      if (!headers['x-appwrite-key']) throw new Error('Function key unavailable');
+      return res.json(await billing.webhook(req.bodyText, headers['paddle-signature']));
+    }
     const account = await accountFromJwt(headers['x-appwrite-user-jwt']);
     if (!account?.$id) return res.json({ error: 'Sign in required' }, 401);
     const key = headers['x-appwrite-key'];
     if (!key) throw new Error('Function key unavailable');
     const input = req.bodyJson || JSON.parse(req.bodyText || '{}');
+    if (input.action === 'billingState') return res.json(await billing.state(account.$id, isAcademyAdmin(account)));
+    if (input.action === 'billingCheckout') return res.json(await billing.checkout(account, input.plan, isAcademyAdmin(account)));
+    if (input.action === 'billingPortal') return res.json(await billing.portal(account.$id, isAcademyAdmin(account)));
     if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam'].includes(input.action) && !fullName(account.name)) {
       return res.json({ error: 'Set your real two or three part name in your Academy account before learning' }, 403);
     }
@@ -274,6 +290,7 @@ export default async ({ req, res, error }) => {
     return res.json({ error: 'Unknown action' }, 400);
   } catch (cause) {
     error(cause.message);
+    if ([400, 401, 403, 404, 409, 503].includes(cause.status)) return res.json({ error: cause.message }, cause.status);
     return res.json({ error: 'Learning progress is temporarily unavailable' }, 503);
   }
 };

@@ -82,6 +82,9 @@ async function learningExecution(input, learningState = true) {
 
 export function loadLearningRewards() { return learningExecution({ action: 'state' }); }
 export function loadMembership() { return learningExecution({ action: 'membershipState' }, false); }
+export function loadBilling() { return learningExecution({ action: 'billingState' }, false); }
+export function startBillingCheckout(plan) { return learningExecution({ action: 'billingCheckout', plan }, false); }
+export function openBillingPortal() { return learningExecution({ action: 'billingPortal' }, false); }
 export function loadProgramLibrary(language) { return learningExecution({ action: 'libraryData', language }, false); }
 export function markProgramLesson(lessonId) { return learningExecution({ action: 'libraryMarkLesson', lessonId }, false); }
 export function checkProgramPractice(kind, index, answers, language) { return learningExecution({ action: 'libraryPractice', kind, index, answers, language }, false); }

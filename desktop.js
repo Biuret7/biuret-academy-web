@@ -1,5 +1,5 @@
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20260929-1';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice } from './auth.js?v=20261003-1';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice } from './auth.js?v=20261004-ux1';
 import { requiredPlan, canAccess } from './plan-access.js?v=20260929-1';
 
 const page = document.querySelector('.site-shell')?.dataset.page;

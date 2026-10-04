@@ -1,11 +1,13 @@
-import { loadUser, loadMembership } from './auth.js?v=20261003-1';
+import { loadUser, loadMembership, loadBilling } from './auth.js?v=20261004-ux1';
 import { currentLanguage } from './i18n.js?v=20260929-1';
+import { checkout, portal } from './billing-checkout.js?v=20261004-1';
 
 const root = document.querySelector('#membership-main');
 let signedIn = false;
 let state = null;
 let loading = true;
 let failed = false;
+let billing = null;
 
 const copy = {
   ar: {
@@ -62,7 +64,39 @@ function render() {
     <section class="membership-status panel" aria-label="${c.yourPlan}"><span>${c.yourPlan}</span><strong>${label}${end}</strong></section>
     <section class="membership-grid" aria-label="${c.eyebrow}">${['free', 'plus', 'pro'].map((tier, index) => card(c, tier, index + 1)).join('')}</section>
     <p class="membership-note">${c.note}</p>
+    <section class="membership-comparison" aria-label="${currentLanguage() === 'ar' ? 'مقارنة الخطط' : 'Compare plans'}"><table><thead><tr><th>${currentLanguage() === 'ar' ? 'ما الذي تفتحه خطتك؟' : 'What does your plan unlock?'}</th><th>Free</th><th>Plus · $5</th><th>Pro · $10</th></tr></thead><tbody>${[
+      [currentLanguage() === 'ar' ? 'الأساسيات وامتحانها' : 'Foundations and its exam', '✓', '✓', '✓'],
+      [currentLanguage() === 'ar' ? 'كورسات البرنامج' : 'Program courses', '1', '8', '18'],
+      [currentLanguage() === 'ar' ? 'مختبرات تدريبية' : 'Practice labs', '1', '4', '8'],
+      [currentLanguage() === 'ar' ? 'اختبارات تدريبية مستقلة' : 'Independent practice quizzes', '1', '8', '12'],
+      [currentLanguage() === 'ar' ? 'تحديات البرنامج' : 'Program challenges', '3', '8', '13'],
+      [currentLanguage() === 'ar' ? 'XP ومستويات' : 'XP and levels', '✓', '✓', '✓'],
+      [currentLanguage() === 'ar' ? 'كسب عملات جديدة' : 'Earn new coins', '—', '✓', '✓'],
+    ].map(row => `<tr>${row.map((cell, index) => `<${index ? 'td' : 'th'}>${cell}</${index ? 'td' : 'th'}>`).join('')}</tr>`).join('')}</tbody></table></section>
+    <section class="membership-faq"><h2>${currentLanguage() === 'ar' ? 'قبل أن تختار' : 'Before you choose'}</h2>${(currentLanguage() === 'ar' ? [
+      ['هل أحتاج اشتراكاً لأبدأ؟', 'لا. Free هي خطة كل حساب جديد تلقائياً، وتتيح الأساسيات وامتحانها وإثبات الإنجاز. لا تحتاج بطاقة لتبدأ.'],
+      ['هل الدفع متاح الآن؟', 'إعداد الدفع حالياً على بيئة Paddle التجريبية فقط. الأسعار بالدولار شهرياً؛ الدفع الحقيقي غير مفعّل بعد.'],
+      ['هل الاختبارات التدريبية تمنح شهادة؟', 'الاختبارات التدريبية للمراجعة. شهادة المسار تتطلب إكمال دروسه ومتطلباته العملية واجتياز امتحانه المنفصل.'],
+      ['ماذا يحدث للعملات السابقة؟', 'يبقى رصيدك محفوظاً. Plus وPro تتيحان كسب عملات جديدة من الدروس الأساسية الموثقة. استخدام الرصيد في المتجر لم يفتح بعد.'],
+    ] : [
+      ['Do I need a subscription to begin?', 'No. Every account starts on Free, including Foundations, its exam and achievement credential. No card is required.'],
+      ['Can I pay now?', 'Payment is currently being configured in Paddle Sandbox only. Prices are in USD per month; real payments are not enabled yet.'],
+      ['Do practice quizzes award certificates?', 'Practice quizzes help you review. A path credential requires its lessons, practical requirements and a separate final exam.'],
+      ['What happens to my earlier coins?', 'Your balance stays saved. Plus and Pro enable new coins from verified Foundations lessons. Spending coins in the shop is not available yet.'],
+    ]).map(([question, answer]) => `<details><summary>${question}</summary><p>${answer}</p></details>`).join('')}</section>
     <section class="membership-principle panel"><span class="section-kicker">LEARN / EARN</span><h2>${c.principle}</h2><p>${c.principleText}</p></section>`;
+  if (billing?.enabled && state?.admin) {
+    const sandbox = document.createElement('section'); sandbox.className = 'membership-principle panel';
+    sandbox.innerHTML = `<span class="section-kicker">PADDLE / SANDBOX</span><h2>${currentLanguage() === 'ar' ? 'تجربة اشتراك الإدارة' : 'Administrator subscription test'}</h2><p>${currentLanguage() === 'ar' ? 'للاختبار فقط؛ لا توجد دفعات حقيقية ولا تتغير خطط المتعلمين.' : 'Testing only. No real payments and no changes to learner plans.'}</p><p>${billing.subscription ? `${billing.subscription.plan.toUpperCase()} · ${billing.subscription.status} · ${new Date(billing.subscription.currentPeriodEnd).toLocaleDateString(currentLanguage())}` : currentLanguage() === 'ar' ? 'لا يوجد اشتراك تجريبي بعد.' : 'No test subscription yet.'}</p><div class="hero-actions">${billing.subscription ? `<button class="button button-outline" data-billing-portal>${currentLanguage() === 'ar' ? 'الإلغاء والفواتير وإدارة الاشتراك' : 'Manage subscription, cancellation and invoices'}</button>` : ['plus', 'pro'].map(plan => `<button class="button button-outline" data-billing-checkout="${plan}">${currentLanguage() === 'ar' ? 'اختبر' : 'Test'} ${plan.toUpperCase()} · $${plan === 'plus' ? 5 : 10}/${c.perMonth}</button>`).join('')}<button class="button button-text" data-billing-refresh>${currentLanguage() === 'ar' ? 'حدّث الحالة' : 'Refresh status'}</button></div><p id="billing-status" role="status"></p>`;
+    root.append(sandbox);
+    const status = sandbox.querySelector('#billing-status');
+    sandbox.querySelectorAll('[data-billing-checkout]').forEach(button => button.addEventListener('click', async () => {
+      const controls = sandbox.querySelectorAll('button'); controls.forEach(control => control.disabled = true);
+      await checkout(button.dataset.billingCheckout, status); controls.forEach(control => control.disabled = false);
+    }));
+    sandbox.querySelector('[data-billing-portal]')?.addEventListener('click', () => portal(status));
+    sandbox.querySelector('[data-billing-refresh]').addEventListener('click', refresh);
+  }
 }
 
 async function refresh() {
@@ -70,6 +104,10 @@ async function refresh() {
   try {
     signedIn = Boolean(await loadUser());
     state = signedIn ? await loadMembership() : null;
+    billing = null;
+    if (state?.admin) {
+      try { billing = await loadBilling(); } catch { /* Older deployments keep membership usable while billing is being installed. */ }
+    }
     if (state && (!['free', 'plus', 'pro'].includes(state.plan) || typeof state.access?.foundations !== 'boolean' || typeof state.access?.advancedLabs !== 'boolean' || typeof state.access?.coinEarning !== 'boolean')) throw new Error('Invalid membership response');
   } catch (error) { state = null; failed = true; console.warn('Membership unavailable:', error); }
   loading = false; render();
@@ -77,4 +115,5 @@ async function refresh() {
 
 document.querySelector('#language-toggle')?.addEventListener('click', render);
 window.addEventListener('biuret-auth-changed', refresh);
+window.addEventListener('academy-billing-refresh', refresh);
 refresh();
