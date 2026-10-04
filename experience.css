@@ -31,6 +31,10 @@ html:not(.academy-auth-ready) .site-shell[data-page="home"] #main,html:not(.acad
 .reading-controls button{min-height:40px;border:1px solid #303638;border-radius:9px}
 .reading-controls button[aria-pressed=true]{background:#c6ff32;color:#0a0d08}
 .lesson-body,.lesson-content,.desktop-lesson-content{line-height:1.85}
+.site-shell[data-page="lesson"] .learning-hero{padding-block:28px}
+.site-shell[data-page="lesson"] .learning-back{margin-bottom:20px}
+.site-shell[data-page="lesson"] .learning-hero h1{font-size:clamp(28px,3.2vw,42px);letter-spacing:-.035em}
+.site-shell[data-page="lesson"] .lesson-article{padding-top:28px}
 .reading-large main p,.reading-large main li{font-size:1.16rem;line-height:1.9}
 @media(min-width:1181px){.reading-focus .academy-sidebar{display:none}.reading-focus .site-shell{padding-left:0;margin-left:0;grid-template-columns:1fr}.reading-focus .topbar{padding-inline:32px}}
 main h1{font-size:clamp(2rem,3.7vw,3.6rem);line-height:1.18}

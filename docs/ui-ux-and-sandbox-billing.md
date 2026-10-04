@@ -90,18 +90,35 @@ canceled subscription. Provider failures return an error instead of stale access
 Customer portal links are generated for the authenticated owner, restricted to
 Paddle's Sandbox hostname, and never stored.
 
-## Remaining service verification after installation
+## Verified service behavior on October 4, 2026
 
-1. Administrator sees test checkout; a Free learner cannot call checkout or portal.
-2. Complete one Sandbox checkout using an official test card.
-3. Confirm the signed notification and subscription status on the membership page.
-4. Test renewal failure/recovery and scheduled cancellation using Paddle simulations.
-5. Confirm duplicate delivery and a delayed event keep the current provider status.
-6. Verify existing Academy learning and actual membership access remain intact.
+- Administrator opened Plus Sandbox checkout at USD 5/month using Paddle's
+  official test card and a synthetic example.com email; checkout completed.
+- The initial notification was rejected by Appwrite's execution router (403).
+  With explicit user approval, the function's execute roles now include Any.
+  The handler still authenticates learning requests with a JWT and verifies the
+  exact webhook body with the Paddle signing secret before processing an event.
+- Retried subscription.created notification delivered successfully. Membership
+  showed PLUS active with a period ending November 4, 2026.
+- Owner portal opened, showed the test payment and monthly subscription, and
+  successfully scheduled cancellation for November 4. Membership renders that
+  date separately from the active status.
+- Fifty-two Academy tests and twelve portfolio tests pass. Signature tampering,
+  ownership isolation, duplicate delivery, delayed events, provider failures and
+  renewal/scheduled cancellation states are covered by automated tests.
+- Arabic and English desktop home/navigation and reading controls were reviewed.
+  Browser viewport override did not change Academy's measured 1280px viewport;
+  a visual mobile-width check remains unverified.
+
+## Further testing before live billing
+
+Paddle renewal failure/recovery simulations and a full live entitlement review
+remain for the next integration stage. Sandbox access is intentionally isolated
+from actual learner plan access; test payments do not activate paid learner plans.
 
 ## Installed configuration
 
-Active function deployment: `6ac2204692f2c6d1599e`.
+Active function deployment: `6ac27c8f7cbe75a89d54`.
 Notification endpoint: `https://academy-progress.fra.appwrite.run`.
 The scoped Sandbox API key expires November 3, 2026 and requires renewal
 before further tests after that date. Secret values are stored only in Appwrite.

@@ -17,7 +17,9 @@ export function verifyPaddleSignature(raw, signature, secret, now = Date.now()) 
 export function sandboxBillingConfig(env = process.env) {
   // Live billing is deliberately not enabled by this release.
   const prices = { plus: env.ACADEMY_PADDLE_PLUS_PRICE, pro: env.ACADEMY_PADDLE_PRO_PRICE };
+  const checks = { billingMode: env.ACADEMY_BILLING_ENABLED === 'sandbox', table: Boolean(env.ACADEMY_BILLING_TABLE_ID), webhookSecret: Boolean(env.ACADEMY_PADDLE_WEBHOOK_SECRET), sandboxApiKey: Boolean(env.ACADEMY_PADDLE_API_KEY?.includes('_sdbx')), sandboxClientToken: Boolean(env.ACADEMY_PADDLE_CLIENT_TOKEN?.startsWith('test_')), plusPrice: paddleId('pri', prices.plus), proPrice: paddleId('pri', prices.pro), distinctPrices: prices.plus !== prices.pro };
   return {
+    missing: Object.entries(checks).filter(([, valid]) => !valid).map(([name]) => name),
     table: env.ACADEMY_BILLING_TABLE_ID || '', key: env.ACADEMY_PADDLE_API_KEY || '',
     secret: env.ACADEMY_PADDLE_WEBHOOK_SECRET || '', token: env.ACADEMY_PADDLE_CLIENT_TOKEN || '', prices,
     enabled: env.ACADEMY_BILLING_ENABLED === 'sandbox' && Boolean(env.ACADEMY_BILLING_TABLE_ID && env.ACADEMY_PADDLE_WEBHOOK_SECRET &&
@@ -79,7 +81,8 @@ export function sandboxBillingService({ base, request, paddleRequest, config = s
   };
   return {
     async state(userId, admin) {
-      if (!config.enabled || !admin) return { environment: 'sandbox', enabled: false, subscription: null };
+      if (!admin) return { environment: 'sandbox', enabled: false, subscription: null };
+      if (!config.enabled) return { environment: 'sandbox', enabled: false, subscription: null, setupMissing: config.missing || [] };
       return { environment: 'sandbox', enabled: true, subscription: await current(userId) };
     },
     async checkout(account, plan, admin) {

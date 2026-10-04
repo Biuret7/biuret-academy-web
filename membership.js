@@ -8,6 +8,7 @@ let state = null;
 let loading = true;
 let failed = false;
 let billing = null;
+let billingFailed = false;
 
 const copy = {
   ar: {
@@ -85,9 +86,17 @@ function render() {
       ['What happens to my earlier coins?', 'Your balance stays saved. Plus and Pro enable new coins from verified Foundations lessons. Spending coins in the shop is not available yet.'],
     ]).map(([question, answer]) => `<details><summary>${question}</summary><p>${answer}</p></details>`).join('')}</section>
     <section class="membership-principle panel"><span class="section-kicker">LEARN / EARN</span><h2>${c.principle}</h2><p>${c.principleText}</p></section>`;
+  if ((billingFailed || (billing && !billing.enabled)) && state?.admin) {
+    const notice = document.createElement('p'); notice.className = 'membership-note';
+    notice.textContent = billingFailed ? (currentLanguage() === 'ar' ? 'تعذّر التحقق من الاشتراك التجريبي. حدّث الصفحة للمحاولة مجدداً.' : 'Test subscription status is unavailable. Refresh the page to retry.') : (currentLanguage() === 'ar' ? 'تجربة الدفع لم تجهز بعد؛ راجع إعدادات Sandbox في Appwrite.' : 'Test billing is not ready yet. Review the Sandbox configuration in Appwrite.');
+    root.append(notice);
+    console.warn('Sandbox setup incomplete:', (billing?.setupMissing || []).join(', '));
+  }
   if (billing?.enabled && state?.admin) {
     const sandbox = document.createElement('section'); sandbox.className = 'membership-principle panel';
-    sandbox.innerHTML = `<span class="section-kicker">PADDLE / SANDBOX</span><h2>${currentLanguage() === 'ar' ? 'تجربة اشتراك الإدارة' : 'Administrator subscription test'}</h2><p>${currentLanguage() === 'ar' ? 'للاختبار فقط؛ لا توجد دفعات حقيقية ولا تتغير خطط المتعلمين.' : 'Testing only. No real payments and no changes to learner plans.'}</p><p>${billing.subscription ? `${billing.subscription.plan.toUpperCase()} · ${billing.subscription.status} · ${new Date(billing.subscription.currentPeriodEnd).toLocaleDateString(currentLanguage())}` : currentLanguage() === 'ar' ? 'لا يوجد اشتراك تجريبي بعد.' : 'No test subscription yet.'}</p><div class="hero-actions">${billing.subscription ? `<button class="button button-outline" data-billing-portal>${currentLanguage() === 'ar' ? 'الإلغاء والفواتير وإدارة الاشتراك' : 'Manage subscription, cancellation and invoices'}</button>` : ['plus', 'pro'].map(plan => `<button class="button button-outline" data-billing-checkout="${plan}">${currentLanguage() === 'ar' ? 'اختبر' : 'Test'} ${plan.toUpperCase()} · $${plan === 'plus' ? 5 : 10}/${c.perMonth}</button>`).join('')}<button class="button button-text" data-billing-refresh>${currentLanguage() === 'ar' ? 'حدّث الحالة' : 'Refresh status'}</button></div><p id="billing-status" role="status"></p>`;
+    const statusLabels = currentLanguage() === 'ar' ? { active: 'نشط', trialing: 'فترة تجريبية', past_due: 'دفعة متأخرة', paused: 'متوقف مؤقتاً', canceled: 'ملغى' } : { active: 'Active', trialing: 'Trial', past_due: 'Past due', paused: 'Paused', canceled: 'Canceled' };
+    const subscriptionStatus = statusLabels[billing.subscription?.status] || '';
+    sandbox.innerHTML = `<span class="section-kicker">PADDLE / SANDBOX</span><h2>${currentLanguage() === 'ar' ? 'تجربة اشتراك الإدارة' : 'Administrator subscription test'}</h2><p>${currentLanguage() === 'ar' ? 'للاختبار فقط؛ لا توجد دفعات حقيقية ولا تتغير خطط المتعلمين.' : 'Testing only. No real payments and no changes to learner plans.'}</p><p>${billing.subscription ? `${billing.subscription.plan.toUpperCase()} · ${subscriptionStatus} · ${new Date(billing.subscription.currentPeriodEnd).toLocaleDateString(currentLanguage() === 'ar' ? 'ar' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}` : currentLanguage() === 'ar' ? 'لا يوجد اشتراك تجريبي بعد.' : 'No test subscription yet.'}</p><p>${billing.subscription?.cancelAt ? `${currentLanguage() === 'ar' ? 'الإلغاء مجدول في' : 'Cancellation scheduled for'} ${new Date(billing.subscription.cancelAt).toLocaleDateString(currentLanguage() === 'ar' ? 'ar' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}` : ''}</p><div class="hero-actions">${billing.subscription ? `<button class="button button-outline" data-billing-portal>${currentLanguage() === 'ar' ? 'الإلغاء والفواتير وإدارة الاشتراك' : 'Manage subscription, cancellation and invoices'}</button>` : ['plus', 'pro'].map(plan => `<button class="button button-outline" data-billing-checkout="${plan}">${currentLanguage() === 'ar' ? 'اختبر' : 'Test'} ${plan.toUpperCase()} · $${plan === 'plus' ? 5 : 10}/${c.perMonth}</button>`).join('')}<button class="button button-text" data-billing-refresh>${currentLanguage() === 'ar' ? 'حدّث الحالة' : 'Refresh status'}</button></div><p id="billing-status" role="status"></p>`;
     root.append(sandbox);
     const status = sandbox.querySelector('#billing-status');
     sandbox.querySelectorAll('[data-billing-checkout]').forEach(button => button.addEventListener('click', async () => {
@@ -104,9 +113,9 @@ async function refresh() {
   try {
     signedIn = Boolean(await loadUser());
     state = signedIn ? await loadMembership() : null;
-    billing = null;
+    billing = null; billingFailed = false;
     if (state?.admin) {
-      try { billing = await loadBilling(); } catch { /* Older deployments keep membership usable while billing is being installed. */ }
+      try { billing = await loadBilling(); } catch { billingFailed = true; }
     }
     if (state && (!['free', 'plus', 'pro'].includes(state.plan) || typeof state.access?.foundations !== 'boolean' || typeof state.access?.advancedLabs !== 'boolean' || typeof state.access?.coinEarning !== 'boolean')) throw new Error('Invalid membership response');
   } catch (error) { state = null; failed = true; console.warn('Membership unavailable:', error); }
