@@ -32,7 +32,7 @@ test('Academy pages use one navigation with every section available', () => {
     assert.equal((html.match(/<nav\b/g) || []).length, 1, `${page} must have one navigation`);
     assert.match(html, /<aside class="academy-sidebar" id="academy-sidebar"/);
     assert.match(html, /id="nav-toggle"[^>]*aria-controls="academy-sidebar"[^>]*aria-expanded="false"/);
-    assert.match(html, /sidebar-brand-mark"><img src="assets\/biuret-wordmark-icon\.png"/);
+    assert.match(html, /sidebar-brand-mark"><img src="assets\/biuret-logo\.png"/);
     assert.match(html, /id="sidebar-scrim"/);
     const [label, arabic, english] = pageContexts[page === 'index' ? 'home' : page];
     assert.match(html, new RegExp(`ACADEMY / ${label}`));
