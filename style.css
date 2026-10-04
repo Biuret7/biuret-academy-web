@@ -333,3 +333,6 @@ html:not(.academy-auth-ready) #main{visibility:hidden}
 
 /* Preserve the supplied logo proportions in every brand surface. */
 .brand-mark img,.sidebar-brand-mark img{object-fit:contain}
+
+.brand-mark,.sidebar-brand-mark{flex-shrink:0}
+.sidebar-brand-mark img{display:block}
