@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080a0d">
-  <meta name="description" content="Biuret Academy: تحديات قصيرة وعملية لتعلّم أساسيات الأمن السيبراني، أمان الويب، والأدلة الرقمية، بخطوات تتقدم كل يوم.">
+  <meta name="description" content="الأساسيات مجانية، ثم اختر مسار تخصص يجمع الدورات والتدريبات والمختبرات والامتحان وشهادة الإكمال.">
   <link rel="canonical" href="https://academy.biuret.dev/paths.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Biuret Academy — تعلّم الأمن السيبراني بالتحدي">
-  <meta property="og:description" content="ثلاثة مسارات، تحديات عملية قصيرة، ومهمة جديدة كل يوم.">
+  <meta property="og:title" content="مسارات التعلم — Biuret Academy">
+  <meta property="og:description" content="الأساسيات مجانية، ثم اختر مسار تخصص يجمع الدورات والتدريبات والمختبرات والامتحان وشهادة الإكمال.">
   <meta property="og:url" content="https://academy.biuret.dev/paths.html">
   <meta name="twitter:card" content="summary">
   <title>المسارات — Biuret Academy</title>
@@ -18,10 +18,11 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20261003-1">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
-  <script type="module" src="app.js?v=20261004-ux1"></script>
-  <script type="module" src="desktop.js?v=20261004-ux1"></script>
+  <script type="module" src="app.js?v=20261004-paths1"></script>
+  <link rel="stylesheet" href="paths.css?v=20261004-paths1">
+  <script type="module" src="paths.js?v=20261004-paths1"></script>
   <link rel="stylesheet" href="experience.css?v=20261004-2">
-  <script type="module" src="experience.js?v=20261004-1"></script>
+  <script type="module" src="experience.js?v=20261004-paths1"></script>
 </head>
 <body>
 
@@ -61,7 +62,7 @@
             <a href="certificate.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#certificate"></use></svg></span><span>إثبات الإنجاز</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
           </section>
           <section class="sidebar-group" aria-labelledby="sidebar-benefits"><h2 id="sidebar-benefits">المزايا</h2>
-            <a href="membership.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#membership"></use></svg></span><span>العضوية</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
+            <a href="membership.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#membership"></use></svg></span><span>الوصول والمشتريات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="shop.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#shop"></use></svg></span><span>المتجر</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="search.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#search"></use></svg></span><span>البحث</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
             <a href="settings.html"><span class="sidebar-link-index" aria-hidden="true"><svg><use href="assets/sidebar-icons.svg#settings"></use></svg></span><span>الإعدادات</span><span class="sidebar-link-arrow" aria-hidden="true">↗</span></a>
@@ -86,14 +87,7 @@
     </header>
 
     <main id="main">
-      <section class="page-banner section-frame reveal"><div><span class="section-kicker">YOUR LEARNING ROUTE</span><h1>تعلّم بالترتيب. اختر تخصصك بثقة.</h1><p>ابدأ بأساسيات الأمن السيبراني، وثبّت فهمك بامتحان، ثم استكشف المجال الذي يناسبك. كل مرحلة تخبرك بما تتعلمه وما تطبقه بعدها.</p></div><span class="page-banner-note">FOUNDATIONS → SPECIALIZATION</span></section>
-      <section class="section-frame journey-section" id="paths"><div class="journey-guide" id="journey-guide" aria-live="polite"></div></section>
-
-      <section class="section-frame roadmap-section" id="foundations-roadmap" aria-label="خارطة مسار أساسيات الأمن السيبراني"><div id="learning-roadmap"></div></section>
-
-      <section class="section-frame specializations-section" id="specializations"><div class="section-header"><div><span class="section-kicker">AFTER FOUNDATIONS / EXPLORE</span><h2>تخصصاتك <em>التالية.</em></h2><p>بعد إكمال الأساسيات وامتحانها، اختر تخصصك وافتح كورسات برنامج Biuret Academy وتحدياته ومختبراته المتاحة حسب عضويتك. ابدأ بالكورس، ثم طبّق وراجع قبل الانتقال للمرحلة التالية.</p></div></div><div class="specialization-grid" id="specialization-grid"></div></section>
-
-      <section class="curriculum section-frame" id="curriculum"><div class="section-header reveal"><div><span class="section-kicker">OPTIONAL PRACTICE</span><h2>تحديات <em>تدريبية.</em></h2><p>هذه التمارين القصيرة لتثبيت الفكرة. اتبع درسَك التالي أولاً، ثم عد إلى التدريب عندما تحتاج تطبيقاً إضافياً.</p></div></div><div class="curriculum-grid" id="curriculum-grid"></div></section>
+      <div id="paths-main" aria-live="polite"></div>
     </main>
 
     <footer class="footer section-frame"><div><a class="footer-brand" href="https://biuret.dev" dir="ltr">BIURET<span>7</span></a><p>مساحة صغيرة للتعلّم الكبير.</p></div><div class="footer-links"><a href="https://biuret.dev">موقع Biuret</a><a href="https://biuret.dev/privacy.html">سياسة الخصوصية</a><a href="https://biuret.dev/terms.html">شروط الاستخدام</a></div><span class="footer-end">© 2026 BIURET ACADEMY</span></footer>

@@ -1,5 +1,6 @@
 export const pageContexts = {
   home: ['HOME', 'رحلة التعلّم تبدأ هنا.', 'Your learning journey starts here.'],
+  path: ['PATH', 'كل محتويات مسارك في مكان واحد.', 'Everything in your path, in one place.'],
   paths: ['PATHS', 'طريقك من الأساسيات إلى التخصص.', 'Your route from foundations to a specialty.'],
   courses: ['COURSES', 'كورسات مرتبة تبني معرفتك.', 'Courses that build your knowledge in order.'],
   course: ['COURSE', 'تعلّم موضوعاً واحداً خطوة بخطوة.', 'Learn one topic, step by step.'],
@@ -15,7 +16,7 @@ export const pageContexts = {
   'course-exam': ['COURSE EXAM', 'امتحان دورتك ونتيجته.', 'Your course exam and result.'],
   practical: ['PRACTICAL', 'طبّق ما تعلمته على أدلة تدريبية.', 'Apply your learning to training evidence.'],
   certificate: ['CREDENTIAL', 'اعرض إثبات إنجازك وتحقّق منه.', 'View and verify your achievement.'],
-  membership: ['MEMBERSHIP', 'اختر مزايا التعلّم المناسبة لك.', 'Explore the learning benefits that fit you.'],
+  membership: ['ACCESS', 'الأساسيات مجاناً، وتخصصك بحزمة واحدة.', 'Free Foundations, one bundle for your specialty.'],
   shop: ['SHOP', 'استكشف مزايا عملات Biuret.', 'Explore Biuret Coins benefits.'],
   admin: ['ADMIN', 'إدارة إثباتات الإنجاز.', 'Manage achievement credentials.'],
   review: ['REVIEW', 'راجع دروسك بانتظام.', 'Review your lessons regularly.'],

@@ -1,5 +1,5 @@
 import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261004-ux1';
-import { currentLanguage, applyLanguage } from './i18n.js?v=20260929-1';
+import { currentLanguage, applyLanguage } from './i18n.js?v=20261004-paths1';
 import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261004-1';
 import { fullName } from './full-name.js?v=20260929-1';
 

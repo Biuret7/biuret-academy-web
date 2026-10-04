@@ -1,6 +1,6 @@
 import { loadUser, loadMembership, loadBilling } from './auth.js?v=20261004-ux1';
-import { currentLanguage } from './i18n.js?v=20260929-1';
-import { checkout, portal } from './billing-checkout.js?v=20261004-1';
+import { currentLanguage } from './i18n.js?v=20261004-paths1';
+import { checkout, portal } from './billing-checkout.js?v=20261004-paths1';
 
 const root = document.querySelector('#membership-main');
 let signedIn = false;
@@ -10,82 +10,15 @@ let failed = false;
 let billing = null;
 let billingFailed = false;
 
-const copy = {
-  ar: {
-    eyebrow: 'BIURET ACADEMY / MEMBERSHIP', title: 'اختر العمق الذي يناسب رحلتك.',
-    intro: 'يبدأ كل حساب جديد بخطة Free تلقائياً. أكمل الأساسيات وامتحانها أولاً، ثم اختر تخصصك. تحدد خطتك مقدار المحتوى الذي يمكنك فتحه.',
-    yourPlan: 'عضويتك الحالية', guest: 'سجّل الدخول لعرض حالة عضويتك.', loading: 'جارٍ التحقق من العضوية…', failed: 'تعذّر التحقق من العضوية الآن. حاول تحديث الصفحة.',
-    statuses: { free: 'خطة Free مفعّلة تلقائياً', plus: 'عضوية Plus مفعّلة', pro: 'عضوية Pro مفعّلة' }, admin: 'صلاحية الإدارة: جميع المحتويات مفتوحة', until: 'حتى',
-    free: 'Free', plus: 'Plus', pro: 'Pro', available: 'متاحة الآن', planned: 'قيد الإعداد', featured: 'الأكثر شمولاً',
-    freePrice: 'مجاناً', perMonth: 'شهرياً',
-    freeDesc: 'بداية مرتبة ومحدودة دون دفع.', plusDesc: 'تخصصات وتطبيقات أكثر بقليل.', proDesc: 'الوصول الكامل لمكتبة التعلم والتطبيق.',
-    freeItems: ['3 كورسات الأساسيات و9 دروس موثقة', 'امتحان الأساسيات وإثبات إنجازها', 'كورس تمهيدي واحد من البرنامج', 'مختبر تدريبي واحد و3 تحديات برنامج', '5 تحديات يومية أساسية', 'XP ومستويات؛ دون كسب عملات جديدة'],
-    plusItems: ['كل ما في Free', '8 كورسات برنامج و8 اختبارات تدريبية', '4 مختبرات و8 تحديات برنامج', '10 أدلة أدوات و3 سيناريوهات عمليات', '10 تحديات يومية من المسارات الأساسية', '10 عملات Biuret لكل درس أساسي موثق جديد'],
-    proItems: ['كل ما في Free وPlus', 'جميع كورسات البرنامج الـ18 ودروسه الـ99', 'المختبرات الثمانية وكل تحديات البرنامج الـ13', 'جميع الاختبارات التدريبية الـ12', 'جميع أدلة الأدوات الـ15 وسيناريوهات العمليات الستة', 'كل تحديات الأكاديمية اليومية الـ15', 'وصول غير محدود للمحتوى المنشور ضمن الخطة', 'كسب عملات Biuret من الدروس الأساسية الموثقة'],
-    freeCta: 'ابدأ المسار المجاني ↗', plusCta: 'اشتراكات Plus ستفتح لاحقاً', proCta: 'اشتراكات Pro ستفتح لاحقاً',
-    note: 'Plus بسعر مخطط 5 دولارات وPro بسعر مخطط 10 دولارات شهرياً. الدفع والاشتراك الجديد غير متاحين بعد؛ لن تُخصم أي رسوم الآن. صلاحيات العضويات المدفوعة المفعّلة مسبقاً تعمل وفق خطتها.',
-    principle: 'طريقك قبل خطتك', principleText: 'تبدأ بدروس الأساسيات التسعة وامتحانها. بعدها تفتح مواد التخصص المتاحة حسب عضويتك. XP والمستويات متاحان للجميع عند إكمال الدروس الأساسية الموثقة، وعملات Biuret الجديدة لعضويتي Plus وPro فقط. العملات السابقة محفوظة ولا يمكن صرفها حالياً.',
-  },
-  en: {
-    eyebrow: 'BIURET ACADEMY / MEMBERSHIP', title: 'Choose how deep you want to go.',
-    intro: 'Every new account starts on Free automatically. Finish Foundations and its exam first, then choose a specialty. Your plan determines how much content opens.',
-    yourPlan: 'Your current membership', guest: 'Sign in to view your membership status.', loading: 'Checking your membership…', failed: 'Membership status is unavailable. Refresh to try again.',
-    statuses: { free: 'Free plan active automatically', plus: 'Plus membership active', pro: 'Pro membership active' }, admin: 'Administrator access: all content unlocked', until: 'until',
-    free: 'Free', plus: 'Plus', pro: 'Pro', available: 'Available now', planned: 'In development', featured: 'Most complete',
-    freePrice: 'Free', perMonth: 'per month',
-    freeDesc: 'An ordered, limited start at no cost.', plusDesc: 'A little more depth and practice.', proDesc: 'Full access to the published learning library.',
-    freeItems: ['3 Foundations courses and 9 verified lessons', 'Foundations exam and achievement credential', '1 introductory program course', '1 program lab and 3 program challenges', '5 core daily challenges', 'XP and levels; no new coin earnings'],
-    plusItems: ['Everything in Free', '8 program courses and 8 practice quizzes', '4 program labs and 8 program challenges', '10 tool guides and 3 operations scenarios', '10 core daily challenges', '10 Biuret Coins per newly verified Foundations lesson'],
-    proItems: ['Everything in Free and Plus', 'All 18 program courses and 99 lessons', 'All 8 program labs and 13 program challenges', 'All 12 program practice quizzes', 'All 15 tool guides and 6 operations scenarios', 'All 15 core daily challenges', 'Unlimited access to published content in the plan', 'Earn Biuret Coins from verified Foundations lessons'],
-    freeCta: 'Start the free path ↗', plusCta: 'Plus subscriptions open later', proCta: 'Pro subscriptions open later',
-    note: 'Planned monthly prices: Plus USD 5 and Pro USD 10. New subscriptions and payment are not available yet; no charge will be made now. Previously activated paid memberships retain their plan access.',
-    principle: 'Your route comes first.', principleText: 'Begin with nine Foundations lessons and their exam. Then open specialty content included in your membership. XP and levels are available for verified Foundations lessons on every plan; new Biuret Coins require Plus or Pro. Earlier coins remain saved and cannot be spent yet.',
-  },
-};
-
-function card(c, plan, position) {
-  const paid = plan !== 'free';
-  const price = paid ? `<span dir="ltr">$${plan === 'plus' ? 5 : 10}</span> <small>USD / ${c.perMonth}</small>` : c.freePrice;
-  return `<article class="membership-card membership-${plan} panel">
-    <div class="membership-card-top"><span class="membership-kicker">0${position} / ${paid ? c.planned : c.available}</span>${plan === 'pro' ? `<span class="membership-featured">${c.featured}</span>` : ''}</div>
-    <h2>${c[plan]}</h2><p class="membership-price">${price}</p><p class="membership-description">${c[`${plan}Desc`]}</p>
-    <ul>${c[`${plan}Items`].map((item) => `<li>${item}</li>`).join('')}</ul>
-    ${paid ? `<span class="membership-unavailable">${c[`${plan}Cta`]}</span>` : `<a class="button button-primary" href="paths.html#foundations-roadmap">${c.freeCta}</a>`}
-  </article>`;
-}
+const copy = { ar: { perMonth: 'شهرياً' }, en: { perMonth: 'per month' } };
 
 function render() {
   if (!root) return;
   const c = copy[currentLanguage()];
-  const plan = ['free', 'plus', 'pro'].includes(state?.plan) ? state.plan : 'free';
-  const label = loading ? c.loading : failed ? c.failed : !signedIn ? c.guest : state?.admin ? c.admin : c.statuses[plan];
-  const end = plan !== 'free' && state?.currentPeriodEnd ? ` · ${c.until} ${new Date(state.currentPeriodEnd).toLocaleDateString(currentLanguage() === 'ar' ? 'ar' : 'en-US')}` : '';
-  root.innerHTML = `
-    <section class="membership-hero reveal visible"><span class="section-kicker">${c.eyebrow}</span><h1>${c.title}</h1><p>${c.intro}</p></section>
-    <section class="membership-status panel" aria-label="${c.yourPlan}"><span>${c.yourPlan}</span><strong>${label}${end}</strong></section>
-    <section class="membership-grid" aria-label="${c.eyebrow}">${['free', 'plus', 'pro'].map((tier, index) => card(c, tier, index + 1)).join('')}</section>
-    <p class="membership-note">${c.note}</p>
-    <section class="membership-comparison" aria-label="${currentLanguage() === 'ar' ? 'مقارنة الخطط' : 'Compare plans'}"><table><thead><tr><th>${currentLanguage() === 'ar' ? 'ما الذي تفتحه خطتك؟' : 'What does your plan unlock?'}</th><th>Free</th><th>Plus · $5</th><th>Pro · $10</th></tr></thead><tbody>${[
-      [currentLanguage() === 'ar' ? 'الأساسيات وامتحانها' : 'Foundations and its exam', '✓', '✓', '✓'],
-      [currentLanguage() === 'ar' ? 'كورسات البرنامج' : 'Program courses', '1', '8', '18'],
-      [currentLanguage() === 'ar' ? 'مختبرات تدريبية' : 'Practice labs', '1', '4', '8'],
-      [currentLanguage() === 'ar' ? 'اختبارات تدريبية مستقلة' : 'Independent practice quizzes', '1', '8', '12'],
-      [currentLanguage() === 'ar' ? 'تحديات البرنامج' : 'Program challenges', '3', '8', '13'],
-      [currentLanguage() === 'ar' ? 'XP ومستويات' : 'XP and levels', '✓', '✓', '✓'],
-      [currentLanguage() === 'ar' ? 'كسب عملات جديدة' : 'Earn new coins', '—', '✓', '✓'],
-    ].map(row => `<tr>${row.map((cell, index) => `<${index ? 'td' : 'th'}>${cell}</${index ? 'td' : 'th'}>`).join('')}</tr>`).join('')}</tbody></table></section>
-    <section class="membership-faq"><h2>${currentLanguage() === 'ar' ? 'قبل أن تختار' : 'Before you choose'}</h2>${(currentLanguage() === 'ar' ? [
-      ['هل أحتاج اشتراكاً لأبدأ؟', 'لا. Free هي خطة كل حساب جديد تلقائياً، وتتيح الأساسيات وامتحانها وإثبات الإنجاز. لا تحتاج بطاقة لتبدأ.'],
-      ['هل الدفع متاح الآن؟', 'إعداد الدفع حالياً على بيئة Paddle التجريبية فقط. الأسعار بالدولار شهرياً؛ الدفع الحقيقي غير مفعّل بعد.'],
-      ['هل الاختبارات التدريبية تمنح شهادة؟', 'الاختبارات التدريبية للمراجعة. شهادة المسار تتطلب إكمال دروسه ومتطلباته العملية واجتياز امتحانه المنفصل.'],
-      ['ماذا يحدث للعملات السابقة؟', 'يبقى رصيدك محفوظاً. Plus وPro تتيحان كسب عملات جديدة من الدروس الأساسية الموثقة. استخدام الرصيد في المتجر لم يفتح بعد.'],
-    ] : [
-      ['Do I need a subscription to begin?', 'No. Every account starts on Free, including Foundations, its exam and achievement credential. No card is required.'],
-      ['Can I pay now?', 'Payment is currently being configured in Paddle Sandbox only. Prices are in USD per month; real payments are not enabled yet.'],
-      ['Do practice quizzes award certificates?', 'Practice quizzes help you review. A path credential requires its lessons, practical requirements and a separate final exam.'],
-      ['What happens to my earlier coins?', 'Your balance stays saved. Plus and Pro enable new coins from verified Foundations lessons. Spending coins in the shop is not available yet.'],
-    ]).map(([question, answer]) => `<details><summary>${question}</summary><p>${answer}</p></details>`).join('')}</section>
-    <section class="membership-principle panel"><span class="section-kicker">LEARN / EARN</span><h2>${c.principle}</h2><p>${c.principleText}</p></section>`;
+  const ar = currentLanguage() === 'ar';
+  const tr = (arabic, english) => ar ? arabic : english;
+  const label = loading ? tr('جارٍ التحقق من الوصول…', 'Checking access…') : failed ? tr('تعذّر التحقق. حدّث الصفحة للمحاولة مجدداً.', 'Access unavailable. Refresh to retry.') : !signedIn ? tr('سجّل الدخول لتبدأ الأساسيات المجانية.', 'Sign in to start free Foundations.') : state?.admin ? tr('حساب الإدارة: كل المحتوى مفتوح.', 'Administrator: all content unlocked.') : ['plus', 'pro'].includes(state?.plan) ? tr('الوصول السابق محفوظ خلال الانتقال إلى شراء المسارات.', 'Existing access is preserved during the move to path purchases.') : tr('الأساسيات مجانية بالكامل لحسابك.', 'Foundations are completely free for your account.');
+  root.innerHTML = `<section class="membership-hero reveal visible"><span class="section-kicker">BIURET / ${tr('الوصول والمشتريات', 'ACCESS & PURCHASES')}</span><h1>${tr('الأساسيات مجاناً.<br>تخصصك بحزمة واحدة.', 'Free Foundations.<br>One bundle for your specialty.')}</h1><p>${tr('لا تحتاج اشتراكاً شهرياً لبدء التعلم. أكمل الأساسيات مجاناً، ثم اختر مساراً يجمع دوراته وتدريباته وتقييمه وشهادة إكماله.', 'You do not need a monthly subscription to start. Complete Foundations for free, then choose a bundle with its courses, practice, assessment and completion certificate.')}</p></section><section class="membership-status panel"><span>${tr('وصول حسابك', 'Your account access')}</span><strong>${label}</strong></section><section class="membership-grid"><article class="membership-card panel"><span class="section-kicker">01 / ${tr('ابدأ', 'START')}</span><h2>${tr('الأساسيات', 'Foundations')}</h2><p class="membership-price">${tr('مجاني بالكامل', 'Completely free')}</p><ul><li>${tr('جميع دروس الأساسيات', 'All Foundations lessons')}</li><li>${tr('الكويزات والمختبرات والتحديات المرتبطة', 'Related quizzes, labs and challenges')}</li><li>${tr('التقييم العملي والامتحان وشهادة الإكمال', 'Practical assessment, exam and completion certificate')}</li></ul><a class="button button-primary" href="path.html?id=foundations">${tr('استكشف الأساسيات', 'Explore Foundations')} ↗</a></article><article class="membership-card panel"><span class="section-kicker">02 / ${tr('تخصص', 'SPECIALIZE')}</span><h2>${tr('شراء مسار', 'Buy a path')}</h2><p class="membership-price">${tr('دفعة واحدة', 'One-time purchase')}</p><ul><li>${tr('جميع الدورات المرتبطة بالمسار', 'All courses included in the path')}</li><li>${tr('التدريبات والمختبرات والتحديات في حزمة واحدة', 'Quizzes, labs and challenges in one bundle')}</li><li>${tr('الامتحان وشهادة الإكمال بعد النجاح', 'Exam and completion certificate after passing')}</li></ul><a class="button button-outline" href="paths.html">${tr('استكشف جميع المسارات', 'Explore all paths')} ↗</a></article><article class="membership-card panel"><span class="section-kicker">03 / ${tr('أثبت إنجازك', 'PROVE YOUR PROGRESS')}</span><h2>${tr('تعلّم على راحتك', 'Learn at your own pace')}</h2><p>${tr('متطلبات واضحة، وتقدم محفوظ، وشهادة تحمل اسمك الحقيقي وتفاصيل إنجازك عند النجاح.', 'Clear requirements, saved progress and a certificate in your real name with achievement details when you pass.')}</p><p>${tr('شهادة إكمال Biuret Academy توثق الإنجاز داخل المنصة؛ ليست اعتماداً مهنياً خارجياً.', 'A Biuret Academy completion certificate documents achievement on the platform; it is separate from external professional accreditation.')}</p><a class="button button-outline" href="progress.html">${tr('عرض تقدمي', 'View my progress')} ↗</a></article></section><p class="membership-note">${tr('شراء المسارات وربط ملكيتها بحسابك قيد الإعداد. الأسعار لم تحدد بعد، ولا توجد رسوم أو عملية شراء متاحة في هذه المرحلة.', 'Path purchases and account ownership are being prepared. Prices are not set yet, and no purchase or charge is available in this stage.')}</p>`;
   if ((billingFailed || (billing && !billing.enabled)) && state?.admin) {
     const notice = document.createElement('p'); notice.className = 'membership-note';
     notice.textContent = billingFailed ? (currentLanguage() === 'ar' ? 'تعذّر التحقق من الاشتراك التجريبي. حدّث الصفحة للمحاولة مجدداً.' : 'Test subscription status is unavailable. Refresh the page to retry.') : (currentLanguage() === 'ar' ? 'تجربة الدفع لم تجهز بعد؛ راجع إعدادات Sandbox في Appwrite.' : 'Test billing is not ready yet. Review the Sandbox configuration in Appwrite.');

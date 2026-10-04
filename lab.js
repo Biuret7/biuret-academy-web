@@ -1,6 +1,6 @@
 import { labById } from './labs.js?v=20260929-1';
 import { courseById, localized } from './learning-content.js?v=20260929-1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20260929-1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 
 const root = document.querySelector('#lab-main');
 const lab = labById[new URLSearchParams(location.search).get('id')];
