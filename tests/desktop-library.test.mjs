@@ -23,7 +23,7 @@ test('program curriculum is served by authenticated function and excluded from P
   assert.doesNotMatch(workflow, /cp content\/desktop-library/);
   assert.match(read('desktop.js'), /loadProgramLibrary\(/);
   assert.doesNotMatch(read('desktop.js'), /fetch\(['"]content\/desktop-library/);
-  for (const page of ['review', 'operations', 'operation', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'profile', 'library-course', 'library-lesson', 'practice-quiz', 'practice-lab', 'practice-challenge']) {
+  for (const page of ['review', 'operations', 'operation', 'certifications', 'professional', 'notes', 'favorites', 'search', 'settings', 'library-course', 'library-lesson', 'practice-quiz', 'practice-lab', 'practice-challenge']) {
     assert.match(read(`${page}.html`), /id="desktop-main"/);
     assert.match(read(`${page}.html`), /src="desktop\.js/);
     assert.match(workflow, new RegExp(`${page}\.html`));

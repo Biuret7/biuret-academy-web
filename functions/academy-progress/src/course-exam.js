@@ -11,12 +11,14 @@ let extraBank;
 function extras() {
   if (!extraBank) {
     extraBank = JSON.parse(process.env.ACADEMY_COURSE_EXAM_BANK || readFileSync(new URL('../course-exam-bank.private.json', import.meta.url), 'utf8'));
-    for (const order of [11, 14, 15, 16, 17, 18]) {
+    if ([11, 14, 15, 16, 17, 18].some((order) => !extraBank[order])) throw new Error('Private course exam bank incomplete');
+    for (const order of Object.keys(extraBank)) {
+      if (!/^([1-9]|1[0-8])$/.test(order)) throw new Error('Private course exam order invalid');
       const questions = extraBank[order];
       if (!Array.isArray(questions) || questions.length < 3 || questions.some((item) =>
-        !/^[a-z0-9-]+$/.test(item.id) || !Number.isInteger(item.answer) || item.answer < 0 || item.answer > 2 ||
+        !/^[a-z0-9-]+$/.test(item.id) || !Number.isInteger(item.answer) || item.answer < 0 || item.answer >= item.options?.length ||
         !['ar', 'en'].every((lang) => typeof item.question?.[lang] === 'string' && item.question[lang].length > 10) ||
-        !Array.isArray(item.options) || item.options.length !== 3 || item.options.some((option) =>
+        !Array.isArray(item.options) || (item.options.length < 3 || item.options.length > 5) || item.options.some((option) =>
           !['ar', 'en'].every((lang) => typeof option?.[lang] === 'string' && option[lang])))) throw new Error('Private course exam bank invalid');
     }
   }
@@ -29,7 +31,7 @@ export function courseExamId(userId, order) {
 
 function questions(order, language) {
   const index = QUIZ_INDEX[order];
-  if (index === undefined) return extras()[order]?.map((item) => ({ id: item.id, question: item.question[language], options: item.options.map((option) => option[language]), answer: item.answer })) || [];
+  if (extras()[order]) return extras()[order]?.map((item) => ({ id: item.id, question: item.question[language], options: item.options.map((option) => option[language]), answer: item.answer })) || [];
   const original = libraryData('ar').quizzes[index];
   const localized = libraryData(language).quizzes[index];
   return original.questions.map((item, i) => ({ id: `q${i + 1}`, question: localized.questions[i].q,
@@ -64,7 +66,7 @@ export function courseExamService({ base, request, getRead, membership, foundati
     const bank = questions(order, language === 'en' ? 'en' : 'ar');
     const data = { courseOrder: order, courseId: item.id, title: item.title, access, eligible, completedLessons,
       requiredLessons: item.lessons.length, passed: Boolean(completion), score: completion?.score ?? null,
-      totalQuestions: bank.length, passScore: Math.ceil(bank.length * .8) };
+      totalQuestions: completion?.total || bank.length, passScore: Math.ceil((completion?.total || bank.length) * .8) };
     if (eligible && !completion) data.questions = bank.map(({ answer, ...question }) => question);
     return { code: 200, data };
   }

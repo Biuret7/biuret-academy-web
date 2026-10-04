@@ -1,4 +1,5 @@
-import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261004-ux1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
+import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261004-learning2';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 
 const root = document.querySelector('#practical-main');
@@ -23,6 +24,7 @@ const next = () => pathId === 'foundations' ? 'exam.html' : `path-exam.html?id=$
 function frame(body) {
   const title = names[pathId]?.[currentLanguage() === 'en' ? 1 : 0] || tr('تقييم عملي', 'Practical assessment');
   root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="paths.html">← ${tr('المسارات', 'Paths')}</a><span class="section-kicker">BIURET ACADEMY / PRACTICAL</span><h1>${esc(title)}</h1><p>${tr('ثلاث مهام مبنية على أدلة تدريبية آمنة. اختر قراراً مبرراً بالدليل في كل مهمة قبل الامتحان النهائي.', 'Three tasks based on safe training evidence. Make an evidence-led decision for each before the final exam.')}</p></section><section class="assessment-body section-frame">${body}</section>`;
+  attachAssessmentProgress(root);
 }
 function render() {
   if (!state) return;

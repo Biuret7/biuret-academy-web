@@ -16,9 +16,9 @@ function bank() {
     for (const id of programPathIds()) {
       const questions = privateBank[id];
       if (!Array.isArray(questions) || questions.length !== 10 || new Set(questions.map((item) => item.id)).size !== 10 || questions.some((item) =>
-        !/^[a-z0-9-]+$/.test(item.id) || !Number.isInteger(item.answer) || item.answer < 0 || item.answer > 2 ||
+        !/^[a-z0-9-]+$/.test(item.id) || !Number.isInteger(item.answer) || item.answer < 0 || item.answer >= item.options?.length ||
         !['ar', 'en'].every((lang) => typeof item.question?.[lang] === 'string' && item.question[lang].length > 10) ||
-        !Array.isArray(item.options) || item.options.length !== 3 || item.options.some((option) => !['ar', 'en'].every((lang) => typeof option?.[lang] === 'string' && option[lang])))) throw new Error('Private path exam bank invalid');
+        !Array.isArray(item.options) || (item.options.length < 3 || item.options.length > 5) || item.options.some((option) => !['ar', 'en'].every((lang) => typeof option?.[lang] === 'string' && option[lang])))) throw new Error('Private path exam bank invalid');
     }
   }
   return privateBank;
@@ -92,7 +92,7 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     const nextAt = !passed && latest && attempts.length < MAX_ATTEMPTS ? new Date(Date.parse(latest.completedAt) + COOLDOWN).toISOString() : null;
     const data = { pathId, title: path.local[1], categoryIds: path.source[6], access, eligible, readyForPractical,
       practicalPassed: Boolean(practical), completedLessons, completedCourses, requiredCourses: categories.length,
-      requiredLessons: lessons.length, passScore: 8, totalQuestions: 10, maxAttempts: MAX_ATTEMPTS,
+      requiredLessons: lessons.length, passScore: passed ? (passed.requiredScore || 8) : 9, totalQuestions: 10, maxAttempts: MAX_ATTEMPTS,
       attempts: attempts.map(({ slot, score, passed, completedAt }) => ({ slot, score, passed, completedAt })),
       remaining: MAX_ATTEMPTS - attempts.length, nextAt, passed: Boolean(passed), credentialId: passed?.credentialId || null };
     if (eligible && !passed && data.remaining && (!nextAt || Date.now() >= Date.parse(nextAt))) {
@@ -123,12 +123,12 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
       return { code: 400, data: { error: 'Answer every question once' } };
     }
     const score = bank.reduce((sum, question) => sum + Number(answers[question.id] === question.answer), 0);
-    const passed = score >= 8;
+    const passed = score >= 9;
     const slot = current.data.attempts.length + 1;
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
     const holderName = name;
     const credentialVersion = 'program-path-v2';
-    const payload = JSON.stringify({ version: VERSION, credentialVersion, pathId, slot, score, passed, credentialId, holderName });
+    const payload = JSON.stringify({ version: VERSION, credentialVersion, assessmentEdition: 'learning-quality-20261004', requiredScore: 9, pathId, slot, score, passed, credentialId, holderName });
     const result = await request(`${attemptsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: pathAttemptId(userId, pathId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Path attempt creation failed');

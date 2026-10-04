@@ -1,12 +1,21 @@
 {
-  "activeRelease": "foundations-2026-09-27",
-  "activeDigest": "3c71479b1c9e44bb501a9eda5549e3062c61b9f22b3da6118d20b16d70675678",
+  "activeRelease": "foundations-2026-10-04",
+  "activeDigest": "37278c33fcaa7d9635bf00eedad45460ec23a877310821ad5a2f3db066f4c141",
   "history": [
     {
       "action": "adopt",
       "releaseId": "foundations-2026-09-27",
       "digest": "3c71479b1c9e44bb501a9eda5549e3062c61b9f22b3da6118d20b16d70675678",
       "at": "2026-09-27T16:13:20.214Z"
+    },
+    {
+      "action": "publish",
+      "releaseId": "foundations-2026-10-04",
+      "digest": "37278c33fcaa7d9635bf00eedad45460ec23a877310821ad5a2f3db066f4c141",
+      "from": "foundations-2026-09-27",
+      "sourceDraft": "foundations-quality-oct04",
+      "reviewedBy": "automated-schema-checks",
+      "at": "2026-10-04T18:41:14.819Z"
     }
   ]
 }

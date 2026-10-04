@@ -18,9 +18,9 @@ function parseBank() {
   if (!Array.isArray(bank) || bank.length !== 10 || bank.some((q) =>
     !/^[a-z0-9-]+$/.test(q.id) ||
     !['ar', 'en'].every((lang) => typeof q.question?.[lang] === 'string' && q.question[lang].length > 10) ||
-    !Array.isArray(q.options) || q.options.length !== 3 ||
+    !Array.isArray(q.options) || (q.options.length < 3 || q.options.length > 5) ||
     q.options.some((option) => !['ar', 'en'].every((lang) => typeof option?.[lang] === 'string' && option[lang])) ||
-    !Number.isInteger(q.answer) || q.answer < 0 || q.answer > 2)) throw new Error('Exam bank is invalid');
+    !Number.isInteger(q.answer) || q.answer < 0 || q.answer >= q.options?.length)) throw new Error('Exam bank is invalid');
   if (new Set(bank.map((q) => q.id)).size !== bank.length) throw new Error('Exam bank has duplicate IDs');
   return bank;
 }
@@ -54,7 +54,7 @@ export function examService({ base, request, getLessonState, getPracticalPassed 
     const nextAt = !passed && latest && remaining > 0 ? new Date(Date.parse(latest.completedAt) + COOLDOWN_MS).toISOString() : null;
     return { eligible: awards.length === 9 && practicalPassed, lessonEligible: awards.length === 9,
       practicalPassed, completedLessons: awards.length, requiredLessons: 9,
-      version: EXAM_VERSION, passScore: 8, totalQuestions: 10, maxAttempts: MAX_ATTEMPTS,
+      version: EXAM_VERSION, passScore: passed ? (passed.requiredScore || 8) : 9, totalQuestions: 10, maxAttempts: MAX_ATTEMPTS,
       attempts: attempts.map(({ slot, score, passed, completedAt }) => ({ slot, score, passed, completedAt })),
       remaining, nextAt, passed: Boolean(passed), credentialId: passed?.credentialId || null };
   }
@@ -87,21 +87,21 @@ export function examService({ base, request, getLessonState, getPracticalPassed 
     if (status.nextAt && Date.now() < Date.parse(status.nextAt)) return { code: 429, data: { error: 'Wait for the next attempt', ...status } };
     const bank = parseBank();
     if (!answers || typeof answers !== 'object' || Array.isArray(answers) || Object.keys(answers).length !== bank.length ||
-      bank.some((q) => !Object.hasOwn(answers, q.id) || !Number.isInteger(answers[q.id]) || answers[q.id] < 0 || answers[q.id] > 2)) {
+      bank.some((q) => !Object.hasOwn(answers, q.id) || !Number.isInteger(answers[q.id]) || answers[q.id] < 0 || answers[q.id] >= q.options.length)) {
       return { code: 400, data: { error: 'Answer every question once' } };
     }
     const score = bank.reduce((sum, q) => sum + Number(answers[q.id] === q.answer), 0);
-    const passed = score >= 8;
+    const passed = score >= 9;
     const slot = attempts.length + 1;
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
     const name = holderName;
     const credentialVersion = 'foundations-v2';
-    const payload = JSON.stringify({ version: EXAM_VERSION, credentialVersion, slot, score, passed, credentialId, holderName: name });
+    const payload = JSON.stringify({ version: EXAM_VERSION, credentialVersion, assessmentEdition: 'learning-quality-20261004', requiredScore: 9, slot, score, passed, credentialId, holderName: name });
     const result = await request(`${attemptBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: examAttemptId(userId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt was already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Exam attempt creation failed');
     if (passed) await ensureCredential({ credentialId, credentialVersion, holderName: name, score, completedAt: result.data.$createdAt });
-    return { code: 200, data: { ...statusFor(learning.awards, [...attempts, { slot, score, passed, credentialId, completedAt: result.data.$createdAt }], true), score, passed } };
+    return { code: 200, data: { ...statusFor(learning.awards, [...attempts, { slot, score, passed, requiredScore: 9, credentialId, completedAt: result.data.$createdAt }], true), score, passed } };
   }
 
   async function credential(userId) {

@@ -1,4 +1,4 @@
-import { loadUser, loadMembership, loadBilling } from './auth.js?v=20261004-ux1';
+import { loadUser, loadMembership, loadBilling } from './auth.js?v=20261004-learning2';
 import { currentLanguage } from './i18n.js?v=20261004-paths1';
 import { checkout, portal } from './billing-checkout.js?v=20261004-paths1';
 

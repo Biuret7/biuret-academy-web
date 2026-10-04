@@ -1,4 +1,4 @@
-import { startBillingCheckout, openBillingPortal } from './auth.js?v=20261004-ux1';
+import { startBillingCheckout, openBillingPortal } from './auth.js?v=20261004-learning2';
 import { currentLanguage } from './i18n.js?v=20261004-paths1';
 
 let sdk;

@@ -72,7 +72,10 @@ async function learningExecution(input, learningState = true) {
   let data;
   try { data = JSON.parse(result.responseBody || '{}'); } catch { data = {}; }
   if (result.responseStatusCode < 200 || result.responseStatusCode >= 300) {
-    throw new Error(data.error || 'Learning progress is temporarily unavailable.');
+    const failure = new Error(data.error || 'Learning progress is temporarily unavailable.');
+    failure.code = result.responseStatusCode;
+    failure.details = data;
+    throw failure;
   }
   if (learningState && (!Array.isArray(data.awards) || !Number.isSafeInteger(data.xp) || !Number.isSafeInteger(data.coins) || !Number.isSafeInteger(data.level))) {
     throw new Error('Learning progress returned an invalid response.');
@@ -86,7 +89,8 @@ export function loadBilling() { return learningExecution({ action: 'billingState
 export function startBillingCheckout(plan) { return learningExecution({ action: 'billingCheckout', plan }, false); }
 export function openBillingPortal() { return learningExecution({ action: 'billingPortal' }, false); }
 export function loadProgramLibrary(language) { return learningExecution({ action: 'libraryData', language }, false); }
-export function markProgramLesson(lessonId) { return learningExecution({ action: 'libraryMarkLesson', lessonId }, false); }
+export function markProgramLesson(lessonId, answerIndex) { return learningExecution({ action: 'libraryMarkLesson', lessonId, answerIndex }, false); }
+export function loadProgramLessonState(lessonId) { return learningExecution({ action: 'libraryLessonState', lessonId }, false); }
 export function checkProgramPractice(kind, index, answers, language) { return learningExecution({ action: 'libraryPractice', kind, index, answers, language }, false); }
 export function loadCourseExam(courseOrder, language) { return learningExecution({ action: 'courseExamState', courseOrder, language }, false); }
 export function submitCourseExam(courseOrder, answers) { return learningExecution({ action: 'courseSubmitExam', courseOrder, answers }, false); }

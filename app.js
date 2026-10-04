@@ -1,8 +1,9 @@
+import { renderAvatar } from './identity.js?v=20261004-learning2';
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260929-1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20260929-1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261004-learning2';
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261004-1';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260929-1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261004-ux1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261004-learning2';
 import { fullName } from './full-name.js?v=20260929-1';
 import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 import { canAccess, requiredPlan } from './plan-access.js?v=20260929-1';
@@ -194,7 +195,8 @@ function renderProgress() {
       return `<div class="learning-progress-item"><div><span class="section-kicker">LEARNING / FOUNDATIONS</span><h3>${esc(lc(course.title))}</h3><p>${state.completed} / ${state.total} ${ll('lessons')} · ${state.challengeComplete ? ll('finished') : ll('practice')}</p></div><a class="button button-outline" href="course.html?id=${encodeURIComponent(course.id)}">${ll('continue')} ↗</a></div>`;
     }).join('');
   }
-  $('#account-button').innerHTML = user() ? `${esc((user().name || t('account')).split(' ')[0])} <span aria-hidden="true">↗</span>` : `${t('account')} <span aria-hidden="true">↗</span>`;
+  $('#account-button').innerHTML = user() ? `<span class="account-avatar" aria-hidden="true"></span><span>${isEnglish() ? 'Profile' : 'الملف الشخصي'}</span>` : `${t('account')} <span aria-hidden="true">↗</span>`;
+  renderAvatar($('#account-button .account-avatar'), user());
 }
 function renderRoadmap() {
   const root = $('#learning-roadmap');

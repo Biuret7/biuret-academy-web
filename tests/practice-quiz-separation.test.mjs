@@ -17,7 +17,7 @@ test('practice quizzes use their own server bank, distinct from every course exa
       assert.equal(quiz.questions.length, bank[index].length, `quiz ${index}`);
       assert.ok(quiz.questions.length >= 3);
       for (const question of quiz.questions) {
-        assert.equal(question.opts.length, 3);
+        assert.ok(question.opts.length >= 3 && question.opts.length <= 5);
         assert.equal(Object.hasOwn(question, 'ans'), false);
         assert.equal(examQuestions.has(question.q.trim().replace(/\s+/g, ' ').toLocaleLowerCase()), false,
           `practice quiz ${index} repeats a course exam question`);
@@ -33,7 +33,7 @@ test('practice quizzes use their own server bank, distinct from every course exa
   assert.equal(free.quizzes[1].locked, true);
   assert.equal(free.quizzes[1].questions.length, 0);
   assert.equal(scoreLibraryPractice('quiz', 0, [0]), null);
-  assert.equal(scoreLibraryPractice('quiz', 0, [3, 0, 0]), null);
+  assert.equal(scoreLibraryPractice('quiz', 0, [5, 0, 0]), null);
 });
 
 test('public quiz responses are built from practice bank, not the course exam bank', () => {

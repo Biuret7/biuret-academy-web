@@ -1,4 +1,5 @@
-import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261004-ux1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
+import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261004-learning2';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 import { credentialFacts, downloadCredential } from './credential-art.js?v=20261004-1';
 import { fullName } from './full-name.js?v=20260929-1';
@@ -23,6 +24,7 @@ let status, credential, busy = false;
 function frame(content) {
   const title = names[pathId] ? names[pathId][currentLanguage() === 'en' ? 1 : 0] : tr('امتحان التخصص', 'Specialty exam');
   root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="path.html?id=${encodeURIComponent(pathId)}">← ${tr('المسارات', 'Paths')}</a><span class="section-kicker">BIURET ACADEMY / PATH EXAM</span><h1>${esc(title)}</h1><p>${tr('أكمل دروس المسار وامتحانات دوراته وتقييمه العملي، ثم اجتز الامتحان النهائي لتحصل على إثبات إنجاز التخصص.', 'Complete the path lessons, course exams and practical assessment, then pass the final exam for your specialty credential.')}</p></section><section class="assessment-body section-frame">${content}</section>`;
+  attachAssessmentProgress(root);
 }
 
 function date(value) { return new Date(value).toLocaleDateString(currentLanguage() === 'en' ? 'en-US' : 'ar', { year: 'numeric', month: 'long', day: 'numeric' }); }

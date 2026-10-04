@@ -155,6 +155,17 @@ export const academyPaths = [
         "core": true
       }
     ],
+    "operations": [
+      {
+        "id": "red_phantom",
+        "index": 0,
+        "title": {
+          "ar": "الوثيقة المشبوهة",
+          "en": "Suspicious document"
+        },
+        "href": "operation.html?id=0"
+      }
+    ],
     "practical": "practical.html?id=foundations",
     "exam": "exam.html",
     "certificate": "certificate.html"
@@ -315,8 +326,8 @@ export const academyPaths = [
         "id": "lab-0",
         "index": 0,
         "title": {
-          "ar": "مختبر 01 — فحص الشبكة",
-          "en": "Lab 01: Network discovery"
+          "ar": "جرد الخدمات وحدود الاستنتاج",
+          "en": "Service inventory and evidence limits"
         },
         "href": "practice-lab.html?id=0"
       },
@@ -324,8 +335,8 @@ export const academyPaths = [
         "id": "lab-2",
         "index": 2,
         "title": {
-          "ar": "مختبر 03 — اختراق الويب الأساسي",
-          "en": "Lab 03: Initial access"
+          "ar": "تفويض الكائنات في API",
+          "en": "Object authorization in an API"
         },
         "href": "practice-lab.html?id=2"
       },
@@ -333,8 +344,8 @@ export const academyPaths = [
         "id": "lab-5",
         "index": 5,
         "title": {
-          "ar": "مختبر 06 — ما بعد الاستغلال",
-          "en": "Lab 06: Post-exploitation"
+          "ar": "صلاحيات Linux الفعلية",
+          "en": "Effective Linux permissions"
         },
         "href": "practice-lab.html?id=5"
       }
@@ -384,6 +395,26 @@ export const academyPaths = [
           "en": "Challenge 08: Active Directory compromise"
         },
         "href": "practice-challenge.html?id=7"
+      }
+    ],
+    "operations": [
+      {
+        "id": "glass_harbor",
+        "index": 2,
+        "title": {
+          "ar": "بوابة المستأجر",
+          "en": "Tenant gateway"
+        },
+        "href": "operation.html?id=2"
+      },
+      {
+        "id": "identity_echo",
+        "index": 1,
+        "title": {
+          "ar": "صدى الهوية",
+          "en": "Identity echo"
+        },
+        "href": "operation.html?id=1"
       }
     ],
     "practical": "practical.html?id=path_pentest",
@@ -515,8 +546,8 @@ export const academyPaths = [
         "id": "lab-1",
         "index": 1,
         "title": {
-          "ar": "مختبر 02 — تحليل الحزم",
-          "en": "Lab 02: Packet analysis"
+          "ar": "ربط الحزم بهوية العملية",
+          "en": "Correlating packets and process identity"
         },
         "href": "practice-lab.html?id=1"
       },
@@ -524,8 +555,8 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "مختبر 08 — الاستجابة للحوادث",
-          "en": "Lab 08: Incident response"
+          "ar": "قياس التغطية والاستجابة",
+          "en": "Coverage and response validation"
         },
         "href": "practice-lab.html?id=7"
       }
@@ -557,6 +588,44 @@ export const academyPaths = [
           "en": "Challenge 07: Memory forensics"
         },
         "href": "practice-challenge.html?id=6"
+      }
+    ],
+    "operations": [
+      {
+        "id": "red_phantom",
+        "index": 0,
+        "title": {
+          "ar": "الوثيقة المشبوهة",
+          "en": "Suspicious document"
+        },
+        "href": "operation.html?id=0"
+      },
+      {
+        "id": "black_ledger",
+        "index": 3,
+        "title": {
+          "ar": "دفتر الاستعادة",
+          "en": "Recovery ledger"
+        },
+        "href": "operation.html?id=3"
+      },
+      {
+        "id": "insider_shade",
+        "index": 4,
+        "title": {
+          "ar": "استثناء منتهي",
+          "en": "Expired exception"
+        },
+        "href": "operation.html?id=4"
+      },
+      {
+        "id": "frozen_beacon",
+        "index": 5,
+        "title": {
+          "ar": "أثر سلسلة التسليم",
+          "en": "Delivery chain trace"
+        },
+        "href": "operation.html?id=5"
       }
     ],
     "practical": "practical.html?id=path_soc",
@@ -656,8 +725,8 @@ export const academyPaths = [
         "id": "lab-6",
         "index": 6,
         "title": {
-          "ar": "مختبر 07 — التحليل الجنائي",
-          "en": "Lab 07: Digital forensics"
+          "ar": "نسخة الأدلة وسلسلة الحيازة",
+          "en": "Evidence copies and chain of custody"
         },
         "href": "practice-lab.html?id=6"
       },
@@ -665,8 +734,8 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "مختبر 08 — الاستجابة للحوادث",
-          "en": "Lab 08: Incident response"
+          "ar": "قياس التغطية والاستجابة",
+          "en": "Coverage and response validation"
         },
         "href": "practice-lab.html?id=7"
       }
@@ -689,6 +758,26 @@ export const academyPaths = [
           "en": "Challenge 10: Malware analysis"
         },
         "href": "practice-challenge.html?id=9"
+      }
+    ],
+    "operations": [
+      {
+        "id": "red_phantom",
+        "index": 0,
+        "title": {
+          "ar": "الوثيقة المشبوهة",
+          "en": "Suspicious document"
+        },
+        "href": "operation.html?id=0"
+      },
+      {
+        "id": "black_ledger",
+        "index": 3,
+        "title": {
+          "ar": "دفتر الاستعادة",
+          "en": "Recovery ledger"
+        },
+        "href": "operation.html?id=3"
       }
     ],
     "practical": "practical.html?id=path_dfir",
@@ -790,8 +879,8 @@ export const academyPaths = [
         "id": "lab-1",
         "index": 1,
         "title": {
-          "ar": "مختبر 02 — تحليل الحزم",
-          "en": "Lab 02: Packet analysis"
+          "ar": "ربط الحزم بهوية العملية",
+          "en": "Correlating packets and process identity"
         },
         "href": "practice-lab.html?id=1"
       },
@@ -799,8 +888,8 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "مختبر 08 — الاستجابة للحوادث",
-          "en": "Lab 08: Incident response"
+          "ar": "قياس التغطية والاستجابة",
+          "en": "Coverage and response validation"
         },
         "href": "practice-lab.html?id=7"
       }
@@ -814,6 +903,26 @@ export const academyPaths = [
           "en": "Challenge 11: Cloud security"
         },
         "href": "practice-challenge.html?id=10"
+      }
+    ],
+    "operations": [
+      {
+        "id": "identity_echo",
+        "index": 1,
+        "title": {
+          "ar": "صدى الهوية",
+          "en": "Identity echo"
+        },
+        "href": "operation.html?id=1"
+      },
+      {
+        "id": "frozen_beacon",
+        "index": 5,
+        "title": {
+          "ar": "أثر سلسلة التسليم",
+          "en": "Delivery chain trace"
+        },
+        "href": "operation.html?id=5"
       }
     ],
     "practical": "practical.html?id=path_cloud",
@@ -917,8 +1026,8 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "مختبر 08 — الاستجابة للحوادث",
-          "en": "Lab 08: Incident response"
+          "ar": "قياس التغطية والاستجابة",
+          "en": "Coverage and response validation"
         },
         "href": "practice-lab.html?id=7"
       }
@@ -941,6 +1050,26 @@ export const academyPaths = [
         },
         "href": "challenges.html?challenge=f-sender",
         "core": true
+      }
+    ],
+    "operations": [
+      {
+        "id": "insider_shade",
+        "index": 4,
+        "title": {
+          "ar": "استثناء منتهي",
+          "en": "Expired exception"
+        },
+        "href": "operation.html?id=4"
+      },
+      {
+        "id": "identity_echo",
+        "index": 1,
+        "title": {
+          "ar": "صدى الهوية",
+          "en": "Identity echo"
+        },
+        "href": "operation.html?id=1"
       }
     ],
     "practical": "practical.html?id=path_grc",
@@ -1059,8 +1188,8 @@ export const academyPaths = [
         "id": "lab-2",
         "index": 2,
         "title": {
-          "ar": "مختبر 03 — اختراق الويب الأساسي",
-          "en": "Lab 03: Initial access"
+          "ar": "تفويض الكائنات في API",
+          "en": "Object authorization in an API"
         },
         "href": "practice-lab.html?id=2"
       },
@@ -1068,8 +1197,8 @@ export const academyPaths = [
         "id": "lab-5",
         "index": 5,
         "title": {
-          "ar": "مختبر 06 — ما بعد الاستغلال",
-          "en": "Lab 06: Post-exploitation"
+          "ar": "صلاحيات Linux الفعلية",
+          "en": "Effective Linux permissions"
         },
         "href": "practice-lab.html?id=5"
       }
@@ -1092,6 +1221,26 @@ export const academyPaths = [
           "en": "Challenge 04: Cross-site scripting"
         },
         "href": "practice-challenge.html?id=3"
+      }
+    ],
+    "operations": [
+      {
+        "id": "glass_harbor",
+        "index": 2,
+        "title": {
+          "ar": "بوابة المستأجر",
+          "en": "Tenant gateway"
+        },
+        "href": "operation.html?id=2"
+      },
+      {
+        "id": "frozen_beacon",
+        "index": 5,
+        "title": {
+          "ar": "أثر سلسلة التسليم",
+          "en": "Delivery chain trace"
+        },
+        "href": "operation.html?id=5"
       }
     ],
     "practical": "practical.html?id=path_appsec",
@@ -1182,8 +1331,8 @@ export const academyPaths = [
         "id": "lab-2",
         "index": 2,
         "title": {
-          "ar": "مختبر 03 — اختراق الويب الأساسي",
-          "en": "Lab 03: Initial access"
+          "ar": "تفويض الكائنات في API",
+          "en": "Object authorization in an API"
         },
         "href": "practice-lab.html?id=2"
       }
@@ -1197,6 +1346,26 @@ export const academyPaths = [
           "en": "Challenge 13: Mobile security"
         },
         "href": "practice-challenge.html?id=12"
+      }
+    ],
+    "operations": [
+      {
+        "id": "identity_echo",
+        "index": 1,
+        "title": {
+          "ar": "صدى الهوية",
+          "en": "Identity echo"
+        },
+        "href": "operation.html?id=1"
+      },
+      {
+        "id": "glass_harbor",
+        "index": 2,
+        "title": {
+          "ar": "بوابة المستأجر",
+          "en": "Tenant gateway"
+        },
+        "href": "operation.html?id=2"
       }
     ],
     "practical": "practical.html?id=path_mobile",
@@ -1306,8 +1475,8 @@ export const academyPaths = [
         "id": "lab-6",
         "index": 6,
         "title": {
-          "ar": "مختبر 07 — التحليل الجنائي",
-          "en": "Lab 07: Digital forensics"
+          "ar": "نسخة الأدلة وسلسلة الحيازة",
+          "en": "Evidence copies and chain of custody"
         },
         "href": "practice-lab.html?id=6"
       },
@@ -1315,8 +1484,8 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "مختبر 08 — الاستجابة للحوادث",
-          "en": "Lab 08: Incident response"
+          "ar": "قياس التغطية والاستجابة",
+          "en": "Coverage and response validation"
         },
         "href": "practice-lab.html?id=7"
       }
@@ -1339,6 +1508,26 @@ export const academyPaths = [
           "en": "Challenge 07: Memory forensics"
         },
         "href": "practice-challenge.html?id=6"
+      }
+    ],
+    "operations": [
+      {
+        "id": "frozen_beacon",
+        "index": 5,
+        "title": {
+          "ar": "أثر سلسلة التسليم",
+          "en": "Delivery chain trace"
+        },
+        "href": "operation.html?id=5"
+      },
+      {
+        "id": "red_phantom",
+        "index": 0,
+        "title": {
+          "ar": "الوثيقة المشبوهة",
+          "en": "Suspicious document"
+        },
+        "href": "operation.html?id=0"
       }
     ],
     "practical": "practical.html?id=path_threat_intel",
@@ -1458,8 +1647,8 @@ export const academyPaths = [
         "id": "lab-6",
         "index": 6,
         "title": {
-          "ar": "مختبر 07 — التحليل الجنائي",
-          "en": "Lab 07: Digital forensics"
+          "ar": "نسخة الأدلة وسلسلة الحيازة",
+          "en": "Evidence copies and chain of custody"
         },
         "href": "practice-lab.html?id=6"
       }
@@ -1482,6 +1671,35 @@ export const academyPaths = [
           "en": "Challenge 12: Reverse engineering"
         },
         "href": "practice-challenge.html?id=11"
+      }
+    ],
+    "operations": [
+      {
+        "id": "red_phantom",
+        "index": 0,
+        "title": {
+          "ar": "الوثيقة المشبوهة",
+          "en": "Suspicious document"
+        },
+        "href": "operation.html?id=0"
+      },
+      {
+        "id": "black_ledger",
+        "index": 3,
+        "title": {
+          "ar": "دفتر الاستعادة",
+          "en": "Recovery ledger"
+        },
+        "href": "operation.html?id=3"
+      },
+      {
+        "id": "frozen_beacon",
+        "index": 5,
+        "title": {
+          "ar": "أثر سلسلة التسليم",
+          "en": "Delivery chain trace"
+        },
+        "href": "operation.html?id=5"
       }
     ],
     "practical": "practical.html?id=path_malware",

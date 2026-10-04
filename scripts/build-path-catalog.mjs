@@ -20,6 +20,8 @@ const related = {
   path_threat_intel: { quizzes: [6], labs: [6, 7], challenges: [8, 6] },
   path_malware: { quizzes: [8, 10], labs: [6], challenges: [9, 11] },
 };
+const operationMap = {foundations:[0],path_pentest:[2,1],path_soc:[0,3,4,5],path_dfir:[0,3],path_cloud:[1,5],path_grc:[4,1],path_appsec:[2,5],path_mobile:[1,2],path_threat_intel:[5,0],path_malware:[0,3,5]};
+const operation = index => ({id: libraries.ar.operations[index].id,index,title:local(x=>x.operations[index].title),href:`operation.html?id=${index}`});
 const course = (order) => {
   const item = libraries.en.categories.find(c => c.order === order);
   return { id: item.id, title: local(x => x.categories.find(c => c.order === order).title),
@@ -35,7 +37,7 @@ const paths = [{ id: 'foundations', title: learningPath.title, summary: learning
   courses: courses.map(c => ({ id: c.id, title: c.title, summary: c.summary, lessonIds: c.lessonIds, href: `course.html?id=${c.id}` })),
   quizzes: [resource('quiz', 0)], labs: labs.map(l => ({ id: l.id, title: l.title, href: `lab.html?id=${l.id}`, core: true })),
   challenges: challenges.filter(c => c.track === 'foundations').map(c => coreChallenge(c.id)),
-  practical: 'practical.html?id=foundations', exam: 'exam.html', certificate: 'certificate.html',
+  operations: operationMap.foundations.map(operation), practical: 'practical.html?id=foundations', exam: 'exam.html', certificate: 'certificate.html',
 }];
 for (const item of libraries.ar.roadmapPaths) {
   const id = item[2], overview = specializations.find(p => p.pathId === id), mapping = related[id];
@@ -46,7 +48,7 @@ for (const item of libraries.ar.roadmapPaths) {
     courses: item[6].map(course), quizzes: mapping.quizzes.map(i => resource('quiz', i)),
     labs: mapping.labs.map(i => resource('lab', i)),
     challenges: [...mapping.challenges.map(i => resource('challenge', i)), ...(mapping.coreChallenges || []).map(coreChallenge)],
-    practical: `practical.html?id=${id}`, exam: `path-exam.html?id=${id}`, certificate: `path-exam.html?id=${id}`,
+    operations: operationMap[id].map(operation), practical: `practical.html?id=${id}`, exam: `path-exam.html?id=${id}`, certificate: `path-exam.html?id=${id}`,
   });
 }
 writeFileSync(new URL('../path-catalog-data.js', import.meta.url), `// Generated public path metadata; no assessment questions or answers.\nexport const academyPaths = ${JSON.stringify(paths, null, 2)};\n`);

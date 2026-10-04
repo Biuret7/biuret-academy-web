@@ -201,6 +201,26 @@ export const lessons = [
           "ar": "في learn.biuret.dev النطاق المسجل هو biuret.dev، وlearn نطاق فرعي. أما biuret.dev.example.com فموقعه الحقيقي ضمن example.com.",
           "en": "In learn.biuret.dev, the registered domain is biuret.dev and learn is a subdomain. In biuret.dev.example.com, the actual site is under example.com."
         }
+      },
+      {
+        "title": {
+          "ar": "المضيف هو الحد الفاصل",
+          "en": "The host is the boundary"
+        },
+        "body": {
+          "ar": "في https://accounts.example.test@help.training.test/login تكون الوجهة help.training.test. النص قبل @ ليس المضيف. قارن المضيف الحقيقي بعنوان معروف مستقلاً، ولا تعتمد على أول اسم يظهر في النص.",
+          "en": "In https://accounts.example.test@help.training.test/login the destination is help.training.test. Text before @ is not the host. Compare the actual host with an independently known address rather than the first familiar name in the string."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
+        }
       }
     ],
     "example": "https://account.biuret.dev.example.com/login",
@@ -262,6 +282,26 @@ export const lessons = [
         "body": {
           "ar": "القفل يعني أن الاتصال بالموقع مشفر. لا يعني أن الجهة التي تدير الموقع جديرة بالثقة؛ مواقع التصيد قد تستخدم HTTPS أيضًا.",
           "en": "The lock means the connection is encrypted. It does not establish that the site operator is trustworthy; phishing sites can use HTTPS too."
+        }
+      },
+      {
+        "title": {
+          "ar": "قارن ما يظهر بما يُفتح",
+          "en": "Compare the display with the destination"
+        },
+        "body": {
+          "ar": "قد يعرض زر اسم المؤسسة بينما يفتح نطاقاً مختلفاً. HTTPS يحمي الاتصال إلى تلك الوجهة ولا يثبت أنها المؤسسة المقصودة. اكتب الاسم المتوقع والوجهة الفعلية والاختلاف بينهما قبل الحكم.",
+          "en": "A button can display an organization’s name while opening a different domain. HTTPS protects the connection to that destination; it does not prove it is the intended organization. Write the expected host, actual destination and difference before judging."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
         }
       }
     ],
@@ -325,6 +365,26 @@ export const lessons = [
           "ar": "إن كان الرابط متعلقًا بعمل أو دراسة، أرسل بلاغًا لفريق الدعم عبر القناة الرسمية. احتفظ بنص الرسالة والرابط للتحليل، ولا تعِد إرسال بياناتك الحساسة.",
           "en": "If the link concerns work or school, report it through the official support channel. Preserve the message and URL for analysis without forwarding sensitive information."
         }
+      },
+      {
+        "title": {
+          "ar": "تحقق عبر طريق مستقل",
+          "en": "Verify through an independent route"
+        },
+        "body": {
+          "ar": "إذا طلبت رسالة عاجلة تغيير كلمة المرور، افتح العنوان المعروف من إشارتك أو اكتبه بنفسك وتحقق من وجود طلب مطابق. لا تختبر الرابط ببيانات اعتماد ولا تنقله لزميل ليجربه. سجل ما جعلك تتوقف وما الذي قد يغير القرار.",
+          "en": "If an urgent message asks for a password change, open the known bookmarked address or type it independently and check for a matching request. Do not test the link with credentials or ask a colleague to try it. Record why you paused and what evidence could change the decision."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
+        }
       }
     ],
     "example": "https://biuret.dev.example.net/reset-now",
@@ -386,6 +446,26 @@ export const lessons = [
         "body": {
           "ar": "فعّل المصادقة متعددة العوامل، وفضّل مفتاح مرور أو تطبيق مصادقة عندما يتاح. لا توافق على طلب دخول لم تبدأه أنت، واحتفظ برموز الاسترداد في مكان آمن منفصل.",
           "en": "Enable multifactor authentication. Prefer a passkey or authenticator app when available. Reject sign-in prompts you did not initiate and store recovery codes separately in a safe place."
+        }
+      },
+      {
+        "title": {
+          "ar": "كلمة المرور ليست كل الهوية",
+          "en": "A password is not the whole identity"
+        },
+        "body": {
+          "ar": "استخدم كلمات فريدة ومدير كلمات مرور مناسباً ومصادقة إضافية حيث تتاح. إذا ثبت التسريب فغيّر الاعتماد وأبطل الجلسات المتأثرة وراجع النشاط؛ لا تفترض أن التغيير وحده يلغي كل رمز سابق.",
+          "en": "Use unique passwords, a suitable password manager and additional authentication where available. When exposure is confirmed, change the credential, revoke affected sessions and review activity; do not assume a password change alone invalidates every prior token."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
         }
       }
     ],
@@ -453,6 +533,26 @@ export const lessons = [
           "ar": "إذا فُقد جهاز أو ظهر دخول غير معروف، راجع الأجهزة والجلسات من إعدادات الخدمة، وأبطل الجلسات المشبوهة. تغيير كلمة المرور وحده لا يضمن إبطال كل جلسة في كل خدمة.",
           "en": "If a device is lost or an unfamiliar sign-in appears, inspect active devices and revoke suspicious sessions in the service settings. Changing a password alone does not guarantee every service revokes every session."
         }
+      },
+      {
+        "title": {
+          "ar": "اختبر الإبطال فعلياً",
+          "en": "Test revocation explicitly"
+        },
+        "body": {
+          "ar": "تخيل أن جلسة S1 صدرت 09:00 وتغيرت كلمة المرور 10:00 ثم نجح طلب S1 الساعة 10:05. هذا يثبت بقاء الجلسة صالحة ولا يثبت انكشاف الكلمة الجديدة. بعد الإبطال ينبغي أن يُرفض الرمز القديم وتعمل جلسة جديدة لمستخدم مخول.",
+          "en": "Imagine S1 was issued at 09:00, the password changed at 10:00 and S1 succeeded at 10:05. This establishes that the session remained valid, not that the new password leaked. After revocation the old token should fail while a new authorized session works."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
+        }
       }
     ],
     "exampleLabel": {
@@ -518,6 +618,26 @@ export const lessons = [
         "body": {
           "ar": "امنح الحساب حق القراءة إذا كانت مهمته القراءة فقط. قيّد حسابات الإدارة، وراجع الصلاحيات عند تغيير الأدوار أو انتهاء المهمة. بذلك تقل مساحة الضرر إن اختُرق حساب.",
           "en": "Grant read access when a role only needs to read. Restrict administrator accounts and review permissions when roles change or work ends. This reduces the harm from a compromised account."
+        }
+      },
+      {
+        "title": {
+          "ar": "افصل المالك عن الفعل المسموح",
+          "en": "Separate ownership from permitted action"
+        },
+        "body": {
+          "ar": "قد يحق لدور القارئ عرض سجله دون تعديله. اختبر هوية مخولة ومالكاً آخر وفعلاً غير مسموح على الخادم؛ إخفاء زر التعديل لا يمنع طلباً مباشراً. صنف كل نتيجة وفق متطلب واضح بدلاً من الاكتفاء بنجاح الدخول.",
+          "en": "A reader may view its record without permission to edit it. Test an authorized identity, another owner and a disallowed action on the server; hiding an edit button does not stop a direct request. Classify each result against an explicit requirement rather than successful sign-in."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
         }
       }
     ],
@@ -585,6 +705,26 @@ export const lessons = [
           "ar": "قد تسجّل الأنظمة أوقاتاً بمناطق زمنية مختلفة. دوّن المنطقة الزمنية وحوّل إلى UTC عند بناء خط زمني، ثم ابحث عن نجاح الدخول أو تغيير إعدادات بعد موجة الفشل.",
           "en": "Systems may log in different time zones. Record the zone and convert to UTC for a timeline, then look for a successful sign-in or settings change after a burst of failures."
         }
+      },
+      {
+        "title": {
+          "ar": "وقت الحدث غير وقت وصوله",
+          "en": "Event time is not ingestion time"
+        },
+        "body": {
+          "ar": "حدث 10:00Z وحدث 12:02+02:00 يفصل بينهما دقيقتان بعد توحيد المنطقة الزمنية. احتفظ بالوقت الأصلي ومصدره وسجل التحويل، ثم اربط الهوية والجلسة والجهاز. لا تجعل ترتيب وصول السجلات وحده خطاً زمنياً للحادث.",
+          "en": "An event at 10:00Z and one at 12:02+02:00 are two minutes apart after time-zone normalization. Keep original time and source and record the transformation, then correlate identity, session and device. Ingestion order alone should not become the incident timeline."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
+        }
       }
     ],
     "exampleLabel": {
@@ -651,6 +791,26 @@ export const lessons = [
           "ar": "احسب بصمة مثل SHA-256 وقت الجمع وأعد حسابها لاحقاً للمقارنة. تطابق البصمتين يدعم سلامة المحتوى، لكنه لا يثبت وحده من أنشأ الملف أو صحة سياقه.",
           "en": "Calculate a hash such as SHA-256 at collection and compare it later. Matching hashes support content integrity, but alone do not prove who created the file or that its context is authentic."
         }
+      },
+      {
+        "title": {
+          "ar": "البصمة تثبت مقارنة محددة",
+          "en": "A hash establishes a specific comparison"
+        },
+        "body": {
+          "ar": "إذا تطابقت بصمة الأصل ونسخة العمل، فهذا يدعم سلامة النسخ نسبةً لذلك المرجع. لا يثبت هوية المؤلف أو أن الأصل سليم. احفظ الأصل واطبق التحليل على نسخة وسجل الأدوات والتحويلات. إذا عدلت نسخة العمل فتوقع تغير بصمتها ووثق السبب.",
+          "en": "Matching original and working-copy hashes support copying integrity relative to that reference. They do not establish author identity or a benign original. Preserve the original, analyze a copy and record tools and transformations. If the working copy changes, expect its hash to change and document why."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
+        }
       }
     ],
     "exampleLabel": {
@@ -716,6 +876,26 @@ export const lessons = [
         "body": {
           "ar": "إذا ظهرت أدلة موثوقة على إساءة استخدام حساب، أبطل جلسته أو قيّد وصوله حسب السياسة، واحفظ السجلات ثم بلّغ الفريق المسؤول. وثّق القرار والوقت لتكون المراجعة اللاحقة ممكنة.",
           "en": "If credible evidence points to account misuse, revoke its session or limit access under policy, preserve logs, and notify the responsible team. Record the decision and time for later review."
+        }
+      },
+      {
+        "title": {
+          "ar": "تقرير قرار يمكن مراجعته",
+          "en": "A reviewable decision report"
+        },
+        "body": {
+          "ar": "ابنِ ملخصك من خمس نقاط: ما حدث، الدليل ومصدره، ما لم تعرفه، الإجراء ومالكه، وكيف ستقيس نجاحه. فرّق بين احتواء نشاط حالي وإزالة سببه والتعافي. لا تعتبر اختفاء تنبيه واحد دليلاً كافياً على سلامة أصول لم تجمع عنها بيانات.",
+          "en": "Build a five-part summary: what happened, evidence and source, unknowns, action and owner, and how success will be measured. Distinguish containing current activity, removing its cause and recovery. One disappearing alert is insufficient evidence that unmonitored assets are safe."
+        }
+      },
+      {
+        "title": {
+          "ar": "مخرج الدرس",
+          "en": "Your lesson output"
+        },
+        "body": {
+          "ar": "اكتب في ملاحظاتك الدليل الذي يدعم القرار، وحداً لا تتجاوزه في الاستنتاج، واختباراً يثبت النتيجة المتوقعة. ثم أجب عن سؤال التحقق. ارجع بعد يوم وفسّر قرارك دون قراءة الإجابة.",
+          "en": "Write the evidence supporting your decision, one inference limit and a test of the expected result in your notes. Then answer the checkpoint. Return tomorrow and explain your decision without reading the answer."
         }
       }
     ],

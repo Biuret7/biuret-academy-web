@@ -1,4 +1,5 @@
-import { user, loadUser, loadCourseExam, submitCourseExam } from './auth.js?v=20261004-ux1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
+import { user, loadUser, loadCourseExam, submitCourseExam } from './auth.js?v=20261004-learning2';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 
 const root = document.querySelector('#course-assessment-main');
@@ -9,6 +10,7 @@ let state, busy = false, feedback = '';
 
 function frame(body) {
   root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="courses.html">← ${tr('جميع الدورات', 'All courses')}</a><span class="section-kicker">BIURET ACADEMY / COURSE EXAM</span><h1>${esc(state?.title || tr('امتحان الدورة', 'Course exam'))}</h1><p>${tr('أكمل دروس الدورة، ثم اختبر فهمك قبل الانتقال إلى تقييم المسار العملي والنهائي.', 'Finish the course lessons, then check your understanding before the path practical and final exam.')}</p></section><section class="assessment-body section-frame">${body}</section>`;
+  attachAssessmentProgress(root);
 }
 function render() {
   if (!state) return;

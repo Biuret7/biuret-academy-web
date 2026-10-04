@@ -4,7 +4,7 @@ import { examService } from './exam.js';
 import { credentialAdminService, isAcademyAdmin } from './admin.js';
 import { coinLedgerService } from './coins.js';
 import { membershipService } from './membership.js';
-import { libraryItem, mayAccessLibrary, publicLibraryFor, scoreLibraryPractice } from './library.js';
+import { libraryItem, mayAccessLibrary, publicLibraryFor, scoreLibraryPractice, lessonCheckpoint } from './library.js';
 import { pathExamService } from './path-exam.js';
 import { courseExamService } from './course-exam.js';
 import { practicalService } from './practical.js';
@@ -138,21 +138,24 @@ async function libraryContext(key, account) {
   return { membership, foundationsPassed };
 }
 
-async function markLibraryLesson(key, account, lessonId) {
+async function markLibraryLesson(key, account, lessonId, answerIndex) {
   const found = libraryItem('lesson', lessonId);
   if (!found) return { code: 404, data: { error: 'Lesson not found' } };
   const { membership, foundationsPassed } = await libraryContext(key, account);
   if (!mayAccessLibrary('course', found.category.order, membership, foundationsPassed)) return { code: 403, data: { error: 'Membership or Foundations exam required' } };
   const index = found.category.lessons.findIndex((item) => item.id === lessonId);
-  if (index > 0 && !await getAward(key, account.$id, found.category.lessons[index - 1].id)) return { code: 409, data: { error: 'Read the previous lesson first' } };
   if (await getAward(key, account.$id, lessonId)) return { code: 200, data: { read: true, new: false } };
+  if (index > 0 && !membership.admin && !await getAward(key, account.$id, found.category.lessons[index - 1].id)) return { code: 409, data: { error: 'Read the previous lesson first' } };
+  const checked = lessonCheckpoint(lessonId, answerIndex);
+  if (!checked) return { code: 400, data: { error: 'Answer the lesson checkpoint first' } };
+  if (!checked.correct) return { code: 422, data: { error: 'Review the lesson evidence and retry the checkpoint', explanation: checked.explanation } };
   const result = await appwrite(`${ENDPOINT}/tablesdb/${DATABASE_ID}/tables/${TABLE_ID}/rows`, {
     method: 'POST',
     headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' },
     body: JSON.stringify({ rowId: awardId(account.$id, lessonId), data: { userId: account.$id, lessonId, xp: 0, coins: 0 }, permissions: [] }),
   });
   if (![201, 409].includes(result.status)) throw new Error('Library lesson record failed');
-  return { code: 200, data: { read: true, new: result.status === 201 } };
+  return { code: 200, data: { read: true, new: result.status === 201, explanation: checked.explanation } };
 }
 
 export default async ({ req, res, error }) => {
@@ -192,8 +195,20 @@ export default async ({ req, res, error }) => {
         library: publicLibraryFor(language, context.membership, context.foundationsPassed) });
     }
     if (input.action === 'libraryMarkLesson') {
-      const result = await markLibraryLesson(key, account, input.lessonId);
+      const result = await markLibraryLesson(key, account, input.lessonId, input.answerIndex);
       return res.json(result.data, result.code);
+    }
+    if (input.action === 'libraryLessonState') {
+      const found = libraryItem('lesson', input.lessonId);
+      if (!found) return res.json({ error: 'Lesson not found' }, 404);
+      const context = await libraryContext(key, account);
+      if (!mayAccessLibrary('course', found.category.order, context.membership, context.foundationsPassed)) return res.json({ error: 'Membership or Foundations exam required' }, 403);
+      const index = found.category.lessons.findIndex((item) => item.id === input.lessonId);
+      const [record, previous] = await Promise.all([
+        getAward(key, account.$id, input.lessonId),
+        index > 0 && !context.membership.admin ? getAward(key, account.$id, found.category.lessons[index - 1].id) : Promise.resolve(true),
+      ]);
+      return res.json({ read: Boolean(record), ready: Boolean(previous), completedAt: record?.$createdAt || null });
     }
     if (input.action === 'libraryPractice') {
       const kind = input.kind;

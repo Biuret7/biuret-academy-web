@@ -9,3 +9,4 @@ content/desktop-library.en.json
 *.tar.gz
 _site/
 .translation-venv/
+functions/academy-progress/learning-edition.private.json

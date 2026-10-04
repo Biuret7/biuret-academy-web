@@ -35,7 +35,13 @@ If the shared page shell changes, run `node scripts/sync-sidebar.mjs` followed b
 
 Learners enter a self-declared two or three part full name before verified learning. Existing credential owners can correct the certificate name after updating their Appwrite account name; the credential ID and exam result remain unchanged. Active certificates download as PDF, PNG, or JPEG. Name format checks do not verify legal identity.
 
-The Appwrite function deployment must include `exam-bank.private.json`, `path-exam-bank.private.json`, `course-exam-bank.private.json`, `practical-bank.private.json`, `practice-quiz-bank.private.json`, and both `desktop-library.*.private.json` files. These files are ignored by Git and must never be included in the public Pages artifact. New credentials use `foundations-v2` or `program-path-v2` to record the practical requirement; older v1 credentials stay verifiable. Biuret Academy certificates verify completion inside this platform; they are not external professional accreditation. Owners choose whether to enable a public verification link.
+The Appwrite function deployment must include `exam-bank.private.json`, `path-exam-bank.private.json`, `course-exam-bank.private.json`, `practical-bank.private.json`, `practice-quiz-bank.private.json`, `learning-edition.private.json`, and both `desktop-library.*.private.json` files. These files are ignored by Git and must never be included in the public Pages artifact. New credentials use `foundations-v2` or `program-path-v2` to record the practical requirement; older credentials stay verifiable. Biuret Academy certificates verify completion inside this platform; they are not external professional accreditation. Owners choose whether to enable a public verification link.
+
+## Learning quality edition — October 2026
+
+The private edition supplies 99 bilingual lesson guides with evidence, an output exercise, review criteria and a server-graded checkpoint. A new mark-read request without a correct answer is rejected; already recorded lessons remain intact. Course exams use a separate private bank for all 18 courses. The 10 path exams each use 10 four-option case questions spanning interpretation, response and validation, with a new passing threshold of 9/10. The practical bank contains 30 distinct evidence tasks. Earlier successful attempts and credentials retain their validity and original threshold.
+
+Eight evidence labs, 13 practice challenges and six operations scenarios are bilingual guided simulations. They do not execute tools or connect to external targets, and their browser-local practice results are not credential evidence. Operations rooms are linked within each appropriate path. Purchases remain closed. The Foundations release was authored by Codex and validated with automated schema checks; that metadata is not an independent subject-matter review. Expert editorial review and pilot learner feedback should precede paid sales.
 
 ## Publishing
 

@@ -18,10 +18,10 @@ function bank() {
     for (const id of PATHS) {
       const tasks = privateBank[id];
       if (!Array.isArray(tasks) || tasks.length !== 3 || new Set(tasks.map((task) => task.id)).size !== 3 || tasks.some((task) =>
-        !/^[a-z0-9-]+$/.test(task.id) || !Number.isInteger(task.answer) || task.answer < 0 || task.answer > 2 ||
+        !/^[a-z0-9-]+$/.test(task.id) || !Number.isInteger(task.answer) || task.answer < 0 || task.answer >= task.options?.length ||
         !['ar', 'en'].every((lang) => typeof task.artifact?.[lang] === 'string' && task.artifact[lang].length > 10 &&
           typeof task.question?.[lang] === 'string' && task.question[lang].length > 10) ||
-        !Array.isArray(task.options) || task.options.length !== 3 || task.options.some((option) =>
+        !Array.isArray(task.options) || (task.options.length < 3 || task.options.length > 5) || task.options.some((option) =>
           !['ar', 'en'].every((lang) => typeof option?.[lang] === 'string' && option[lang])))) throw new Error('Practical bank invalid');
     }
   }
@@ -59,7 +59,7 @@ export function practicalService({ base, request }) {
     if (await passed(userId, pathId)) return { code: 409, data: { error: 'Practical assessment already passed' } };
     const tasks = bank()[pathId];
     if (!answers || typeof answers !== 'object' || Array.isArray(answers) || Object.keys(answers).length !== tasks.length ||
-      tasks.some((task) => !Object.hasOwn(answers, task.id) || !Number.isInteger(answers[task.id]) || answers[task.id] < 0 || answers[task.id] > 2)) {
+      tasks.some((task) => !Object.hasOwn(answers, task.id) || !Number.isInteger(answers[task.id]) || answers[task.id] < 0 || answers[task.id] >= task.options.length)) {
       return { code: 400, data: { error: 'Complete all three evidence tasks' } };
     }
     const score = tasks.reduce((sum, task) => sum + Number(answers[task.id] === task.answer), 0);
