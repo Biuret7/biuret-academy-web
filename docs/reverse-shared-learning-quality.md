@@ -39,4 +39,4 @@ Purchases remain closed.
 
 ## Verification and release
 
-All 90 local tests pass with no skipped cases. New tests cover numerical boundaries, invalid inputs, export privacy/recomputation, route preservation, private checkpoints/access, and coverage completeness. Syntax and the Foundations release checksum pass. Browser verification and deployment status are recorded separately in [the deployment record](deployments/2026-10-05-reverse.md).
+All 90 local tests pass with no skipped cases. New tests cover numerical boundaries, invalid inputs, export privacy/recomputation, route preservation, private checkpoints/access, and coverage completeness. Syntax and the Foundations release checksum pass. The public site and private content are published; Appwrite deployment `6ac3c205b3bcd3da7d94` is Active. Browser verification and archive identity are recorded separately in [the deployment record](deployments/2026-10-05-reverse.md).
