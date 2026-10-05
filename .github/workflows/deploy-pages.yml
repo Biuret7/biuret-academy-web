@@ -44,6 +44,8 @@ jobs:
           node --check lab.js
           node --check catalog.js
           node --check desktop.js
+          node --check pilot.js
+          node --check pilot-model.js
           node --check workbench.js
           node --check lesson-notes.js
           node --check workbench-model.js
@@ -67,7 +69,7 @@ jobs:
       - name: Stage public site
         run: |
           mkdir -p _site/assets _site/content
-          cp index.html paths.html path.html paths.js paths.css path-model.js path-catalog-data.js challenges.html progress.html membership.html course.html lesson.html exam.html path-exam.html course-exam.html practical.html certificate.html admin.html lab.html courses.html labs.html quizzes.html tools.html shop.html review.html operations.html operation.html certifications.html professional.html notes.html favorites.html search.html settings.html profile.html library-course.html library-lesson.html practice-quiz.html practice-lab.html practice-challenge.html style.css experience.css experience.js billing-checkout.js app.js auth.js assessment.js credential-art.js full-name.js path-assessment.js course-assessment.js practical-assessment.js admin.js membership.js journey.js labs.js lab.js catalog.js desktop.js workbench.js workbench-model.js lesson-notes.js identity.js profile.js assessment-ui.js plan-access.js content.js content-en.js learning-content.js i18n.js engine.js robots.txt sitemap.xml _site/
+          cp index.html paths.html path.html paths.js paths.css path-model.js path-catalog-data.js challenges.html progress.html membership.html course.html lesson.html exam.html path-exam.html course-exam.html practical.html certificate.html admin.html lab.html courses.html labs.html quizzes.html tools.html shop.html review.html pilot.html pilot.js pilot-model.js operations.html operation.html certifications.html professional.html notes.html favorites.html search.html settings.html profile.html library-course.html library-lesson.html practice-quiz.html practice-lab.html practice-challenge.html style.css experience.css experience.js billing-checkout.js app.js auth.js assessment.js credential-art.js full-name.js path-assessment.js course-assessment.js practical-assessment.js admin.js membership.js journey.js labs.js lab.js catalog.js desktop.js workbench.js workbench-model.js lesson-notes.js identity.js profile.js assessment-ui.js plan-access.js content.js content-en.js learning-content.js i18n.js engine.js robots.txt sitemap.xml _site/
           cp assets/* _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:

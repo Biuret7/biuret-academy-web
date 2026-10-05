@@ -26,6 +26,8 @@ The final exams remain privately graded scenario multiple-choice assessments. Th
 
 ## Pilot protocol — proposed, not yet performed
 
+The owner chose to try the journey personally first. The account-gated [learning trial](https://academy.biuret.dev/pilot.html) now provides eight bilingual tasks, self-reported outcomes, account-scoped browser persistence and voluntary JSON export. See [Arabic trial and independent review instructions](pilot-review-checklist.md) and the initially empty [issue tracker](pilot-issues.csv). Synthetic browser QA is not a participant result. The private SOC guide revision still awaits its separate Appwrite upload approval.
+
 Recruit 3–5 consenting beginners and at least one practitioner for editorial review. Recruitment and messages have not been sent. Ask participants to use their own accounts; do not collect passwords, tokens or payment data.
 
 1. Sign in and locate free Foundations without assistance. Record confusion about account names or prerequisites.

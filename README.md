@@ -4,6 +4,8 @@ An Arabic-first academy for `academy.biuret.dev`. The site uses the Biuret visua
 
 ## Features
 
+- An account-gated [learning journey trial](https://academy.biuret.dev/pilot.html): eight bilingual Foundations/SOC tasks, browser-local observations and voluntary JSON export. [Arabic review instructions](docs/pilot-review-checklist.md) explain how observations become tracked fixes; no human pilot results are claimed yet.
+
 - Sequential challenges in three independent tracks, with answer checks, hints, explanations, and next steps.
 - A Foundations roadmap with nine bilingual lessons across URL safety, identity and access, and evidence and response. Each course has ordered self-checks and a practical challenge link.
 - A Foundations practical assessment using three synthetic evidence tasks, followed by a server-graded final exam with a private question bank, three-attempt policy, and a shareable achievement credential.

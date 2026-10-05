@@ -131,3 +131,20 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .workbench-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
 .workbench-actions small { color: #b4c0b4; }
 @media (max-width: 640px) { .workbench-filters { grid-template-columns: 1fr; } .workbench-route { display: grid; gap: .6rem; } .evidence-workbench { padding: 1rem; } }
+.pilot-body { max-width: 1100px; }
+.pilot-overview, .pilot-task-heading { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; }
+.pilot-overview { padding: 1.3rem; border: 1px solid var(--border, #29322c); border-radius: 18px; background: #111713; }
+.pilot-overview strong, .pilot-overview small { display: block; }
+.pilot-overview progress { display: block; margin-block: .7rem; width: min(360px, 100%); accent-color: #c1ff38; }
+.pilot-task-list { display: grid; gap: 1.1rem; list-style: none; padding: 0; counter-reset: pilot-step; }
+.pilot-task { counter-increment: pilot-step; padding: clamp(1rem, 3vw, 1.7rem); background: #101612; border: 1px solid #2c382d; border-radius: 20px; }
+.pilot-task h3 { font-size: 1.15rem; margin: 0; }
+.pilot-task h3::before { content: counter(pilot-step) " · "; color: #c1ff38; }
+.pilot-task label { display: block; font-weight: 600; margin-block: 1rem .5rem; }
+.pilot-task select, .pilot-task textarea { width: 100%; max-width: 100%; min-height: 48px; padding: .8rem; border: 1px solid #3b493f; border-radius: 12px; background: #0a0f0c; color: #edf5ef; font: inherit; }
+.pilot-task textarea { resize: vertical; }
+.pilot-task select:focus-visible, .pilot-task textarea:focus-visible { outline: 2px solid #c1ff38; outline-offset: 3px; }
+.pilot-task p, .pilot-body > p { max-width: 78ch; line-height: 1.9; }
+.pilot-export { padding: 1.5rem; border: 1px solid #3a4b28; border-radius: 18px; }
+.pilot-body small, .pilot-export [role="status"] { color: #a7b9aa; }
+@media (max-width: 640px) { .pilot-task-heading .button, .pilot-overview .button { width: 100%; } .pilot-task-heading { align-items: stretch; } }
