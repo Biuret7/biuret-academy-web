@@ -132,6 +132,12 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .workbench-actions small { color: #b4c0b4; }
 @media (max-width: 640px) { .workbench-filters { grid-template-columns: 1fr; } .workbench-route { display: grid; gap: .6rem; } .evidence-workbench { padding: 1rem; } }
 .pilot-body { max-width: 1100px; }
+.authorization-policy { padding: 1rem 1.4rem; border: 1px solid #3e512e; border-radius: 1rem; background: #142014; margin-block: 1.5rem; line-height: 1.85; }
+.authorization-case { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; align-items: end; }
+.authorization-case .button { justify-self: start; }
+.authorization-observation:not(:empty), [data-access-review]:not(:empty) { padding: 1rem 1.3rem; border: 1px solid #536c32; border-radius: .8rem; background: #182517; margin-block: 1rem; line-height: 1.8; }
+.authorization-report { margin-block: 1.8rem 1rem; font-weight: 600; }
+@media (max-width: 640px) { .authorization-case { grid-template-columns: 1fr; } .authorization-case .button { width: 100%; } }
 .pilot-overview, .pilot-task-heading { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; }
 .pilot-overview { padding: 1.3rem; border: 1px solid var(--border, #29322c); border-radius: 18px; background: #111713; }
 .pilot-overview strong, .pilot-overview small { display: block; }
