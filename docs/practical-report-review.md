@@ -17,9 +17,9 @@ States: not submitted → pending → changes requested → new pending revision
 - Queue reads ten entries with cursor pagination; history is bounded. Account/language changes do not carry unsent reviewer fields to another account. UI escapes report/feedback text.
 - Without a configured table, learner draft/download stay available and remote submission stays unavailable.
 
-## Deployment schema (prepared, not applied)
+## Deployment schema (applied 5 October 2026)
 
-Database: `6aa56477002e28054068`. Create table ID/name `academy_report_reviews` with **no table permissions**, row security enabled.
+Database: `6aa56477002e28054068`. Table ID/name `academy_report_reviews` has **no table permissions**, row security enabled. All columns and indexes were verified Available in the console.
 
 | Column | Type | Required | Constraint |
 | --- | --- | --- | --- |
