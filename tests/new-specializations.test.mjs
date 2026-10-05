@@ -93,10 +93,10 @@ test('each new specialty requires Pro, practical work and a separate graded exam
     assert.equal(ready.data.eligible, true);
     assert.equal(ready.data.questions.length, 10);
     assert.ok(ready.data.questions.every((item) => !Object.hasOwn(item, 'answer')));
-    const questions = pathQuestions(pathId, 'en');
+    const questions = pathQuestions(pathId, 'en', userId);
     assert.equal(new Set(questions.map((item) => item.question)).size, 10);
     const answers = Object.fromEntries(questions.map((item) => [item.id, item.answer]));
-    const passed = await pro.submit(userId, 'Real Learner', pathId, answers);
+    const passed = await pro.submit(userId, 'Real Learner', pathId, answers, ready.data.formId);
     assert.equal(passed.data.passed, true);
     const credential = await pro.credential(userId, pathId);
     assert.equal(credential.data.status, 'active');

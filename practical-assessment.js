@@ -1,6 +1,7 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
-import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261004-learning2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-forms1';
+import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261005-forms1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
+import { attachPracticalReport } from './practical-report.js?v=20261005-forms1';
 
 const root = document.querySelector('#practical-main');
 const pathId = new URLSearchParams(location.search).get('id');
@@ -26,12 +27,16 @@ function frame(body) {
   root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="paths.html">← ${tr('المسارات', 'Paths')}</a><span class="section-kicker">BIURET ACADEMY / PRACTICAL</span><h1>${esc(title)}</h1><p>${tr('ثلاث مهام مبنية على أدلة تدريبية آمنة. اختر قراراً مبرراً بالدليل في كل مهمة قبل الامتحان النهائي.', 'Three tasks based on safe training evidence. Make an evidence-led decision for each before the final exam.')}</p></section><section class="assessment-body section-frame">${body}</section>`;
   attachAssessmentProgress(root);
 }
-function render() {
+function renderAssessment() {
   if (!state) return;
   if (state.passed) return frame(`<div class="assessment-card success"><span class="section-kicker">PRACTICAL / PASSED</span><h2>${tr('أنجزت التقييم العملي', 'Practical assessment passed')}</h2><p>${tr('سُجلت المهام الثلاث في حسابك. الخطوة التالية هي امتحان المسار.', 'All three tasks are recorded in your account. Your next step is the path exam.')}</p><a class="button button-primary" href="${next()}">${tr('افتح امتحان المسار', 'Open path exam')} ↗</a></div>`);
   if (!state.ready) return frame(`<div class="assessment-card"><h2>${tr('أكمل خطوات التعلّم أولاً', 'Finish your learning steps first')}</h2><p>${pathId === 'foundations' ? tr('أكمل الدروس التسعة الموثقة لفتح هذه المهام.', 'Complete the nine verified lessons to unlock these tasks.') : tr('أكمل دروس كل دورات المسار واجتز امتحان كل دورة لفتح هذه المهام.', 'Complete every path course lesson and pass each course exam to unlock these tasks.')}</p><a class="button button-outline" href="${pathId === 'foundations' ? 'paths.html#foundations-roadmap' : 'courses.html'}">${tr('تابع التعلّم', 'Continue learning')} ↗</a></div>`);
   const tasks = state.tasks.map((task, i) => `<fieldset class="practical-task"><legend>${String(i + 1).padStart(2, '0')} · ${esc(task.question)}</legend><pre class="practical-artifact" dir="auto">${esc(task.artifact)}</pre>${task.options.map((option, index) => `<label><input type="radio" name="${esc(task.id)}" value="${index}" required><span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('');
   frame(`<div class="assessment-card"><h2>${tr('حلل الدليل ثم قرر', 'Analyze the evidence, then decide')}</h2><p>${tr('يجب أن تكون القرارات الثلاثة صحيحة. يمكنك العودة للمختبرات والمراجعة ثم المحاولة مجدداً.', 'All three decisions must be correct. Review the labs and retry whenever you are ready.')}</p><a href="labs.html">${tr('راجع المختبرات', 'Review labs')} ↗</a>${feedback ? `<p class="answer-feedback" role="status">${esc(feedback)}</p>` : ''}<form id="practical-form" class="practice-form">${tasks}<button class="button button-primary" type="submit" ${busy ? 'disabled' : ''}>${tr('سلّم القرارات', 'Submit decisions')} ↗</button></form></div>`);
+}
+function render() {
+  renderAssessment();
+  if (state?.ready || state?.passed) attachPracticalReport(root,pathId);
 }
 async function refresh() {
   if (!names[pathId]) { frame(`<div class="assessment-card"><h2>${tr('المسار غير موجود', 'Path not found')}</h2></div>`); return; }
@@ -47,8 +52,10 @@ root?.addEventListener('click', (event) => {
   if (event.target.closest('#practical-retry')) refresh();
 });
 root?.addEventListener('submit', async (event) => {
-  if (event.target.id !== 'practical-form' || busy) return;
+  if (event.target.id !== 'practical-form') return;
   event.preventDefault();
+  if (busy) return;
+  if(event.submitter) event.submitter.disabled=true;
   const answers = Object.fromEntries([...new FormData(event.target)].map(([key, value]) => [key, Number(value)]));
   busy = true;
   try {

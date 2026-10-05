@@ -46,8 +46,8 @@ test('specialty exam requires accessible, completed path lessons and issues a pr
   assert.equal(open.data.eligible, true);
   assert.equal(open.data.questions.length, 10);
   assert.ok(open.data.questions.every((question) => !Object.hasOwn(question, 'answer')));
-  const answers = Object.fromEntries(pathQuestions('path_grc').map((question) => [question.id, question.answer]));
-  const passed = await service.submit('learner', 'Test learner', 'path_grc', answers);
+  const answers = Object.fromEntries(pathQuestions('path_grc','ar','learner').map((question) => [question.id, question.answer]));
+  const passed = await service.submit('learner', 'Test learner', 'path_grc', answers, open.data.formId);
   assert.equal(passed.code, 200);
   assert.equal(passed.data.passed, true);
   assert.match(passed.data.credentialId, /^c_[a-f0-9]{32}$/);

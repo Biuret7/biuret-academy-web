@@ -1,6 +1,6 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
-import { user, loadUser, loadCourseExam, submitCourseExam } from './auth.js?v=20261004-learning2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-forms1';
+import { user, loadUser, loadCourseExam, submitCourseExam } from './auth.js?v=20261005-forms1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
 
 const root = document.querySelector('#course-assessment-main');
 const order = Number(new URLSearchParams(location.search).get('order'));
@@ -10,7 +10,7 @@ let state, busy = false, feedback = '';
 
 function frame(body) {
   root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="courses.html">← ${tr('جميع الدورات', 'All courses')}</a><span class="section-kicker">BIURET ACADEMY / COURSE EXAM</span><h1>${esc(state?.title || tr('امتحان الدورة', 'Course exam'))}</h1><p>${tr('أكمل دروس الدورة، ثم اختبر فهمك قبل الانتقال إلى تقييم المسار العملي والنهائي.', 'Finish the course lessons, then check your understanding before the path practical and final exam.')}</p></section><section class="assessment-body section-frame">${body}</section>`;
-  attachAssessmentProgress(root);
+  attachAssessmentProgress(root,state?.formId);
 }
 function render() {
   if (!state) return;
@@ -22,7 +22,7 @@ function render() {
   frame(progress + `<div class="assessment-card"><h2>${tr('اختبر فهمك', 'Check your understanding')}</h2><p>${state.totalQuestions} ${tr('أسئلة، النجاح من', 'questions; pass at')} ${state.passScore}/${state.totalQuestions}. ${tr('يمكنك إعادة المحاولة بعد المراجعة.', 'You may retry after review.')}</p>${feedback ? `<p class="answer-feedback" role="status">${esc(feedback)}</p>` : ''}<form id="course-exam-form" class="practice-form">${fields}<button class="button button-primary" type="submit" ${busy ? 'disabled' : ''}>${tr('سلّم الإجابات', 'Submit answers')} ↗</button></form></div>`);
 }
 async function refresh() {
-  if (!Number.isInteger(order) || order < 1 || order > 18) { frame(`<div class="assessment-card"><h2>${tr('الدورة غير موجودة', 'Course not found')}</h2></div>`); return; }
+  if (!Number.isInteger(order) || order < 1 || order > 19) { frame(`<div class="assessment-card"><h2>${tr('الدورة غير موجودة', 'Course not found')}</h2></div>`); return; }
   if (!user()) await loadUser();
   if (!user()) { frame(`<div class="assessment-card"><h2>${tr('سجّل الدخول للمتابعة', 'Sign in to continue')}</h2><button class="button button-primary" id="course-signin" type="button">${tr('تسجيل الدخول', 'Sign in')}</button></div>`); return; }
   frame(`<div class="assessment-card"><h2>${tr('جارٍ تحميل الامتحان…', 'Loading exam…')}</h2></div>`);
@@ -34,12 +34,12 @@ root?.addEventListener('click', (event) => {
   if (event.target.closest('#course-retry')) refresh();
 });
 root?.addEventListener('submit', async (event) => {
-  if (event.target.id !== 'course-exam-form' || busy) return;
-  event.preventDefault(); busy = true;
+  if (event.target.id !== 'course-exam-form') return;
+  event.preventDefault(); if(busy)return; busy = true;
   const answers = Object.fromEntries([...new FormData(event.target)].map(([key, value]) => [key, Number(value)]));
   event.target.querySelector('button[type="submit"]').disabled = true;
   try {
-    const result = await submitCourseExam(order, answers);
+    const result = await submitCourseExam(order, answers, state.formId);
     feedback = result.passed ? '' : `${tr('النتيجة', 'Score')}: ${result.score}/${result.total}. ${tr('راجع الدروس وحاول مجدداً.', 'Review the lessons and try again.')}`;
     await refresh();
   } catch (error) { feedback = error.message; render(); }

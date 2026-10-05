@@ -26,12 +26,12 @@ test('new GRC teaching stays private, requires Foundations for Plus, and grades 
  const open=publicLibraryFor(lang,{plan:'plus'},true).categories.find(c=>c.order===19);for(const l of open.lessons){assert.ok(l.guide.concept.length>300);assert.equal(Object.hasOwn(l.guide.checkpoint,'answer'),false);const a=rd('learning-edition.private.json').lessons[l.id].checkpoint.answer;assert.equal(lessonCheckpoint(l.id,a).correct,true);assert.equal(lessonCheckpoint(l.id,(a+1)%4).correct,false);}}
 });
 test('GRC course exam requires all six lessons and records its current assessment edition',{skip:!has},async()=>{
- const {courseExamService}=await import('../functions/academy-progress/src/course-exam.js');let payload;
+ const {courseExamService,courseQuestions}=await import('../functions/academy-progress/src/course-exam.js');let payload;
  const request=async(url,o={})=>o.method==='POST'?(payload=JSON.parse(JSON.parse(o.body).data.payload),{status:201}):{status:404};
  const create=getRead=>courseExamService({base:'https://fixture.test',request,getRead,membership:{plan:'plus'},foundationsPassed:true});
  assert.equal((await create(async(u,id)=>id!=='grc-supplier').state('learner',19)).data.eligible,false);
  const service=create(async()=>true),state=await service.state('learner',19,'en');assert.equal(state.data.requiredLessons,6);assert.ok(state.data.questions.every(q=>!Object.hasOwn(q,'answer')&&!Object.hasOwn(q,'explanation')));
- const bank=rd('course-exam-bank.private.json')[19],answers=Object.fromEntries(bank.map(q=>[q.id,q.answer]));assert.equal((await service.submit('learner',19,answers)).data.passed,true);assert.equal(payload.assessmentEdition,'assurance-transfer-20261005');
+ const bank=courseQuestions(19,'ar','learner').questions,answers=Object.fromEntries(bank.map(q=>[q.id,q.answer]));assert.equal((await service.submit('learner',19,answers,state.data.formId)).data.passed,true);assert.equal(payload.assessmentEdition,'assurance-transfer-20261005');
 });
 test('new GRC requirements do not invalidate historical path passes or rewrite certificate counts',{skip:!has},async()=>{
  const {pathExamService,pathAttemptId}=await import('../functions/academy-progress/src/path-exam.js');const rows=new Map(),base='https://fixture.test',attempt=`${base}/tablesdb/6aa56477002e28054068/tables/6ab933b6001be5900662/rows/${pathAttemptId('old-user','path_grc',1)}`,id='c_'+'2'.repeat(32),cert=`${base}/tablesdb/6aa56477002e28054068/tables/6ab93416002801b57b3f/rows/${id}`;

@@ -1,8 +1,8 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
-import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261004-learning2';
-import { currentLanguage, applyLanguage } from './i18n.js?v=20261004-paths1';
-import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261004-1';
-import { fullName } from './full-name.js?v=20260929-1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-forms1';
+import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261005-forms1';
+import { currentLanguage, applyLanguage } from './i18n.js?v=20261005-forms1';
+import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261005-forms1';
+import { fullName } from './full-name.js?v=20261005-forms1';
 
 const root = document.querySelector('#assessment-main');
 const isExam = document.querySelector('.site-shell')?.dataset.page === 'exam';

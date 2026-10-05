@@ -34,8 +34,8 @@ test('course exams cover imported courses and require access and recorded lesson
     assert.ok(state.data.questions.every((item) => !Object.hasOwn(item, 'answer')));
   }
   const state = await service.state('learner', 18, 'en');
-  assert.equal((await service.submit('learner', 18, {})).code, 400);
-  const submitted = await service.submit('learner', 18, Object.fromEntries(state.data.questions.map((item) => [item.id, 0])));
+  assert.equal((await service.submit('learner', 18, {}, state.data.formId)).code, 400);
+  const submitted = await service.submit('learner', 18, Object.fromEntries(state.data.questions.map((item) => [item.id, 0])), state.data.formId);
   assert.equal(submitted.code, 200);
   assert.ok(submitted.data.score >= 0);
 });

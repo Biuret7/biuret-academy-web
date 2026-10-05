@@ -10,3 +10,4 @@ content/desktop-library.en.json
 _site/
 .translation-venv/
 functions/academy-progress/learning-edition.private.json
+functions/academy-progress/assessment-variants.private.json

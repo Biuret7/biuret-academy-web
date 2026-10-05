@@ -1,17 +1,19 @@
-import { user } from './auth.js?v=20261004-learning2';
-import { currentLanguage } from './i18n.js?v=20261004-paths1';
+import { user } from './auth.js?v=20261005-forms1';
+import { currentLanguage } from './i18n.js?v=20261005-forms1';
 
 // Keep answers while switching languages or rerendering an assessment, scoped
 // to the signed-in account and this page. Answers are never stored on disk.
 let owner;
+let formKey;
 const answers = new Map();
 const bound = new WeakSet();
 
-export function attachAssessmentProgress(root) {
+export function attachAssessmentProgress(root, formId = '') {
   if (!root) return;
   if (owner !== user()?.$id) { owner = user()?.$id; answers.clear(); }
   const form = root.querySelector('form');
   if (!form || !owner) return;
+  if (formKey !== formId) {formKey=formId;answers.clear();}
   const radios = [...form.querySelectorAll('input[type="radio"]')];
   if (!radios.length) return;
   const groups = new Set(radios.map((radio) => radio.name));

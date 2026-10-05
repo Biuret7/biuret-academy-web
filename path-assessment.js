@@ -1,8 +1,8 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261004-learning2';
-import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261004-learning2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
-import { credentialFacts, downloadCredential } from './credential-art.js?v=20261004-1';
-import { fullName } from './full-name.js?v=20260929-1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-forms1';
+import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261005-forms1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
+import { credentialFacts, downloadCredential } from './credential-art.js?v=20261005-forms1';
+import { fullName } from './full-name.js?v=20261005-forms1';
 
 const root = document.querySelector('#path-assessment-main');
 const pathId = new URLSearchParams(location.search).get('id');
@@ -24,7 +24,7 @@ let status, credential, busy = false;
 function frame(content) {
   const title = names[pathId] ? names[pathId][currentLanguage() === 'en' ? 1 : 0] : tr('امتحان التخصص', 'Specialty exam');
   root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="path.html?id=${encodeURIComponent(pathId)}">← ${tr('المسارات', 'Paths')}</a><span class="section-kicker">BIURET ACADEMY / PATH EXAM</span><h1>${esc(title)}</h1><p>${tr('أكمل دروس المسار وامتحانات دوراته وتقييمه العملي، ثم اجتز الامتحان النهائي لتحصل على إثبات إنجاز التخصص.', 'Complete the path lessons, course exams and practical assessment, then pass the final exam for your specialty credential.')}</p></section><section class="assessment-body section-frame">${content}</section>`;
-  attachAssessmentProgress(root);
+  attachAssessmentProgress(root,status?.formId);
 }
 
 function date(value) { return new Date(value).toLocaleDateString(currentLanguage() === 'en' ? 'en-US' : 'ar', { year: 'numeric', month: 'long', day: 'numeric' }); }
@@ -65,7 +65,7 @@ async function refresh() {
       return;
     }
     const questions = status.questions.map((question, index) => `<fieldset><legend>${index + 1}. ${esc(question.question)}</legend>${question.options.map((option, optionIndex) => `<label><input type="radio" name="${esc(question.id)}" value="${optionIndex}" required><span>${esc(option)}</span></label>`).join('')}</fieldset>`).join('');
-    frame(progress + `<div class="assessment-card"><h2>${tr('امتحان المسار', 'Path exam')}</h2><p>${tr('10 أسئلة · النجاح من 8/10 · 3 محاولات مع انتظار 24 ساعة بين المحاولات.', '10 questions · pass at 8/10 · 3 attempts with a 24-hour wait between attempts.')}</p><form id="path-exam-form" class="practice-form">${questions}<button class="button button-primary" type="submit">${tr('سلّم الامتحان', 'Submit exam')} ↗</button></form></div>`);
+    frame(progress + `<div class="assessment-card"><h2>${tr('امتحان المسار', 'Path exam')}</h2><p>${tr(`10 أسئلة · النجاح من ${status.passScore}/10 · 3 محاولات مع انتظار 24 ساعة بين المحاولات.`,`10 questions · pass at ${status.passScore}/10 · 3 attempts with a 24-hour wait between attempts.`)}</p><p>${tr('النموذج ثابت عند تحديث الصفحة وتغيير اللغة. قد يتغير اختيار الحالات وترتيب الخيارات في محاولة لاحقة؛ راجع الأدلة بدلاً من حفظ رقم الخيار.','The form remains stable on refresh and language changes. Cases and option order may change on a later attempt; review evidence rather than memorize option numbers.')}</p><form id="path-exam-form" class="practice-form">${questions}<button class="button button-primary" type="submit">${tr('سلّم الامتحان', 'Submit exam')} ↗</button></form></div>`);
   } catch (error) { frame(`<div class="assessment-card"><h2>${tr('تعذر فتح الامتحان', 'Exam unavailable')}</h2><p>${esc(error.message)}</p><button class="button button-outline" id="path-retry" type="button">${tr('أعد المحاولة', 'Retry')}</button></div>`); }
 }
 
@@ -89,12 +89,12 @@ root?.addEventListener('click', async (event) => {
 });
 
 root?.addEventListener('submit', async (event) => {
-  if (event.target.id !== 'path-exam-form' || busy) return;
-  event.preventDefault(); busy = true;
+  if (event.target.id !== 'path-exam-form') return;
+  event.preventDefault(); if(busy)return; busy = true;
   const button = event.target.querySelector('button[type="submit"]'); button.disabled = true;
   try {
     const answers = Object.fromEntries([...new FormData(event.target)].map(([key, value]) => [key, Number(value)]));
-    const result = await submitPathExam(pathId, answers);
+    const result = await submitPathExam(pathId, answers, status.formId);
     if (result.passed) { await refresh(); return; }
     frame(`<div class="assessment-card"><h2>${tr('نتيجتك', 'Your score')}: ${result.score}/10</h2><p>${tr('راجع دروس المسار ثم حاول بعد انتهاء فترة الانتظار.', 'Review the path lessons, then retry after the cooldown.')}</p><button class="button button-outline" id="path-retry" type="button">${tr('عرض الحالة', 'View status')}</button></div>`);
   } catch (error) { button.disabled = false; alert(error.message); }

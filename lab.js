@@ -1,9 +1,9 @@
-import { mountWorkbench } from './workbench.js?v=20261005-pilot1';
-import { user, loadUser } from './auth.js?v=20261004-learning2';
-import { fullName } from './full-name.js?v=20260929-1';
-import { labById } from './labs.js?v=20260929-1';
-import { courseById, localized } from './learning-content.js?v=20261005-pilot1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
+import { mountWorkbench } from './workbench.js?v=20261005-forms1';
+import { user, loadUser } from './auth.js?v=20261005-forms1';
+import { fullName } from './full-name.js?v=20261005-forms1';
+import { labById } from './labs.js?v=20261005-forms1';
+import { courseById, localized } from './learning-content.js?v=20261005-forms1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
 
 const root = document.querySelector('#lab-main');
 const lab = labById[new URLSearchParams(location.search).get('id')];

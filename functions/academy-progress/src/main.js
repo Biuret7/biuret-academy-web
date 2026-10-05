@@ -226,7 +226,7 @@ export default async ({ req, res, error }) => {
         getRead: async (userId, lessonId) => Boolean(await getAward(key, userId, lessonId)),
         membership: context.membership, foundationsPassed: context.foundationsPassed });
       const result = input.action === 'courseExamState' ? await courses.state(account.$id, input.courseOrder, input.language)
-        : await courses.submit(account.$id, input.courseOrder, input.answers);
+        : await courses.submit(account.$id, input.courseOrder, input.answers, input.formId);
       return res.json(result.data, result.code);
     }
     if (['practicalState', 'submitPractical', 'pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential', 'pathCorrectCredentialName'].includes(input.action)) {
@@ -253,7 +253,7 @@ export default async ({ req, res, error }) => {
         return res.json(result.data, result.code);
       }
       const result = input.action === 'pathExamState' ? await paths.state(account.$id, input.pathId, input.language)
-        : input.action === 'pathSubmitExam' ? await paths.submit(account.$id, fullName(account.name), input.pathId, input.answers)
+        : input.action === 'pathSubmitExam' ? await paths.submit(account.$id, fullName(account.name), input.pathId, input.answers, input.formId)
           : input.action === 'pathCredential' ? await paths.credential(account.$id, input.pathId)
             : input.action === 'pathCorrectCredentialName' ? fullName(account.name) ? await paths.correctName(account.$id, input.pathId, fullName(account.name)) : { code: 403, data: { error: 'Set your real full name first' } }
               : await paths.share(account.$id, input.pathId, input.enabled);

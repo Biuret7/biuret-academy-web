@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { libraryData, mayAccessLibrary, programPathIds } from './library.js';
+import { assessmentForm, assessmentVariants, FORM_VERSION } from './assessment-forms.js';
 
 const VERSION = 'program-path-v1';
 const DATABASE = '6aa56477002e28054068';
@@ -28,10 +29,11 @@ export function pathAttemptId(userId, pathId, slot) {
   return `p_${createHash('sha256').update(`${userId}:${VERSION}:${pathId}:${slot}`).digest('hex').slice(0, 32)}`;
 }
 
-export function pathQuestions(pathId, language = 'ar') {
+export function pathQuestions(pathId, language = 'ar', userId, slot = 1) {
   const path = libraryData('ar').roadmapPaths.find((item) => item[2] === pathId);
   if (!path) return null;
   const lang = language === 'en' ? 'en' : 'ar';
+  if (userId) return assessmentForm(assessmentBank()[pathId],assessmentVariants('path',pathId),{userId,scope:`path:${pathId}`,slot,language:lang}).questions;
   return assessmentBank()[pathId].map((item) => ({ id: item.id, question: item.question[lang], options: item.options.map((option) => option[lang]), answer: item.answer }));
 }
 
@@ -97,7 +99,9 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
       attempts: attempts.map(({ slot, score, passed, completedAt }) => ({ slot, score, passed, completedAt })),
       remaining: MAX_ATTEMPTS - attempts.length, nextAt, passed: Boolean(passed), credentialId: passed?.credentialId || null };
     if (eligible && !passed && data.remaining && (!nextAt || Date.now() >= Date.parse(nextAt))) {
-      data.questions = pathQuestions(pathId, language).map(({ answer, ...question }) => question);
+      const form = assessmentForm(assessmentBank()[pathId],assessmentVariants('path',pathId),{userId,scope:`path:${pathId}`,slot:attempts.length+1,language});
+      data.questions = form.questions.map(({ answer, ...question }) => question);
+      data.formId = form.formId;
     }
     return { code: 200, data };
   }
@@ -107,18 +111,20 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     if (!/^c_[a-f0-9]{32}$/.test(id || '')) throw new Error('Path credential ID invalid');
     if (await getRow(`${credentialsBase}/rows/${id}`)) return;
     const payload = JSON.stringify({ version: attempt.credentialVersion || VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, assessmentEdition: attempt.assessmentEdition || 'learning-quality-20261004', ...pathDetails(attempt.pathId, attempt.assessmentEdition !== 'assurance-transfer-20261005'),
+      ...(Number.isInteger(attempt.courseCount) && Number.isInteger(attempt.lessonCount) ? {courseCount:attempt.courseCount,lessonCount:attempt.lessonCount} : {}),
       ...(attempt.credentialVersion ? { practicalScore: 3, practicalTotal: 3 } : {}) });
     const result = await request(`${credentialsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: id, data: { payload }, permissions: [] }) });
     if (![201, 409].includes(result.status)) throw new Error('Path credential creation failed');
   }
 
-  async function submit(userId, name, pathId, answers) {
+  async function submit(userId, name, pathId, answers, formId) {
     const current = await state(userId, pathId);
     if (current.code !== 200) return current;
     if (current.data.passed) return { code: 409, data: { error: 'Path exam already passed', ...current.data } };
     if (!current.data.eligible) return { code: 403, data: { error: 'Complete path lessons, course exams, and practical assessment first' } };
     if (!current.data.remaining || (current.data.nextAt && Date.now() < Date.parse(current.data.nextAt))) return { code: 429, data: { error: 'Path exam is in cooldown', ...current.data } };
-    const bank = pathQuestions(pathId, 'ar');
+    if (formId !== current.data.formId) return {code:409,data:{error:'Exam changed; reload before submitting'}};
+    const bank = pathQuestions(pathId, 'ar', userId, current.data.attempts.length + 1);
     if (!answers || typeof answers !== 'object' || Array.isArray(answers) || Object.keys(answers).length !== bank.length ||
       bank.some((question) => !Object.hasOwn(answers, question.id) || !Number.isInteger(answers[question.id]) || answers[question.id] < 0 || answers[question.id] >= question.options.length)) {
       return { code: 400, data: { error: 'Answer every question once' } };
@@ -129,12 +135,13 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
     const holderName = name;
     const credentialVersion = 'program-path-v2';
-    const assessmentEdition = assessmentBank()[pathId][0].edition || 'learning-quality-20261004';
-    const payload = JSON.stringify({ version: VERSION, credentialVersion, assessmentEdition, requiredScore: 9, pathId, slot, score, passed, credentialId, holderName });
+    const assessmentEdition = assessmentVariants('path',pathId).length ? FORM_VERSION : assessmentBank()[pathId][0].edition || 'learning-quality-20261004';
+    const counts = pathDetails(pathId);
+    const payload = JSON.stringify({ version: VERSION, credentialVersion, assessmentEdition, formId, formVersion:FORM_VERSION, questionIds:bank.map(q=>q.id), ...counts, requiredScore: 9, pathId, slot, score, passed, credentialId, holderName });
     const result = await request(`${attemptsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: pathAttemptId(userId, pathId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Path attempt creation failed');
-    if (passed) await ensureCredential({ credentialId, credentialVersion, assessmentEdition, pathId, holderName, score, completedAt: result.data.$createdAt });
+    if (passed) await ensureCredential({ credentialId, credentialVersion, assessmentEdition, ...counts, pathId, holderName, score, completedAt: result.data.$createdAt });
     return { code: 200, data: { score, passed, credentialId, remaining: MAX_ATTEMPTS - slot } };
   }
 

@@ -1,5 +1,5 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20260929-1';
-import { fullName } from './full-name.js?v=20260929-1';
+import { cleanProgress, mergeProgress } from './engine.js?v=20261005-forms1';
+import { fullName } from './full-name.js?v=20261005-forms1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -72,7 +72,10 @@ async function learningExecution(input, learningState = true) {
   let data;
   try { data = JSON.parse(result.responseBody || '{}'); } catch { data = {}; }
   if (result.responseStatusCode < 200 || result.responseStatusCode >= 300) {
-    const failure = new Error(data.error || 'Learning progress is temporarily unavailable.');
+    const errorText = data.error === 'Exam changed; reload before submitting'
+      ? document.documentElement.lang === 'ar' ? 'تغير نموذج الامتحان. حدّث الصفحة وراجع إجاباتك قبل التسليم.' : 'The exam form changed. Reload and review your answers before submitting.'
+      : data.error || 'Learning progress is temporarily unavailable.';
+    const failure = new Error(errorText);
     failure.code = result.responseStatusCode;
     failure.details = data;
     throw failure;
@@ -93,11 +96,11 @@ export function markProgramLesson(lessonId, answerIndex) { return learningExecut
 export function loadProgramLessonState(lessonId) { return learningExecution({ action: 'libraryLessonState', lessonId }, false); }
 export function checkProgramPractice(kind, index, answers, language) { return learningExecution({ action: 'libraryPractice', kind, index, answers, language }, false); }
 export function loadCourseExam(courseOrder, language) { return learningExecution({ action: 'courseExamState', courseOrder, language }, false); }
-export function submitCourseExam(courseOrder, answers) { return learningExecution({ action: 'courseSubmitExam', courseOrder, answers }, false); }
+export function submitCourseExam(courseOrder, answers, formId) { return learningExecution({ action: 'courseSubmitExam', courseOrder, answers, formId }, false); }
 export function loadPractical(pathId, language) { return learningExecution({ action: 'practicalState', pathId, language }, false); }
 export function submitPractical(pathId, answers) { return learningExecution({ action: 'submitPractical', pathId, answers }, false); }
 export function loadPathExam(pathId, language) { return learningExecution({ action: 'pathExamState', pathId, language }, false); }
-export function submitPathExam(pathId, answers) { return learningExecution({ action: 'pathSubmitExam', pathId, answers }, false); }
+export function submitPathExam(pathId, answers, formId) { return learningExecution({ action: 'pathSubmitExam', pathId, answers, formId }, false); }
 export function loadPathCredential(pathId) { return learningExecution({ action: 'pathCredential', pathId }, false); }
 export function sharePathCredential(pathId, enabled) { return learningExecution({ action: 'pathShareCredential', pathId, enabled }, false); }
 export function awardLesson(lessonId, answerIndex) { return learningExecution({ action: 'completeLesson', lessonId, answerIndex }); }

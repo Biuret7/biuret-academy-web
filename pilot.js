@@ -1,7 +1,7 @@
-import { pilotTasks, pilotResults, cleanPilot, pilotSummary, pilotReport } from './pilot-model.js?v=20261005-trial1';
-import { user, loadUser } from './auth.js?v=20261004-learning2';
-import { fullName } from './full-name.js?v=20260929-1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
+import { pilotTasks, pilotResults, cleanPilot, pilotSummary, pilotReport } from './pilot-model.js?v=20261005-forms1';
+import { user, loadUser } from './auth.js?v=20261005-forms1';
+import { fullName } from './full-name.js?v=20261005-forms1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
 
 const root = document.querySelector('#pilot-main');
 const tr = (ar, en) => currentLanguage() === 'ar' ? ar : en;
