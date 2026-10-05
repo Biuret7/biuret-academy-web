@@ -93,6 +93,10 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .lesson-study-nav { display: flex; flex-wrap: wrap; gap: .5rem; padding-block: 1rem; margin-block-end: 1.5rem; border-block-end: 1px solid var(--border, #29312c); }
 .lesson-study-nav a { padding: .5rem .75rem; border-radius: .65rem; background: #141c18; font-size: .82rem; color: #c9d2c9; }
 .lesson-copy { scroll-margin-block-start: 6rem; }
+.foundation-response { display: grid; gap: .8rem; margin-block: 2rem; padding: 1.3rem; background: #111d16; border: 1px solid #364735; border-radius: .8rem; }
+.foundation-response textarea { width: 100%; padding: 1rem; color: #edf2ed; background: #090f0b; border: 1px solid #495b40; border-radius: .6rem; font: inherit; line-height: 1.8; }
+.foundation-response textarea:focus-visible { outline: 2px solid #c5ff31; outline-offset: 3px; }
+.foundation-response small { color: #b5c4b3; line-height: 1.7; }
 .lesson-copy p, .library-reading > p { line-height: 1.95; max-width: 78ch; }
 .evidence-workbench { margin-block: 2rem; padding: clamp(1rem, 3vw, 2rem); background: linear-gradient(145deg, #111c17, #0a1110); border: 1px solid #354334; border-radius: 1.4rem; }
 .workbench-heading { max-width: 76ch; }

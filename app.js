@@ -1,4 +1,5 @@
 import { renderAvatar } from './identity.js?v=20261004-learning2';
+import { mountLessonNotes } from './lesson-notes.js?v=20261005-pilot1';
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260929-1';
 import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261005-pilot1';
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261004-1';
@@ -245,6 +246,10 @@ function renderLesson() {
   const navigation = `<nav class="lesson-study-nav" aria-label="${j('خطة الدرس', 'Lesson plan')}">${lesson.sections.map((section, i) => `<a href="#lesson-section-${i}">${esc(lc(section.title))}</a>`).join('')}<a href="#lesson-check">${ll('selfCheck')}</a></nav>`;
   root.querySelectorAll('.lesson-copy').forEach((section, i) => { section.id = `lesson-section-${i}`; });
   root.querySelector('.lesson-article').insertAdjacentHTML('afterbegin', navigation);
+  if (user()) {
+    root.querySelector('.lesson-check').insertAdjacentHTML('beforebegin', '<section class="foundation-response" id="foundation-response"></section>');
+    mountLessonNotes(root.querySelector('#foundation-response'), { owner: user().$id, lessonId: lesson.id, language: currentLanguage() });
+  }
   if (labId) root.querySelector('.lesson-check').insertAdjacentHTML('beforebegin', `<div class="learning-practice-output"><h2>${j('طبّق قبل التقييم', 'Practice before assessment')}</h2><p>${j('اقرأ المثال، ثم جرّب عينة مستقلة قبل الانتقال لسؤال التحقق.', 'Read the worked example, then try an independent sample before the checkpoint.')}</p><a class="button button-outline" href="lab.html?id=${labId}">${j('افتح المختبر التدريبي', 'Open the practice lab')} ↗</a></div>`);
   const references = course.id === 'url-safety' ? [['MDN: URL structure', 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL']] : course.id === 'identity-access' ? [['OWASP Authentication', 'https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html'], ['OWASP Session Management', 'https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html']] : [['NIST incident handling guide', 'https://csrc.nist.gov/pubs/sp/800/61/r3/final']];
   root.querySelector('.lesson-article').insertAdjacentHTML('beforeend', `<div class="learning-source-links"><h2>${j('مراجع أصلية للتعمق', 'Primary references for further study')}</h2>${references.map(([title, url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${title} ↗</a>`).join('')}</div>`);
