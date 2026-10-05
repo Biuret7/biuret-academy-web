@@ -1,4 +1,4 @@
-import { academyPaths } from './path-catalog-data.js?v=20261005-cd1';
+import { academyPaths } from './path-catalog-data.js?v=20261005-specialist1';
 import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261004-paths1';
 import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261004-learning2';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';

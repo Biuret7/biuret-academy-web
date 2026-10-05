@@ -1,6 +1,8 @@
 import { mountWorkbench } from './workbench.js?v=20261005-pilot1';
 import { mountAuthorizationLab } from './authorization-lab.js?v=20261005-access1';
 import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261005-cd1';
+import { mountSpecialist } from './specialist-lab.js?v=20261005-specialist1';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261005-specialist1';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261004-learning2';
 import { requiredPlan, canAccess } from './plan-access.js?v=20260929-1';
@@ -100,7 +102,9 @@ function renderCourse() {
   if (!category) return frame('LIBRARY / COURSE', tr('الكورس غير موجود', 'Course not found'), '', `<a href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
   setPageHeaderTitle(titles('categories', category.id));
   const linkedPaths = data.roadmapPaths.filter((path) => path[6].includes(category.order));
-  return frame('LIBRARY / COURSE', category.title, esc(category.description), `${notice()}<div class="library-summary"><span>${category.lessons.length} ${tr('دروس', 'lessons')}</span><span>${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة', 'read')}</span></div><div class="library-list">${category.lessons.map(lessonCard).join('')}</div>${section(tr('امتحان هذه الدورة', 'This course exam'), `<p>${tr('بعد قراءة الدروس، اجتز امتحان الدورة المحفوظ في حسابك. تحتاج المسارات التي تضمها إلى هذه النتيجة قبل تقييمها العملي.', 'After reading the lessons, pass the course exam saved in your account. Paths containing this course need that result before their practical assessment.')}</p><a class="button button-primary" href="course-exam.html?order=${category.order}">${tr('افتح امتحان الدورة', 'Open course exam')} ↗</a>`)}${linkedPaths.length ? section(tr('هذا الكورس ضمن مسارات', 'This course is part of'), `<div class="library-sources">${linkedPaths.map((path) => `<a href="path.html?id=${encodeURIComponent(path[2])}">${esc(path[1])} · ${tr('محتويات المسار', 'Path contents')} ↗</a>`).join('')}</div>`) : ''}<a class="button button-outline" href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
+  const practice = Object.entries(specialistPractices).find(([,v])=>v.course===category.id);
+  const practiceMarkup = practice ? `<div class="catalog-callout library-notice"><strong>${tr('من الدرس إلى القرار العملي','From lesson to practical decision')}</strong><p>${tr('طبّق ما تعلمته على عينة صناعية واكتب قرارك وحدود الدليل. يخضع المختبر لصلاحيات حسابك؛ لا يمنح نتيجة امتحان أو شهادة.','Apply the lesson to synthetic evidence and document decision limits. Lab access follows your account permissions; it does not award an exam result or credential.')}</p><a class="button button-outline" href="practice-lab.html?id=${practice[1].index}&context=${practice[0]}">${tr(practice[1].title.ar,practice[1].title.en)} ↗</a></div>` : '';
+  return frame('LIBRARY / COURSE', category.title, esc(category.description), `${notice()}${practiceMarkup}<div class="library-summary"><span>${category.lessons.length} ${tr('دروس', 'lessons')}</span><span>${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة', 'read')}</span></div><div class="library-list">${category.lessons.map(lessonCard).join('')}</div>${section(tr('امتحان هذه الدورة', 'This course exam'), `<p>${tr('بعد قراءة الدروس، اجتز امتحان الدورة المحفوظ في حسابك. تحتاج المسارات التي تضمها إلى هذه النتيجة قبل تقييمها العملي.', 'After reading the lessons, pass the course exam saved in your account. Paths containing this course need that result before their practical assessment.')}</p><a class="button button-primary" href="course-exam.html?order=${category.order}">${tr('افتح امتحان الدورة', 'Open course exam')} ↗</a>`)}${linkedPaths.length ? section(tr('هذا الكورس ضمن مسارات', 'This course is part of'), `<div class="library-sources">${linkedPaths.map((path) => `<a href="path.html?id=${encodeURIComponent(path[2])}">${esc(path[1])} · ${tr('محتويات المسار', 'Path contents')} ↗</a>`).join('')}</div>`) : ''}<a class="button button-outline" href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
 }
 
 function renderLesson() {
@@ -131,6 +135,11 @@ function renderLab() {
   const index = Number(params.get('id'));
   const lab = data.labs[index];
   if (!lab) return frame('PRACTICE / LAB', tr('المختبر غير موجود', 'Lab not found'), '', '<a href="labs.html">Labs ↗</a>');
+  const specialist = specialistVariant(index,params.get('context'));
+  if(specialist){
+    const practice=specialistPractices[specialist];setPageHeaderTitle(practice.title);
+    return frame('PRACTICE / DECISION LAB',tr(practice.title.ar,practice.title.en),tr('اقرأ العينة، توقّع القرار، ثم قارِن النتيجة واكتب ما يحتاج تحققاً إضافياً.','Read the sample, predict a decision, compare the result and document what needs further verification.'),`<div class="library-sources"><a href="path.html?id=${practice.path}">${tr('ارجع إلى محتويات المسار','Return to path contents')} ↗</a><a href="library-course.html?id=${practice.course}">${tr('راجع الدروس المرتبطة','Review related lessons')} ↗</a></div><div id="specialist-workbench"></div>`);
+  }
   if(index===7 && params.get('context')==='cloud') {
     const title={ar:'تقييم صلاحيات السحابة والانحراف',en:'Cloud access and drift evaluation'};
     setPageHeaderTitle(title);
@@ -268,15 +277,17 @@ function render() {
   }[page];
   const currentSearch = page === 'search' ? document.querySelector('#library-search')?.value || '' : '';
   root.innerHTML = renderer ? renderer() : '';
-  if (page === 'practice-lab' && [1, 7].includes(Number(params.get('id'))) && params.get('context')!=='cloud' && user()) {
+  const specialist=page==='practice-lab'?specialistVariant(Number(params.get('id')),params.get('context')):null;
+  if(specialist&&user())mountSpecialist(root.querySelector('#specialist-workbench'),{owner:user().$id,language:currentLanguage(),kind:specialist});
+  if (page === 'practice-lab' && [1, 7].includes(Number(params.get('id'))) && params.get('context')!=='cloud' && !specialist && user()) {
     root.insertAdjacentHTML('beforeend', '<div id="evidence-workbench"></div>');
     mountWorkbench(root.querySelector('#evidence-workbench'), { owner: user().$id, language: currentLanguage(), context: 'soc' });
   }
-  if (page === 'practice-lab' && Number(params.get('id')) === 2 && user()) {
+  if (page === 'practice-lab' && Number(params.get('id')) === 2 && !specialist && user()) {
     root.insertAdjacentHTML('beforeend', '<div id="authorization-workbench"></div>');
     mountAuthorizationLab(root.querySelector('#authorization-workbench'), { owner: user().$id, language: currentLanguage() });
   }
-  if (page === 'practice-lab' && user()) {
+  if (page === 'practice-lab' && !specialist && user()) {
     const index=Number(params.get('id'));
     const kind=index===6?'dfir':index===7&&params.get('context')==='cloud'?'cloud':null;
     if(kind) {

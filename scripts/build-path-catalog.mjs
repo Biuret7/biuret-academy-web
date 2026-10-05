@@ -5,6 +5,7 @@ import { courses, learningPath } from '../learning-content.js';
 import { labs } from '../labs.js';
 import { challenges } from '../content.js';
 import { englishChallenges } from '../content-en.js';
+import { specialistPractices } from '../specialist-model.js';
 
 // Export a strict metadata allowlist, never lesson bodies, questions or answers.
 const libraries = { ar: libraryData('ar'), en: libraryData('en') };
@@ -39,6 +40,11 @@ const paths = [{ id: 'foundations', title: learningPath.title, summary: learning
   challenges: challenges.filter(c => c.track === 'foundations').map(c => coreChallenge(c.id)),
   operations: operationMap.foundations.map(operation), practical: 'practical.html?id=foundations', exam: 'exam.html', certificate: 'certificate.html',
 }];
+const pathLab=(pathId,index)=>{
+  const variant=Object.entries(specialistPractices).find(([,v])=>v.path===pathId&&v.index===index);
+  if(variant)return {...resource('lab',index),title:variant[1].title,href:`practice-lab.html?id=${index}&context=${variant[0]}`};
+  return pathId==='path_cloud'&&index===7?{...resource('lab',index),title:{ar:'تقييم صلاحيات السحابة والانحراف',en:'Cloud access and drift evaluation'},href:'practice-lab.html?id=7&context=cloud'}:resource('lab',index);
+};
 for (const item of libraries.ar.roadmapPaths) {
   const id = item[2], overview = specializations.find(p => p.pathId === id), mapping = related[id];
   if (!overview || !mapping) throw new Error(`Path metadata missing for ${id}`);
@@ -46,7 +52,7 @@ for (const item of libraries.ar.roadmapPaths) {
     icon: { path_pentest: 'pentest', path_soc: 'soc', path_dfir: 'dfir', path_cloud: 'cloud', path_grc: 'grc', path_appsec: 'appsec', path_mobile: 'mobile', path_threat_intel: 'intel', path_malware: 'malware' }[id],
     outcomes: { ar: overview.topics.map(x => x.ar), en: overview.topics.map(x => x.en) },
     courses: item[6].map(course), optionalCourses: id === 'path_soc' ? [course(17)] : [], quizzes: mapping.quizzes.map(i => resource('quiz', i)),
-    labs: mapping.labs.map(i => id==='path_cloud' && i===7 ? {...resource('lab',i),title:{ar:'تقييم صلاحيات السحابة والانحراف',en:'Cloud access and drift evaluation'},href:'practice-lab.html?id=7&context=cloud'} : resource('lab', i)),
+    labs: mapping.labs.map(i => pathLab(id,i)),
     challenges: [...mapping.challenges.map(i => resource('challenge', i)), ...(mapping.coreChallenges || []).map(coreChallenge)],
     operations: operationMap[id].map(operation), practical: `practical.html?id=${id}`, exam: `path-exam.html?id=${id}`, certificate: `path-exam.html?id=${id}`,
   });

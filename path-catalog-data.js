@@ -1051,10 +1051,10 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "قياس التغطية والاستجابة",
-          "en": "Coverage and response validation"
+          "ar": "أدلة الضوابط وقرارات المخاطر",
+          "en": "Control evidence and risk decisions"
         },
-        "href": "practice-lab.html?id=7"
+        "href": "practice-lab.html?id=7&context=grc"
       }
     ],
     "challenges": [
@@ -1358,10 +1358,10 @@ export const academyPaths = [
         "id": "lab-2",
         "index": 2,
         "title": {
-          "ar": "تفويض الكائنات في API",
-          "en": "Object authorization in an API"
+          "ar": "حدود تطبيق الهاتف وتفويض البيانات",
+          "en": "Mobile boundaries and data authorization"
         },
-        "href": "practice-lab.html?id=2"
+        "href": "practice-lab.html?id=2&context=mobile"
       }
     ],
     "challenges": [
@@ -1503,10 +1503,10 @@ export const academyPaths = [
         "id": "lab-6",
         "index": 6,
         "title": {
-          "ar": "نسخة الأدلة وسلسلة الحيازة",
-          "en": "Evidence copies and chain of custody"
+          "ar": "استقلال المصادر وحدود الإسناد",
+          "en": "Source independence and attribution limits"
         },
-        "href": "practice-lab.html?id=6"
+        "href": "practice-lab.html?id=6&context=intel"
       },
       {
         "id": "lab-7",
