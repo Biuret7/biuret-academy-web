@@ -45,7 +45,7 @@ for (const item of libraries.ar.roadmapPaths) {
   paths.push({ id, title: overview.title, summary: overview.summary, free: false,
     icon: { path_pentest: 'pentest', path_soc: 'soc', path_dfir: 'dfir', path_cloud: 'cloud', path_grc: 'grc', path_appsec: 'appsec', path_mobile: 'mobile', path_threat_intel: 'intel', path_malware: 'malware' }[id],
     outcomes: { ar: overview.topics.map(x => x.ar), en: overview.topics.map(x => x.en) },
-    courses: item[6].map(course), quizzes: mapping.quizzes.map(i => resource('quiz', i)),
+    courses: item[6].map(course), optionalCourses: id === 'path_soc' ? [course(17)] : [], quizzes: mapping.quizzes.map(i => resource('quiz', i)),
     labs: mapping.labs.map(i => resource('lab', i)),
     challenges: [...mapping.challenges.map(i => resource('challenge', i)), ...(mapping.coreChallenges || []).map(coreChallenge)],
     operations: operationMap[id].map(operation), practical: `practical.html?id=${id}`, exam: `path-exam.html?id=${id}`, certificate: `path-exam.html?id=${id}`,

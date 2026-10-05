@@ -1,6 +1,6 @@
 import { renderAvatar } from './identity.js?v=20261004-learning2';
 import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20260929-1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261004-learning2';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261005-pilot1';
 import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261004-1';
 import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20260929-1';
 import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261004-learning2';
@@ -241,6 +241,13 @@ function renderLesson() {
   root.innerHTML = `<section class="learning-hero section-frame"><a class="learning-back" href="course.html?id=${encodeURIComponent(course.id)}">← ${esc(lc(course.title))}</a><span class="section-kicker">${ll('lesson')} ${String(lesson.order).padStart(2, '0')} / ${course.lessonIds.length}</span><h1>${esc(lc(lesson.title))}</h1><p>${esc(lc(lesson.summary))}</p><div class="learning-facts"><span>${lesson.minutes} ${ll('min')}</span><span>${done ? '✓ ' + ll('finished') : ll('available')}</span></div></section><article class="lesson-article section-frame">${lesson.sections.map((section) => `<section class="lesson-copy"><h2>${esc(lc(section.title))}</h2><p>${esc(lc(section.body))}</p></section>`).join('')}<div class="lesson-example"><span>EXAMPLE / URL</span><code dir="ltr">${esc(lesson.example)}</code></div><div class="learning-panel lesson-check" id="lesson-check"><span class="section-kicker">${ll('selfCheck')}</span><h2>${esc(lc(lesson.check.question))}</h2>${done ? `<p class="answer-feedback success">✓ ${ll('done')} — ${esc(lc(lesson.check.explanation))}</p>` : `<form id="lesson-check-form" data-lesson="${lesson.id}"><fieldset><legend class="sr-only">${esc(lc(lesson.check.question))}</legend>${lesson.check.options.map((option, index) => `<label class="option-label"><input type="radio" name="answer" value="${index}" required><span>${esc(lc(option))}</span></label>`).join('')}</fieldset><button class="button button-primary" type="submit">${ll('check')} ↗</button><p class="answer-feedback error" id="lesson-feedback" role="status" hidden></p></form>`}${done && nextId ? `<a class="button button-outline" href="lesson.html?id=${encodeURIComponent(nextId)}">${ll('next')} ↗</a>` : done ? `<a class="button button-outline" href="challenges.html?challenge=${encodeURIComponent(course.challengeId)}">${ll('practice')} ↗</a>` : ''}</div></article>`;
   root.querySelector('.learning-facts').insertAdjacentHTML('beforeend', `<span class="lesson-reward">${lessonRewardText()}</span>`);
   root.querySelector('.lesson-example span').textContent = lc(lesson.exampleLabel) || 'EXAMPLE / URL';
+  const labId = course.id === 'url-safety' ? 'http-basics' : course.id === 'evidence-response' ? 'log-triage' : null;
+  const navigation = `<nav class="lesson-study-nav" aria-label="${j('خطة الدرس', 'Lesson plan')}">${lesson.sections.map((section, i) => `<a href="#lesson-section-${i}">${esc(lc(section.title))}</a>`).join('')}<a href="#lesson-check">${ll('selfCheck')}</a></nav>`;
+  root.querySelectorAll('.lesson-copy').forEach((section, i) => { section.id = `lesson-section-${i}`; });
+  root.querySelector('.lesson-article').insertAdjacentHTML('afterbegin', navigation);
+  if (labId) root.querySelector('.lesson-check').insertAdjacentHTML('beforebegin', `<div class="learning-practice-output"><h2>${j('طبّق قبل التقييم', 'Practice before assessment')}</h2><p>${j('اقرأ المثال، ثم جرّب عينة مستقلة قبل الانتقال لسؤال التحقق.', 'Read the worked example, then try an independent sample before the checkpoint.')}</p><a class="button button-outline" href="lab.html?id=${labId}">${j('افتح المختبر التدريبي', 'Open the practice lab')} ↗</a></div>`);
+  const references = course.id === 'url-safety' ? [['MDN: URL structure', 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL']] : course.id === 'identity-access' ? [['OWASP Authentication', 'https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html'], ['OWASP Session Management', 'https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html']] : [['NIST incident handling guide', 'https://csrc.nist.gov/pubs/sp/800/61/r3/final']];
+  root.querySelector('.lesson-article').insertAdjacentHTML('beforeend', `<div class="learning-source-links"><h2>${j('مراجع أصلية للتعمق', 'Primary references for further study')}</h2>${references.map(([title, url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${title} ↗</a>`).join('')}</div>`);
   if (location.hash === '#lesson-check' && !quizAnchorFocused) {
     quizAnchorFocused = true;
     requestAnimationFrame(() => root.querySelector('#lesson-check')?.scrollIntoView({ block: 'start' }));
@@ -248,7 +255,7 @@ function renderLesson() {
   if (done && !nextId) {
     const following = courses[courses.indexOf(course) + 1];
     const href = following ? `course.html?id=${encodeURIComponent(following.id)}` : 'practical.html?id=foundations';
-    const label = following ? j('انتقل إلى الكورس التالي', 'Continue to the next course') : j('افتح امتحان الأساسيات', 'Open the Foundations exam');
+    const label = following ? j('انتقل إلى الكورس التالي', 'Continue to the next course') : j('ابدأ التقييم العملي للأساسيات', 'Start the Foundations practical');
     root.querySelector('.lesson-check > a')?.insertAdjacentHTML('beforebegin', `<a class="button button-primary" href="${href}">${label} ↗</a>`);
   }
   if (!user()) root.querySelector('.lesson-check').insertAdjacentHTML('beforeend', `<p class="lesson-reward-note">${ll('signInReward')}</p>`);

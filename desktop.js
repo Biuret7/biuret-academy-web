@@ -1,3 +1,4 @@
+import { mountWorkbench } from './workbench.js?v=20261005-pilot1';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261004-learning2';
 import { requiredPlan, canAccess } from './plan-access.js?v=20260929-1';
@@ -260,6 +261,10 @@ function render() {
   }[page];
   const currentSearch = page === 'search' ? document.querySelector('#library-search')?.value || '' : '';
   root.innerHTML = renderer ? renderer() : '';
+  if (page === 'practice-lab' && [1, 7].includes(Number(params.get('id'))) && user()) {
+    root.insertAdjacentHTML('beforeend', '<div id="evidence-workbench"></div>');
+    mountWorkbench(root.querySelector('#evidence-workbench'), { owner: user().$id, language: currentLanguage(), context: 'soc' });
+  }
   if (page === 'library-lesson') {
     const lesson = lessonById(params.get('id'));
     const reading = root.querySelector('.library-reading');

@@ -43,6 +43,8 @@ The private edition supplies 99 bilingual lesson guides with evidence, an output
 
 Eight evidence labs, 13 practice challenges and six operations scenarios are bilingual guided simulations. They do not execute tools or connect to external targets, and their browser-local practice results are not credential evidence. Operations rooms are linked within each appropriate path. Purchases remain closed. The Foundations release was authored by Codex and validated with automated schema checks; that metadata is not an independent subject-matter review. Expert editorial review and pilot learner feedback should precede paid sales.
 
+The October 5 Foundations/SOC iteration expands nine Foundations lessons and improves 22 SOC-related lesson guides. An analyst desk adds synthetic evidence filtering, correlation, explanatory feedback, account-scoped browser notes and optional feedback export. SOC exposes course 17 as an optional extension without changing earned-credential prerequisites. See [the alignment map and proposed human pilot](docs/foundations-soc-pilot.md); no human pilot or independent expert review has been completed.
+
 ## Publishing
 
 Publish this directory from a dedicated public GitHub Pages repository. Set its Pages custom domain to `academy.biuret.dev` first. Then add a `CNAME` record at the domain's DNS provider: host `academy`, target `Biuret7.github.io`. Register `academy.biuret.dev` as a web platform in Appwrite project `6aa55a88003959a536e9`. Never put Appwrite server keys, OAuth client secrets, or other private credentials in this repository.

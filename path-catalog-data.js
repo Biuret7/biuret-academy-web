@@ -283,6 +283,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-11"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-1",
@@ -512,6 +513,27 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-7"
       }
     ],
+    "optionalCourses": [
+      {
+        "id": "desktop-v5-category-1",
+        "title": {
+          "ar": "عمليات الدفاع المتقدم",
+          "en": "Advanced defense operations"
+        },
+        "summary": {
+          "ar": "من هندسة السجلات وSIEM إلى قواعد الكشف وThreat Hunting والاستجابة المنظّمة",
+          "en": "Build log and SIEM pipelines, detection rules, threat hunts and response playbooks."
+        },
+        "lessonIds": [
+          "desktop-v5-1-1",
+          "desktop-v5-1-2",
+          "desktop-v5-1-3",
+          "desktop-v5-1-4"
+        ],
+        "order": 17,
+        "href": "library-course.html?id=desktop-v5-category-1"
+      }
+    ],
     "quizzes": [
       {
         "id": "quiz-1",
@@ -700,6 +722,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-12"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-6",
@@ -854,6 +877,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-2"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-11",
@@ -1001,6 +1025,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-8"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-0",
@@ -1163,6 +1188,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-v5-category-2"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-8",
@@ -1315,6 +1341,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-10"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-9",
@@ -1459,6 +1486,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-v5-category-1"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-6",
@@ -1622,6 +1650,7 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-16"
       }
     ],
+    "optionalCourses": [],
     "quizzes": [
       {
         "id": "quiz-8",

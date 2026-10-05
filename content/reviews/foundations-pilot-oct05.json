@@ -1,0 +1,10 @@
+{
+  "draftId": "foundations-pilot-oct05",
+  "author": "codex-content-author",
+  "baseRelease": "foundations-2026-10-04",
+  "state": "reviewed",
+  "createdAt": "2026-10-05T08:25:55.066Z",
+  "reviewedBy": "automated-schema-checks",
+  "reviewedAt": "2026-10-05T08:29:06.266Z",
+  "reviewedDigest": "cfc19ea9fa0c5e3751ce92c7b8dc9762828a22e550733c1183fe5fedc85ce960"
+}

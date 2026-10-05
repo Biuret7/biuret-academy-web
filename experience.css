@@ -90,3 +90,40 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .lesson-outline{display:block}.learning-source-links h3{width:100%;margin-bottom:0}.assessment-question legend,.practice-form legend{white-space:pre-line}.operation-rationale{width:100%}
 
 .saved-note{white-space:pre-wrap;overflow-wrap:anywhere}
+.lesson-study-nav { display: flex; flex-wrap: wrap; gap: .5rem; padding-block: 1rem; margin-block-end: 1.5rem; border-block-end: 1px solid var(--border, #29312c); }
+.lesson-study-nav a { padding: .5rem .75rem; border-radius: .65rem; background: #141c18; font-size: .82rem; color: #c9d2c9; }
+.lesson-copy { scroll-margin-block-start: 6rem; }
+.lesson-copy p, .library-reading > p { line-height: 1.95; max-width: 78ch; }
+.evidence-workbench { margin-block: 2rem; padding: clamp(1rem, 3vw, 2rem); background: linear-gradient(145deg, #111c17, #0a1110); border: 1px solid #354334; border-radius: 1.4rem; }
+.workbench-heading { max-width: 76ch; }
+.workbench-heading h2 { margin-block: .6rem 1rem; }
+.workbench-heading p { line-height: 1.8; color: #bbc7bd; }
+.workbench-route { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding-inline-start: 1.3rem; margin-block: 1.7rem; color: #cbff40; font-size: .88rem; }
+.workbench-filters { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
+.evidence-workbench label { display: grid; gap: .6rem; }
+.evidence-workbench input:not([type=checkbox]):not([type=radio]), .evidence-workbench select, .evidence-workbench textarea { width: 100%; padding: .8rem; color: #e7ece7; background: #0a100e; border: 1px solid #455147; border-radius: .65rem; font: inherit; }
+.evidence-workbench input[type=checkbox], .evidence-workbench input[type=radio] { width: 1.15rem; height: 1.15rem; accent-color: #c5ff31; }
+.evidence-workbench .workbench-select { min-width: 44px; min-height: 44px; place-items: center; cursor: pointer; }
+.evidence-workbench input:focus-visible, .evidence-workbench textarea:focus-visible, .evidence-workbench select:focus-visible { outline: 2px solid #c5ff31; outline-offset: 3px; }
+.workbench-table-scroll { overflow-x: auto; margin-block: 1rem 2rem; border: 1px solid #334238; border-radius: .7rem; }
+.evidence-workbench table { border-collapse: collapse; width: 100%; min-width: 570px; font-size: .85rem; }
+.evidence-workbench caption { padding: 1rem; text-align: start; background: #15251a; color: #d1e1cf; }
+.evidence-workbench th, .evidence-workbench td { padding: .9rem; text-align: start; border-block-end: 1px solid #29362d; vertical-align: top; line-height: 1.65; }
+.evidence-workbench th { color: #c5ff31; }
+.evidence-workbench tr:has(input:checked) { background: #20301b; }
+.workbench-findings { display: grid; gap: 1.4rem; }
+.workbench-findings > label:first-child { max-width: 35rem; }
+.workbench-findings fieldset { border: 0; padding: 0; margin: 0; }
+.workbench-findings legend { padding-block-end: .8rem; font-weight: 600; }
+.workbench-findings label.option-label { display: flex; align-items: start; gap: .75rem; padding: .8rem; margin-block: .4rem; background: #101b15; border: 1px solid #354336; border-radius: .7rem; }
+.workbench-findings .option-label input { flex-shrink: 0; }
+.workbench-findings button { justify-self: start; }
+.workbench-findings [data-result]:not(:empty) { padding: 1rem 1.4rem; border: 1px solid #617d38; border-radius: .8rem; background: #192717; line-height: 1.85; }
+.workbench-findings [data-result] li { margin-block: .8rem; }
+.workbench-feedback { margin-block: 1.5rem; padding: 1rem; border: 1px solid #334238; border-radius: .8rem; }
+.workbench-feedback summary { cursor: pointer; padding-block: .4rem; font-weight: 600; }
+.workbench-feedback p { color: #b0bdb4; line-height: 1.8; }
+.workbench-feedback label { margin-block: 1rem; }
+.workbench-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.workbench-actions small { color: #b4c0b4; }
+@media (max-width: 640px) { .workbench-filters { grid-template-columns: 1fr; } .workbench-route { display: grid; gap: .6rem; } .evidence-workbench { padding: 1rem; } }
