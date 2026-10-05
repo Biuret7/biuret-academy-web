@@ -1,6 +1,6 @@
 # Assessment transfer forms — 5 October 2026
 
-## Prepared, not yet deployed
+## Deployed and verified
 
 Revision `transfer-forms-20261005` adds 48 private cases for sixteen course finals/eight specialist paths, stable server-selected forms, stale-form rejection and optional local practical reports. Existing Foundation banks/lesson edition/libraries are byte-identical to the prior private archive. Existing passing records, score ratios, cooldowns, attempt limits, access rules and certificate-sharing settings remain.
 
@@ -24,6 +24,18 @@ Revision `transfer-forms-20261005` adds 48 private cases for sixteen course fina
 
 ## Publication gate
 
-Owner approval for this new archive/public update is pending. Activate the private function first, then publish the matching public assets immediately. The public cache versions are synchronized so account state is shared by the updated modules. Old open exams need reload before submission; a missing/old form ID yields a conflict rather than an incorrectly graded attempt.
+Owner explicitly approved the exact archive and public publication. Appwrite deployment `6ac3fb646460cb16c3c4` is Active (1.17 MB, 1-second build), replacing `6ac3db6e9f0419bab9b2`. Public commit `96bb9c7cf2258d3a734006e243865a146212593d` was pushed; Pages run `37364154258` completed successfully (5m 28s overall, 19s job). Screenshot: `C:/Users/Extreme/Desktop/Projects/tmp/academy-transfer-active-20261005.png`. The public cache versions are synchronized so account state is shared by the updated modules. Old open exams need reload before submission; a missing/old form ID yields a conflict rather than an incorrectly graded attempt.
 
-Record actual deployment and Pages run IDs after success and verify live course form stability without submitting a real graded attempt. Purchases stay closed. Manual report review is a documented future workflow, not an active certification gate.
+Purchases stay closed. Manual report review is a documented future workflow, not an active certification gate.
+
+## Active-function smoke check
+
+Course 17 returned six questions, including both new transfer cases. Read-only browser inspection confirmed identical question IDs/order across Arabic/English and byte-identical English question/option text after refresh. No graded submissions were made. Matching public client `20261005-forms1` is now deployed.
+
+## Live public QA
+
+- Course 19 opens with six questions; its script uses `20261005-forms1`.
+- SOC practical report is present in both languages, preserves synthetic notes across language and refresh, remains outside the graded form and has no horizontal overflow in the inspected desktop viewport. Arabic sidebar x=1013; English sidebar is on the left.
+- Actual live JSON download `C:/Users/Extreme/Downloads/biuret-practical-path_soc (1).json`: 461 bytes, Arabic, `not-reviewed`, no automatically included account identifiers or graded answers. Synthetic notes were cleared through the UI afterward.
+- Live screenshot: `C:/Users/Extreme/Desktop/Projects/tmp/academy-transfer-live-20261005.png`.
+- No graded exam/practical submission or certificate issuance took place during QA.
