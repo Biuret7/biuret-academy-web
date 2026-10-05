@@ -1676,10 +1676,10 @@ export const academyPaths = [
         "id": "lab-6",
         "index": 6,
         "title": {
-          "ar": "نسخة الأدلة وسلسلة الحيازة",
-          "en": "Evidence copies and chain of custody"
+          "ar": "تتبع الفرع وتفسير signed وunsigned",
+          "en": "Branch tracing: signed and unsigned interpretation"
         },
-        "href": "practice-lab.html?id=6"
+        "href": "practice-lab.html?id=6&context=reverse"
       }
     ],
     "challenges": [

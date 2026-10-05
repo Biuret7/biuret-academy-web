@@ -6,6 +6,7 @@ import { labs } from '../labs.js';
 import { challenges } from '../content.js';
 import { englishChallenges } from '../content-en.js';
 import { specialistPractices } from '../specialist-model.js';
+import { reversePractice } from '../reverse-model.js';
 
 // Export a strict metadata allowlist, never lesson bodies, questions or answers.
 const libraries = { ar: libraryData('ar'), en: libraryData('en') };
@@ -41,6 +42,7 @@ const paths = [{ id: 'foundations', title: learningPath.title, summary: learning
   operations: operationMap.foundations.map(operation), practical: 'practical.html?id=foundations', exam: 'exam.html', certificate: 'certificate.html',
 }];
 const pathLab=(pathId,index)=>{
+  if(pathId===reversePractice.path&&index===reversePractice.index)return {...resource('lab',index),title:reversePractice.title,href:`practice-lab.html?id=${index}&context=reverse`};
   const variant=Object.entries(specialistPractices).find(([,v])=>v.path===pathId&&v.index===index);
   if(variant)return {...resource('lab',index),title:variant[1].title,href:`practice-lab.html?id=${index}&context=${variant[0]}`};
   return pathId==='path_cloud'&&index===7?{...resource('lab',index),title:{ar:'تقييم صلاحيات السحابة والانحراف',en:'Cloud access and drift evaluation'},href:'practice-lab.html?id=7&context=cloud'}:resource('lab',index);
