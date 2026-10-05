@@ -27,9 +27,9 @@ test('malware path includes reverse desk while DFIR retains original lab access'
 });
 const base=new URL('../functions/academy-progress/',import.meta.url),hasPrivate=existsSync(new URL('learning-edition.private.json',base));
 const read=n=>JSON.parse(readFileSync(new URL(n,base),'utf8'));
-test('all 99 private guides now have specific exercises; 28 new cases keep private checkpoint grading',{skip:!hasPrivate},async()=>{
+test('all private guides now have specific exercises; 28 new cases keep private checkpoint grading',{skip:!hasPrivate},async()=>{
  const edition=read('learning-edition.private.json'),ids=read('desktop-library.en.private.json').categories.filter(c=>[1,5,6,8,16].includes(c.order)).flatMap(c=>c.lessons.map(l=>l.id));
- assert.equal(Object.keys(edition.lessons).length,99);
+ assert.equal(Object.keys(edition.lessons).length,105);
  for(const g of Object.values(edition.lessons))assert.ok(!g.exercise.en.startsWith('Write four points:'));
  const {publicLibraryFor,lessonCheckpoint}=await import('../functions/academy-progress/src/library.js'),pub=publicLibraryFor('en',{admin:true},true).categories.flatMap(c=>c.lessons);
  for(const id of ids){const g=edition.lessons[id];for(const lang of ['ar','en'])for(const f of ['concept','analysis','exercise'])assert.ok(g[f][lang].length>70,`${id}/${lang}/${f}`);assert.ok(g.sources.length);assert.equal(lessonCheckpoint(id,g.checkpoint.answer).correct,true);assert.equal(lessonCheckpoint(id,(g.checkpoint.answer+1)%4).correct,false);assert.equal(Object.hasOwn(pub.find(l=>l.id===id).guide.checkpoint,'answer'),false);}
@@ -41,5 +41,5 @@ test('assessment mapping covers all final slots and links only lessons taught in
  for(const c of library.categories){const groups=map.courseLessonGroups[c.order];assert.equal(groups.length,courseBank[c.order].length);for(const group of groups){assert.ok(group.length);for(const id of group)assert.ok(c.lessons.some(l=>l.id===id),`${c.order}/${id}`);}}
  for(const [path,groups]of Object.entries(map.pathCaseGroups)){const allowed=idsFor(path);assert.equal(groups.length,3);assert.equal((path==='foundations'?read('exam-bank.private.json'):paths[path]).length,10);for(const group of groups)for(const id of group)assert.ok(allowed.includes(id),`${path}/${id}`);}
  for(const [path,groups]of Object.entries(map.practicalLessonGroups)){assert.equal(groups.length,practical[path].length);for(const group of groups)for(const id of group)assert.ok(idsFor(path).includes(id),`${path}/${id}`);}
- assert.equal(Object.keys(map.pathCaseGroups).length,10);assert.equal(Object.keys(map.courseLessonGroups).length,18);
+ assert.equal(Object.keys(map.pathCaseGroups).length,10);assert.equal(Object.keys(map.courseLessonGroups).length,19);
 });

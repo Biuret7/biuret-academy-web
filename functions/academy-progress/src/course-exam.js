@@ -11,9 +11,9 @@ let extraBank;
 function extras() {
   if (!extraBank) {
     extraBank = JSON.parse(process.env.ACADEMY_COURSE_EXAM_BANK || readFileSync(new URL('../course-exam-bank.private.json', import.meta.url), 'utf8'));
-    if ([11, 14, 15, 16, 17, 18].some((order) => !extraBank[order])) throw new Error('Private course exam bank incomplete');
+    if ([11, 14, 15, 16, 17, 18, 19].some((order) => !extraBank[order])) throw new Error('Private course exam bank incomplete');
     for (const order of Object.keys(extraBank)) {
-      if (!/^([1-9]|1[0-8])$/.test(order)) throw new Error('Private course exam order invalid');
+      if (!/^([1-9]|1[0-9])$/.test(order)) throw new Error('Private course exam order invalid');
       const questions = extraBank[order];
       if (!Array.isArray(questions) || questions.length < 3 || questions.some((item) =>
         !/^[a-z0-9-]+$/.test(item.id) || !Number.isInteger(item.answer) || item.answer < 0 || item.answer >= item.options?.length ||
@@ -83,7 +83,7 @@ export function courseExamService({ base, request, getRead, membership, foundati
     const score = bank.reduce((sum, question) => sum + Number(answers[question.id] === question.answer), 0);
     const passedExam = score >= current.data.passScore;
     if (passedExam) {
-      const payload = JSON.stringify({ version: VERSION, courseOrder: order, score, total: bank.length, passed: true });
+      const payload = JSON.stringify({ version: VERSION, courseOrder: order, assessmentEdition: extras()[order]?.[0]?.edition || 'learning-quality-20261004', score, total: bank.length, passed: true });
       const result = await request(rowsBase, { method: 'POST', body: JSON.stringify({ rowId: courseExamId(userId, order),
         data: { userId, payload }, permissions: [] }) });
       if (![201, 409].includes(result.status)) throw new Error('Course exam record failed');

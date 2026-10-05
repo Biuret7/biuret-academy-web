@@ -8,11 +8,11 @@ const bankFile = new URL('../functions/academy-progress/practice-quiz-bank.priva
 test('practice quizzes use their own server bank, distinct from every course exam', { skip: !existsSync(bankFile) }, () => {
   const bank = JSON.parse(readFileSync(bankFile, 'utf8'));
   const admin = { plan: 'free', effectivePlan: 'free', admin: true };
-  assert.equal(bank.length, 12);
+  assert.equal(bank.length, 13);
   for (const language of ['ar', 'en']) {
     const practice = publicLibraryFor(language, admin, true).quizzes;
     const examQuestions = new Set(libraryData(language).quizzes.flatMap((quiz) => quiz.questions.map((question) => question.q.trim().replace(/\s+/g, ' ').toLocaleLowerCase())));
-    assert.equal(practice.length, 12);
+    assert.equal(practice.length, 13);
     for (const [index, quiz] of practice.entries()) {
       assert.equal(quiz.questions.length, bank[index].length, `quiz ${index}`);
       assert.ok(quiz.questions.length >= 3);

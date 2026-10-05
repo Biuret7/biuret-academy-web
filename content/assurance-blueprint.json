@@ -1,0 +1,43 @@
+{
+  "revision": "assurance-transfer-20261005",
+  "scope": "Author-designed transfer cases; not practitioner/psychometric validation. Selected responses do not establish independent tool execution.",
+  "courseOutcomes": {
+    "2": [
+      "Subnet boundary and routing",
+      "Layer-specific diagnosis",
+      "Separate ARP/DNS evidence",
+      "Stateful access and parser quality",
+      "Time and identity correlation"
+    ],
+    "4": [
+      "Trusted hash reference",
+      "Key/nonce uniqueness",
+      "Signature identity and context",
+      "TLS peer validation",
+      "Rotation versus revocation"
+    ],
+    "19": [
+      "Scope and accountability",
+      "Qualitative risk decisions",
+      "Unique population coverage",
+      "Supplier evidence matching",
+      "RTO/RPO calculation",
+      "Acceptance expiry and scoped closure"
+    ]
+  },
+  "pathOutcomes": {
+    "path_grc": [
+      "Scope and supplier boundaries",
+      "Effective coverage and testing",
+      "Risk treatment and uncertainty",
+      "Recovery targets",
+      "Owned acceptance and evidence reporting"
+    ]
+  },
+  "passingPolicy": "Existing thresholds and historical completions retained. New case data differ from taught worked examples; no random alternate-form claims.",
+  "remaining": [
+    "Independent learner and practitioner review",
+    "Unseen variants for remaining course/path banks",
+    "Manual practical-work review before claiming occupational competence"
+  ]
+}

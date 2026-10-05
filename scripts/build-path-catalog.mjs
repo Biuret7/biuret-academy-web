@@ -7,6 +7,7 @@ import { challenges } from '../content.js';
 import { englishChallenges } from '../content-en.js';
 import { specialistPractices } from '../specialist-model.js';
 import { reversePractice } from '../reverse-model.js';
+import { assurancePractice } from '../assurance-model.js';
 
 // Export a strict metadata allowlist, never lesson bodies, questions or answers.
 const libraries = { ar: libraryData('ar'), en: libraryData('en') };
@@ -16,7 +17,7 @@ const related = {
   path_soc: { quizzes: [1, 3, 6], labs: [1, 7], challenges: [1, 4, 6] },
   path_dfir: { quizzes: [6, 10], labs: [6, 7], challenges: [6, 9] },
   path_cloud: { quizzes: [11, 1], labs: [1, 7], challenges: [10] },
-  path_grc: { quizzes: [0, 7], labs: [7], challenges: [], coreChallenges: ['f-permissions', 'f-sender'] },
+  path_grc: { quizzes: [12], labs: [7], challenges: [], coreChallenges: ['f-permissions', 'f-sender'] },
   path_appsec: { quizzes: [8, 9], labs: [2, 5], challenges: [2, 3] },
   path_mobile: { quizzes: [9], labs: [2], challenges: [12] },
   path_threat_intel: { quizzes: [6], labs: [6, 7], challenges: [8, 6] },
@@ -54,7 +55,7 @@ for (const item of libraries.ar.roadmapPaths) {
     icon: { path_pentest: 'pentest', path_soc: 'soc', path_dfir: 'dfir', path_cloud: 'cloud', path_grc: 'grc', path_appsec: 'appsec', path_mobile: 'mobile', path_threat_intel: 'intel', path_malware: 'malware' }[id],
     outcomes: { ar: overview.topics.map(x => x.ar), en: overview.topics.map(x => x.en) },
     courses: item[6].map(course), optionalCourses: id === 'path_soc' ? [course(17)] : [], quizzes: mapping.quizzes.map(i => resource('quiz', i)),
-    labs: mapping.labs.map(i => pathLab(id,i)),
+    labs: [...mapping.labs.map(i => pathLab(id,i)),...(id===assurancePractice.path?[{...resource('lab',assurancePractice.index),id:'lab-supplier-7',title:assurancePractice.title,href:'practice-lab.html?id=7&context=supplier'}]:[])],
     challenges: [...mapping.challenges.map(i => resource('challenge', i)), ...(mapping.coreChallenges || []).map(coreChallenge)],
     operations: operationMap[id].map(operation), practical: `practical.html?id=${id}`, exam: `path-exam.html?id=${id}`, certificate: `path-exam.html?id=${id}`,
   });

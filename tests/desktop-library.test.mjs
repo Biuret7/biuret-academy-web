@@ -8,8 +8,8 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf
 const catalog = JSON.parse(read('content/desktop-catalog.json'));
 
 test('public catalog lists every course and lesson without lesson bodies or answers', () => {
-  assert.equal(catalog.categories.length, 18);
-  assert.equal(catalog.categories.reduce((count, category) => count + category.lessons.length, 0), 99);
+  assert.equal(catalog.categories.length, 19);
+  assert.equal(catalog.categories.reduce((count, category) => count + category.lessons.length, 0), 105);
   const ids = catalog.categories.flatMap((category) => category.lessons.map((lesson) => lesson.id));
   assert.equal(new Set(ids).size, ids.length);
   assert.ok(catalog.categories.every((category) => category.lessons.every((lesson) => Object.keys(lesson).join() === 'id')));
@@ -35,7 +35,7 @@ test('program curriculum is served by authenticated function and excluded from P
 });
 
 test('client and function agree on Free, Plus and Pro limits', () => {
-  for (const [kind, count] of Object.entries({ course: 18, quiz: 12, lab: 8, challenge: 13, tool: 15, operation: 6 })) {
+  for (const [kind, count] of Object.entries({ course: 19, quiz: 13, lab: 8, challenge: 13, tool: 15, operation: 6 })) {
     for (let index = kind === 'course' ? 1 : 0; index < (kind === 'course' ? count + 1 : count); index++) {
       const required = requiredPlan(kind, index);
       assert.equal(required, requiredLibraryPlan(kind, index));

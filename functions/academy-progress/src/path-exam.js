@@ -10,7 +10,7 @@ const MAX_ATTEMPTS = 3;
 const COOLDOWN = 24 * 60 * 60 * 1000;
 let privateBank;
 
-function bank() {
+function assessmentBank() {
   if (!privateBank) {
     privateBank = JSON.parse(process.env.ACADEMY_PATH_EXAM_BANK || readFileSync(new URL('../path-exam-bank.private.json', import.meta.url), 'utf8'));
     for (const id of programPathIds()) {
@@ -32,7 +32,7 @@ export function pathQuestions(pathId, language = 'ar') {
   const path = libraryData('ar').roadmapPaths.find((item) => item[2] === pathId);
   if (!path) return null;
   const lang = language === 'en' ? 'en' : 'ar';
-  return bank()[pathId].map((item) => ({ id: item.id, question: item.question[lang], options: item.options.map((option) => option[lang]), answer: item.answer }));
+  return assessmentBank()[pathId].map((item) => ({ id: item.id, question: item.question[lang], options: item.options.map((option) => option[lang]), answer: item.answer }));
 }
 
 export function pathExamService({ base, request, getRead, getCoursePassed = async () => true, getPracticalPassed = async () => true, membership, foundationsPassed }) {
@@ -53,9 +53,10 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     return source && local ? { source, local } : null;
   }
 
-  function pathDetails(pathId) {
+  function pathDetails(pathId, legacy = false) {
     const path = pathInfo(pathId);
-    const categories = path?.source[6].map((order) => libraryData('ar').categories.find((item) => item.order === order)).filter(Boolean) || [];
+    const orders = pathId === 'path_grc' && legacy ? [1, 8] : path?.source[6] || [];
+    const categories = orders.map((order) => libraryData('ar').categories.find((item) => item.order === order)).filter(Boolean);
     return { courseCount: categories.length, lessonCount: categories.reduce((sum, item) => sum + item.lessons.length, 0) };
   }
 
@@ -105,7 +106,7 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     const id = attempt.credentialId;
     if (!/^c_[a-f0-9]{32}$/.test(id || '')) throw new Error('Path credential ID invalid');
     if (await getRow(`${credentialsBase}/rows/${id}`)) return;
-    const payload = JSON.stringify({ version: attempt.credentialVersion || VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, ...pathDetails(attempt.pathId),
+    const payload = JSON.stringify({ version: attempt.credentialVersion || VERSION, pathId: attempt.pathId, holderName: attempt.holderName, status: 'active', issuedAt: attempt.completedAt, score: attempt.score, total: 10, assessmentEdition: attempt.assessmentEdition || 'learning-quality-20261004', ...pathDetails(attempt.pathId, attempt.assessmentEdition !== 'assurance-transfer-20261005'),
       ...(attempt.credentialVersion ? { practicalScore: 3, practicalTotal: 3 } : {}) });
     const result = await request(`${credentialsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: id, data: { payload }, permissions: [] }) });
     if (![201, 409].includes(result.status)) throw new Error('Path credential creation failed');
@@ -128,11 +129,12 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
     const holderName = name;
     const credentialVersion = 'program-path-v2';
-    const payload = JSON.stringify({ version: VERSION, credentialVersion, assessmentEdition: 'learning-quality-20261004', requiredScore: 9, pathId, slot, score, passed, credentialId, holderName });
+    const assessmentEdition = assessmentBank()[pathId][0].edition || 'learning-quality-20261004';
+    const payload = JSON.stringify({ version: VERSION, credentialVersion, assessmentEdition, requiredScore: 9, pathId, slot, score, passed, credentialId, holderName });
     const result = await request(`${attemptsBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: pathAttemptId(userId, pathId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Path attempt creation failed');
-    if (passed) await ensureCredential({ credentialId, credentialVersion, pathId, holderName, score, completedAt: result.data.$createdAt });
+    if (passed) await ensureCredential({ credentialId, credentialVersion, assessmentEdition, pathId, holderName, score, completedAt: result.data.$createdAt });
     return { code: 200, data: { score, passed, credentialId, remaining: MAX_ATTEMPTS - slot } };
   }
 
@@ -153,7 +155,8 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     if (record.code !== 200) return record;
     if (enabled && record.data.status !== 'active') return { code: 409, data: { error: 'Revoked credentials cannot be shared' } };
     const row = await getRow(`${credentialsBase}/rows/${record.data.id}`);
-    const payload = { ...JSON.parse(row.payload), score: record.data.score, total: record.data.total, ...pathDetails(pathId) };
+    const original = JSON.parse(row.payload);
+    const payload = { ...pathDetails(pathId, original.assessmentEdition !== 'assurance-transfer-20261005'), ...original, score: record.data.score, total: record.data.total };
     const result = await request(`${credentialsBase}/rows/${record.data.id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: JSON.stringify(payload) }, permissions: enabled ? ['read("any")'] : [] }) });
     if (result.status !== 200) throw new Error('Path credential sharing failed');
     return { code: 200, data: { ...record.data, shared: enabled } };
@@ -163,7 +166,8 @@ export function pathExamService({ base, request, getRead, getCoursePassed = asyn
     const record = await credential(userId, pathId);
     if (record.code !== 200) return record;
     const row = await getRow(`${credentialsBase}/rows/${record.data.id}`);
-    const payload = { ...JSON.parse(row.payload), holderName, score: record.data.score, total: record.data.total, ...pathDetails(pathId), nameUpdatedAt: new Date().toISOString() };
+    const original = JSON.parse(row.payload);
+    const payload = { ...pathDetails(pathId, original.assessmentEdition !== 'assurance-transfer-20261005'), ...original, holderName, score: record.data.score, total: record.data.total, nameUpdatedAt: new Date().toISOString() };
     const result = await request(`${credentialsBase}/rows/${record.data.id}`, { method: 'PATCH', body: JSON.stringify({ data: { payload: JSON.stringify(payload) }, permissions: row.$permissions || [] }) });
     if (result.status !== 200) throw new Error('Path credential name correction failed');
     return { code: 200, data: { ...record.data, ...payload } };

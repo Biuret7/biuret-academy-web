@@ -1004,6 +1004,27 @@ export const academyPaths = [
         "href": "library-course.html?id=desktop-1"
       },
       {
+        "id": "desktop-19",
+        "title": {
+          "ar": "الحوكمة والمخاطر والامتثال العملي",
+          "en": "Applied governance, risk and compliance"
+        },
+        "summary": {
+          "ar": "من نطاق الخدمة إلى سجل المخاطر ودليل الضابط ومراجعة المورّد والاستمرارية وتقرير القرار.",
+          "en": "From service scope to risk records, control evidence, supplier review, continuity and decision reports."
+        },
+        "lessonIds": [
+          "grc-scope",
+          "grc-risk",
+          "grc-controls",
+          "grc-supplier",
+          "grc-continuity",
+          "grc-assurance"
+        ],
+        "order": 19,
+        "href": "library-course.html?id=desktop-19"
+      },
+      {
         "id": "desktop-8",
         "title": {
           "ar": "مسارات الاحتراف",
@@ -1028,22 +1049,13 @@ export const academyPaths = [
     "optionalCourses": [],
     "quizzes": [
       {
-        "id": "quiz-0",
-        "index": 0,
+        "id": "quiz-12",
+        "index": 12,
         "title": {
-          "ar": "المفاهيم الأساسية",
-          "en": "Cybersecurity fundamentals"
+          "ar": "تدريب الحوكمة والمخاطر والامتثال",
+          "en": "Governance, risk and compliance practice"
         },
-        "href": "practice-quiz.html?id=0"
-      },
-      {
-        "id": "quiz-7",
-        "index": 7,
-        "title": {
-          "ar": "مسارات الاحتراف",
-          "en": "Career pathways"
-        },
-        "href": "practice-quiz.html?id=7"
+        "href": "practice-quiz.html?id=12"
       }
     ],
     "labs": [
@@ -1055,6 +1067,15 @@ export const academyPaths = [
           "en": "Control evidence and risk decisions"
         },
         "href": "practice-lab.html?id=7&context=grc"
+      },
+      {
+        "id": "lab-supplier-7",
+        "index": 7,
+        "title": {
+          "ar": "مراجعة المورّد: النطاق والدليل وقرار المتابعة",
+          "en": "Supplier review: scope, evidence and follow-up"
+        },
+        "href": "practice-lab.html?id=7&context=supplier"
       }
     ],
     "challenges": [

@@ -26,7 +26,7 @@ test('course exams cover imported courses and require access and recorded lesson
   assert.equal(incomplete.data.eligible, false);
   assert.equal(incomplete.data.questions, undefined);
   const service = create('pro', async () => true);
-  for (let order = 1; order <= 18; order++) {
+  for (let order = 1; order <= 19; order++) {
     const state = await service.state('learner', order, 'en');
     assert.equal(state.code, 200, `course ${order}`);
     assert.equal(state.data.eligible, true, `course ${order}`);
