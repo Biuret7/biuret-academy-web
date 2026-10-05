@@ -30,6 +30,6 @@ Local browser QA confirmed Arabic/English controls, `rtl`/`ltr`, no horizontal o
 
 ## Release status
 
-Public practice desks and path/course links are published. The private archive is ready and its owner-approval request is pending before Appwrite upload. See the [deployment record](deployments/2026-10-05-specialist.md).
+Public practice desks and path/course links are published. The owner approved the private archive upload, and Appwrite deployment `6ac3b9312602b32c3fcd` is active. Live checks confirmed the revised Mobile, source-intelligence and control-evidence guides. See the [deployment record](deployments/2026-10-05-specialist.md).
 
 Next cohort: reverse engineering and remaining shared course material, followed by a complete mapping of teaching outcomes to practice, final assessment and credential requirements. Paid readiness also requires learner and practitioner review.
