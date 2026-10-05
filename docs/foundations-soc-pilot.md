@@ -26,7 +26,7 @@ The final exams remain privately graded scenario multiple-choice assessments. Th
 
 ## Pilot protocol — proposed, not yet performed
 
-The owner chose to try the journey personally first. The account-gated [learning trial](https://academy.biuret.dev/pilot.html) now provides eight bilingual tasks, self-reported outcomes, account-scoped browser persistence and voluntary JSON export. See [Arabic trial and independent review instructions](pilot-review-checklist.md) and the initially empty [issue tracker](pilot-issues.csv). Synthetic browser QA is not a participant result. The private SOC guide revision still awaits its separate Appwrite upload approval.
+The owner chose to try the journey personally first. The account-gated [learning trial](https://academy.biuret.dev/pilot.html) now provides eight bilingual tasks, self-reported outcomes, account-scoped browser persistence and voluntary JSON export. See [Arabic trial and independent review instructions](pilot-review-checklist.md) and the initially empty [issue tracker](pilot-issues.csv). Synthetic browser QA is not a participant result. The private SOC guide revision was approved and activated on Appwrite on 5 October 2026; see the [deployment record](deployments/2026-10-05-soc.md).
 
 Recruit 3–5 consenting beginners and at least one practitioner for editorial review. Recruitment and messages have not been sent. Ask participants to use their own accounts; do not collect passwords, tokens or payment data.
 
