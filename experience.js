@@ -1,4 +1,4 @@
-import { currentLanguage } from './i18n.js?v=20261005-forms1';
+import { currentLanguage } from './i18n.js?v=20261005-reviews1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';
@@ -56,7 +56,7 @@ if (sidebar) {
     search.setAttribute('aria-label', text('البحث في قائمة الأكاديمية', 'Search Academy navigation'));
     filter();
   };
-  document.querySelector('#language-toggle')?.addEventListener('click', localize);
+  document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(localize, 0));
   localize();
 }
 
@@ -69,5 +69,5 @@ if (['lesson', 'library-lesson'].includes(document.querySelector('.site-shell')?
   const labels = () => { focus.textContent = text('وضع التركيز', 'Focus mode'); size.textContent = text('نص أكبر', 'Larger text'); };
   focus.addEventListener('click', () => { const active = document.body.classList.toggle('reading-focus'); focus.setAttribute('aria-pressed', String(active)); });
   size.addEventListener('click', () => { const active = document.body.classList.toggle('reading-large'); size.setAttribute('aria-pressed', String(active)); });
-  document.querySelector('#language-toggle')?.addEventListener('click', labels); labels();
+  document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(labels, 0)); labels();
 }

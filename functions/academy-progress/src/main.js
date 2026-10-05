@@ -9,6 +9,7 @@ import { pathExamService } from './path-exam.js';
 import { courseExamService } from './course-exam.js';
 import { practicalService } from './practical.js';
 import { fullName } from './name.js';
+import { reportReviewService } from './report-review.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
@@ -181,13 +182,19 @@ export default async ({ req, res, error }) => {
     if (input.action === 'billingState') return res.json(await billing.state(account.$id, isAcademyAdmin(account)));
     if (input.action === 'billingCheckout') return res.json(await billing.checkout(account, input.plan, isAcademyAdmin(account)));
     if (input.action === 'billingPortal') return res.json(await billing.portal(account.$id, isAcademyAdmin(account)));
-    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam'].includes(input.action) && !fullName(account.name)) {
+    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam', 'reportSubmit'].includes(input.action) && !fullName(account.name)) {
       return res.json({ error: 'Set your real two or three part name in your Academy account before learning' }, 403);
     }
     if (input.action === 'membershipState') {
       return res.json(await membershipForAccount(key, account));
     }
     if (input.action === 'state') return res.json(await getState(key, account.$id, await membershipForAccount(key, account)));
+    const reports = reportReviewService({ base: ENDPOINT,
+      request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }) });
+    if (input.action === 'reportState') return res.json(await reports.state(account.$id, input.pathId));
+    if (input.action === 'adminReportQueue') return res.json(await reports.queue(account, input.cursor));
+    if (input.action === 'adminReportDetail') return res.json(await reports.detail(account, input.reportId));
+    if (input.action === 'adminReportReview') return res.json(await reports.decide(account, input));
     if (input.action === 'libraryData') {
       const language = input.language === 'en' ? 'en' : 'ar';
       const context = await libraryContext(key, account);
@@ -229,7 +236,7 @@ export default async ({ req, res, error }) => {
         : await courses.submit(account.$id, input.courseOrder, input.answers, input.formId);
       return res.json(result.data, result.code);
     }
-    if (['practicalState', 'submitPractical', 'pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential', 'pathCorrectCredentialName'].includes(input.action)) {
+    if (['practicalState', 'submitPractical', 'reportSubmit', 'pathExamState', 'pathSubmitExam', 'pathCredential', 'pathShareCredential', 'pathCorrectCredentialName'].includes(input.action)) {
       const context = await libraryContext(key, account);
       const request = (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } });
       const practical = practicalService({ base: ENDPOINT, request });
@@ -245,9 +252,10 @@ export default async ({ req, res, error }) => {
         membership: context.membership,
         foundationsPassed: context.foundationsPassed,
       });
-      if (['practicalState', 'submitPractical'].includes(input.action)) {
+      if (['practicalState', 'submitPractical', 'reportSubmit'].includes(input.action)) {
         const ready = input.pathId === 'foundations' ? context.membership.admin || (await getAwardState(key, account.$id)).awards.length === 9
           : (await paths.state(account.$id, input.pathId)).data.readyForPractical === true;
+        if (input.action === 'reportSubmit') return res.json(await reports.submit(account, input, ready));
         const result = input.action === 'practicalState' ? await practical.state(account.$id, input.pathId, input.language, ready)
           : await practical.submit(account.$id, input.pathId, input.answers, ready);
         return res.json(result.data, result.code);

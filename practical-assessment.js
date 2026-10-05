@@ -1,7 +1,7 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-forms1';
-import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261005-forms1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
-import { attachPracticalReport } from './practical-report.js?v=20261005-forms1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-reviews1';
+import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261005-reviews1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-reviews1';
+import { attachPracticalReport } from './practical-report.js?v=20261005-reviews1';
 
 const root = document.querySelector('#practical-main');
 const pathId = new URLSearchParams(location.search).get('id');
@@ -36,7 +36,7 @@ function renderAssessment() {
 }
 function render() {
   renderAssessment();
-  if (state?.ready || state?.passed) attachPracticalReport(root,pathId);
+  if (state) attachPracticalReport(root,pathId,state.ready || state.passed);
 }
 async function refresh() {
   if (!names[pathId]) { frame(`<div class="assessment-card"><h2>${tr('المسار غير موجود', 'Path not found')}</h2></div>`); return; }

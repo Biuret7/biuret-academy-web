@@ -1,8 +1,8 @@
-import { academyPaths } from './path-catalog-data.js?v=20261005-forms1';
-import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261005-forms1';
-import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261005-forms1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-forms1';
-import { fullName } from './full-name.js?v=20261005-forms1';
+import { academyPaths } from './path-catalog-data.js?v=20261005-reviews1';
+import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261005-reviews1';
+import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261005-reviews1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-reviews1';
+import { fullName } from './full-name.js?v=20261005-reviews1';
 
 const root = document.querySelector('#paths-main');
 const detail = document.querySelector('.site-shell')?.dataset.page === 'path';

@@ -1,5 +1,5 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20261005-forms1';
-import { fullName } from './full-name.js?v=20261005-forms1';
+import { cleanProgress, mergeProgress } from './engine.js?v=20261005-reviews1';
+import { fullName } from './full-name.js?v=20261005-reviews1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -99,6 +99,11 @@ export function loadCourseExam(courseOrder, language) { return learningExecution
 export function submitCourseExam(courseOrder, answers, formId) { return learningExecution({ action: 'courseSubmitExam', courseOrder, answers, formId }, false); }
 export function loadPractical(pathId, language) { return learningExecution({ action: 'practicalState', pathId, language }, false); }
 export function submitPractical(pathId, answers) { return learningExecution({ action: 'submitPractical', pathId, answers }, false); }
+export function loadReportReview(pathId) { return learningExecution({ action: 'reportState', pathId }, false); }
+export function submitReportReview(pathId, fields, language, baseRevision, consent) { return learningExecution({ action: 'reportSubmit', pathId, fields, language, baseRevision, consent }, false); }
+export function adminReportQueue(cursor) { return learningExecution({ action: 'adminReportQueue', cursor }, false); }
+export function adminReportDetail(reportId) { return learningExecution({ action: 'adminReportDetail', reportId }, false); }
+export function adminReviewReport(reportId, decision, scores, feedback) { return learningExecution({ action: 'adminReportReview', reportId, decision, scores, feedback }, false); }
 export function loadPathExam(pathId, language) { return learningExecution({ action: 'pathExamState', pathId, language }, false); }
 export function submitPathExam(pathId, answers, formId) { return learningExecution({ action: 'pathSubmitExam', pathId, answers, formId }, false); }
 export function loadPathCredential(pathId) { return learningExecution({ action: 'pathCredential', pathId }, false); }

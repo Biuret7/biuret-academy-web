@@ -19,7 +19,7 @@ export const pageContexts = {
   certificate: ['CREDENTIAL', 'اعرض إثبات إنجازك وتحقّق منه.', 'View and verify your achievement.'],
   membership: ['ACCESS', 'الأساسيات مجاناً، وتخصصك بحزمة واحدة.', 'Free Foundations, one bundle for your specialty.'],
   shop: ['SHOP', 'استكشف مزايا عملات Biuret.', 'Explore Biuret Coins benefits.'],
-  admin: ['ADMIN', 'إدارة إثباتات الإنجاز.', 'Manage achievement credentials.'],
+  admin: ['ADMIN', 'إدارة الإنجازات والتقارير.', 'Manage credentials and report reviews.'],
   review: ['REVIEW', 'راجع دروسك بانتظام.', 'Review your lessons regularly.'],
   operations: ['OPERATIONS', 'حلل حوادث واقعية بمحاكاة آمنة.', 'Investigate incidents in safe simulations.'],
   operation: ['OPERATION', 'اتخذ قراراً مبنياً على الدليل.', 'Make an evidence-based decision.'],
