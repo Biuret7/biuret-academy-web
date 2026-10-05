@@ -1,8 +1,8 @@
 # Mobile / intelligence / GRC release — 5 October 2026
 
-## Public implementation — prepared
+## Public implementation — published
 
-The three practice desks and path/course links are ready for GitHub Pages. All 84 local tests and syntax/content checks passed. Local browser results and limits are recorded in [learning quality](../mobile-intel-grc-learning-quality.md). The default viewport had no horizontal overflow; Arabic/English directions and local persistence were verified.
+Commit `92609c1ddab368fb145edfca4de7f325ebd1047c` published the three practice desks and path/course links. GitHub Pages workflow [37327503498](https://github.com/Biuret7/biuret-academy-web/actions/runs/37327503498) completed successfully in 23 seconds. All 84 local tests and syntax/content checks passed. Local browser results and limits are recorded in [learning quality](../mobile-intel-grc-learning-quality.md). The default viewport had no horizontal overflow; Arabic/English directions and local persistence were verified. Live browser navigation from the GRC path reached the dedicated desk and correctly left a policy-only control as an open gap. Screenshot proof: `tmp/academy-specialist-live-20261005.png` (outside Git).
 
 ## Private content — awaiting upload approval
 
@@ -12,5 +12,6 @@ The three practice desks and path/course links are ready for GitHub Pages. All 8
 - SHA-256: `0a021957333bbd92c26283bd8cb7bd7fb59c5fce7dc37e7dfda9f8b3bf5ab6f6`.
 - Revision: `mobile-intel-grc-learning-20261005`; 12 updated guides, total remains 99. Runtime contract remains `learning-quality-20261004`.
 - Archive and private banks remain outside Git. Prior approval covered the Cloud/DFIR archive, not this new archive.
+- A specific owner-approval question for this archive is pending in the chat. The public implementation is active, but the 12 revised private guides have not been uploaded yet.
 
 Purchase activation, payment settings, access tiers, final banks and earned credentials are unchanged.
