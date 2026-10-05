@@ -2,7 +2,7 @@
 
 ## Scope and status
 
-Fifteen bilingual private guides in Digital Forensics (7), Malware Analysis (12) and Cloud Security (13) have been authored. This adds concrete evidence, interpretation, independent work and topic-specific checkpoint feedback. Publication is pending verification and approval of the private archive upload. Final exam banks, thresholds, previous awards and credentials are preserved; purchases stay closed.
+Fifteen bilingual private guides in Digital Forensics (7), Malware Analysis (12) and Cloud Security (13) have been authored. This adds concrete evidence, interpretation, independent work and topic-specific checkpoint feedback. Public practice desks and the dedicated Cloud path link are published and verified. Private guide activation awaits owner approval of the Appwrite upload. Final exam banks, thresholds, previous awards and credentials are preserved; purchases stay closed. See the [release record](deployments/2026-10-05-cloud-dfir.md).
 
 Digital Forensics is shared with SOC, and Malware Analysis with the Malware path. These are shared courses rather than duplicated curricula. The Windows lesson retains labeled/unresolved detection review so the earlier SOC outcome remains taught. Existing operations rooms remain mapped: DFIR uses suspicious-document and recovery scenarios; Cloud uses identity and delivery-chain scenarios.
 
