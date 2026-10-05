@@ -1,5 +1,6 @@
 import { mountWorkbench } from './workbench.js?v=20261005-pilot1';
 import { mountAuthorizationLab } from './authorization-lab.js?v=20261005-access1';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261005-cd1';
 import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261004-paths1';
 import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261004-learning2';
 import { requiredPlan, canAccess } from './plan-access.js?v=20260929-1';
@@ -130,6 +131,11 @@ function renderLab() {
   const index = Number(params.get('id'));
   const lab = data.labs[index];
   if (!lab) return frame('PRACTICE / LAB', tr('المختبر غير موجود', 'Lab not found'), '', '<a href="labs.html">Labs ↗</a>');
+  if(index===7 && params.get('context')==='cloud') {
+    const title={ar:'تقييم صلاحيات السحابة والانحراف',en:'Cloud access and drift evaluation'};
+    setPageHeaderTitle(title);
+    return frame('CLOUD / PRACTICE LAB',tr(title.ar,title.en),tr('راجع منح الهوية وحد الصلاحيات والمنع، ثم اختبر الإصلاح مع بقاء الوصول المشروع.','Review identity grants, boundaries and denial, then retest repair while preserving legitimate access.'),`<a href="path.html?id=path_cloud">${tr('ارجع إلى مسار الأمن السحابي','Return to Cloud Security')} ↗</a><div id="cloud-dfir-workbench"></div>`);
+  }
   setPageHeaderTitle({ ar: lab.name, en: lab.name });
   return frame('PRACTICE / LAB', lab.name, esc(lab.desc), `<div class="library-lab-grid"><div>${section(tr('الأهداف', 'Objectives'), `<ul class="library-bullets">${lab.objectives.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`)}${section(tr('خطوات التحليل', 'Analysis steps'), `<ol class="library-bullets" dir="${currentLanguage() === 'en' ? 'ltr' : 'rtl'}">${lab.steps.map((step) => `<li>${esc(step[0])}<code dir="ltr">${esc(step[1])}</code></li>`).join('')}</ol>`)}<p class="library-note">${tr('عينة صناعية تعليمية؛ هذا المختبر لا يشغّل أدوات ولا يتصل بأهداف خارجية.', 'Synthetic learning evidence; this lab does not run tools or connect to external targets.')}</p></div><div>${section(tr('العينة الصناعية', 'Synthetic sample'), `<pre class="library-sample" dir="ltr">${esc(lab.sample)}</pre>`)}</div></div>${practiceOutput(lab)}${singleCheck(lab.verify_q, lab.verify_opts, `lab-${index}`)}`);
 }
@@ -262,13 +268,21 @@ function render() {
   }[page];
   const currentSearch = page === 'search' ? document.querySelector('#library-search')?.value || '' : '';
   root.innerHTML = renderer ? renderer() : '';
-  if (page === 'practice-lab' && [1, 7].includes(Number(params.get('id'))) && user()) {
+  if (page === 'practice-lab' && [1, 7].includes(Number(params.get('id'))) && params.get('context')!=='cloud' && user()) {
     root.insertAdjacentHTML('beforeend', '<div id="evidence-workbench"></div>');
     mountWorkbench(root.querySelector('#evidence-workbench'), { owner: user().$id, language: currentLanguage(), context: 'soc' });
   }
   if (page === 'practice-lab' && Number(params.get('id')) === 2 && user()) {
     root.insertAdjacentHTML('beforeend', '<div id="authorization-workbench"></div>');
     mountAuthorizationLab(root.querySelector('#authorization-workbench'), { owner: user().$id, language: currentLanguage() });
+  }
+  if (page === 'practice-lab' && user()) {
+    const index=Number(params.get('id'));
+    const kind=index===6?'dfir':index===7&&params.get('context')==='cloud'?'cloud':null;
+    if(kind) {
+      if(kind==='dfir')root.insertAdjacentHTML('beforeend','<div id="cloud-dfir-workbench"></div>');
+      mountCloudDfir(root.querySelector('#cloud-dfir-workbench'),{owner:user().$id,language:currentLanguage(),kind});
+    }
   }
   if (page === 'library-lesson') {
     const lesson = lessonById(params.get('id'));

@@ -912,10 +912,10 @@ export const academyPaths = [
         "id": "lab-7",
         "index": 7,
         "title": {
-          "ar": "قياس التغطية والاستجابة",
-          "en": "Coverage and response validation"
+          "ar": "تقييم صلاحيات السحابة والانحراف",
+          "en": "Cloud access and drift evaluation"
         },
-        "href": "practice-lab.html?id=7"
+        "href": "practice-lab.html?id=7&context=cloud"
       }
     ],
     "challenges": [
