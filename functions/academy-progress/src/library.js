@@ -31,7 +31,8 @@ function publicLesson(lesson, language) {
   const guide = edition().lessons[lesson.id];
   if (!guide) throw new Error('Lesson missing from learning edition');
   const { answer, explanation, ...checkpoint } = guide.checkpoint;
-  return { ...lesson, content: guide.concept[language], guide: {
+  // Keep the full course explanation; the guide supplements it with practice and a checkpoint.
+  return { ...lesson, guide: {
     version: guide.version, minutes: guide.minutes, sources: guide.sources || [],
     ...Object.fromEntries(['concept', 'artifact', 'objectives', 'analysis', 'exercise', 'rubric'].map((field) => [field, guide[field][language]])),
     checkpoint: { question: checkpoint.question[language], options: checkpoint.options.map((option) => option[language]) },
