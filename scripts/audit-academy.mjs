@@ -73,9 +73,10 @@ if (privateAvailable) {
     const entries = libraries.en[kind];
     if (new Set(entries.map(x => x.verify_q)).size < entries.length) add('review', 'repeated-practice-stem', kind, `${entries.length} items contain repeated generic verification stems.`);
   }
-  for (const bankName of ['exam-bank', 'course-exam-bank', 'path-exam-bank', 'practical-bank', 'practice-quiz-bank']) {
+  for (const bankName of ['exam-bank', 'course-exam-bank', 'path-exam-bank', 'practical-bank', 'practice-quiz-bank', 'assessment-variants']) {
     const bank = parse(bankName);
-    const groups = Array.isArray(bank) && bank[0]?.question ? { foundations: bank } : bank;
+    const groups = bankName === 'assessment-variants' ? Object.fromEntries(['courses', 'paths'].flatMap(kind => Object.entries(bank[kind]).map(([id, questions]) => [`${kind}/${id}`, questions])))
+      : Array.isArray(bank) && bank[0]?.question ? { foundations: bank } : bank;
     for (const [id, questions] of Object.entries(groups)) {
       let lengthCue = 0;
       for (const question of questions) {
@@ -92,7 +93,8 @@ if (privateAvailable) {
   }
   inventory = { ...inventory, programCourses: libraries.en.categories.length, programLessons: lessons.length, programTools: libraries.en.tools.length,
     practiceQuizSets: libraries.en.quizzes.length, programLabs: libraries.en.labs.length, programChallenges: libraries.en.challenges.length, operationRooms: libraries.en.operations.length,
-    assessedCourseBanks: assessment.filter(x => x.bank === 'course-exam-bank').length, specialtyExamBanks: assessment.filter(x => x.bank === 'path-exam-bank').length };
+    assessedCourseBanks: assessment.filter(x => x.bank === 'course-exam-bank').length, specialtyExamBanks: assessment.filter(x => x.bank === 'path-exam-bank').length,
+    transferQuestions: assessment.filter(x => x.bank === 'assessment-variants').reduce((sum, x) => sum + x.questions, 0) };
 }
 const report = { generatedAt: new Date().toISOString(), scope: 'Academy: static inventory, metadata, localization structure, technical contracts and assessment quality heuristics. Not an independent expert certification.',
   privateAvailable, inventory, pages, lessons, assessment, findings,

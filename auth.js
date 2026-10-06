@@ -1,5 +1,5 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20261006-audit1';
-import { fullName } from './full-name.js?v=20261006-audit1';
+import { cleanProgress, mergeProgress } from './engine.js?v=20261006-quality1';
+import { fullName } from './full-name.js?v=20261006-quality1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -72,7 +72,7 @@ async function learningExecution(input, learningState = true) {
   let data;
   try { data = JSON.parse(result.responseBody || '{}'); } catch { data = {}; }
   if (result.responseStatusCode < 200 || result.responseStatusCode >= 300) {
-    const errorText = data.error === 'Exam changed; reload before submitting'
+    const errorText = ['Exam changed; reload before submitting', 'Exam content changed; refresh the page before submitting'].includes(data.error)
       ? document.documentElement.lang === 'ar' ? 'تغير نموذج الامتحان. حدّث الصفحة وراجع إجاباتك قبل التسليم.' : 'The exam form changed. Reload and review your answers before submitting.'
       : data.error || 'Learning progress is temporarily unavailable.';
     const failure = new Error(errorText);
@@ -112,7 +112,7 @@ export function loadPathCredential(pathId) { return learningExecution({ action: 
 export function sharePathCredential(pathId, enabled) { return learningExecution({ action: 'pathShareCredential', pathId, enabled }, false); }
 export function awardLesson(lessonId, answerIndex) { return learningExecution({ action: 'completeLesson', lessonId, answerIndex }); }
 export function loadExam() { return learningExecution({ action: 'examState' }, false); }
-export function submitExam(answers) { return learningExecution({ action: 'submitExam', answers }, false); }
+export function submitExam(answers, formId) { return learningExecution({ action: 'submitExam', answers, formId }, false); }
 export function loadCredential() { return learningExecution({ action: 'credential' }, false); }
 export function shareCredential(enabled) { return learningExecution({ action: 'shareCredential', enabled }, false); }
 export function correctCredentialName() { return learningExecution({ action: 'correctCredentialName' }, false); }

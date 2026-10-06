@@ -41,12 +41,12 @@ test('path exam requires nine correct answers, rejects invalid choice indices, a
   try {
     const answers = Object.fromEntries(bank.map(q => [q.id, q.answer]));
     const invalid = { ...answers, 'case-0': 4 };
-    assert.equal((await service.submit('invalid-user', 'Test Learner', invalid)).code, 400);
+    assert.equal((await service.submit('invalid-user', 'Test Learner', invalid, (await service.state('invalid-user')).formId)).code, 400);
     const eight = { ...answers, 'case-0': 1, 'case-1': 2 };
-    const eightResult = await service.submit('eight-user', 'Test Learner', eight);
+    const eightResult = await service.submit('eight-user', 'Test Learner', eight, (await service.state('eight-user')).formId);
     assert.deepEqual([eightResult.code, eightResult.data.score, eightResult.data.passed], [200, 8, false]);
     const nine = { ...answers, 'case-0': 1 };
-    const nineResult = await service.submit('nine-user', 'Test Learner', nine);
+    const nineResult = await service.submit('nine-user', 'Test Learner', nine, (await service.state('nine-user')).formId);
     assert.deepEqual([nineResult.code, nineResult.data.score, nineResult.data.passed], [200, 9, true]);
     assert.equal(nineResult.data.passScore, 9);
     assert.equal((await service.state('nine-user')).passed, true);

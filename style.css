@@ -332,6 +332,11 @@ html:not(.academy-auth-ready) #main{visibility:hidden}
 @media(max-width:1050px){.library-grid,.library-profile{grid-template-columns:repeat(2,minmax(0,1fr))}.library-lesson-layout,.library-lab-grid{grid-template-columns:1fr}.library-lesson-tools{position:static}}
 @media(max-width:680px){.library-grid,.library-profile,.library-choices,.review-grid{grid-template-columns:1fr}.library-card{min-height:0}.library-row{grid-template-columns:27px minmax(0,1fr) 17px;gap:7px}.library-row small{grid-column:2}.library-row b{grid-column:3;grid-row:1}.library-reading{font-size:14px}.practice-form fieldset{padding:17px}.library-section{margin:34px 0}}
 @media(prefers-reduced-motion:reduce){.library-card,.library-row,.library-choices button{transition:none}.library-card:hover,.library-row:hover,.library-choices button:hover{transform:none}}
+.library-choices button:disabled{opacity:.55;cursor:not-allowed;transform:none;border-color:#415943}
+.library-choices button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.pilot-measures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.pilot-measures label{display:grid;gap:8px;min-width:0}
+@media(max-width:680px){.pilot-measures{grid-template-columns:1fr}}
 
 /* Preserve the supplied logo proportions in every brand surface. */
 .brand-mark img,.sidebar-brand-mark img{object-fit:contain}

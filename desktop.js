@@ -1,15 +1,15 @@
-import { mountWorkbench } from './workbench.js?v=20261006-audit1';
-import { mountAuthorizationLab } from './authorization-lab.js?v=20261006-audit1';
-import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261006-audit1';
-import { mountSpecialist } from './specialist-lab.js?v=20261006-audit1';
-import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261006-audit1';
-import { mountReverse } from './reverse-lab.js?v=20261006-audit1';
-import { reversePractice } from './reverse-model.js?v=20261006-audit1';
-import { mountAssurance } from './assurance-lab.js?v=20261006-audit1';
-import { assurancePractice } from './assurance-model.js?v=20261006-audit1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261006-audit1';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261006-audit1';
-import { requiredPlan, canAccess } from './plan-access.js?v=20261006-audit1';
+import { mountWorkbench } from './workbench.js?v=20261006-quality1';
+import { mountAuthorizationLab } from './authorization-lab.js?v=20261006-quality1';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261006-quality1';
+import { mountSpecialist } from './specialist-lab.js?v=20261006-quality1';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261006-quality1';
+import { mountReverse } from './reverse-lab.js?v=20261006-quality1';
+import { reversePractice } from './reverse-model.js?v=20261006-quality1';
+import { mountAssurance } from './assurance-lab.js?v=20261006-quality1';
+import { assurancePractice } from './assurance-model.js?v=20261006-quality1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261006-quality1';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261006-quality1';
+import { requiredPlan, canAccess } from './plan-access.js?v=20261006-quality1';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');
@@ -34,14 +34,14 @@ function loadPersonalState() {
   state.practice ||= {};
   state.reviewed ||= {};
   state.reviewCards ||= {};
-  if (state.practiceQuizBankVersion !== 2 && user()) {
+  if (state.practiceQuizBankVersion !== 3 && user()) {
     for (const id of Object.keys(state.reviewCards)) {
       if (/^quiz-\d+-question-\d+$/.test(id)) delete state.reviewCards[id];
     }
     for (const id of Object.keys(state.practice)) {
       if (/^quiz-\d+$/.test(id)) delete state.practice[id];
     }
-    state.practiceQuizBankVersion = 2;
+    state.practiceQuizBankVersion = 3;
     try { localStorage.setItem(key(), JSON.stringify(state)); } catch { /* Practice history can still be reset in memory. */ }
   }
 }
@@ -130,7 +130,7 @@ function renderLesson() {
       ? `<section class="lesson-explanation-section"><h3>${heading}</h3>${lines.length > 1 ? `<p>${lines.slice(1).join('<br>')}</p>` : ''}</section>`
       : `<p>${block.replace(/\n/g, '<br>')}</p>`;
   }).join('')}</div>`;
-  const reading = guide ? `<div class="lesson-outline"><span class="section-kicker">${tr('خطة الدرس', 'LESSON PLAN')} · ${guide.minutes} ${tr('دقيقة تقريباً مع التطبيق', 'estimated min including practice')}</span><h2>${tr('ما ستتعلمه', 'What you will learn')}</h2>${list(guide.objectives)}</div><h2>${tr('شرح الدرس', 'Lesson explanation')}</h2>${explanation}<section class="lesson-applied-context"><h2>${tr('تطبيق على موضوع الدرس', 'Applying the lesson')}</h2>${guide.concept.split(/\n\s*\n/).map(block => `<p>${esc(block)}</p>`).join('')}<h3>${tr('اقرأ الدليل', 'Read the evidence')}</h3><pre class="learning-artifact" dir="ltr">${esc(guide.artifact.replace(/; /g, '\n'))}</pre><h3>${tr('كيف تحلله؟', 'How should you analyze it?')}</h3><p>${esc(guide.analysis)}</p><section class="learning-practice-output"><h3>${tr('طبّق واكتب قرارك', 'Apply it and document your decision')}</h3><p>${esc(guide.exercise)}</p><h3>${tr('راجع إجابتك بهذه المعايير', 'Review your response against these criteria')}</h3>${list(guide.rubric)}<a href="#lesson-note">${tr('اكتب إجابتك في ملاحظات الدرس', 'Write your response in the lesson notes')} ↗</a></section></section>${checkpoint}${guide.sources.length ? `<div class="learning-source-links"><h3>${tr('مراجع أصلية', 'Primary references')}</h3>${guide.sources.filter((source) => /^https:\/\//.test(source.url)).map((source) => `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title)} ↗</a>`).join('')}</div>` : ''}` : explanation;
+  const reading = guide ? `<div class="lesson-outline"><span class="section-kicker">${tr('خطة الدرس', 'LESSON PLAN')} · ${guide.minutes} ${tr('دقيقة تقريباً مع التطبيق', 'estimated min including practice')}</span><h2>${tr('ما ستتعلمه', 'What you will learn')}</h2>${list(guide.objectives)}</div><h2>${tr('شرح الدرس', 'Lesson explanation')}</h2>${explanation}${lesson.terminology?.length ? `<details class="library-hint"><summary>${tr('مصطلحات الدرس', 'Lesson terminology')}</summary><dl>${lesson.terminology.map(item => `<dt><strong>${esc(item.term)}</strong></dt><dd>${esc(item.definition)}</dd>`).join('')}</dl></details>` : ''}<section class="lesson-applied-context"><h2>${tr('تطبيق على موضوع الدرس', 'Applying the lesson')}</h2>${guide.concept.split(/\n\s*\n/).map(block => `<p>${esc(block)}</p>`).join('')}<h3>${tr('اقرأ الدليل', 'Read the evidence')}</h3><pre class="learning-artifact" dir="ltr">${esc(guide.artifact.replace(/; /g, '\n'))}</pre><h3>${tr('كيف تحلله؟', 'How should you analyze it?')}</h3><p>${esc(guide.analysis)}</p><section class="learning-practice-output"><h3>${tr('طبّق واكتب قرارك', 'Apply it and document your decision')}</h3><p>${esc(guide.exercise)}</p><h3>${tr('راجع إجابتك بهذه المعايير', 'Review your response against these criteria')}</h3>${list(guide.rubric)}<a href="#lesson-note">${tr('اكتب إجابتك في ملاحظات الدرس', 'Write your response in the lesson notes')} ↗</a></section></section>${checkpoint}${guide.sources.length ? `<div class="learning-source-links"><h3>${tr('مراجع أصلية', 'Primary references')}</h3>${guide.sources.filter((source) => /^https:\/\//.test(source.url)).map((source) => `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title)} ↗</a>`).join('')}</div>` : ''}` : explanation;
   return frame('LEARN / LESSON', lesson.title, `<a href="library-course.html?id=${encodeURIComponent(lesson.category.id)}">${esc(lesson.category.title)} ↗</a> · ${position + 1}/${siblings.length}`, `<div class="library-lesson-layout"><article class="library-reading" dir="${currentLanguage() === 'en' ? 'ltr' : 'rtl'}">${reading}</article><aside class="library-lesson-tools"><button class="button button-outline" id="favorite-button" type="button">${favorite ? tr('★ محفوظ في المفضلة', '★ Saved to favorites') : tr('☆ أضف للمفضلة', '☆ Add to favorites')}</button>${guide ? `<a class="button button-primary" href="#lesson-checkpoint">${lessonStatus?.read ? tr('✓ درس مكتمل', '✓ Lesson completed') : tr('انتقل لسؤال التحقق', 'Go to the checkpoint')}</a>` : `<p>${tr('جارٍ تحديث سؤال التحقق لهذا الدرس.', 'The lesson checkpoint is being updated.')}</p>`}<label for="lesson-note">${tr('إجابتك وملاحظاتك', 'Your response and notes')}</label><textarea id="lesson-note" rows="9" placeholder="${tr('الدليل، الاستنتاج، المجهول، والإجراء التالي…', 'Evidence, inference, unknowns and next action…')}">${esc(state.notes[lesson.id] || '')}</textarea><button class="button button-outline" id="save-note" type="button">${tr('احفظ الملاحظة', 'Save note')}</button><small>${tr('الملاحظات محفوظة في هذا المتصفح؛ إكمال الدرس محفوظ في حسابك.', 'Notes stay in this browser; lesson completion is saved to your account.')}</small></aside></div><nav class="library-next">${previous ? `<a href="library-lesson.html?id=${encodeURIComponent(previous.id)}">${tr('السابق', 'Previous')} · ${esc(previous.title)}</a>` : '<span></span>'}${next ? `<a href="library-lesson.html?id=${encodeURIComponent(next.id)}">${tr('التالي', 'Next')} · ${esc(next.title)}</a>` : `<a href="course-exam.html?order=${lesson.category.order}">${tr('امتحان الدورة', 'Course exam')} ↗</a>`}</nav>`);
 }
 
@@ -179,7 +179,7 @@ function renderChallenge() {
 function practiceOutput(item) {
   if (!item.output) return '';
   const id = `${page}-${params.get('id')}`;
-  return section(tr('قبل الإجابة: دوّن تحليلك', 'Before answering: document your analysis'), `<p>${esc(item.output)}</p><label for="practice-note">${tr('دليلك وقرارك وحدوده', 'Your evidence, decision and limitations')}</label><textarea class="learning-practice-output" id="practice-note" rows="5">${esc(state.notes[id] || '')}</textarea><small>${tr('يحفظ تلقائياً على هذا المتصفح. هذا التمرين للمراجعة وليس نتيجة شهادة.', 'Saved automatically in this browser. This practice is for review, not certificate evidence.')}</small>${item.rubric ? `<ul class="library-bullets">${item.rubric.map((line) => `<li>${esc(line)}</li>`).join('')}</ul>` : ''}`);
+  return section(tr('هدفك والمخرج المطلوب', 'Goal and deliverable'), `${item.goal ? `<p><strong>${esc(item.goal)}</strong></p>` : ''}${item.practiceMode ? `<p class="library-note">${esc(item.practiceMode)}</p>` : ''}<p>${esc(item.output)}</p><label for="practice-note">${tr('دليلك وقرارك وحدوده', 'Your evidence, decision and limitations')}</label><textarea class="learning-practice-output" id="practice-note" rows="5">${esc(state.notes[id] || '')}</textarea><small>${tr('يحفظ تلقائياً على هذا المتصفح. هذا التمرين للمراجعة وليس نتيجة شهادة.', 'Saved automatically in this browser. This practice is for review, not certificate evidence.')}</small>${item.rubric ? `<details class="library-hint"><summary>${tr('معايير مراجعة تحليلك', 'Criteria for reviewing your analysis')}</summary><ul class="library-bullets">${item.rubric.map((line) => `<li>${esc(line)}</li>`).join('')}</ul></details>` : ''}`);
 }
 
 function singleCheck(question, options, id) {
@@ -193,12 +193,26 @@ function renderOperations() {
 function renderOperation() {
   const operation = data.operations[Number(params.get('id'))];
   if (!operation) return frame('CYBER / OPERATION', tr('السيناريو غير موجود', 'Scenario not found'), '', '<a href="operations.html">Operations ↗</a>');
+  for (const group of ['decision', 'response']) {
+    const saved = state.practice[`operation-${operation.id}-${group}`];
+    if (saved && saved.revision !== operation.revision) delete state.practice[`operation-${operation.id}-${group}`];
+  }
   setPageHeaderTitle({ ar: operation.title, en: operation.title });
-  return frame(`OPERATION / ${esc(operation.codename)}`, operation.title, esc(operation.summary), `${notice()}<div class="library-summary"><span>${esc(operation.track)}</span><span>${esc(operation.severity)}</span><span>${esc(operation.duration)}</span></div>${section(tr('التنبيه', 'Alert'), `<p>${esc(operation.alert)}</p>`)}${section(tr('الخط الزمني', 'Timeline'), `<ol class="library-timeline">${operation.timeline.map((row) => `<li><time>${esc(row[0])}</time><span>${esc(row[1])}</span></li>`).join('')}</ol>`)}${section(tr('الأدلة', 'Evidence'), `<div class="library-grid">${operation.evidence.map((item) => `<article class="library-card"><span>${esc(item.tag)}</span><h3>${esc(item.icon)} ${esc(item.title)}</h3><p>${esc(item.detail)}</p></article>`).join('')}</div>`)}${section(tr('قرارك الأول', 'First decision'), choiceButtons(operation.decisions, 'decision'))}${section(tr('خطة الاستجابة', 'Response plan'), choiceButtons(operation.responses, 'response'))}<div id="operation-result" class="library-feedback" role="status"></div>${section(tr('وثّق سبب قرارك', 'Document your reasoning'), `<label for="operation-note">${tr('ما الأدلة التي اعتمدت عليها؟ وما الذي قد يغيّر قرارك؟', 'Which evidence supports your decision, and what could change it?')}</label><textarea id="operation-note" class="learning-practice-output" rows="5">${esc(state.notes[`operation-${params.get('id')}`] || '')}</textarea><small>${tr('يحفظ تلقائياً في هذا المتصفح. هذا سيناريو تدريبي، وليس نتيجة شهادة.', 'Saved automatically in this browser. This is a practice scenario, not certificate evidence.')}</small>`)}`);
+  return frame(`OPERATION / ${esc(operation.codename)}`, operation.title, esc(operation.summary), `${notice()}<div class="library-summary"><span>${esc(operation.track)}</span><span>${esc(operation.severity)}</span><span>${esc(operation.duration)}</span></div>${operation.goal ? section(tr('هدف القرار', 'Decision goal'), `<p>${esc(operation.goal)}</p><p class="library-note">${esc(operation.pressure)}</p>`) : ''}${section(tr('التنبيه', 'Alert'), `<p>${esc(operation.alert)}</p>`)}${section(tr('الخط الزمني', 'Timeline'), `<ol class="library-timeline">${operation.timeline.map((row) => `<li><time>${esc(row[0])}</time><span>${esc(row[1])}</span></li>`).join('')}</ol>`)}${section(tr('الأدلة', 'Evidence'), `<div class="library-grid">${operation.evidence.map((item) => `<article class="library-card"><span>${esc(item.tag)}</span><h3>${esc(item.icon)} ${esc(item.title)}</h3><p>${esc(item.detail)}</p></article>`).join('')}</div>`)}${section(tr('قرارك الأول', 'First decision'), choiceButtons(operation.decisions, 'decision'))}${section(tr('خطة الاستجابة', 'Response plan'), `<p>${tr('اختر قرارك الأول، ثم اختبر كيف تكمل خطة المتابعة ما بقي مفتوحاً.', 'Choose a first decision, then consider how the follow-up addresses unresolved issues.')}</p>${choiceButtons(operation.responses, 'response')}`)}<div id="operation-result" class="library-feedback" role="status">${operationFeedback(operation)}</div>${section(tr('وثّق سبب قرارك', 'Document your reasoning'), `<label for="operation-note">${tr('ما الأدلة التي اعتمدت عليها؟ وما الذي قد يغيّر قرارك؟', 'Which evidence supports your decision, and what could change it?')}</label><textarea id="operation-note" class="learning-practice-output" rows="5">${esc(state.notes[`operation-${params.get('id')}`] || '')}</textarea>${operation.rubric ? `<ul class="library-bullets">${operation.rubric.map(line => `<li>${esc(line)}</li>`).join('')}</ul>` : ''}<small>${tr('يحفظ تلقائياً في هذا المتصفح. هذا سيناريو تدريبي، وليس نتيجة شهادة.', 'Saved automatically in this browser. This is a practice scenario, not certificate evidence.')}</small>`)}`);
+}
+
+function operationFeedback(operation) {
+  const decision = operation.decisions.find(item => item.id === state.practice[`operation-${operation.id}-decision`]?.choice);
+  const response = operation.responses.find(item => item.id === state.practice[`operation-${operation.id}-response`]?.choice);
+  if (!decision) return '';
+  return `<strong>${tr('أثر القرار الأول في المحاكاة', 'Simulated first-decision outcome')}: ${esc(decision.title)}</strong><p>${esc(decision.explanation)}</p>${response ? `<strong>${tr('نتيجة المتابعة في المحاكاة', 'Simulated follow-up outcome')}: ${esc(response.title)}</strong><p>${esc(response.explanation)}</p><p class="library-note">${tr('اقرأ النتيجتين معاً: خطة المتابعة لا تمحو أثر القرار الأول. وثّق ما بقي دون احتواء أو اختبار قبل إغلاق الحالة.', 'Read both outcomes together: follow-up does not erase the first decision. Document anything still uncontained or untested before closing the case.')}</p>` : ''}`;
 }
 
 function choiceButtons(choices, group) {
-  return `<div class="library-choices" data-group="${group}">${choices.map((choice) => `<button type="button" class="${state.practice[`operation-${data.operations[Number(params.get('id'))]?.id}-${group}`]?.choice === choice.id ? 'selected' : ''}" data-choice="${esc(choice.id)}"><strong>${esc(choice.title)}</strong><small>${esc(choice.detail)}</small></button>`).join('')}</div>`;
+  const operationId = data.operations[Number(params.get('id'))]?.id;
+  const selected = state.practice[`operation-${operationId}-${group}`]?.choice;
+  const waiting = group === 'response' && !state.practice[`operation-${operationId}-decision`];
+  return `<div class="library-choices" data-group="${group}">${choices.map((choice) => `<button type="button" class="${selected === choice.id ? 'selected' : ''}" aria-pressed="${selected === choice.id}" ${waiting ? 'disabled' : ''} data-choice="${esc(choice.id)}"><strong>${esc(choice.title)}</strong><small>${esc(choice.detail)}</small></button>`).join('')}</div>`;
 }
 
 function renderReview() {
@@ -367,10 +381,11 @@ document.addEventListener('click', async (event) => {
     const operation = data.operations[Number(params.get('id'))];
     const group = button.closest('[data-group]')?.dataset.group;
     const choice = (group === 'decision' ? operation.decisions : operation.responses).find((item) => item.id === button.dataset.choice);
-    button.closest('.library-choices').querySelectorAll('button').forEach((item) => item.classList.toggle('selected', item === button));
-    const result = document.querySelector('#operation-result');
-    result.innerHTML = `<strong>${esc(choice.title)}</strong><p>${esc(choice.explanation)}</p>`;
-    state.practice[`operation-${operation.id}-${group}`] = { choice: choice.id, date: new Date().toISOString() }; save();
+    if (!choice || (group === 'response' && !state.practice[`operation-${operation.id}-decision`])) return;
+    if (group === 'decision') delete state.practice[`operation-${operation.id}-response`];
+    state.practice[`operation-${operation.id}-${group}`] = { choice: choice.id, revision: operation.revision, date: new Date().toISOString() }; save();
+    render();
+    document.querySelector(`[data-group="${group}"] [data-choice="${choice.id}"]`)?.focus({ preventScroll: true });
   }
 });
 

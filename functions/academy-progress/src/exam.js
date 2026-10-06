@@ -25,6 +25,11 @@ function parseBank() {
   return bank;
 }
 
+// Locale-independent content fingerprint prevents grading answers from a stale form.
+export function foundationsFormId(userId, bank = parseBank()) {
+  return `f_${createHash('sha256').update(JSON.stringify({ userId, bank })).digest('hex').slice(0, 24)}`;
+}
+
 export function examService({ base, request, getLessonState, getPracticalPassed = async () => true }) {
   const attemptBase = `${base}/tablesdb/${DATABASE_ID}/tables/${ATTEMPT_TABLE}`;
   const credentialBase = `${base}/tablesdb/${DATABASE_ID}/tables/${CREDENTIAL_TABLE}`;
@@ -64,7 +69,7 @@ export function examService({ base, request, getLessonState, getPracticalPassed 
     const status = statusFor(learning.awards, attempts, Boolean(practical));
     if (!status.eligible || status.passed || !status.remaining || (status.nextAt && Date.now() < Date.parse(status.nextAt))) return status;
     const bank = parseBank();
-    return { ...status, questions: bank.map(({ id, question, options }) => ({ id, question, options })) };
+    return { ...status, formId: foundationsFormId(userId, bank), questions: bank.map(({ id, question, options }) => ({ id, question, options })) };
   }
 
   async function ensureCredential(attempt) {
@@ -78,7 +83,7 @@ export function examService({ base, request, getLessonState, getPracticalPassed 
     if (![201, 409].includes(created.status)) throw new Error('Credential creation failed');
   }
 
-  async function submit(userId, holderName, answers) {
+  async function submit(userId, holderName, answers, formId) {
     const [learning, attempts, practical] = await Promise.all([getLessonState(userId), attemptsFor(userId), getPracticalPassed(userId, 'foundations')]);
     const status = statusFor(learning.awards, attempts, Boolean(practical));
     if (status.passed) return { code: 409, data: { error: 'Exam already passed', ...status } };
@@ -86,6 +91,7 @@ export function examService({ base, request, getLessonState, getPracticalPassed 
     if (!status.remaining) return { code: 429, data: { error: 'Attempt limit reached', ...status } };
     if (status.nextAt && Date.now() < Date.parse(status.nextAt)) return { code: 429, data: { error: 'Wait for the next attempt', ...status } };
     const bank = parseBank();
+    if (formId !== foundationsFormId(userId, bank)) return { code: 409, data: { error: 'Exam content changed; refresh the page before submitting' } };
     if (!answers || typeof answers !== 'object' || Array.isArray(answers) || Object.keys(answers).length !== bank.length ||
       bank.some((q) => !Object.hasOwn(answers, q.id) || !Number.isInteger(answers[q.id]) || answers[q.id] < 0 || answers[q.id] >= q.options.length)) {
       return { code: 400, data: { error: 'Answer every question once' } };
@@ -96,7 +102,7 @@ export function examService({ base, request, getLessonState, getPracticalPassed 
     const credentialId = passed ? `c_${randomBytes(16).toString('hex')}` : null;
     const name = holderName;
     const credentialVersion = 'foundations-v2';
-    const payload = JSON.stringify({ version: EXAM_VERSION, credentialVersion, assessmentEdition: 'learning-quality-20261004', requiredScore: 9, slot, score, passed, credentialId, holderName: name });
+    const payload = JSON.stringify({ version: EXAM_VERSION, credentialVersion, assessmentEdition: 'decision-quality-20261006', formId, requiredScore: 9, slot, score, passed, credentialId, holderName: name });
     const result = await request(`${attemptBase}/rows`, { method: 'POST', body: JSON.stringify({ rowId: examAttemptId(userId, slot), data: { userId, payload }, permissions: [] }) });
     if (result.status === 409) return { code: 409, data: { error: 'Attempt was already submitted; refresh the page' } };
     if (result.status !== 201) throw new Error('Exam attempt creation failed');

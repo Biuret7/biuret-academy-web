@@ -383,8 +383,8 @@ export const academyPaths = [
         "id": "challenge-5",
         "index": 5,
         "title": {
-          "ar": "تحدي 06 — رفع الصلاحيات",
-          "en": "Challenge 06: Privilege escalation"
+          "ar": "معاملات سكربت آمنة",
+          "en": "Safe script arguments"
         },
         "href": "practice-challenge.html?id=5"
       },
@@ -598,8 +598,8 @@ export const academyPaths = [
         "id": "challenge-1",
         "index": 1,
         "title": {
-          "ar": "تحدي 02 — كسر الهاش",
-          "en": "Challenge 02: Decode the message"
+          "ar": "تحقق من مصدر الرسالة",
+          "en": "Verify message provenance"
         },
         "href": "practice-challenge.html?id=1"
       },

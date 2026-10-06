@@ -147,9 +147,9 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .pilot-task h3 { font-size: 1.15rem; margin: 0; }
 .pilot-task h3::before { content: counter(pilot-step) " · "; color: #c1ff38; }
 .pilot-task label { display: block; font-weight: 600; margin-block: 1rem .5rem; }
-.pilot-task select, .pilot-task textarea { width: 100%; max-width: 100%; min-height: 48px; padding: .8rem; border: 1px solid #3b493f; border-radius: 12px; background: #0a0f0c; color: #edf5ef; font: inherit; }
+.pilot-task select, .pilot-task textarea, .pilot-task input { width: 100%; max-width: 100%; min-height: 48px; padding: .8rem; border: 1px solid #3b493f; border-radius: 12px; background: #0a0f0c; color: #edf5ef; font: inherit; }
 .pilot-task textarea { resize: vertical; }
-.pilot-task select:focus-visible, .pilot-task textarea:focus-visible { outline: 2px solid #c1ff38; outline-offset: 3px; }
+.pilot-task select:focus-visible, .pilot-task textarea:focus-visible, .pilot-task input:focus-visible { outline: 2px solid #c1ff38; outline-offset: 3px; }
 .pilot-task p, .pilot-body > p { max-width: 78ch; line-height: 1.9; }
 .pilot-export { padding: 1.5rem; border: 1px solid #3a4b28; border-radius: 18px; }
 .pilot-body small, .pilot-export [role="status"] { color: #a7b9aa; }

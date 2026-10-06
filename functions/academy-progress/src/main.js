@@ -287,7 +287,7 @@ export default async ({ req, res, error }) => {
     });
     if (input.action === 'examState') return res.json(await exam.state(account.$id));
     if (input.action === 'submitExam') {
-      const result = await exam.submit(account.$id, fullName(account.name), input.answers);
+      const result = await exam.submit(account.$id, fullName(account.name), input.answers, input.formId);
       return res.json(result.data, result.code);
     }
     if (input.action === 'credential') {

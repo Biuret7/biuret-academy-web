@@ -1,8 +1,8 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261006-audit1';
-import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261006-audit1';
-import { currentLanguage, applyLanguage } from './i18n.js?v=20261006-audit1';
-import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261006-audit1';
-import { fullName } from './full-name.js?v=20261006-audit1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261006-quality1';
+import { user, loadUser, loadExam, submitExam, loadCredential, shareCredential, correctCredentialName } from './auth.js?v=20261006-quality1';
+import { currentLanguage, applyLanguage } from './i18n.js?v=20261006-quality1';
+import { credentialFacts, downloadCredential, validCredentialRecord } from './credential-art.js?v=20261006-quality1';
+import { fullName } from './full-name.js?v=20261006-quality1';
 
 const root = document.querySelector('#assessment-main');
 const isExam = document.querySelector('.site-shell')?.dataset.page === 'exam';
@@ -114,7 +114,7 @@ root.addEventListener('submit', async (event) => {
   const answers = Object.fromEntries(new FormData(event.target).entries());
   for (const key of Object.keys(answers)) answers[key] = Number(answers[key]);
   busy = true; event.target.querySelector('button[type="submit"]').disabled = true;
-  try { await submitExam(answers); await refreshExam(); }
+  try { await submitExam(answers, examState.formId); await refreshExam(); }
   catch (error) { const box = root.querySelector('#exam-error'); if (box) { box.textContent = errorMessage(error); box.hidden = false; } event.target.querySelector('button[type="submit"]').disabled = false; }
   finally { busy = false; }
 });
