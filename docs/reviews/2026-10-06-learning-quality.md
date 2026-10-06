@@ -1,6 +1,6 @@
 # Learning quality update — 6 October 2026
 
-Status: implementation and local verification complete; deployment approval pending.
+Status: owner-approved function and public UI are published; human trial and specialist validation remain pending. See [the deployment record](../deployments/2026-10-06-learning-quality.md).
 Asset revision: `20261006-quality1`.
 
 ## Four workstreams
