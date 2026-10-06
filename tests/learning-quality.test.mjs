@@ -59,6 +59,10 @@ test('path exam requires nine correct answers, rejects invalid choice indices, a
 test('all private lessons, exams and practical tasks have complete bilingual coverage', { skip: !hasPrivate }, () => {
   const edition = read('learning-edition.private.json');
   const courses = read('desktop-library.en.private.json').categories;
+  for (const lab of read('desktop-library.ar.private.json').labs) for (const step of lab.steps) {
+    assert.ok(/[\u0600-\u06ff]/u.test(step[1]), `${lab.name}: localized analysis step`);
+    assert.ok(!/observed evidence|alternative explanation|bounded verification/u.test(step[1]));
+  }
   assert.equal(Object.keys(edition.lessons).length, 105);
   for (const course of courses) for (const lesson of course.lessons) {
     const guide = edition.lessons[lesson.id];
