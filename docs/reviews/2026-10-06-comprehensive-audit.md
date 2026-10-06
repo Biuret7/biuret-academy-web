@@ -10,4 +10,4 @@ Local corrections repair malformed English lesson passages, selected technical c
 
 An internal Arabic review records prioritized findings and evidence locally. It is not part of the Pages artifact. Private curriculum and exam banks are excluded from Git and public deployment. Purchases remain closed; historical learner results and credentials remain unchanged.
 
-Status: corrections are prepared locally; function upload and public release still await authorization.
+Status: owner-approved corrections are published. Appwrite deployment `6ac4c5ab35b3637bf141` is Active, and Pages run `37446607608` succeeded for public commit `c2cd740`. Live Arabic/English lesson explanations, knowledge checks, catalog counts and corrected network evidence were inspected. See the [publication record](../deployments/2026-10-06-comprehensive-audit.md). The editorial findings above remain open.
