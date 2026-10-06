@@ -1,4 +1,4 @@
-import { canAccess } from './plan-access.js?v=20261005-reviews1';
+import { canAccess } from './plan-access.js?v=20261006-soccase1';
 
 export function pathAccess(path, membership, foundationsPassed, ready = true) {
   if (!ready || !membership) return 'unavailable';
@@ -19,6 +19,7 @@ export function pathCounts(path) {
 export function resourceAccess(path, kind, item, access, membership) {
   if (!membership || !['free', 'admin', 'owned', 'existing'].includes(access)) return false;
   if (path.free || access === 'admin' || access === 'owned') return true;
+  if (item.socCase) return path.id === 'path_soc' && path.courses.every(course => canAccess('course', course.order, membership));
   if (item.core) return canAccess('coreChallenge', item.index ?? 0, membership);
   return canAccess(kind, kind === 'course' ? item.order : item.index, membership);
 }

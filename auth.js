@@ -1,5 +1,5 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20261005-reviews1';
-import { fullName } from './full-name.js?v=20261005-reviews1';
+import { cleanProgress, mergeProgress } from './engine.js?v=20261006-soccase1';
+import { fullName } from './full-name.js?v=20261006-soccase1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -98,6 +98,8 @@ export function checkProgramPractice(kind, index, answers, language) { return le
 export function loadCourseExam(courseOrder, language) { return learningExecution({ action: 'courseExamState', courseOrder, language }, false); }
 export function submitCourseExam(courseOrder, answers, formId) { return learningExecution({ action: 'courseSubmitExam', courseOrder, answers, formId }, false); }
 export function loadPractical(pathId, language) { return learningExecution({ action: 'practicalState', pathId, language }, false); }
+export function loadSocInvestigation(language) { return learningExecution({ action: 'socCase', language }, false); }
+export function checkSocFindings(caseId, version, findings, language) { return learningExecution({ action: 'socCheck', caseId, version, findings, language }, false); }
 export function submitPractical(pathId, answers) { return learningExecution({ action: 'submitPractical', pathId, answers }, false); }
 export function loadReportReview(pathId) { return learningExecution({ action: 'reportState', pathId }, false); }
 export function submitReportReview(pathId, fields, language, baseRevision, consent) { return learningExecution({ action: 'reportSubmit', pathId, fields, language, baseRevision, consent }, false); }

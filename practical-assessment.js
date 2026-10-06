@@ -1,7 +1,7 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261005-reviews1';
-import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261005-reviews1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261005-reviews1';
-import { attachPracticalReport } from './practical-report.js?v=20261005-reviews1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261006-soccase1';
+import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261006-soccase1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261006-soccase1';
+import { attachPracticalReport } from './practical-report.js?v=20261006-soccase1';
 
 const root = document.querySelector('#practical-main');
 const pathId = new URLSearchParams(location.search).get('id');
@@ -24,7 +24,7 @@ const next = () => pathId === 'foundations' ? 'exam.html' : `path-exam.html?id=$
 
 function frame(body) {
   const title = names[pathId]?.[currentLanguage() === 'en' ? 1 : 0] || tr('تقييم عملي', 'Practical assessment');
-  root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="paths.html">← ${tr('المسارات', 'Paths')}</a><span class="section-kicker">BIURET ACADEMY / PRACTICAL</span><h1>${esc(title)}</h1><p>${tr('ثلاث مهام مبنية على أدلة تدريبية آمنة. اختر قراراً مبرراً بالدليل في كل مهمة قبل الامتحان النهائي.', 'Three tasks based on safe training evidence. Make an evidence-led decision for each before the final exam.')}</p></section><section class="assessment-body section-frame">${body}</section>`;
+  root.innerHTML = `<section class="assessment-hero section-frame"><a class="learning-back" href="paths.html">← ${tr('المسارات', 'Paths')}</a><span class="section-kicker">BIURET ACADEMY / PRACTICAL</span><h1>${esc(title)}</h1><p>${tr('ثلاث مهام مبنية على أدلة تدريبية آمنة. اختر قراراً مبرراً بالدليل في كل مهمة قبل الامتحان النهائي.', 'Three tasks based on safe training evidence. Make an evidence-led decision for each before the final exam.')}</p></section><section class="assessment-body section-frame">${pathId === 'path_soc' && state ? `<div class="assessment-card"><h2>${tr('تدرّب على تحقيق متعدد المصادر','Practice a multi-source investigation')}</h2><p>${tr('انتقل إلى ملفات الأدلة وابنِ تحليلك وتقريرك قبل التقييم. فحص المختبر تدريبي وتقريرك يُراجع منفصلاً.','Work through evidence files and prepare your findings before assessment. Lab checks are practice; your report is reviewed separately.')}</p><a class="button button-outline" href="soc-investigation.html">${tr('مختبر تحقيق SOC','SOC investigation lab')} ↗</a></div>` : ''}${body}</section>`;
   attachAssessmentProgress(root);
 }
 function renderAssessment() {

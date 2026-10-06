@@ -10,6 +10,7 @@ import { courseExamService } from './course-exam.js';
 import { practicalService } from './practical.js';
 import { fullName } from './name.js';
 import { reportReviewService } from './report-review.js';
+import { socCase, checkSocInvestigation } from './soc-investigation.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
@@ -182,13 +183,18 @@ export default async ({ req, res, error }) => {
     if (input.action === 'billingState') return res.json(await billing.state(account.$id, isAcademyAdmin(account)));
     if (input.action === 'billingCheckout') return res.json(await billing.checkout(account, input.plan, isAcademyAdmin(account)));
     if (input.action === 'billingPortal') return res.json(await billing.portal(account.$id, isAcademyAdmin(account)));
-    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam', 'reportSubmit'].includes(input.action) && !fullName(account.name)) {
+    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam', 'reportSubmit', 'socCheck'].includes(input.action) && !fullName(account.name)) {
       return res.json({ error: 'Set your real two or three part name in your Academy account before learning' }, 403);
     }
     if (input.action === 'membershipState') {
       return res.json(await membershipForAccount(key, account));
     }
     if (input.action === 'state') return res.json(await getState(key, account.$id, await membershipForAccount(key, account)));
+    if (['socCase', 'socCheck'].includes(input.action)) {
+      const context = await libraryContext(key, account);
+      return res.json(input.action === 'socCase' ? socCase(context.membership, context.foundationsPassed, input.language)
+        : checkSocInvestigation(context.membership, context.foundationsPassed, input));
+    }
     const reports = reportReviewService({ base: ENDPOINT,
       request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }) });
     if (input.action === 'reportState') return res.json(await reports.state(account.$id, input.pathId));

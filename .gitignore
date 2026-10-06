@@ -11,3 +11,4 @@ _site/
 .translation-venv/
 functions/academy-progress/learning-edition.private.json
 functions/academy-progress/assessment-variants.private.json
+functions/academy-progress/soc-investigation-bank.private.json

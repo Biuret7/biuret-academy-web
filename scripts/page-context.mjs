@@ -7,6 +7,7 @@ export const pageContexts = {
   course: ['COURSE', 'تعلّم موضوعاً واحداً خطوة بخطوة.', 'Learn one topic, step by step.'],
   lesson: ['LESSON', 'ركّز على خطوتك التالية.', 'Focus on your next learning step.'],
   labs: ['LABS', 'طبّق ما تعلّمته بأمان.', 'Practice what you learned safely.'],
+  'soc-investigation': ['SOC INVESTIGATION', 'من ملفات الأدلة إلى تقرير قابل للمراجعة.', 'From evidence files to a reviewable report.'],
   lab: ['LAB', 'مختبر عملي موجّه وآمن.', 'A safe, guided hands-on lab.'],
   quizzes: ['QUIZZES', 'اختبر فهمك بعد كل خطوة.', 'Check your understanding after each step.'],
   challenges: ['CHALLENGES', 'تحديات قصيرة تثبّت مهاراتك.', 'Short challenges to strengthen your skills.'],

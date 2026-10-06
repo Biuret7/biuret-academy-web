@@ -565,6 +565,16 @@ export const academyPaths = [
     ],
     "labs": [
       {
+        "id": "soc-investigation",
+        "index": 1,
+        "socCase": true,
+        "title": {
+          "ar": "تحقيق SOC: التصدير غير المعتاد",
+          "en": "SOC investigation: unusual export"
+        },
+        "href": "soc-investigation.html"
+      },
+      {
         "id": "lab-1",
         "index": 1,
         "title": {
