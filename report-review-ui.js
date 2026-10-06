@@ -1,5 +1,5 @@
-import { loadReportReview, submitReportReview, user } from './auth.js?v=20261006-soccase1';
-import { currentLanguage } from './i18n.js?v=20261006-soccase1';
+import { loadReportReview, submitReportReview, user } from './auth.js?v=20261006-audit1';
+import { currentLanguage } from './i18n.js?v=20261006-audit1';
 
 export const reportLabels = { evidence: ['الدليل', 'Evidence'], reasoning: ['التبرير', 'Reasoning'], limits: ['الحدود', 'Limits'], retest: ['إعادة الاختبار', 'Retest'] };
 const pathNames={foundations:['أساسيات الأمن السيبراني','Cybersecurity Foundations'],path_pentest:['اختبار الاختراق المصرّح','Authorized penetration testing'],path_soc:['عمليات SOC','SOC operations'],path_dfir:['الأدلة الرقمية والاستجابة','Digital forensics and response'],path_cloud:['أمن السحابة','Cloud security'],path_grc:['الحوكمة والمخاطر والامتثال','Governance, risk and compliance'],path_appsec:['أمن التطبيقات وDevSecOps','Application security and DevSecOps'],path_mobile:['أمن تطبيقات الهاتف','Mobile application security'],path_threat_intel:['استخبارات التهديدات وOSINT','Threat intelligence and OSINT'],path_malware:['تحليل البرمجيات الخبيثة والهندسة العكسية','Malware analysis and reverse engineering']};

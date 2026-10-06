@@ -1,6 +1,6 @@
 # Biuret Academy Web
 
-An Arabic-first academy for `academy.biuret.dev`. The site uses the Biuret visual identity, a bilingual interface, and a verified Foundations route. It also includes the Arabic source curriculum from the Biuret Academy desktop program as a separate self-study library.
+An Arabic-first academy for `academy.biuret.dev`. The site uses the Biuret visual identity, a bilingual interface, and a verified Foundations route. It also includes the Arabic source curriculum from the Biuret Academy desktop program as one curriculum alongside the Foundations route.
 
 ## Features
 
@@ -9,16 +9,16 @@ An Arabic-first academy for `academy.biuret.dev`. The site uses the Biuret visua
 - Sequential challenges in three independent tracks, with answer checks, hints, explanations, and next steps.
 - A Foundations roadmap with nine bilingual lessons across URL safety, identity and access, and evidence and response. Each course has ordered self-checks and a practical challenge link.
 - A Foundations practical assessment using three synthetic evidence tasks, followed by a server-graded final exam with a private question bank, three-attempt policy, and a shareable achievement credential.
-- Eighteen imported program courses with a recorded reading sequence and an exam for each course. Five specialty paths require the included course exams, a path practical assessment, and a private final exam before issuing a credential. Existing Foundations and specialty credentials retain their original IDs and validity.
+- Nineteen program courses with a recorded reading sequence and an exam for each course. Nine specialty paths require the included course exams, a path practical assessment, and a private final exam before issuing a credential. Existing Foundations and specialty credentials retain their original IDs and validity.
 - Reviewed, versioned Foundations content releases with checksum verification and rollback, plus a restricted credential revocation page with a private audit trail.
 - A private, server-owned Biuret Coins ledger: Plus and Pro earn 10 coins per newly verified lesson; Free earns XP without new coins. Previously earned events remain visible. Coins are not spendable yet.
-- A bilingual three-tier membership page: Free Foundations, planned $5/month Plus, and planned $10/month Pro. A private Appwrite record determines account access; checkout and the additional paid features are not open yet.
+- A bilingual access and purchases page: free Foundations, followed by planned one-time specialty-path bundles. Purchases remain closed. Legacy Free/Plus/Pro records still determine access during the transition; no live monthly subscription is offered.
 - Separate home, paths, challenges, and progress pages. A shared language control switches Arabic/RTL and English/LTR, including mission content.
 - A daily mission, one-time daily bonus, XP, completion count, and seven-day activity view. After finishing the starter challenges, learners can revisit one as a daily drill to keep their streak.
-- Guest progress in `localStorage`. Signing in with the existing Biuret Appwrite account merges local and cloud progress into account preferences.
+- Signed-in learning only. Browser-local practice history is account-scoped; credential eligibility, lesson checkpoints and graded attempts are verified on the server. Guests receive a sign-in gate.
 - Email/password and Google/GitHub account buttons. OAuth requires `academy.biuret.dev` to be registered as a web platform in the existing Appwrite project.
 - Responsive layout, keyboard-accessible dialogs, and reduced-motion support.
-- The desktop program library: 18 courses and 99 bilingual lessons with objectives, exercises and references; 9 specialty roadmaps, 15 tool guides, 12 practice quizzes, 13 practice challenges, 8 synthetic labs, 6 operations simulations, and 8 external certification references. The desktop sidebar's review, operations, certifications, professional hub, notes, favorites, search, settings and profile all have web pages.
+- The desktop program library: 19 courses and 105 bilingual lessons with objectives, exercises and references; 9 specialty roadmaps, 15 tool guides, 13 practice quizzes, 13 practice challenges, 8 synthetic labs, 6 operations simulations, and 8 external certification references. The desktop sidebar's review, operations, certifications, professional hub, notes, favorites, search, settings and profile all have web pages.
 
 The challenges use synthetic examples and intentionally teach defensive judgment. Signed-in lesson completions, verified XP, and eligible Biuret Coins are server-owned in Appwrite; public formative answers alone do not qualify for the final exam. The coin balance is derived from private ledger events. Free state reads preserve older ledger events without creating new ones; Free lesson awards now store zero coins and never backfill on upgrade. Challenge progress and practice XP are user-editable client-side values and do not count toward the credential. The achievement credential verifies course and exam completion, not a legal identity or professional certification.
 
@@ -41,7 +41,7 @@ The Appwrite function deployment must include `exam-bank.private.json`, `path-ex
 
 ## Learning quality edition — October 2026
 
-The private edition supplies 99 bilingual lesson guides with evidence, an output exercise, review criteria and a server-graded checkpoint. A new mark-read request without a correct answer is rejected; already recorded lessons remain intact. Course exams use a separate private bank for all 18 courses. The 10 path exams each use 10 four-option case questions spanning interpretation, response and validation, with a new passing threshold of 9/10. The practical bank contains 30 distinct evidence tasks. Earlier successful attempts and credentials retain their validity and original threshold.
+The private edition supplies 105 bilingual lesson guides with evidence, an output exercise, review criteria and a server-graded checkpoint. A new mark-read request without a correct answer is rejected; already recorded lessons remain intact. Course exams use a separate private bank for all 19 courses. The 10 path exams each use 10 four-option case questions spanning interpretation, response and validation, with a new passing threshold of 9/10. The practical bank contains 30 distinct evidence tasks. Earlier successful attempts and credentials retain their validity and original threshold.
 
 Eight evidence labs, 13 practice challenges and six operations scenarios are bilingual guided simulations. They do not execute tools or connect to external targets, and their browser-local practice results are not credential evidence. Operations rooms are linked within each appropriate path. Purchases remain closed. The Foundations release was authored by Codex and validated with automated schema checks; that metadata is not an independent subject-matter review. Expert editorial review and pilot learner feedback should precede paid sales.
 
@@ -50,3 +50,7 @@ The October 5 Foundations/SOC iteration expands nine Foundations lessons and imp
 ## Publishing
 
 Publish this directory from a dedicated public GitHub Pages repository. Set its Pages custom domain to `academy.biuret.dev` first. Then add a `CNAME` record at the domain's DNS provider: host `academy`, target `Biuret7.github.io`. Register `academy.biuret.dev` as a web platform in Appwrite project `6aa55a88003959a536e9`. Never put Appwrite server keys, OAuth client secrets, or other private credentials in this repository.
+
+## Comprehensive review — October 6, 2026
+
+See [the Arabic audit and release limitations](docs/reviews/2026-10-06-comprehensive-audit.md). Run `node scripts/audit-academy.mjs --strict` to check page references, localized content structure and private-bank schema. The report emits counts and metadata, never question keys. Passing this check is not independent content accreditation or a usability study. Assessment distractors and imported prose still require editorial calibration before paid sales.

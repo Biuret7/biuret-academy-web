@@ -1,4 +1,4 @@
-import { currentLanguage } from './i18n.js?v=20261006-soccase1';
+import { currentLanguage } from './i18n.js?v=20261006-audit1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';

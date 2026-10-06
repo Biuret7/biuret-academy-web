@@ -1,15 +1,15 @@
-import { mountWorkbench } from './workbench.js?v=20261006-soccase1';
-import { mountAuthorizationLab } from './authorization-lab.js?v=20261006-soccase1';
-import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261006-soccase1';
-import { mountSpecialist } from './specialist-lab.js?v=20261006-soccase1';
-import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261006-soccase1';
-import { mountReverse } from './reverse-lab.js?v=20261006-soccase1';
-import { reversePractice } from './reverse-model.js?v=20261006-soccase1';
-import { mountAssurance } from './assurance-lab.js?v=20261006-soccase1';
-import { assurancePractice } from './assurance-model.js?v=20261006-soccase1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261006-soccase1';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261006-soccase1';
-import { requiredPlan, canAccess } from './plan-access.js?v=20261006-soccase1';
+import { mountWorkbench } from './workbench.js?v=20261006-audit1';
+import { mountAuthorizationLab } from './authorization-lab.js?v=20261006-audit1';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261006-audit1';
+import { mountSpecialist } from './specialist-lab.js?v=20261006-audit1';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261006-audit1';
+import { mountReverse } from './reverse-lab.js?v=20261006-audit1';
+import { reversePractice } from './reverse-model.js?v=20261006-audit1';
+import { mountAssurance } from './assurance-lab.js?v=20261006-audit1';
+import { assurancePractice } from './assurance-model.js?v=20261006-audit1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261006-audit1';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261006-audit1';
+import { requiredPlan, canAccess } from './plan-access.js?v=20261006-audit1';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');
@@ -60,8 +60,8 @@ const titles = (kind, id, field = 'title') => ({
   en: localizedTitle(dataEn || data, kind, id, field),
 });
 const allowed = (kind, index) => Boolean(membership?.admin || (canAccess(kind, index, membership) && (requiredPlan(kind, index) === 'free' || foundationsPassed)));
-const tierBadge = (kind, index) => `<span class="library-tier tier-${requiredPlan(kind, index)}">${requiredPlan(kind, index).toUpperCase()}</span>`;
-const lockedBody = (kind, index) => `<div class="library-locked"><span class="section-kicker">${requiredPlan(kind, index).toUpperCase()} / BIURET ACADEMY</span><h2>${tr('خطوة التعلّم التالية مقفلة حالياً.', 'Your next learning step is locked.')}</h2><p>${!foundationsPassed && !membership?.admin && requiredPlan(kind, index) !== 'free' ? tr('أكمل دروس الأساسيات وامتحانها أولاً، ثم اختر تخصصك حسب خطة عضويتك.', 'Complete Foundations and its exam first, then choose a specialty within your plan.') : tr('هذا المحتوى يتطلب خطة أعلى. راجع العضويات والمحتوى المتاح في خطتك.', 'This content requires a higher plan. Compare membership options and available content.')}</p><a class="button button-primary" href="${!foundationsPassed && requiredPlan(kind, index) !== 'free' ? 'paths.html#foundations-roadmap' : 'membership.html'}">${!foundationsPassed && requiredPlan(kind, index) !== 'free' ? tr('ابدأ الأساسيات', 'Start Foundations') : tr('قارن الخطط', 'Compare plans')} ↗</a></div>`;
+const tierBadge = (kind, index) => `<span class="library-tier tier-${requiredPlan(kind, index)}">${requiredPlan(kind, index) === 'free' ? tr('مجاني', 'Free') : tr('محتوى تخصص', 'Specialty content')}</span>`;
+const lockedBody = (kind, index) => `<div class="library-locked"><span class="section-kicker">BIURET ACADEMY</span><h2>${tr('خطوة التعلّم التالية مقفلة حالياً.', 'Your next learning step is locked.')}</h2><p>${!foundationsPassed && !membership?.admin && requiredPlan(kind, index) !== 'free' ? tr('أكمل الأساسيات المجانية وامتحانها أولاً، ثم استكشف التخصص المناسب لك.', 'Complete free Foundations and its exam first, then explore your specialty.') : tr('هذا المحتوى غير متاح لحسابك حالياً. شراء المسارات لم يُفتح بعد؛ صلاحيات الحسابات السابقة محفوظة أثناء الانتقال للنظام الجديد.', 'This content is not currently available to your account. Path purchases are not open yet; existing account access is preserved during the transition.')}</p><a class="button button-primary" href="${!foundationsPassed && requiredPlan(kind, index) !== 'free' ? 'paths.html#foundations-roadmap' : 'membership.html'}">${!foundationsPassed && requiredPlan(kind, index) !== 'free' ? tr('ابدأ الأساسيات', 'Start Foundations') : tr('تفاصيل الوصول والمشتريات', 'Access and purchase details')} ↗</a></div>`;
 const notice = () => `<div class="catalog-callout library-notice"><strong>${tr('تعلّم، طبّق، ثم تحقق', 'Learn, apply, then verify')}</strong><p>${tr('ابدأ بالأساسيات، ثم اتبع دورات مسارك بالترتيب. أكمل أسئلة تحقق الدروس وامتحانات الدورات، وتدرّب على الأدلة قبل التقييم العملي والامتحان النهائي. الملاحظات والمراجعة تبقى في هذا المتصفح.', 'Start with Foundations, then follow your path courses in order. Complete lesson checkpoints and course exams, and practice with evidence before the practical assessment and final exam. Notes and practice review stay in this browser.')}</p><a href="paths.html">${tr('خطة التعلم', 'Learning route')} ↗</a></div>`;
 const frame = (label, title, intro, body) => `<section class="catalog-hero section-frame"><a class="learning-back" href="paths.html">← ${tr('خطة التعلّم', 'Learning route')}</a><span class="section-kicker">${label}</span><h1>${esc(title)}</h1><p>${intro}</p></section><section class="catalog-body section-frame">${body}</section>`;
 const section = (title, body) => `<section class="library-section"><h2>${title}</h2>${body}</section>`;
@@ -78,7 +78,7 @@ function renderCatalogExtras() {
   if (!target) return;
   target.querySelector('#desktop-append')?.remove();
   let body = '';
-  if (page === 'courses') body = section(tr('كورسات برنامج Biuret Academy', 'Biuret Academy program courses'), `${notice()}<div class="library-grid">${data.categories.map(courseCard).join('')}</div>`);
+  if (page === 'courses') body = section(tr('دورات التخصص', 'Specialty courses'), `${notice()}<div class="library-grid">${data.categories.map(courseCard).join('')}</div>`);
   if (page === 'labs') body = `<div class="catalog-callout library-notice"><strong>${tr('مختبر تحقيق SOC متعدد المصادر','SOC investigation across multiple evidence sources')}</strong><p>${tr('حلل ستة ملفات أدلة، صحح التوقيت، احسب النقل، ثم جهز تقريرك للمراجعة. يتطلب المختبر وصول مسار SOC وإكمال الأساسيات.','Analyze six evidence files, normalize time, calculate transfer and draft a report for review. Requires SOC path access and Foundations completion.')}</p><a class="button button-outline" href="soc-investigation.html">${tr('افتح مساحة التحقيق','Open investigation workspace')} ↗</a></div>` + section(tr('مختبرات البرنامج', 'Program labs'), `${notice()}${simpleCards(data.labs, 'practice-lab', (x) => x.name, (x) => x.desc)}`);
   if (page === 'quizzes') body = section(tr('اختبارات البرنامج التدريبية', 'Program practice quizzes'), `<div class="catalog-callout library-notice"><strong>${tr('تدريب مستقل عن امتحانات الدورات', 'Separate from course exams')}</strong><p>${tr('هذه أسئلة مراجعة جديدة ومختلفة عن بنك امتحانات إكمال الدورات. يمكنك إعادتها للتدريب، ولا تُحتسب نتيجتها للشهادة أو XP الموثق.', 'These are new review questions, different from the course completion exam bank. You can retry them for practice; their results do not count toward credentials or verified XP.')}</p></div>${simpleCards(data.quizzes, 'practice-quiz', (x) => x.name, (x) => x.topics)}`);
   if (page === 'tools') body = section(tr('دليل أدوات البرنامج', 'Program tool guides'), `${notice()}<div class="tool-guide-list">${data.tools.map((tool, index) => `<details class="tool-guide" ${allowed('tool', index) ? '' : 'data-locked="true"'}><summary><span>${esc(tool.category)} ${tierBadge('tool', index)}</span><strong>${esc(tool.name)}</strong><i aria-hidden="true">${allowed('tool', index) ? '+' : '🔒'}</i></summary><div class="tool-guide-body">${allowed('tool', index) ? `<p>${esc(tool.description)}</p><p>${esc(tool.usage)}</p><code dir="ltr">${esc(tool.example)}</code><p>${esc(tool.platform)}</p>` : lockedBody('tool', index)}</div></details>`).join('')}</div>`);
@@ -464,11 +464,20 @@ async function ensureLanguage(language) {
   return loading;
 }
 
+function catalogLoadState(failed = false) {
+  if (root || !['courses', 'labs', 'quizzes', 'tools', 'challenges'].includes(page)) return;
+  const target = document.querySelector('#catalog-main') || document.querySelector('main');
+  if (!target) return;
+  target.querySelector('#desktop-append')?.remove();
+  target.insertAdjacentHTML('beforeend', `<section id="desktop-append" class="catalog-body section-frame" role="${failed ? 'alert' : 'status'}"><h2>${failed ? tr('تعذر تحميل بقية المحتوى', 'More content could not be loaded') : tr('جارٍ تحميل بقية المحتوى…', 'Loading more content…')}</h2><p>${failed ? tr('القائمة غير مكتملة الآن. أعد المحاولة لتحميل دورات التخصص وتدريباته.', 'This list is incomplete right now. Retry to load specialty courses and practice.') : tr('نحمّل المحتوى المتاح لحسابك.', 'Loading content available to your account.')}</p>${failed ? `<button class="button button-primary" type="button" id="library-retry">${tr('إعادة المحاولة', 'Retry')}</button>` : ''}</section>`);
+}
+
 async function loadLibrary() {
   try {
     if (!user()) await loadUser();
     if (!user()) { membership = null; data = null; libraryOwner = null; languageLoads.clear(); dataAr = dataEn = null; return; }
     if (root) root.innerHTML = frame('LIBRARY', tr('جارٍ تجهيز محتواك…', 'Preparing your content…'), '', '');
+    catalogLoadState();
     if (libraryOwner !== user().$id) { lessonStatus = null; checkpointAnswer = undefined; checkpointFeedback = ''; libraryOwner = user().$id; languageLoads.clear(); dataAr = dataEn = null; }
     loadPersonalState();
     await ensureLanguage(currentLanguage());
@@ -490,6 +499,7 @@ async function loadLibrary() {
   } catch (error) {
     console.error('Academy library unavailable:', error);
     membership = null;
+    catalogLoadState(true);
     if (root) root.innerHTML = frame('LIBRARY', tr('تعذر تحميل المكتبة', 'Library unavailable'), tr('تعذر الاتصال بالمحتوى. يمكنك إعادة المحاولة هنا.', 'Could not connect to your content. You can retry here.'), `<button class="button button-primary" type="button" id="library-retry">${tr('إعادة المحاولة', 'Retry')}</button>`);
   }
 }

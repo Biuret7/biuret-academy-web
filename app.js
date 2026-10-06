@@ -1,13 +1,13 @@
-import { renderAvatar } from './identity.js?v=20261006-soccase1';
-import { mountLessonNotes } from './lesson-notes.js?v=20261006-soccase1';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261006-soccase1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261006-soccase1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261006-soccase1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261006-soccase1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261006-soccase1';
-import { fullName } from './full-name.js?v=20261006-soccase1';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261006-soccase1';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261006-soccase1';
+import { renderAvatar } from './identity.js?v=20261006-audit1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261006-audit1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261006-audit1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261006-audit1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261006-audit1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261006-audit1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261006-audit1';
+import { fullName } from './full-name.js?v=20261006-audit1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261006-audit1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261006-audit1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -163,6 +163,7 @@ function renderProgress() {
   if ($('#practice-xp-label')) $('#practice-xp-label').textContent = ll('practiceXp');
   if (!$('#reward-chip')) $('#account-button').insertAdjacentHTML('beforebegin', '<a class="reward-chip" id="reward-chip" href="progress.html" aria-label="Learning level and coins"></a>');
   const rewardChip = $('#reward-chip');
+  rewardChip.setAttribute('aria-label', isEnglish() ? 'Learning level and coins' : 'مستوى التعلم ورصيد العملات');
   rewardChip.hidden = !user();
   if (user()) rewardChip.textContent = rewardStatus === 'ready' ? `LV ${rewards.level} · ${rewards.coins} BC` : 'LV …';
   if ($('#reward-dashboard')) {
