@@ -35,7 +35,7 @@ The same route is linked from the sidebar, homepage, catalogs, progress, review,
 
 Asset revision: `20261006-free1`, shared by account/language modules to avoid duplicate singleton instances. Public Pages allowlist includes all five studio assets and excludes private libraries and assessment banks. Only the library access policy changes in the function archive; existing question banks remain on Appwrite.
 
-Prepared for review; publication requires the specific Appwrite archive upload approval. Purchases remain closed. Free earns no new Biuret Coins. Existing credentials and balances are preserved.
+Published after the owner's specific Appwrite archive and GitHub Pages approval. See [deployment evidence](../deployments/2026-10-06-free-experience.md). Purchases remain closed. Free earns no new Biuret Coins. Existing credentials and balances are preserved.
 
 Preview files are stored under the workspace `tmp` directory:
 
