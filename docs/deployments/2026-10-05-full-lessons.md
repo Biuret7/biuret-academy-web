@@ -1,6 +1,6 @@
 # Full lesson explanations — 5 October 2026
 
-## Ready for owner upload approval
+## Approved and published on 6 October 2026
 
 Restore the original detailed explanation of every available program lesson instead of substituting the shorter applied guide. Keep the current lesson guide, evidence exercise and server-graded checkpoint as supplemental material after the original explanation. Both Arabic and English are restored with their reading direction.
 
@@ -37,4 +37,14 @@ Restore the original detailed explanation of every available program lesson inst
 3. Push the prepared public commit to `Biuret7/biuret-academy-web`; confirm the Pages workflow succeeds.
 4. Reload live original course lessons, inspect full text and existing checkpoint without completing a real lesson for the owner. Record deployment and run IDs here.
 
-The earlier report-review Pages run `37367969023` failed on hosted runner assignment; authorized rerun attempt 2 was still queued at the last observation. Do not claim the restoration or that earlier public interface is live until Pages success and live QA are observed.
+The earlier report-review Pages run `37367969023` failed on hosted runner assignment. Its public changes are now included in successful run `37433636915`; the live administrator queue and learner SOC consent/status UI were checked without submitting a real report.
+
+## Deployment progress — 6 October 2026
+
+- Owner approved the exact artifact and site publication, then requested continuation after a tool usage interruption.
+- Exact archive uploaded through Appwrite Console; new deployment `6ac4ab44c3120ed25ebc` verified Active, build 1s, total size 1.17 MB. Previous deployment is preserved for rollback.
+- Public implementation `0e3afb3150c0cd3b38d808b6314c5b747a4a2dd8` pushed to main.
+- Pages run `37433636915` verified Success, total duration 32s.
+- Live `desktop-topic-1` shows the full original explanation in Arabic and English; the existing completed checkpoint remains. Live `desktop-topic-6` includes the full OSI explanation and an unanswered checkpoint form. No real lesson or exam attempt was submitted.
+- Public entry module is `desktop.js?v=20261005-full-lessons1`. Arabic RTL and English LTR inspected; Arabic desktop has no page-level horizontal overflow.
+- Screenshots: `academy-full-lessons-live-ar-20261006.png`, `academy-full-lessons-live-en-20261006.png`, `academy-full-lessons-active-20261006.png`, `academy-full-lessons-pages-success-20261006.png` under the workspace tmp directory.

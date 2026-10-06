@@ -41,3 +41,13 @@ The private archive is active; matching public assets use `20261005-reviews1`. R
 - External incident: [GitHub Status](https://www.githubstatus.com/).
 
 After the queued Pages run succeeds, reload the public admin and practical SOC tabs, verify the live empty queue and learner consent/status UI without submitting a real report or self-reviewing an administrator report. Inspect Arabic/English direction and overflow, save the live preview, then record the successful run and final QA here. Keep purchases closed and private banks outside GitHub.
+
+## Public verification completed — 6 October 2026
+
+The rerun of `37367969023` failed on runner assignment. The next approved full-explanation release includes this feature and successfully published it in run `37433636915` (32s), commit `0e3afb3`. Its private deployment `6ac4ab44c3120ed25ebc` retains this report-review service unchanged.
+
+- Live administrator page loads the private queue and shows no submissions.
+- Live practical SOC page shows optional report fields, no report yet, consent checkbox and review controls. No actual report or assessment was submitted and no permissions were edited.
+- Screenshots under workspace tmp: `academy-report-review-live-admin-20261006.png`, `academy-report-review-live-consent-20261006.png`.
+
+This supersedes earlier pending publication notes. The unfinished SOC multi-file investigation is still a separate local feature.
