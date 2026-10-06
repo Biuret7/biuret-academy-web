@@ -1,6 +1,6 @@
 # SOC investigation — 6 October 2026
 
-## Prepared locally; awaiting publication approval
+## Approved publication — 6 October 2026
 
 - Adds a dedicated four-step SOC case workspace with six evidence files, 33 records, timeline correction, volume analysis, feedback and the existing consent-based report review integration.
 - Links it from the SOC path, Labs and practical assessment. Arabic and English, mobile table scrolling, focus states, hover and reduced motion are supported.
@@ -32,3 +32,17 @@
 2. Upload to Academy Progress and verify its deployment becomes Active.
 3. Push the public commit to GitHub and verify Pages succeeds. The private case is never staged for Pages or GitHub.
 4. Inspect the live eligible account, case links, bilingual evidence and report drafting. Do not submit a real report or exam during QA.
+
+## Publication record
+
+- Owner requested continuation after the explicit upload/publication request.
+- Exact archive uploaded through Appwrite Console; deployment `6ac4b9d3137e3aeb8bdf` verified Active, build 1s, size 1.19 MB.
+- Public implementation `3dbf30b6b718132141c8fe1be1f31bc3ce3acd36` pushed to main.
+- Pages run `37440601045` verified Success in 50s; its public artifact is 817 KB.
+- Live URL: `https://academy.biuret.dev/soc-investigation.html`. The authenticated eligible account loaded the six evidence files and 33 records from the active function.
+- The SOC path displays the case as its first learning lab; the Labs page displays a visible case workspace link after account loading.
+- Arabic and English case content and report fields verified. Arabic uses RTL with the sidebar on the right; document width equals scroll width (no horizontal page overflow).
+- First JSON file's pre-download integrity confirmation verified on the live site. Download retrieval remains subject to the in-app browser limitation documented above.
+- Existing report review form displays no submitted report; no real report, exam, lesson completion or award was submitted during live QA.
+- Live screenshot: `C:/Users/Extreme/Desktop/Projects/tmp/academy-soc-investigation-live-20261006.png`.
+- Active function screenshot: `C:/Users/Extreme/Desktop/Projects/tmp/academy-soc-function-active-20261006.png`.
