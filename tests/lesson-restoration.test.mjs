@@ -31,7 +31,7 @@ test('restoring full explanations preserves the lesson access boundary', { skip:
   for (const language of ['ar', 'en']) {
     const result = publicLibraryFor(language, { plan: 'free' }, false);
     for (const course of result.categories) for (const lesson of course.lessons) {
-      if (course.order === 1) {
+      if ([1, 2, 4, 9].includes(course.order)) {
         assert.ok(lesson.content && lesson.guide.checkpoint);
       } else {
         assert.equal(course.locked, true);

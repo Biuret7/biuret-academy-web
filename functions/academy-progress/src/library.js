@@ -83,6 +83,8 @@ export const programPathIds = () => libraryData('ar').roadmapPaths.map((path) =>
 
 export function requiredLibraryPlan(kind, index) {
   if (!Number.isInteger(index) || index < 0 || !(kind in FREE)) return 'pro';
+  const starters = { course: [1, 2, 4, 9], quiz: [0, 1, 3, 8], lab: [0, 1, 5] };
+  if (starters[kind]?.includes(index)) return 'free';
   // Keep the existing GRC path's Plus access when adding its dedicated course/quiz.
   if ((kind === 'course' && index === 19) || (kind === 'quiz' && index === 12)) return 'plus';
   const position = kind === 'course' ? index : index + 1;

@@ -1,4 +1,4 @@
-import { currentLanguage } from './i18n.js?v=20261006-quality1';
+import { currentLanguage } from './i18n.js?v=20261006-free1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';
@@ -61,7 +61,7 @@ if (sidebar) {
 }
 
 // Reading controls are available only within an actual lesson.
-if (['lesson', 'library-lesson'].includes(document.querySelector('.site-shell')?.dataset.page)) {
+if (['lesson', 'library-lesson', 'free-studio'].includes(document.querySelector('.site-shell')?.dataset.page)) {
   const controls = document.createElement('div'); controls.className = 'reading-controls';
   const focus = document.createElement('button'); focus.type = 'button'; focus.className = 'button button-text'; focus.setAttribute('aria-pressed', 'false');
   const size = document.createElement('button'); size.type = 'button'; size.className = 'button button-text'; size.setAttribute('aria-pressed', 'false');
@@ -70,4 +70,15 @@ if (['lesson', 'library-lesson'].includes(document.querySelector('.site-shell')?
   focus.addEventListener('click', () => { const active = document.body.classList.toggle('reading-focus'); focus.setAttribute('aria-pressed', String(active)); });
   size.addEventListener('click', () => { const active = document.body.classList.toggle('reading-large'); size.setAttribute('aria-pressed', String(active)); });
   document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(labels, 0)); labels();
+}
+
+// Keep a clear route into the free experience across discovery and learning pages.
+const page = document.querySelector('.site-shell')?.dataset.page;
+if (['home','paths','courses','labs','quizzes','challenges','tools','progress','review','membership','profile','library-course','library-lesson'].includes(page) || (page==='path' && new URLSearchParams(location.search).get('id')==='foundations')) {
+  const welcome=document.createElement('section');welcome.className='free-experience-entry';
+  const localize=()=>{welcome.innerHTML=`<div><span>${text('مجاني · أساس متين قبل التخصص','FREE · A STRONG START BEFORE SPECIALIZING')}</span><h2>${text('تعلّم بعمق، وطبّق بطريقتك.','Learn deeply. Put it into practice.')}</h2><p>${text('أربع دورات كاملة في الأمن والشبكات والتشفير ولينكس، مع مختبرات ومراجعة وملف أعمال تدريبي. تبدأ من الصفر وتصل إلى مسار الشهادة المجانية بخطوات واضحة.','Four full courses in security, networking, cryptography and Linux, with labs, review and a practice portfolio. Start from zero and follow clear steps toward the free credential path.')}</p></div><a class="button button-outline" href="free-studio.html">${text('افتح مساحتك المجانية','Open your free studio')} ↗</a>`;};
+  const main=document.querySelector('main');
+  if(page==='home') {const hero=main?.querySelector('.hero');if(hero)hero.after(welcome);else main?.prepend(welcome);}
+  else main?.prepend(welcome);
+  localize();document.querySelector('#language-toggle')?.addEventListener('click',()=>setTimeout(localize,0));
 }

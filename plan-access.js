@@ -6,6 +6,9 @@ export function requiredPlan(kind, index) {
   const free = { course: 1, quiz: 1, lab: 1, challenge: 3, tool: 4, operation: 1, coreChallenge: 5 };
   const plus = { course: 8, quiz: 8, lab: 4, challenge: 8, tool: 10, operation: 3, coreChallenge: 10 };
   if (!(kind in free)) return 'pro';
+  // Starter curriculum is free in full, regardless of catalog order.
+  const starters = { course: [1, 2, 4, 9], quiz: [0, 1, 3, 8], lab: [0, 1, 5] };
+  if (starters[kind]?.includes(index)) return 'free';
   if ((kind === 'course' && index === 19) || (kind === 'quiz' && index === 12)) return 'plus';
   // Course indices use the desktop curriculum's one-based order.
   const position = kind === 'course' ? index : index + 1;

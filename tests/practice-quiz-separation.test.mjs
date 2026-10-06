@@ -30,8 +30,8 @@ test('practice quizzes use their own server bank, distinct from every course exa
   }
   const free = publicLibraryFor('en', { plan: 'free', effectivePlan: 'free', admin: false }, false);
   assert.ok(free.quizzes[0].questions.length >= 3);
-  assert.equal(free.quizzes[1].locked, true);
-  assert.equal(free.quizzes[1].questions.length, 0);
+  assert.equal(free.quizzes[2].locked, true);
+  assert.equal(free.quizzes[2].questions.length, 0);
   assert.equal(scoreLibraryPractice('quiz', 0, [0]), null);
   assert.equal(scoreLibraryPractice('quiz', 0, [5, 0, 0]), null);
 });

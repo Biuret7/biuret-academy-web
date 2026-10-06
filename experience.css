@@ -154,3 +154,9 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .pilot-export { padding: 1.5rem; border: 1px solid #3a4b28; border-radius: 18px; }
 .pilot-body small, .pilot-export [role="status"] { color: #a7b9aa; }
 @media (max-width: 640px) { .pilot-task-heading .button, .pilot-overview .button { width: 100%; } .pilot-task-heading { align-items: stretch; } }
+/* The free route is visible from each relevant catalog without a purchase step. */
+.free-experience-entry{display:flex;align-items:center;gap:24px;justify-content:space-between;margin:24px 0;padding:24px 28px;border:1px solid #3a4a2c;border-radius:18px;background:linear-gradient(110deg,#c4ff1808,#0e1518)}
+.free-experience-entry>div{max-width:74ch}.free-experience-entry span{color:#c4ff18;font-size:11px;font-weight:800;letter-spacing:.06em}
+.free-experience-entry h2{font-size:clamp(20px,2vw,26px);line-height:1.5;margin-block:10px}.free-experience-entry p{color:#b1c0ca;line-height:1.9;font-size:14px;margin:0}
+.free-experience-entry>.button{flex-shrink:0;white-space:normal;text-align:center;min-height:44px}
+@media(max-width:700px){.free-experience-entry{flex-direction:column;align-items:stretch;padding:22px;margin-block:18px}}

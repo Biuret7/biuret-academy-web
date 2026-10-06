@@ -12,7 +12,7 @@ test('the Academy inventory audit rejects structural, reference and locale defec
   const result = spawnSync(process.execPath, ['scripts/audit-academy.mjs', '--strict'], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const report = JSON.parse(result.stdout);
-  assert.equal(report.inventory.pages, 37);
+  assert.equal(report.inventory.pages, 38);
   assert.equal(report.inventory.paths, 10);
   assert.equal(report.summary.errors, 0);
   if (available) {

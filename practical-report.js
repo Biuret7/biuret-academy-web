@@ -1,7 +1,7 @@
-import { practicalDraft, practicalReport } from './practical-report-model.js?v=20261006-quality1';
-import { user } from './auth.js?v=20261006-quality1';
-import { currentLanguage } from './i18n.js?v=20261006-quality1';
-import { attachReportSubmission } from './report-review-ui.js?v=20261006-quality1';
+import { practicalDraft, practicalReport } from './practical-report-model.js?v=20261006-free1';
+import { user } from './auth.js?v=20261006-free1';
+import { currentLanguage } from './i18n.js?v=20261006-free1';
+import { attachReportSubmission } from './report-review-ui.js?v=20261006-free1';
 
 const labels={evidence:['الدليل: المعرف والمصدر والوقت','Evidence: ID, source and time'],reasoning:['القرار: كيف يبرره الدليل؟','Decision: how does the evidence support it?'],limits:['الحدود: ما الذي لم تثبته العينة؟','Limits: what did the sample not establish?'],retest:['إعادة الاختبار: السماح والرفض والنتيجة المتوقعة','Retest: allowed/denied cases and expected outcome']};
 export function attachPracticalReport(root,pathId,eligible = false) {

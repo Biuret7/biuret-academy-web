@@ -103,7 +103,7 @@ test('lesson checkpoints are graded on the server and cannot be bypassed by a ma
   const adminLibrary = publicLibraryFor('en', { admin: true }, true);
   assert.equal(Object.hasOwn(adminLibrary.categories[0].lessons[0].guide.checkpoint, 'answer'), false);
   assert.equal(Object.hasOwn(adminLibrary.categories[0].lessons[0].guide.checkpoint, 'explanation'), false);
-  const locked = publicLibraryFor('en', { plan: 'free' }, false).categories[1].lessons[0];
+  const locked = publicLibraryFor('en', { plan: 'free' }, false).categories[2].lessons[0];
   assert.equal(locked.guide, undefined);
   assert.equal(locked.content, undefined);
   const handler = (await import('../functions/academy-progress/src/main.js')).default;

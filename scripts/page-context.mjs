@@ -1,4 +1,5 @@
 export const pageContexts = {
+  'free-studio': ['FREE STUDIO', 'افهم، طبّق، وراجع بخطة مجانية واضحة.', 'Understand, practice and review with a clear free plan.'],
   pilot: ['LEARNING TRIAL', 'جرّب، سجّل، ثم حسّن رحلة التعلم.', 'Try, record and improve the learning journey.'],
   home: ['HOME', 'رحلة التعلّم تبدأ هنا.', 'Your learning journey starts here.'],
   path: ['PATH', 'كل محتويات مسارك في مكان واحد.', 'Everything in your path, in one place.'],
