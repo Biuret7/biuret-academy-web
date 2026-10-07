@@ -160,3 +160,5 @@ html[dir="rtl"] .sidebar-nav a:hover{transform:translateX(-3px)}
 .free-experience-entry h2{font-size:clamp(20px,2vw,26px);line-height:1.5;margin-block:10px}.free-experience-entry p{color:#b1c0ca;line-height:1.9;font-size:14px;margin:0}
 .free-experience-entry>.button{flex-shrink:0;white-space:normal;text-align:center;min-height:44px}
 @media(max-width:700px){.free-experience-entry{flex-direction:column;align-items:stretch;padding:22px;margin-block:18px}}
+
+.free-entry-actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-start;flex-shrink:0;max-width:24rem}

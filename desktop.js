@@ -1,15 +1,15 @@
-import { mountWorkbench } from './workbench.js?v=20261006-free1';
-import { mountAuthorizationLab } from './authorization-lab.js?v=20261006-free1';
-import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261006-free1';
-import { mountSpecialist } from './specialist-lab.js?v=20261006-free1';
-import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261006-free1';
-import { mountReverse } from './reverse-lab.js?v=20261006-free1';
-import { reversePractice } from './reverse-model.js?v=20261006-free1';
-import { mountAssurance } from './assurance-lab.js?v=20261006-free1';
-import { assurancePractice } from './assurance-model.js?v=20261006-free1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261006-free1';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261006-free1';
-import { requiredPlan, canAccess } from './plan-access.js?v=20261006-free1';
+import { mountWorkbench } from './workbench.js?v=20261007-stable1';
+import { mountAuthorizationLab } from './authorization-lab.js?v=20261007-stable1';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261007-stable1';
+import { mountSpecialist } from './specialist-lab.js?v=20261007-stable1';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261007-stable1';
+import { mountReverse } from './reverse-lab.js?v=20261007-stable1';
+import { reversePractice } from './reverse-model.js?v=20261007-stable1';
+import { mountAssurance } from './assurance-lab.js?v=20261007-stable1';
+import { assurancePractice } from './assurance-model.js?v=20261007-stable1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261007-stable1';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261007-stable1';
+import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261007-stable1';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');
@@ -107,7 +107,8 @@ function renderCourse() {
   setPageHeaderTitle(titles('categories', category.id));
   const linkedPaths = data.roadmapPaths.filter((path) => path[6].includes(category.order));
   const practice = Object.entries({...specialistPractices,reverse:reversePractice,supplier:assurancePractice}).find(([,v])=>v.course===category.id);
-  const practiceMarkup = practice ? `<div class="catalog-callout library-notice"><strong>${tr('من الدرس إلى القرار العملي','From lesson to practical decision')}</strong><p>${tr('طبّق ما تعلمته على عينة صناعية واكتب قرارك وحدود الدليل. يخضع المختبر لصلاحيات حسابك؛ لا يمنح نتيجة امتحان أو شهادة.','Apply the lesson to synthetic evidence and document decision limits. Lab access follows your account permissions; it does not award an exam result or credential.')}</p><a class="button button-outline" href="practice-lab.html?id=${practice[1].index}&context=${practice[0]}">${tr(practice[1].title.ar,practice[1].title.en)} ↗</a></div>` : '';
+  const target = coursePracticeTarget(category.id, practice ? {index:practice[1].index,context:practice[0]} : null, membership, foundationsPassed);
+  const practiceMarkup = target ? `<div class="catalog-callout library-notice"><strong>${tr('من الدرس إلى القرار العملي','From lesson to practical decision')}</strong><p>${target.kind === 'starter' ? tr('تدريب مجاني مرتبط بهذه الدورة، محفوظ في هذا المتصفح. لا يسجل إكمال الدرس الموثق أو نتيجة شهادة.','Free practice related to this course, saved in this browser. It does not complete verified lessons or award a credential.') : target.kind === 'locked' ? tr('مختبر تخصصي يتطلب وصول '+target.plan.toUpperCase()+' وإكمال الأساسيات. شراء المسارات مغلق حالياً؛ راجع شروط الوصول أولاً.','Specialty lab requires '+target.plan.toUpperCase()+' access and Foundations completion. Path purchases are closed; review access requirements first.') : tr('طبّق على عينة صناعية واكتب قرارك وحدود الدليل. هذا تدريب مستقل عن امتحان الدورة.','Apply synthetic evidence and document decision limits. This practice is separate from the course exam.')}</p><a class="button button-outline" href="${target.href ? esc(target.href) : 'membership.html'}">${target.kind === 'starter' ? tr('طبّق مجاناً','Practice for free') : target.kind === 'locked' ? tr('شاهد شروط المختبر','View lab requirements') : tr(practice[1].title.ar,practice[1].title.en)} ↗</a></div>` : '';
   return frame('LIBRARY / COURSE', category.title, esc(category.description), `${notice()}${practiceMarkup}<div class="library-summary"><span>${category.lessons.length} ${tr('دروس', 'lessons')}</span><span>${category.lessons.filter((item) => state.completed[item.id]).length} ${tr('مقروءة', 'read')}</span></div><div class="library-list">${category.lessons.map(lessonCard).join('')}</div>${section(tr('امتحان هذه الدورة', 'This course exam'), `<p>${tr('بعد قراءة الدروس، اجتز امتحان الدورة المحفوظ في حسابك. تحتاج المسارات التي تضمها إلى هذه النتيجة قبل تقييمها العملي.', 'After reading the lessons, pass the course exam saved in your account. Paths containing this course need that result before their practical assessment.')}</p><a class="button button-primary" href="course-exam.html?order=${category.order}">${tr('افتح امتحان الدورة', 'Open course exam')} ↗</a>`)}${linkedPaths.length ? section(tr('هذا الكورس ضمن مسارات', 'This course is part of'), `<div class="library-sources">${linkedPaths.map((path) => `<a href="path.html?id=${encodeURIComponent(path[2])}">${esc(path[1])} · ${tr('محتويات المسار', 'Path contents')} ↗</a>`).join('')}</div>`) : ''}<a class="button button-outline" href="courses.html">${tr('كل الكورسات', 'All courses')} ↗</a>`);
 }
 

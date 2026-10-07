@@ -1,4 +1,4 @@
-import { currentLanguage } from './i18n.js?v=20261006-free1';
+import { currentLanguage } from './i18n.js?v=20261007-stable1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';
@@ -72,11 +72,11 @@ if (['lesson', 'library-lesson', 'free-studio'].includes(document.querySelector(
   document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(labels, 0)); labels();
 }
 
-// Keep a clear route into the free experience across discovery and learning pages.
+// Keep a clear route into the free experience on discovery pages.
 const page = document.querySelector('.site-shell')?.dataset.page;
-if (['home','paths','courses','labs','quizzes','challenges','tools','progress','review','membership','profile','library-course','library-lesson'].includes(page) || (page==='path' && new URLSearchParams(location.search).get('id')==='foundations')) {
+if (['home','paths','courses','labs','quizzes','challenges','tools'].includes(page)) {
   const welcome=document.createElement('section');welcome.className='free-experience-entry';
-  const localize=()=>{welcome.innerHTML=`<div><span>${text('مجاني · أساس متين قبل التخصص','FREE · A STRONG START BEFORE SPECIALIZING')}</span><h2>${text('تعلّم بعمق، وطبّق بطريقتك.','Learn deeply. Put it into practice.')}</h2><p>${text('أربع دورات كاملة في الأمن والشبكات والتشفير ولينكس، مع مختبرات ومراجعة وملف أعمال تدريبي. تبدأ من الصفر وتصل إلى مسار الشهادة المجانية بخطوات واضحة.','Four full courses in security, networking, cryptography and Linux, with labs, review and a practice portfolio. Start from zero and follow clear steps toward the free credential path.')}</p></div><a class="button button-outline" href="free-studio.html">${text('افتح مساحتك المجانية','Open your free studio')} ↗</a>`;};
+  const localize=()=>{welcome.innerHTML=`<div><span>${text('مجاني · طريق واضح للشهادة','FREE · A CLEAR CREDENTIAL ROUTE')}</span><h2>${text('ابدأ هنا: 9 دروس ← تطبيق عملي ← امتحان','Start here: 9 lessons → practical assessment → exam')}</h2><p>${text('هذه متطلبات شهادة الأساسيات. للتعمق الاختياري: 26 درس مكتبة وست وحدات تدريب محلي؛ لا تستبدل الدروس الموثقة ولا تضيف شروطاً للشهادة.','These are the Foundations credential requirements. Go deeper with 26 optional library lessons and six local practice units; they do not replace verified lessons or add credential requirements.')}</p></div><div class="free-entry-actions"><a class="button button-primary" href="path.html?id=foundations">${text('ابدأ مسار الشهادة','Start the credential path')} ↗</a><a class="button button-outline" href="free-studio.html">${text('تدريب محلي اختياري','Optional local practice')} ↗</a></div>`;};
   const main=document.querySelector('main');
   if(page==='home') {const hero=main?.querySelector('.hero');if(hero)hero.after(welcome);else main?.prepend(welcome);}
   else main?.prepend(welcome);

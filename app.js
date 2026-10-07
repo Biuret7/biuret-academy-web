@@ -1,13 +1,13 @@
-import { renderAvatar } from './identity.js?v=20261006-free1';
-import { mountLessonNotes } from './lesson-notes.js?v=20261006-free1';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261006-free1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261006-free1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261006-free1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261006-free1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261006-free1';
-import { fullName } from './full-name.js?v=20261006-free1';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261006-free1';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261006-free1';
+import { renderAvatar } from './identity.js?v=20261007-stable1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261007-stable1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261007-stable1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261007-stable1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261007-stable1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261007-stable1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261007-stable1';
+import { fullName } from './full-name.js?v=20261007-stable1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261007-stable1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261007-stable1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -106,7 +106,7 @@ function renderJourney() {
   const start = $('#start-button');
   if (start) {
     start.disabled = pending;
-    start.innerHTML = `${!user() ? j('سجّل وابدأ مجاناً', 'Sign in and start free') : pending ? j('جارٍ التحقق…', 'Checking progress…') : count.completed===0&&!examPassed ? j('ابدأ التجربة المجانية', 'Start your free experience') : action} <span aria-hidden="true">↗</span>`;
+    start.innerHTML = `${!user() ? j('سجّل وابدأ مسار الشهادة', 'Sign in and start the credential path') : pending ? j('جارٍ التحقق…', 'Checking progress…') : count.completed===0&&!examPassed ? j('ابدأ أول درس للشهادة', 'Start the first credential lesson') : action} <span aria-hidden="true">↗</span>`;
   }
   const homeNext = $('#home-next-step');
   if (homeNext) homeNext.innerHTML = `<small>${j('خطوتك التالية', 'Your next step')} · ${pending ? '…' : `${count.completed}/${count.total}`} ${j('دروس الأساسيات', 'Foundations lessons')}</small><strong>${esc(title)}</strong>`;
@@ -379,7 +379,6 @@ function bindEvents() {
   const onChallengesPage = Boolean($('#challenge-list'));
   $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => {
     if (!user()) { showAuth(); return; }
-    if (foundationsCount(learningProgress().lessons).completed===0&&!examPassed) { location.href='free-studio.html'; return; }
     location.href = nextLearningStep(learningProgress().lessons, examPassed).href;
   });
   $('#closing-button')?.addEventListener('click', () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });

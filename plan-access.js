@@ -21,3 +21,14 @@ export function canAccess(kind, index, membership) {
   const plan = membership.effectivePlan || membership.plan;
   return (PLAN_RANK[plan] ?? -1) >= PLAN_RANK[requiredPlan(kind, index)];
 }
+
+// Suggestions use the same access policy as the destination, without granting access.
+export function coursePracticeTarget(courseId, practice, membership, foundationsPassed) {
+  const starterUnits = { 'desktop-1': 'scope', 'desktop-2': 'network', 'desktop-4': 'crypto', 'desktop-9': 'linux' };
+  if (Object.hasOwn(starterUnits, courseId)) return { kind: 'starter', href: `free-studio.html?unit=${starterUnits[courseId]}` };
+  if (!practice) return null;
+  if (!Number.isInteger(practice.index) || practice.index < 0 || typeof practice.context !== 'string') return { kind: 'locked', plan: 'pro' };
+  const plan = requiredPlan('lab', practice.index);
+  const open = Boolean(membership?.admin || (canAccess('lab', practice.index, membership) && (plan === 'free' || foundationsPassed)));
+  return open ? { kind: 'specialty', href: `practice-lab.html?id=${practice.index}&context=${encodeURIComponent(practice.context)}` } : { kind: 'locked', plan };
+}

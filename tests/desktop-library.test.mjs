@@ -29,9 +29,10 @@ test('program curriculum is served by authenticated function and excluded from P
     assert.match(workflow, new RegExp(`${page}\.html`));
   }
   for (const category of catalog.categories) {
-    assert.ok(sitemap.includes(`library-course.html?id=${category.id}`));
-    for (const lesson of category.lessons) assert.ok(sitemap.includes(`library-lesson.html?id=${lesson.id}`));
+    assert.ok(!sitemap.includes(`library-course.html?id=${category.id}`));
+    for (const lesson of category.lessons) assert.ok(!sitemap.includes(`library-lesson.html?id=${lesson.id}`));
   }
+  for (const page of ['library-course', 'library-lesson', 'course-exam', 'profile', 'notes', 'favorites', 'settings']) assert.match(read(`${page}.html`), /name="robots" content="noindex, follow"/);
 });
 
 test('client and function agree on Free, Plus and Pro limits', () => {

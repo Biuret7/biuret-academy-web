@@ -1,4 +1,4 @@
-import { studioUnits, studioCases } from './free-studio-content.js?v=20261006-free1';
+import { studioUnits, studioCases } from './free-studio-content.js?v=20261007-stable1';
 
 const unitIds = new Set(studioUnits.map(u => u.id));
 const caseIds = new Set(studioCases.map(c => c.id));
