@@ -1,8 +1,9 @@
-import { currentLanguage } from './i18n.js?v=20261006-free1';
+import { currentLanguage } from './i18n.js?v=20261008-ux1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';
 const text = (ar, english) => en() ? english : ar;
+const searchable = value => value.normalize('NFKD').replace(/\p{M}/gu, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').toLocaleLowerCase().trim();
 const sidebar = document.querySelector('.sidebar-nav');
 const groups = [...document.querySelectorAll('.sidebar-group')];
 let preference = {};
@@ -35,11 +36,11 @@ if (sidebar) {
   const status = document.createElement('p'); status.className = 'navigation-search-status'; status.setAttribute('role', 'status'); status.hidden = true;
   sidebar.before(search, status);
   const filter = () => {
-    const query = search.value.trim().toLocaleLowerCase();
+    const query = searchable(search.value);
     let count = 0;
     for (const group of groups) {
       const links = [...group.querySelectorAll('a')];
-      links.forEach(link => { link.hidden = Boolean(query) && !link.textContent.toLocaleLowerCase().includes(query); if (!link.hidden) count++; });
+      links.forEach(link => { link.hidden = Boolean(query) && !searchable(link.textContent).includes(query); if (!link.hidden) count++; });
       group.hidden = !links.some(link => !link.hidden);
       const toggle = group.querySelector('button');
       toggle.disabled = Boolean(query);
@@ -72,13 +73,77 @@ if (['lesson', 'library-lesson', 'free-studio'].includes(document.querySelector(
   document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(labels, 0)); labels();
 }
 
-// Keep a clear route into the free experience across discovery and learning pages.
+// Discovery remains visible without repeating a second page-sized introduction.
 const page = document.querySelector('.site-shell')?.dataset.page;
-if (['home','paths','courses','labs','quizzes','challenges','tools','progress','review','membership','profile','library-course','library-lesson'].includes(page) || (page==='path' && new URLSearchParams(location.search).get('id')==='foundations')) {
+if (['home','paths','courses','labs','quizzes','challenges','tools','membership'].includes(page)) {
   const welcome=document.createElement('section');welcome.className='free-experience-entry';
-  const localize=()=>{welcome.innerHTML=`<div><span>${text('مجاني · أساس متين قبل التخصص','FREE · A STRONG START BEFORE SPECIALIZING')}</span><h2>${text('تعلّم بعمق، وطبّق بطريقتك.','Learn deeply. Put it into practice.')}</h2><p>${text('أربع دورات كاملة في الأمن والشبكات والتشفير ولينكس، مع مختبرات ومراجعة وملف أعمال تدريبي. تبدأ من الصفر وتصل إلى مسار الشهادة المجانية بخطوات واضحة.','Four full courses in security, networking, cryptography and Linux, with labs, review and a practice portfolio. Start from zero and follow clear steps toward the free credential path.')}</p></div><a class="button button-outline" href="free-studio.html">${text('افتح مساحتك المجانية','Open your free studio')} ↗</a>`;};
+  welcome.setAttribute('aria-label', text('بداية مجانية', 'Free starting point'));
+  const localize=()=>{welcome.setAttribute('aria-label',text('بداية مجانية','Free starting point'));welcome.innerHTML=`<div><strong>${text('جديد في الأمن السيبراني؟ ابدأ هنا.','New to cybersecurity? Start here.')}</strong><p>${text('٤ دورات مجانية كاملة، تطبيق عملي، ومراجعة بخطوات واضحة.','4 full free courses, practical exercises and a clear review plan.')}</p></div><a class="button button-outline" href="free-studio.html">${text('المساحة المجانية','Free learning studio')} <span aria-hidden="true">↗</span></a>`;};
   const main=document.querySelector('main');
   if(page==='home') {const hero=main?.querySelector('.hero');if(hero)hero.after(welcome);else main?.prepend(welcome);}
-  else main?.prepend(welcome);
+  else main?.append(welcome);
   localize();document.querySelector('#language-toggle')?.addEventListener('click',()=>setTimeout(localize,0));
 }
+
+// A single filter spans Foundations and the full library. It never changes access.
+if (['courses','labs','quizzes','tools','challenges','operations'].includes(page)) {
+  const main = document.querySelector('main');
+  const toolbar = document.createElement('form');
+  toolbar.className = 'catalog-finder section-frame'; toolbar.setAttribute('role', 'search');
+  const label = document.createElement('label');
+  const input = document.createElement('input'); input.type = 'search'; input.id = 'catalog-find'; input.autocomplete = 'off';
+  label.htmlFor = input.id;
+  const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'catalog-reset';
+  const result = document.createElement('p'); result.className = 'catalog-find-status'; result.setAttribute('role','status');
+  const empty = document.createElement('div'); empty.className = 'catalog-find-empty'; empty.hidden = true;
+  toolbar.append(label, input, reset, result, empty);
+  const selectors = '.catalog-card,.library-card,.quiz-group,.tool-guide,.challenge-card';
+  const update = () => {
+    if (!main) return;
+    const cards = [...main.querySelectorAll(selectors)];
+    const hero = main.querySelector('.catalog-hero,.page-heading,.hero');
+    if (hero && hero.nextElementSibling !== toolbar) hero.after(toolbar);
+    else if (!toolbar.isConnected && cards.length) cards[0].parentElement.before(toolbar);
+    const query = searchable(input.value);
+    let found = 0;
+    cards.forEach(card => { card.hidden = !!query && !searchable(card.textContent).includes(query); if (!card.hidden) found++; });
+    main.classList.toggle('catalog-is-filtered', !!query);
+    main.querySelectorAll('.library-section').forEach(section => {
+      const items = [...section.querySelectorAll(selectors)];
+      if (items.length) section.hidden = !!query && items.every(card => card.hidden);
+    });
+    const message = text(`${found} من ${cards.length} نتيجة`, `${found} of ${cards.length} results`);
+    if (result.textContent !== message) result.textContent = message;
+    reset.hidden = !input.value;
+    empty.hidden = !query || found > 0;
+  };
+  const localize = () => {
+    label.textContent = text('ابحث في محتوى هذه الصفحة', 'Find content on this page');
+    input.placeholder = text('اسم، موضوع، أو مهارة…', 'Name, topic or skill…');
+    reset.textContent = text('مسح البحث', 'Clear search');
+    empty.textContent = text('لا توجد نتائج مطابقة. جرّب كلمة أقصر أو امسح البحث لعرض الكل.', 'No matching results. Try a shorter term or clear the search to show everything.');
+    toolbar.setAttribute('aria-label', label.textContent); update();
+  };
+  toolbar.addEventListener('submit', event => event.preventDefault());
+  input.addEventListener('input', update);
+  const clear = () => { input.value = ''; update(); input.focus(); };
+  reset.addEventListener('click', clear);
+  input.addEventListener('keydown', event => { if(event.key==='Escape') { event.preventDefault(); clear(); } });
+  // Catalogs are populated asynchronously and translated without navigation.
+  if (main) new MutationObserver(update).observe(main,{childList:true,subtree:true});
+  document.querySelector('#language-toggle')?.addEventListener('click',()=>setTimeout(localize,0));
+  localize();
+}
+
+// Anchor destinations remain visible below the header and receive keyboard focus.
+const header = document.querySelector('.topbar');
+if (header) new ResizeObserver(() => {
+  document.documentElement.style.setProperty('--academy-header-height', `${Math.ceil(header.getBoundingClientRect().height)}px`);
+}).observe(header);
+document.querySelector('main')?.addEventListener('click', event => {
+  const anchor = event.target.closest('a[href^="#"]');
+  const target = anchor && document.getElementById(anchor.getAttribute('href').slice(1));
+  if (!target) return;
+  target.tabIndex = -1;
+  requestAnimationFrame(() => target.focus({preventScroll:true}));
+});

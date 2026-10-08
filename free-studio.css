@@ -45,3 +45,40 @@
 @media(max-width:1100px){.studio-learning{grid-template-columns:1fr}.studio-outline{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.studio-hero{grid-template-columns:1fr}.studio-reading{max-width:none}}
 @media(max-width:600px){#free-studio-main{gap:16px;padding-block-start:12px}.studio-stats,.studio-review-grid,.studio-portfolio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-review-grid,.studio-portfolio-grid{grid-template-columns:1fr}.studio-outline{grid-template-columns:1fr}.studio-tabs button{min-width:80px;padding:10px}.studio-coach{padding:18px}.studio-learning{gap:24px}.studio-example{padding:16px}.studio-permissions{gap:8px}.studio-actions>.button{flex:1 1 170px}}
 @media(prefers-reduced-motion:reduce){#free-studio-main *,#free-studio-main *::before{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* Get to learning sooner; supporting details stay one deliberate click away. */
+#free-studio-main{padding-block-start:16px;gap:20px}
+.studio-hero{gap:24px;padding-block:20px;background:radial-gradient(ellipse at top right,#c4ff180b,transparent 70%),#0c1114}
+.studio-hero h1{font-size:clamp(28px,3.2vw,42px);line-height:1.35;margin-block:12px}
+.studio-hero p{font-size:15px;line-height:1.85;margin-block:12px}
+.studio-actions{margin-block:16px;gap:8px}
+.studio-coach{padding:18px 20px}
+.studio-coach summary{font-size:13px;color:#d1e4bd;font-weight:650;cursor:pointer;line-height:1.8}
+.studio-coach>div{padding-block-start:12px}.studio-coach>div>span{display:none}
+.studio-coach label{font-size:13px!important;margin-block:8px}.studio-coach p{font-size:13px;line-height:1.8;margin-block:8px}.studio-coach small{font-size:12px}
+.studio-route,.studio-progress{border:1px solid #32423b;border-radius:12px;background:#101917;margin-block:0 12px;padding:14px 18px;color:#b9cbd0;line-height:1.8}
+.studio-route summary,.studio-progress summary{font-weight:600;font-size:14px;cursor:pointer;color:#cfddd4}
+.studio-progress .studio-stats{margin-block-start:16px}.studio-progress>.studio-local{margin-block-end:0}
+.studio-tabs{margin-block:18px;border-radius:12px;gap:4px;padding:4px}
+.studio-tabs button{padding:11px 16px;min-width:0;min-height:44px;font-size:14px;border-radius:8px}
+.studio-tabs button[aria-selected=true]{background:#c4ff1817;border-color:#c4ff1850;color:#c4ff18}
+.studio-learning{gap:24px;grid-template-columns:220px minmax(0,1fr)}
+.studio-plan{position:sticky;top:calc(var(--academy-header-height) + 20px);min-width:0;border:1px solid #33413a;border-radius:14px;background:#0d1517;overflow:hidden}
+.studio-plan summary{padding:14px 16px;font-size:13px;color:#c9e3b1;cursor:pointer;font-weight:650;line-height:1.7}
+.studio-plan summary span{display:block;font-size:12px;color:#acbfb5;margin-block-start:4px;font-weight:400}
+.studio-outline{position:static;gap:4px;padding:6px}
+.studio-outline button{border-color:transparent;padding:12px;border-radius:9px;min-height:62px;background:transparent}
+.studio-outline strong{font-size:13px;line-height:1.7}.studio-outline small{font-size:11px}
+.studio-outline button[aria-current]{background:#c4ff1810;border-color:#8eb44066}
+.studio-reading{max-width:78ch;min-width:0}.studio-reading>p{font-size:16px;line-height:1.95}
+.studio-reading h2{font-size:clamp(23px,2.6vw,31px);line-height:1.5}
+.studio-review-grid h3,.studio-course h3{font-size:20px;line-height:1.5;margin-block:12px}
+.studio-course p{line-height:1.8;font-size:14px;color:#adbdc6}
+.reading-focus .studio-plan{display:none}
+@media(max-width:1100px){.studio-learning{grid-template-columns:1fr}.studio-plan{position:static}.studio-outline{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-coach{padding:14px 18px}.studio-hero{gap:8px;grid-template-columns:1fr}}
+@media(max-width:600px){
+  #free-studio-main{padding-block-start:8px;gap:16px}.studio-hero{padding-block:14px}.studio-hero h1{font-size:28px}.studio-hero p{font-size:14px}.studio-hero .studio-actions{flex-direction:row;flex-wrap:wrap;margin-block:14px}.studio-hero .studio-actions>.button{flex:1 1 140px;font-size:13px;gap:6px;padding-inline:10px}
+  .studio-badge{font-size:11px}.studio-route,.studio-progress{padding:12px 15px}.studio-route summary,.studio-progress summary{font-size:13px}.studio-tabs{flex-wrap:nowrap;margin-block:14px}.studio-tabs button{font-size:12px;padding:10px 6px}
+  .studio-outline{grid-template-columns:1fr}.studio-learning{gap:20px}.studio-plan summary{padding:12px 15px}.studio-plan summary span{display:inline;margin-inline-start:6px;font-size:11px}.studio-reading h2{font-size:23px}
+  .studio-stats>span{font-size:12px;padding:12px}.studio-stats b{font-size:21px}.studio-coach>div{padding-top:8px}
+}

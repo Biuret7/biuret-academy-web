@@ -1,13 +1,13 @@
-import { renderAvatar } from './identity.js?v=20261006-free1';
-import { mountLessonNotes } from './lesson-notes.js?v=20261006-free1';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261006-free1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261006-free1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261006-free1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261006-free1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261006-free1';
-import { fullName } from './full-name.js?v=20261006-free1';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261006-free1';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261006-free1';
+import { renderAvatar } from './identity.js?v=20261008-ux1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261008-ux1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261008-ux1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261008-ux1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261008-ux1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261008-ux1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261008-ux1';
+import { fullName } from './full-name.js?v=20261008-ux1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261008-ux1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261008-ux1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -430,6 +430,9 @@ function bindEvents() {
     siteNavigation.classList.toggle('is-open', open);
     sidebarScrim?.classList.toggle('is-open', open);
     if (sidebarScrim) document.body.classList.toggle('academy-menu-open', open);
+    if (sidebarScrim) {
+      for (const surface of document.querySelectorAll('main,.footer,.learning-access-gate')) surface.inert = open;
+    }
     if (open && sidebarClose) setTimeout(() => sidebarClose.focus(), 0);
     if (restoreFocus) navToggle.focus();
   };
@@ -441,7 +444,8 @@ function bindEvents() {
       setMenuOpen(false, true);
     }
     if (event.key === 'Tab' && sidebarClose && navToggle.getAttribute('aria-expanded') === 'true') {
-      const focusable = [...siteNavigation.querySelectorAll('a[href],button:not([disabled])')];
+      const focusable = [...siteNavigation.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled])')]
+        .filter(element => !element.closest('[hidden]') && element.getClientRects().length);
       const first = focusable[0];
       const last = focusable.at(-1);
       if (!siteNavigation.contains(document.activeElement)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
