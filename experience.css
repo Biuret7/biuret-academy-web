@@ -277,3 +277,4 @@ html[dir=rtl] .sidebar-nav a[aria-current=page]{border:1px solid #657f3b;box-sha
   html[dir] .reading-focus .site-shell{padding-inline:0}
 }
 @media(min-width:1181px) and (max-width:1350px){:root{--academy-sidebar-width:264px}}
+.free-entry-actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-start;flex-shrink:0;max-width:24rem}

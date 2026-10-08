@@ -16,7 +16,10 @@ test('all Academy catalog pages have a visible route and are included in the pub
     assert.match(html, new RegExp(`<a href="${page}\\.html" aria-current="page"`));
     assert.match(html, /src="catalog\.js\?v=/);
     assert.match(workflow, new RegExp(`${page}\.html`));
-    assert.match(sitemap, new RegExp(`/${page}\.html`));
+    if (page === 'shop') {
+      assert.doesNotMatch(sitemap, /\/shop\.html/);
+      assert.match(html, /name="robots" content="noindex, follow"/);
+    } else assert.match(sitemap, new RegExp(`/${page}\.html`));
     for (const destination of pages) assert.match(html, new RegExp(`href="${destination}\.html"`));
   }
 });

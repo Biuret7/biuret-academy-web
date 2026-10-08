@@ -20,7 +20,7 @@ export function trackText(track) { return language === 'en' ? { ...track, ...eng
 export function challengeText(challenge) { return language === 'en' ? { ...challenge, ...englishChallenges[challenge.id] } : challenge; }
 
 const staticEnglish = {
-  'درساً مجانياً': 'free lessons',
+  'دروس لمسار الشهادة': 'credential-path lessons',
   'المساحة المجانية': 'Free learning studio',
   'مساحتك للتعلّم': 'YOUR LEARNING SPACE',
   'قائمة الأكاديمية': 'Academy navigation', 'إغلاق القائمة': 'Close menu', 'الرئيسية': 'Home', 'ابدأ هنا': 'Start here', 'التعلّم والتطبيق': 'Learn and practice', 'إنجازاتك': 'Your achievements', 'المزايا': 'Benefits', 'الامتحان النهائي': 'Final exam', 'إثبات الإنجاز': 'Achievement credential',
@@ -28,7 +28,7 @@ const staticEnglish = {
   'كل ما تحتاجه للتعلّم، بخطوات واضحة.': 'Everything you need to learn, one clear step at a time.', 'طريقك في الأكاديمية يبدأ هنا.': 'Your Academy journey starts here.', 'رحلة التعلّم تبدأ هنا.': 'Your learning journey starts here.',
   'أقسام الأكاديمية': 'Academy sections', 'الكورسات': 'Courses', 'المختبرات': 'Labs', 'الاختبارات': 'Quizzes', 'الأدوات': 'Tools', 'المتجر': 'Shop',
   'أساس قوي.': 'Strong foundations.', 'طريق واضح.': 'A clear route.', 'تخصصك القادم.': 'Your next specialty.',
-  'ابدأ مجاناً بدورات كاملة في الأمن والشبكات ولينكس والتشفير. افهم الدليل، جرّب المختبرات، وابنِ ملف أعمالك الأول؛ ثم أكمل مسار الشهادة واختر تخصصك.': 'Start free with full courses in security, networking, Linux and cryptography. Understand evidence, try labs and build your first practice portfolio; then complete the credential path and choose a specialty.',
+  'ابدأ مسار الشهادة المجانية: 9 دروس موثقة، ثم تقييم عملي وامتحان. تعمّق اختيارياً في 26 درس مكتبة وتدريب محلي، ثم استكشف عشرة مسارات لتختار تخصصك.': 'Start the free credential path: 9 verified lessons, then a practical assessment and exam. Explore 26 optional library lessons and local practice, then discover ten paths to choose your specialty.',
   'ابدأ الأساسيات': 'Start Foundations', 'شاهد خطة التعلّم': 'View the learning route', 'دروس أساسية': 'foundation lessons', 'امتحان وإثبات إنجاز': 'Exam and credential', 'تخصصات بعد الأساسيات': 'Specialties after Foundations',
   'جرّب مختبراً آمناً بعد الدرس.': 'Try a safe lab after the lesson.', 'افحص طلباً واستجابة HTTP داخل محاكاة قصيرة، ثم اشرح الدليل والقرار المناسب.': 'Inspect a synthetic HTTP request and response, then explain the evidence and the right decision.', 'افتح المختبر ↗': 'Open the lab ↗',
   'تعلّم بالترتيب. اختر تخصصك بثقة.': 'Learn in order. Choose your specialty with confidence.',

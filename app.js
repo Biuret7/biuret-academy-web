@@ -106,7 +106,7 @@ function renderJourney() {
   const start = $('#start-button');
   if (start) {
     start.disabled = pending;
-    start.innerHTML = `${!user() ? j('سجّل وابدأ مجاناً', 'Sign in and start free') : pending ? j('جارٍ التحقق…', 'Checking progress…') : count.completed===0&&!examPassed ? j('ابدأ التجربة المجانية', 'Start your free experience') : action} <span aria-hidden="true">↗</span>`;
+    start.innerHTML = `${!user() ? j('سجّل وابدأ مسار الشهادة', 'Sign in and start the credential path') : pending ? j('جارٍ التحقق…', 'Checking progress…') : count.completed===0&&!examPassed ? j('ابدأ أول درس للشهادة', 'Start the first credential lesson') : action} <span aria-hidden="true">↗</span>`;
   }
   const homeNext = $('#home-next-step');
   if (homeNext) homeNext.innerHTML = `<small>${j('خطوتك التالية', 'Your next step')} · ${pending ? '…' : `${count.completed}/${count.total}`} ${j('دروس الأساسيات', 'Foundations lessons')}</small><strong>${esc(title)}</strong>`;
@@ -379,7 +379,6 @@ function bindEvents() {
   const onChallengesPage = Boolean($('#challenge-list'));
   $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => {
     if (!user()) { showAuth(); return; }
-    if (foundationsCount(learningProgress().lessons).completed===0&&!examPassed) { location.href='free-studio.html'; return; }
     location.href = nextLearningStep(learningProgress().lessons, examPassed).href;
   });
   $('#closing-button')?.addEventListener('click', () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });
