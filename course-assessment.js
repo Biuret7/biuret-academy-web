@@ -1,6 +1,6 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261008-ux1';
-import { user, loadUser, loadCourseExam, submitCourseExam } from './auth.js?v=20261008-ux1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261008-ux1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261009-ux2';
+import { user, loadUser, loadCourseExam, submitCourseExam } from './auth.js?v=20261009-ux2';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261009-ux2';
 
 const root = document.querySelector('#course-assessment-main');
 const order = Number(new URLSearchParams(location.search).get('order'));

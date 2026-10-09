@@ -27,6 +27,8 @@ jobs:
           node-version: 22
       - name: Verify learning and reward rules
         run: |
+          node --check guide/core.mjs
+          node --check guide/widget.js
           node --check free-studio.js
           node --check free-studio-content.js
           node --check free-studio-model.js

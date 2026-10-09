@@ -1,4 +1,4 @@
-import { identities, actions, variants, simulate, sanitizeAttempts, reviewAttempts, authorizationReport } from './authorization-model.js?v=20261008-ux1';
+import { identities, actions, variants, simulate, sanitizeAttempts, reviewAttempts, authorizationReport } from './authorization-model.js?v=20261009-ux2';
 
 export function mountAuthorizationLab(root, { owner, language }) {
   if (!root || !owner) return;

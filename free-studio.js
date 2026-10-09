@@ -1,8 +1,8 @@
-import { user,loadUser,loadLearningRewards } from './auth.js?v=20261008-ux1';
-import { fullName } from './full-name.js?v=20261008-ux1';
-import { currentLanguage,setPageHeaderTitle } from './i18n.js?v=20261008-ux1';
-import { studioUnits,studioCases,freeCourseOrders,studioSources } from './free-studio-content.js?v=20261008-ux1';
-import { cleanStudio,studioStorageKey,studioSummary,recordRecall,gradeStudioCase,permissionMode,studioExport } from './free-studio-model.js?v=20261008-ux1';
+import { user,loadUser,loadLearningRewards } from './auth.js?v=20261009-ux2';
+import { fullName } from './full-name.js?v=20261009-ux2';
+import { currentLanguage,setPageHeaderTitle } from './i18n.js?v=20261009-ux2';
+import { studioUnits,studioCases,freeCourseOrders,studioSources } from './free-studio-content.js?v=20261009-ux2';
+import { cleanStudio,studioStorageKey,studioSummary,recordRecall,gradeStudioCase,permissionMode,studioExport } from './free-studio-model.js?v=20261009-ux2';
 
 const root=document.querySelector('#free-studio-main');
 const en=()=>currentLanguage()==='en';

@@ -1,5 +1,5 @@
-import { user } from './auth.js?v=20261008-ux1';
-import { currentLanguage } from './i18n.js?v=20261008-ux1';
+import { user } from './auth.js?v=20261009-ux2';
+import { currentLanguage } from './i18n.js?v=20261009-ux2';
 
 // Keep answers while switching languages or rerendering an assessment, scoped
 // to the signed-in account and this page. Answers are never stored on disk.

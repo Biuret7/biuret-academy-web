@@ -1,4 +1,4 @@
-import {cloudRequests,evaluateCloud,evidenceOriginal,evidenceCopies,compareEvidence,timeline,normalizeTimeline,temporalOrder,sanitizeCasework,caseworkReport} from './cloud-dfir-model.js?v=20261008-ux1';
+import {cloudRequests,evaluateCloud,evidenceOriginal,evidenceCopies,compareEvidence,timeline,normalizeTimeline,temporalOrder,sanitizeCasework,caseworkReport} from './cloud-dfir-model.js?v=20261009-ux2';
 
 export function mountCloudDfir(root,{owner,language,kind}){
   if(!root||!owner||!['cloud','dfir'].includes(kind))return;

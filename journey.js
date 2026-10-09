@@ -1,4 +1,4 @@
-import { courses, lessonById } from './learning-content.js?v=20261008-ux1';
+import { courses, lessonById } from './learning-content.js?v=20261009-ux2';
 
 // The verified Academy library supplies the course, practical and exam steps.
 // This overview points learners to those path requirements after Foundations.
