@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   deploy:
+    env:
+      PAGES_ARTIFACT_NAME: academy-pages-${{ github.run_id }}-${{ github.run_attempt }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -98,6 +100,31 @@ jobs:
           cp -r guide _site/
       - uses: actions/upload-pages-artifact@v3
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: _site
+      - name: Wait for Pages artifact metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module <<'NODE'
+          const endpoint = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}/artifacts?per_page=100`;
+          let ready = false;
+          for (let attempt = 0; attempt < 10; attempt++) {
+            const response = await fetch(endpoint, {
+              headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json' },
+              signal: AbortSignal.timeout(10000)
+            });
+            if (!response.ok) throw new Error(`Artifact metadata returned HTTP ${response.status}`);
+            const data = await response.json();
+            const matches = data.artifacts.filter(a => a.name === process.env.PAGES_ARTIFACT_NAME && !a.expired);
+            if (matches.length > 1) throw new Error('This attempt has duplicate Pages artifacts.');
+            if (matches.length === 1) { ready = true; break; }
+            if (attempt < 9) await new Promise(resolve => setTimeout(resolve, 3000));
+          }
+          if (!ready) throw new Error('Pages artifact metadata is not visible yet. Retry this workflow.');
+          console.log('The unique Pages artifact is ready for deployment.');
+          NODE
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
