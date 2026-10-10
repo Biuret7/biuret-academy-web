@@ -1,6 +1,6 @@
-import { user, loadUser, loadMembership, loadLearningRewards, loadExam } from './auth.js?v=20261009-ux2';
-import { currentLanguage } from './i18n.js?v=20261009-ux2';
-import { renderAvatar } from './identity.js?v=20261009-ux2';
+import { user, loadUser, loadMembership, loadLearningRewards, loadExam } from './auth.js?v=20261010-guide6';
+import { currentLanguage } from './i18n.js?v=20261010-guide6';
+import { renderAvatar } from './identity.js?v=20261010-guide6';
 const root = document.querySelector('#profile-main');
 const tr = (ar, en) => currentLanguage() === 'ar' ? ar : en;
 const esc = x => String(x ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
