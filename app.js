@@ -1,14 +1,14 @@
-import { renderAvatar } from './identity.js?v=20261011-ui3';
-import { mountLessonNotes } from './lesson-notes.js?v=20261011-ui3';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ui3';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-ui3';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-ui3';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-ui3';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-ui3';
-import { fullName } from './full-name.js?v=20261011-ui3';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-ui3';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261011-ui3';
-import { workspaceHref } from './workspace-model.js?v=20261011-ui3';
+import { renderAvatar } from './identity.js?v=20261011-ctf1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261011-ctf1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ctf1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-ctf1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-ctf1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-ctf1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-ctf1';
+import { fullName } from './full-name.js?v=20261011-ctf1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-ctf1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261011-ctf1';
+import { workspaceHref } from './workspace-model.js?v=20261011-ctf1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -88,8 +88,8 @@ const learningLabels = {
 const ll = (key) => learningLabels[currentLanguage()][key];
 const lessonRewardText = () => rewards?.coinEarning ? '+100 XP · +10 BC' : '+100 XP';
 const walletLabels = {
-  ar: { title: 'سجل عملاتك', description: 'كل مكافأة درس موثّق تظهر هنا مرة واحدة. العملات داخل الأكاديمية ولا تُصرف حالياً.', lesson: 'إكمال درس موثّق', empty: 'أكمل درساً مع عضوية Plus أو Pro لتظهر أول معاملة.', pending: 'جارٍ تحميل سجل العملات…', syncing: 'سجل العملات قيد التحديث. حدّث الصفحة بعد قليل.', unavailable: 'تعذر تحميل السجل الآن. حدّث الصفحة للمحاولة مجدداً.' },
-  en: { title: 'Your coin history', description: 'Each verified lesson reward appears once. Coins stay in the Academy and cannot be spent yet.', lesson: 'Verified lesson completed', empty: 'Complete a lesson with Plus or Pro to see your first transaction.', pending: 'Loading coin history…', syncing: 'Coin history is updating. Refresh shortly.', unavailable: 'Coin history is unavailable. Refresh to try again.' },
+  ar: { title: 'سجل عملاتك', description: 'مكافآت الدروس وتحديات CTF الموثقة تظهر هنا مرة واحدة. العملات داخل الأكاديمية ولا تُصرف حالياً.', lesson: 'إكمال درس موثّق', empty: 'أكمل درساً أو تحدي CTF مع عضوية Plus أو Pro لتظهر أول معاملة.', pending: 'جارٍ تحميل سجل العملات…', syncing: 'سجل العملات قيد التحديث. حدّث الصفحة بعد قليل.', unavailable: 'تعذر تحميل السجل الآن. حدّث الصفحة للمحاولة مجدداً.' },
+  en: { title: 'Your coin history', description: 'Verified lesson and CTF rewards appear once. Coins stay in the Academy and cannot be spent yet.', lesson: 'Verified lesson completed', empty: 'Complete a lesson or CTF challenge with Plus or Pro to see your first transaction.', pending: 'Loading coin history…', syncing: 'Coin history is updating. Refresh shortly.', unavailable: 'Coin history is unavailable. Refresh to try again.' },
 };
 const wl = (key) => walletLabels[currentLanguage()][key];
 const j = (ar, en) => isEnglish() ? en : ar;
@@ -182,7 +182,7 @@ function renderProgress() {
       const body = rewardStatus !== 'ready' ? `<p>${wl(rewardStatus === 'error' ? 'unavailable' : 'pending')}</p>`
         : !Array.isArray(transactions) ? `<p>${wl('syncing')}</p>`
         : !transactions.length ? `<p>${wl('empty')}</p>`
-        : `<ol class="coin-ledger-list">${transactions.map((entry) => `<li><span class="coin-ledger-icon" aria-hidden="true">✦</span><span class="coin-ledger-copy"><strong>${wl('lesson')}</strong><small>${esc(lc(lessonById[entry.reference]?.title || entry.reference))} · ${esc(new Date(entry.earnedAt).toLocaleDateString(isEnglish() ? 'en-US' : 'ar'))}</small></span><b dir="ltr">+${entry.delta} BC</b></li>`).join('')}</ol>`;
+        : `<ol class="coin-ledger-list">${transactions.map((entry) => `<li><span class="coin-ledger-icon" aria-hidden="true">✦</span><span class="coin-ledger-copy"><strong>${entry.kind === 'ctf-earned' ? (isEnglish() ? 'CTF challenge completed' : 'إكمال تحدي CTF') : wl('lesson')}</strong><small>${esc(lc(entry.title || lessonById[entry.reference]?.title || entry.reference))} · ${esc(new Date(entry.earnedAt).toLocaleDateString(isEnglish() ? 'en-US' : 'ar'))}</small></span><b dir="ltr">+${entry.delta} BC</b></li>`).join('')}</ol>`;
       panel.innerHTML = `<div class="coin-ledger-head"><div><span class="section-kicker">BIURET COINS / LEDGER</span><h3>${wl('title')}</h3><p>${wl('description')}</p></div><strong dir="ltr">${rewardStatus === 'ready' ? rewards.coins : '—'} BC</strong></div>${body}`;
     }
   }
@@ -516,3 +516,5 @@ async function init() {
   if (requestedChallenge && signedIn) openChallenge(requestedChallenge);
 }
 init();
+
+window.addEventListener('biuret-rewards-changed', refreshRewards);

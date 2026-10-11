@@ -1,5 +1,5 @@
-import { cleanProgress, mergeProgress } from './engine.js?v=20261011-ui3';
-import { fullName } from './full-name.js?v=20261011-ui3';
+import { cleanProgress, mergeProgress } from './engine.js?v=20261011-ctf1';
+import { fullName } from './full-name.js?v=20261011-ctf1';
 
 const ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = '6aa55a88003959a536e9';
@@ -87,6 +87,8 @@ async function learningExecution(input, learningState = true) {
 }
 
 export function loadLearningRewards() { return learningExecution({ action: 'state' }); }
+export function loadCTFState() { return learningExecution({ action: 'ctfState' }, false); }
+export function submitCTFFlag(challengeId, flag) { return learningExecution({ action: 'ctfSubmit', challengeId, flag }, false); }
 export function loadMembership() { return learningExecution({ action: 'membershipState' }, false); }
 export function loadBilling() { return learningExecution({ action: 'billingState' }, false); }
 export function startBillingCheckout(plan) { return learningExecution({ action: 'billingCheckout', plan }, false); }

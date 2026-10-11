@@ -11,6 +11,7 @@ import { practicalService } from './practical.js';
 import { fullName } from './name.js';
 import { reportReviewService } from './report-review.js';
 import { socCase, checkSocInvestigation } from './soc-investigation.js';
+import { ctfService } from './ctf.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
@@ -105,7 +106,17 @@ async function getState(key, userId, membership) {
     request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }),
   });
   const { coins, transactions } = await ledger.state(userId, learning.awards, { canEarn: membership.access.coinEarning });
-  return { ...learning, coins, transactions, coinEarning: membership.access.coinEarning, plan: membership.plan, effectivePlan: membership.effectivePlan || membership.plan, admin: Boolean(membership.admin) };
+  const ctf = await ctfFor(key).state(userId, membership.access.coinEarning);
+  const xp = learning.xp + ctf.xp;
+  const ctfTransactions = ctf.completions.filter(p => p.coins > 0).map(p => ({ id: p.id, kind: 'ctf-earned', reference: p.challengeId, title: p.title, delta: p.coins, earnedAt: p.completedAt, recordedAt: p.completedAt }));
+  return { ...learning, xp, ...levelForXp(xp), coins: coins + ctf.coins,
+    transactions: [...transactions, ...ctfTransactions].sort((a,b) => b.earnedAt.localeCompare(a.earnedAt)),
+    ctf, coinEarning: membership.access.coinEarning, plan: membership.plan, effectivePlan: membership.effectivePlan || membership.plan, admin: Boolean(membership.admin) };
+}
+
+function ctfFor(key) {
+  return ctfService({ base: ENDPOINT,
+    request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }) });
 }
 
 async function complete(key, account, lessonId, answerIndex) {
@@ -183,13 +194,20 @@ export default async ({ req, res, error }) => {
     if (input.action === 'billingState') return res.json(await billing.state(account.$id, isAcademyAdmin(account)));
     if (input.action === 'billingCheckout') return res.json(await billing.checkout(account, input.plan, isAcademyAdmin(account)));
     if (input.action === 'billingPortal') return res.json(await billing.portal(account.$id, isAcademyAdmin(account)));
-    if (['completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam', 'reportSubmit', 'socCheck'].includes(input.action) && !fullName(account.name)) {
+    if (['ctfSubmit', 'completeLesson', 'libraryMarkLesson', 'libraryPractice', 'courseSubmitExam', 'submitPractical', 'submitExam', 'pathSubmitExam', 'reportSubmit', 'socCheck'].includes(input.action) && !fullName(account.name)) {
       return res.json({ error: 'Set your real two or three part name in your Academy account before learning' }, 403);
     }
     if (input.action === 'membershipState') {
       return res.json(await membershipForAccount(key, account));
     }
     if (input.action === 'state') return res.json(await getState(key, account.$id, await membershipForAccount(key, account)));
+    if (['ctfState', 'ctfSubmit'].includes(input.action)) {
+      const membership = await membershipForAccount(key, account);
+      const ctf = ctfFor(key);
+      if (input.action === 'ctfState') return res.json(await ctf.state(account.$id, membership.access.coinEarning));
+      const result = await ctf.submit(account, input.challengeId, input.flag, membership.access.coinEarning);
+      return res.json(result.data, result.code);
+    }
     if (['socCase', 'socCheck'].includes(input.action)) {
       const context = await libraryContext(key, account);
       return res.json(input.action === 'socCase' ? socCase(context.membership, context.foundationsPassed, input.language)

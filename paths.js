@@ -1,8 +1,8 @@
-import { academyPaths } from './path-catalog-data.js?v=20261011-ui3';
-import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261011-ui3';
-import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261011-ui3';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ui3';
-import { fullName } from './full-name.js?v=20261011-ui3';
+import { academyPaths } from './path-catalog-data.js?v=20261011-ctf1';
+import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261011-ctf1';
+import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261011-ctf1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf1';
+import { fullName } from './full-name.js?v=20261011-ctf1';
 
 const root = document.querySelector('#paths-main');
 const detail = document.querySelector('.site-shell')?.dataset.page === 'path';

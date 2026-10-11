@@ -20,7 +20,7 @@ The Python entry points were reviewed and smoke-tested with help, evidence-listi
 
 The signed-in learning gate is retained. Catalog and briefing pages support Arabic/RTL and English/LTR, composable availability/specialty/difficulty filters, bilingual search and hash links for individual briefings.
 
-Player ZIPs are public static training assets, not private authenticated storage. There is no server CTF submission endpoint, verified completion, XP, coin reward or CTF certificate. CyberTrace checks flags inside its local program; Vault displays its decrypted flag locally. Do not represent these local checks as protected competition grading.
+Player ZIPs are public static training assets, not private authenticated storage. Ready challenges support authenticated server flag submissions and private achievement records. Local checks remain practice-only; server matching verifies possession of the correct flag, not independent mastery or competition integrity. Path credentials are separate. See [CTF rewards](ctf-rewards.md).
 
 Generate the public module after editing catalog or briefing data:
 

@@ -1,7 +1,7 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261011-ui3';
-import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261011-ui3';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ui3';
-import { attachPracticalReport } from './practical-report.js?v=20261011-ui3';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261011-ctf1';
+import { user, loadUser, loadPractical, submitPractical } from './auth.js?v=20261011-ctf1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf1';
+import { attachPracticalReport } from './practical-report.js?v=20261011-ctf1';
 
 const root = document.querySelector('#practical-main');
 const pathId = new URLSearchParams(location.search).get('id');
