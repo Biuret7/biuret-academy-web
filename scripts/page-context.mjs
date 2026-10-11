@@ -11,6 +11,7 @@ export const pageContexts = {
   'soc-investigation': ['SOC INVESTIGATION', 'من ملفات الأدلة إلى تقرير قابل للمراجعة.', 'From evidence files to a reviewable report.'],
   lab: ['LAB', 'مختبر عملي موجّه وآمن.', 'A safe, guided hands-on lab.'],
   quizzes: ['QUIZZES', 'اختبر فهمك بعد كل خطوة.', 'Check your understanding after each step.'],
+  ctf: ['BIURET CTF', 'افحص الأدلة، استخرج العلم، واشرح قرارك.', 'Inspect evidence, capture the flag, explain your reasoning.'],
   challenges: ['CHALLENGES', 'تحديات قصيرة تثبّت مهاراتك.', 'Short challenges to strengthen your skills.'],
   tools: ['TOOLS', 'تعرّف إلى الأدوات وطريقة استخدامها.', 'Explore tools and how to use them.'],
   progress: ['PROGRESS', 'تابع ما أنجزته والخطوة القادمة.', 'Track what you completed and what comes next.'],
