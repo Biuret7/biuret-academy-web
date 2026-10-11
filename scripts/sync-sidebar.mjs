@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
+import { primarySection } from '../workspace-model.js';
 import { pageContext } from './page-context.mjs';
 
 const root = new URL('../', import.meta.url);
@@ -11,7 +12,7 @@ for (const page of ['paths', 'challenges', 'progress']) {
   let html = readFileSync(file, 'utf8');
   const currentSidebar = sidebar
     .replace('href="index.html" aria-current="page"', 'href="index.html"')
-    .replace(`href="${page}.html"`, `href="${page}.html" aria-current="page"`);
+    .replace(`href="${primarySection(page)}.html"`, `href="${primarySection(page)}.html" aria-current="page"`);
 
   if (html.includes('<aside class="academy-sidebar"')) {
     html = html.replace(/    <aside class="academy-sidebar"[\s\S]*?    <button class="sidebar-scrim"[^>]*><\/button>/, currentSidebar);

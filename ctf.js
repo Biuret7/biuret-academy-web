@@ -1,7 +1,7 @@
-import {user,loadUser} from './auth.js?v=20261011-ctf3';
-import {fullName} from './full-name.js?v=20261011-ctf3';
-import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261011-ctf3';
-import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261011-ctf3';
+import {user,loadUser} from './auth.js?v=20261011-workspace1';
+import {fullName} from './full-name.js?v=20261011-workspace1';
+import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261011-workspace1';
+import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261011-workspace1';
 const root=document.getElementById('ctf-main');
 const tr=(ar,en)=>currentLanguage()==='ar'?ar:en,localized=value=>value[currentLanguage()];
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};

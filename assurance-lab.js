@@ -1,4 +1,4 @@
-import {assurancePractice,supplierCases,assessSupplier,supplierState,supplierReport} from './assurance-model.js?v=20261011-ctf3';
+import {assurancePractice,supplierCases,assessSupplier,supplierState,supplierReport} from './assurance-model.js?v=20261011-workspace1';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function mountAssurance(root,{owner,language}){
   if(!root||!owner)return;

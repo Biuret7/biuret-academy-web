@@ -1,4 +1,5 @@
 (() => {
+  if (document.documentElement.classList.contains('workspace-embedded')) return;
   const script=document.currentScript,asset=new URL('./',script.src),site=script.dataset.site||'portfolio';
   const el=(tag,cls)=>{const n=document.createElement(tag);if(cls)n.className=cls;return n;};
   const root=el('div','biuret-guide');root.setAttribute('translate','no');document.body.append(root);

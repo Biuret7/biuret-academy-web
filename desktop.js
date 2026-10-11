@@ -1,15 +1,15 @@
-import { mountWorkbench } from './workbench.js?v=20261011-ctf3';
-import { mountAuthorizationLab } from './authorization-lab.js?v=20261011-ctf3';
-import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261011-ctf3';
-import { mountSpecialist } from './specialist-lab.js?v=20261011-ctf3';
-import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261011-ctf3';
-import { mountReverse } from './reverse-lab.js?v=20261011-ctf3';
-import { reversePractice } from './reverse-model.js?v=20261011-ctf3';
-import { mountAssurance } from './assurance-lab.js?v=20261011-ctf3';
-import { assurancePractice } from './assurance-model.js?v=20261011-ctf3';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf3';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261011-ctf3';
-import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261011-ctf3';
+import { mountWorkbench } from './workbench.js?v=20261011-workspace1';
+import { mountAuthorizationLab } from './authorization-lab.js?v=20261011-workspace1';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261011-workspace1';
+import { mountSpecialist } from './specialist-lab.js?v=20261011-workspace1';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261011-workspace1';
+import { mountReverse } from './reverse-lab.js?v=20261011-workspace1';
+import { reversePractice } from './reverse-model.js?v=20261011-workspace1';
+import { mountAssurance } from './assurance-lab.js?v=20261011-workspace1';
+import { assurancePractice } from './assurance-model.js?v=20261011-workspace1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-workspace1';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261011-workspace1';
+import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261011-workspace1';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');
@@ -78,10 +78,10 @@ function renderCatalogExtras() {
   if (!target) return;
   target.querySelector('#desktop-append')?.remove();
   let body = '';
-  if (page === 'courses') body = section(tr('الدورات الكاملة', 'Full courses'), `${notice()}<div class="library-grid">${[...data.categories].sort((a,b)=>Number(allowed('course',b.order))-Number(allowed('course',a.order))).map(courseCard).join('')}</div>`);
-  if (page === 'labs') body = `<div class="catalog-callout library-notice"><strong>${tr('مختبر تحقيق SOC متعدد المصادر','SOC investigation across multiple evidence sources')}</strong><p>${tr('حلل ستة ملفات أدلة، صحح التوقيت، احسب النقل، ثم جهز تقريرك للمراجعة. يتطلب المختبر وصول مسار SOC وإكمال الأساسيات.','Analyze six evidence files, normalize time, calculate transfer and draft a report for review. Requires SOC path access and Foundations completion.')}</p><a class="button button-outline" href="soc-investigation.html">${tr('افتح مساحة التحقيق','Open investigation workspace')} ↗</a></div>` + section(tr('مختبرات التطبيق', 'Practice labs'), `${notice()}${simpleCards(data.labs, 'practice-lab', (x) => x.name, (x) => x.desc)}`);
-  if (page === 'quizzes') body = section(tr('اختبارات المراجعة', 'Review quizzes'), `<div class="catalog-callout library-notice"><strong>${tr('تدريب مستقل عن امتحانات الدورات', 'Separate from course exams')}</strong><p>${tr('هذه أسئلة مراجعة جديدة ومختلفة عن بنك امتحانات إكمال الدورات. يمكنك إعادتها للتدريب، ولا تُحتسب نتيجتها للشهادة أو XP الموثق.', 'These are new review questions, different from the course completion exam bank. You can retry them for practice; their results do not count toward credentials or verified XP.')}</p></div>${simpleCards(data.quizzes, 'practice-quiz', (x) => x.name, (x) => x.topics)}`);
-  if (page === 'tools') body = section(tr('مكتبة الأدوات', 'Tool library'), `${notice()}<div class="tool-guide-list">${data.tools.map((tool, index) => `<details class="tool-guide" ${allowed('tool', index) ? '' : 'data-locked="true"'}><summary><span>${esc(tool.category)} ${tierBadge('tool', index)}</span><strong>${esc(tool.name)}</strong><i aria-hidden="true">${allowed('tool', index) ? '+' : '🔒'}</i></summary><div class="tool-guide-body">${allowed('tool', index) ? `<p>${esc(tool.description)}</p><p>${esc(tool.usage)}</p><code dir="ltr">${esc(tool.example)}</code><p>${esc(tool.platform)}</p>` : lockedBody('tool', index)}</div></details>`).join('')}</div>`);
+  if (page === 'courses') body = section(tr('الدورات الكاملة', 'Full courses'), `<div class="library-grid">${[...data.categories].sort((a,b)=>Number(allowed('course',b.order))-Number(allowed('course',a.order))).map(courseCard).join('')}</div>`);
+  if (page === 'labs') body = `<div class="catalog-callout library-notice"><strong>${tr('مختبر تحقيق SOC متعدد المصادر','SOC investigation across multiple evidence sources')}</strong><p>${tr('حلل ستة ملفات أدلة، صحح التوقيت، احسب النقل، ثم جهز تقريرك للمراجعة. يتطلب المختبر وصول مسار SOC وإكمال الأساسيات.','Analyze six evidence files, normalize time, calculate transfer and draft a report for review. Requires SOC path access and Foundations completion.')}</p><a class="button button-outline" href="soc-investigation.html">${tr('افتح مساحة التحقيق','Open investigation workspace')} ↗</a></div>` + section(tr('مختبرات التطبيق', 'Practice labs'), `${simpleCards(data.labs, 'practice-lab', (x) => x.name, (x) => x.desc)}`);
+  if (page === 'quizzes') body = section(tr('اختبارات المراجعة', 'Review quizzes'), `${simpleCards(data.quizzes, 'practice-quiz', (x) => x.name, (x) => x.topics)}`);
+  if (page === 'tools') body = section(tr('مكتبة الأدوات', 'Tool library'), `<div class="tool-guide-list">${data.tools.map((tool, index) => `<details class="tool-guide" ${allowed('tool', index) ? '' : 'data-locked="true"'}><summary><span>${esc(tool.category)} ${tierBadge('tool', index)}</span><strong>${esc(tool.name)}</strong><i aria-hidden="true">${allowed('tool', index) ? '+' : '🔒'}</i></summary><div class="tool-guide-body">${allowed('tool', index) ? `<p>${esc(tool.description)}</p><p>${esc(tool.usage)}</p><code dir="ltr">${esc(tool.example)}</code><p>${esc(tool.platform)}</p>` : lockedBody('tool', index)}</div></details>`).join('')}</div>`);
   if (body) target.insertAdjacentHTML('beforeend', `<div id="desktop-append" class="section-frame">${body}</div>`);
 }
 

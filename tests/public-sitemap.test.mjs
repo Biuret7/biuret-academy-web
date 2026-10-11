@@ -9,7 +9,7 @@ test('committed sitemap matches the public catalog and excludes private journeys
   assert.equal(readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8').replaceAll('\r\n','\n'), xml);
   const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => new URL(match[1]));
   assert.equal(new Set(urls.map(url => url.href)).size, urls.length);
-  assert.deepEqual(urls.filter(url => url.pathname === '/path.html').map(url => url.searchParams.get('id')), academyPaths.map(path => path.id));
+  assert.deepEqual(urls.filter(url => url.pathname === '/learn.html' && url.searchParams.has('path')).map(url => url.searchParams.get('path')), academyPaths.map(path => path.id));
   assert.equal(urls.some(url => /exam|lesson|practical|profile|notes|favorites|admin|settings|certificate\.html/.test(url.pathname)), false);
   assert.equal(urls.some(url => url.href.includes('undefined')), false);
 });

@@ -1,4 +1,4 @@
-import { currentLanguage } from './i18n.js?v=20261011-ctf3';
+import { currentLanguage } from './i18n.js?v=20261011-workspace1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';
@@ -7,7 +7,7 @@ const searchable = value => value.normalize('NFKD').replace(/\p{M}/gu, '').repla
 const sidebar = document.querySelector('.sidebar-nav');
 const groups = [...document.querySelectorAll('.sidebar-group')];
 let preference = {};
-try { preference = JSON.parse(localStorage.getItem('academy-navigation') || '{}'); } catch {}
+try { preference = JSON.parse(localStorage.getItem('academy-navigation-v2') || '{}'); } catch {}
 for (const [index, group] of groups.entries()) {
   const heading = group.querySelector('h2');
   const links = [...group.querySelectorAll('a')];
@@ -22,15 +22,15 @@ for (const [index, group] of groups.entries()) {
   while (heading.firstChild) toggle.append(heading.firstChild);
   heading.append(toggle);
   const active = links.some(link => link.hasAttribute('aria-current'));
-  let expanded = active || (preference[index] ?? index < 2);
+  let expanded = active || (preference[index] ?? true);
   const update = () => { wrapper.hidden = !expanded; toggle.setAttribute('aria-expanded', String(expanded)); toggle.dataset.expanded = String(expanded); };
   toggle.addEventListener('click', () => {
     expanded = !expanded; preference[index] = expanded; update();
-    try { localStorage.setItem('academy-navigation', JSON.stringify(preference)); } catch {}
+    try { localStorage.setItem('academy-navigation-v2', JSON.stringify(preference)); } catch {}
   });
   update();
 }
-if (sidebar) {
+if (sidebar && sidebar.querySelectorAll('a').length > 10) {
   const search = document.createElement('input');
   search.type = 'search'; search.className = 'navigation-search';
   const status = document.createElement('p'); status.className = 'navigation-search-status'; status.setAttribute('role', 'status'); status.hidden = true;
@@ -73,17 +73,8 @@ if (['lesson', 'library-lesson', 'free-studio'].includes(document.querySelector(
   document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(labels, 0)); labels();
 }
 
-// Discovery remains visible without repeating a second page-sized introduction.
+// The home hero provides the free start; do not repeat it on catalogs.
 const page = document.querySelector('.site-shell')?.dataset.page;
-if (['home','paths','courses','labs','quizzes','challenges','tools','membership'].includes(page)) {
-  const welcome=document.createElement('section');welcome.className='free-experience-entry';
-  welcome.setAttribute('aria-label', text('بداية مجانية', 'Free starting point'));
-  const localize=()=>{welcome.setAttribute('aria-label',text('بداية مجانية','Free starting point'));welcome.innerHTML=`<div><strong>${text('ابدأ مجاناً: ٩ دروس ← تطبيق عملي ← امتحان','Start free: 9 lessons → practical assessment → exam')}</strong><p>${text('هذا طريق شهادة الأساسيات. ٢٦ درساً إضافياً وتدريب المساحة للتعمق الاختياري.','This is the Foundations credential route. 26 additional lessons and studio practice offer optional depth.')}</p></div><div class="free-entry-actions"><a class="button button-primary" href="path.html?id=foundations">${text('ابدأ مسار الشهادة','Start the credential path')} <span aria-hidden="true">↗</span></a><a class="button button-outline" href="free-studio.html">${text('تدريب محلي اختياري','Optional local practice')} <span aria-hidden="true">↗</span></a></div>`;};
-  const main=document.querySelector('main');
-  if(page==='home') {const hero=main?.querySelector('.hero');if(hero)hero.after(welcome);else main?.prepend(welcome);}
-  else main?.append(welcome);
-  localize();document.querySelector('#language-toggle')?.addEventListener('click',()=>setTimeout(localize,0));
-}
 
 // A single filter spans Foundations and the full library. It never changes access.
 if (['courses','labs','quizzes','tools','challenges','operations'].includes(page)) {

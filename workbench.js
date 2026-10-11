@@ -1,4 +1,4 @@
-import { evidenceRows, filterEvidence, checkFindings, practiceReport } from './workbench-model.js?v=20261011-ctf3';
+import { evidenceRows, filterEvidence, checkFindings, practiceReport } from './workbench-model.js?v=20261011-workspace1';
 
 export function mountWorkbench(root, { owner, language, context = 'foundations' }) {
   if (!root || !owner) return;

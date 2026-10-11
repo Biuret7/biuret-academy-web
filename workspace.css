@@ -1,0 +1,41 @@
+/* One persistent Academy shell, with isolated lesson and assessment state. */
+.site-shell:has(#workspace-main) .footer{display:none}
+.site-shell:has(#workspace-main) #main{height:calc(100dvh - var(--academy-header-height,78px));min-height:440px}
+#workspace-main{height:100%;display:flex;flex-direction:column;min-width:0}
+.workspace-controls{flex:none;padding:12px clamp(16px,3vw,38px) 0;background:#0d1415;border-bottom:1px solid #273a30}
+.workspace-trail{display:flex;align-items:center;gap:12px;min-height:30px;font-size:12px;color:#a2b4aa;margin-bottom:9px;min-width:0}
+.workspace-trail button{border:1px solid #33483b;border-radius:8px;background:#15201b;color:#cad6ce;padding:5px 10px}
+.workspace-trail a{color:var(--lime);font-weight:700;border-inline-end:1px solid #36503a;padding-inline-end:12px;white-space:nowrap}
+#workspace-location{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.workspace-tabs{display:flex;align-items:center;gap:7px;overflow:auto;scrollbar-width:thin;scrollbar-color:#3e563e transparent;padding:0 0 10px}
+.workspace-tabs a{flex:none;display:inline-flex;align-items:center;min-height:38px;padding:7px 14px;border-radius:10px;border:1px solid transparent;color:#aabbb1;font-size:12px;font-weight:650;transition:background .18s,color .18s,border-color .18s}
+.workspace-tabs a:hover{background:#1c2b20;color:#f3f8ef;border-color:#3f5841}
+.workspace-tabs a[aria-current]{color:var(--lime);background:#c9ff3910;border-color:#708f3f}
+.workspace-tabs .workspace-all{margin-inline-start:auto;border-color:#304537}
+.workspace-surface{position:relative;flex:1;min-height:0;overflow:hidden;background:#080d0e}
+#workspace-content{display:block;border:0;width:100%;height:100%;background:#080d0e}
+.workspace-loading{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:25px;color:#bad391;background:#0a1112;font-size:14px;text-align:center}
+.workspace-loading[hidden]{display:none}
+.workspace-embedded .academy-sidebar,.workspace-embedded .sidebar-scrim,.workspace-embedded .topbar,.workspace-embedded .footer,.workspace-embedded .biuret-guide{display:none!important}
+.workspace-embedded .site-shell,.workspace-embedded[dir=rtl] .site-shell{padding-left:0!important;padding-right:0!important;padding-top:0!important;margin:0!important}
+.workspace-embedded .section-frame{padding-inline:clamp(18px,3vw,46px)}
+.workspace-embedded{scrollbar-width:thin;scrollbar-color:#3e563e #0b1113}
+.workspace-embedded .path-content-nav,.workspace-embedded .profile-shortcuts{display:none}
+.workspace-embedded .path-back{display:none}
+.workspace-embedded .catalog-hero{padding-top:30px;padding-bottom:20px}
+.workspace-embedded .catalog-hero .learning-back{display:none}
+.workspace-embedded #paths-main{padding:28px clamp(18px,3vw,46px)}
+.workspace-embedded .reading-controls{top:0}
+.workspace-embedded .path-detail-hero h1{font-size:clamp(30px,3.4vw,48px)}
+.workspace-embedded[data-workspace-section] .path-resource-section[id]{display:none}
+.workspace-embedded[data-workspace-section=courses] #path-course,.workspace-embedded[data-workspace-section=courses] #path-course-optional{display:block}
+.workspace-embedded[data-workspace-section=practice] #path-quiz,.workspace-embedded[data-workspace-section=practice] #path-lab,.workspace-embedded[data-workspace-section=practice] #path-operation,.workspace-embedded[data-workspace-section=practice] #path-challenge{display:block}
+.workspace-embedded[data-workspace-section=assessment] #path-assessment{display:block}
+.workspace-embedded[data-workspace-section]:not([data-workspace-section=overview]) .path-resource-section:not([id]){display:none}
+.workspace-embedded[data-workspace-section]:not([data-workspace-section=overview]) .path-detail-hero{display:block;margin-bottom:22px}
+.workspace-embedded[data-workspace-section]:not([data-workspace-section=overview]) .path-detail-hero>div>:not(h1),.workspace-embedded[data-workspace-section]:not([data-workspace-section=overview]) .path-access-card{display:none}
+.workspace-embedded[data-workspace-section]:not([data-workspace-section=overview]) .path-detail-hero h1{font-size:clamp(24px,3vw,34px);margin:0}
+.workspace-embedded .catalog-hero h1{font-size:clamp(28px,3vw,42px)}
+.sidebar-scroll .navigation-search,.sidebar-intro{display:none}
+@media(max-width:700px){.workspace-controls{padding:10px 12px 0}.workspace-tabs a{padding:6px 11px;font-size:11px}.workspace-trail{gap:8px}.workspace-trail a{max-width:45%;overflow:hidden;text-overflow:ellipsis}.workspace-embedded .path-detail-hero{grid-template-columns:1fr}.workspace-embedded .path-detail-layout{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.workspace-tabs a{transition:none}}

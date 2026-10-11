@@ -1,13 +1,14 @@
-import { renderAvatar } from './identity.js?v=20261011-ctf3';
-import { mountLessonNotes } from './lesson-notes.js?v=20261011-ctf3';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ctf3';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-ctf3';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-ctf3';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-ctf3';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-ctf3';
-import { fullName } from './full-name.js?v=20261011-ctf3';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-ctf3';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261011-ctf3';
+import { renderAvatar } from './identity.js?v=20261011-workspace1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261011-workspace1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-workspace1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-workspace1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-workspace1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-workspace1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-workspace1';
+import { fullName } from './full-name.js?v=20261011-workspace1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-workspace1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261011-workspace1';
+import { workspaceHref } from './workspace-model.js?v=20261011-workspace1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -318,7 +319,11 @@ function checkAnswer(event) {
   toast(isEnglish() ? `Well done! You earned ${result.awardedXp} practice XP.` : `أحسنت! حصلت على ${result.awardedXp} نقطة تدريب.`);
 }
 function openNext() { openChallenge((nextChallenge(progress) || dailyChallenge(progress)).id); }
-function visitChallenge(id) { location.href = `challenges.html?challenge=${encodeURIComponent(id)}`; }
+function navigateLearning(href) {
+  if (document.documentElement.classList.contains('workspace-embedded')) window.dispatchEvent(new CustomEvent('biuret-workspace-navigate', { detail: { href } }));
+  else location.href = workspaceHref(href, {}, location.href) || href;
+}
+function visitChallenge(id) { navigateLearning(`challenges.html?challenge=${encodeURIComponent(id)}`); }
 function setFilter(value) {
   filter = value; const url = new URL(location.href);
   if (value === 'all') url.searchParams.delete('track'); else url.searchParams.set('track', value);
@@ -379,9 +384,9 @@ function bindEvents() {
   const onChallengesPage = Boolean($('#challenge-list'));
   $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => {
     if (!user()) { showAuth(); return; }
-    location.href = nextLearningStep(learningProgress().lessons, examPassed).href;
+    navigateLearning(nextLearningStep(learningProgress().lessons, examPassed).href);
   });
-  $('#closing-button')?.addEventListener('click', () => { location.href = nextLearningStep(learningProgress().lessons, examPassed).href; });
+  $('#closing-button')?.addEventListener('click', () => { navigateLearning(nextLearningStep(learningProgress().lessons, examPassed).href); });
   $('#daily-button')?.addEventListener('click', () => onChallengesPage ? openChallenge(dailyChallenge(progress).id) : visitChallenge(dailyChallenge(progress).id));
   $('#challenge-list')?.addEventListener('click', (event) => { const card = event.target.closest('[data-challenge]'); if (card) openChallenge(card.dataset.challenge); });
   $('#filters')?.addEventListener('click', (event) => { const button = event.target.closest('[data-filter]'); if (button) setFilter(button.dataset.filter); });

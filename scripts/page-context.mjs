@@ -1,4 +1,9 @@
 export const pageContexts = {
+  learn: ['LEARNING', 'مساراتك ودروسك وتطبيقاتك في مكان واحد.', 'Your paths, lessons and practice in one place.'],
+  practice: ['PRACTICE', 'مختبرات وكويزات وتحديات وغرف عمليات.', 'Labs, quizzes, challenges and operations rooms.'],
+  resources: ['RESOURCES', 'الأدوات والمراجع والاستعداد المهني.', 'Tools, references and career preparation.'],
+  notebook: ['NOTEBOOK', 'ملاحظاتك ومفضلتك ومراجعتك معاً.', 'Your notes, saved lessons and review together.'],
+  account: ['ACCOUNT', 'ملفك وتقدّمك وإنجازاتك وإعداداتك.', 'Your profile, progress, credentials and settings.'],
   'free-studio': ['FREE STUDIO', 'افهم، طبّق، وراجع بخطة مجانية واضحة.', 'Understand, practice and review with a clear free plan.'],
   pilot: ['LEARNING TRIAL', 'جرّب، سجّل، ثم حسّن رحلة التعلم.', 'Try, record and improve the learning journey.'],
   home: ['HOME', 'رحلة التعلّم تبدأ هنا.', 'Your learning journey starts here.'],
