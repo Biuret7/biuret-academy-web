@@ -29,6 +29,7 @@ jobs:
           node-version: 22
       - name: Verify learning and reward rules
         run: |
+          node scripts/build-ctf-catalog.mjs
           node --check ctf.js
           node --check ctf-model.js
           node --check guide/core.mjs

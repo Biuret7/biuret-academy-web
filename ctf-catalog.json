@@ -1,0 +1,759 @@
+[
+  {
+    "id": "hidden-message",
+    "title": {
+      "ar": "الرسالة المخفية",
+      "en": "Hidden Message"
+    },
+    "category": "cryptography",
+    "level": 1,
+    "brief": {
+      "ar": "فك رسالة مشفرة بطريقة Caesar للوصول إلى Flag.",
+      "en": "Decode a Caesar-cipher message to recover a flag."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "username-hunter",
+    "title": {
+      "ar": "باحث أسماء المستخدمين",
+      "en": "Username Hunter"
+    },
+    "category": "osint",
+    "level": 1,
+    "brief": {
+      "ar": "البحث عن اسم مستخدم خيالي في ملفات شخصية عامة.",
+      "en": "Investigate a fictional username across public-profile samples."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "hidden-pixel",
+    "title": {
+      "ar": "البكسل المخفي",
+      "en": "Hidden Pixel"
+    },
+    "category": "steganography",
+    "level": 1,
+    "brief": {
+      "ar": "اكتشاف رسالة مخفية داخل صورة عبر قيم البكسلات.",
+      "en": "Find information concealed in image pixels."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "buggy-calculator",
+    "title": {
+      "ar": "الآلة الحاسبة المعطلة",
+      "en": "Buggy Calculator"
+    },
+    "category": "programming",
+    "level": 1,
+    "brief": {
+      "ar": "اكتشاف عدة أخطاء في برنامج حسابي وتصحيحها.",
+      "en": "Repair several bugs in a small calculator program."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "xor-mystery",
+    "title": {
+      "ar": "لغز XOR",
+      "en": "XOR Mystery"
+    },
+    "category": "cryptography",
+    "level": 2,
+    "brief": {
+      "ar": "استرجاع نص مخفي باستخدام XOR ومفتاح مجهول.",
+      "en": "Recover hidden text encrypted with XOR and an unknown key."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "digital-footprint",
+    "title": {
+      "ar": "البصمة الرقمية",
+      "en": "Digital Footprint"
+    },
+    "category": "osint",
+    "level": 2,
+    "brief": {
+      "ar": "ربط حسابات ومعلومات منشورة لتحديد هوية شخصية خيالية.",
+      "en": "Connect published accounts and clues to identify a fictional person."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "deleted-evidence",
+    "title": {
+      "ar": "الدليل المحذوف",
+      "en": "Deleted Evidence"
+    },
+    "category": "forensics",
+    "level": 2,
+    "brief": {
+      "ar": "استرجاع دليل مخفي داخل نسخة أرشيف أو ملف تالف جزئيًا.",
+      "en": "Recover hidden evidence from an archive or partially damaged file."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "log-hunter",
+    "title": {
+      "ar": "باحث السجلات",
+      "en": "Log Hunter"
+    },
+    "category": "forensics",
+    "level": 2,
+    "brief": {
+      "ar": "تحليل سجلات الدخول لتحديد مصدر نشاط مشبوه.",
+      "en": "Analyze authentication logs to locate suspicious activity."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "metadata-secret",
+    "title": {
+      "ar": "سر البيانات الوصفية",
+      "en": "Metadata Secret"
+    },
+    "category": "steganography",
+    "level": 2,
+    "brief": {
+      "ar": "البحث في البيانات الوصفية للصور والملفات لاستخراج دليل.",
+      "en": "Examine image and file metadata for an embedded clue."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "broken-login",
+    "title": {
+      "ar": "تسجيل الدخول المعيب",
+      "en": "Broken Login"
+    },
+    "category": "web",
+    "level": 2,
+    "brief": {
+      "ar": "اكتشاف خلل منطقي في تسجيل الدخول بتطبيق تجريبي.",
+      "en": "Find a login-logic flaw in a training application."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "secret-function",
+    "title": {
+      "ar": "الدالة السرية",
+      "en": "Secret Function"
+    },
+    "category": "reverse",
+    "level": 2,
+    "brief": {
+      "ar": "تحليل برنامج لاكتشاف وظيفة مخفية تقود إلى Flag.",
+      "en": "Analyze a program to uncover a hidden function leading to a flag."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "packet-detective",
+    "title": {
+      "ar": "محقق الحزم",
+      "en": "Packet Detective"
+    },
+    "category": "network",
+    "level": 2,
+    "brief": {
+      "ar": "تحليل ملف PCAP لاستخراج عنوان IP واتصال مثير للشك.",
+      "en": "Analyze a PCAP sample to identify an IP address and suspicious connection."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "data-recovery-script",
+    "title": {
+      "ar": "سكربت استعادة البيانات",
+      "en": "Data Recovery Script"
+    },
+    "category": "programming",
+    "level": 2,
+    "brief": {
+      "ar": "كتابة سكربت لإصلاح ملفات JSON مشوهة واسترجاع بيانات.",
+      "en": "Write a script to repair malformed JSON files and recover their data."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "hidden-backup",
+    "title": {
+      "ar": "النسخة الاحتياطية المخفية",
+      "en": "Hidden Backup"
+    },
+    "category": "cloud",
+    "level": 2,
+    "brief": {
+      "ar": "اكتشاف إعداد مشاركة غير آمن في تخزين سحابي محاكى.",
+      "en": "Discover an unsafe sharing setting in simulated cloud storage."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "hash-detective",
+    "title": {
+      "ar": "محقق التجزئة",
+      "en": "Hash Detective"
+    },
+    "category": "cryptography",
+    "level": 3,
+    "brief": {
+      "ar": "استنتاج كلمة مرور من Hash وقائمة احتمالات.",
+      "en": "Infer a password from a hash and a supplied candidate list."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "the-missing-developer",
+    "title": {
+      "ar": "المطور المفقود",
+      "en": "The Missing Developer"
+    },
+    "category": "osint",
+    "level": 3,
+    "brief": {
+      "ar": "تحليل GitHub وبيانات مشاريع وهمية لكشف معلومة سرية.",
+      "en": "Investigate fictional GitHub and project records to uncover a secret clue."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "biuret-cybertrace",
+    "title": {
+      "ar": "Biuret CyberTrace · التهديد الداخلي",
+      "en": "Biuret CyberTrace"
+    },
+    "category": "forensics",
+    "level": 3,
+    "brief": {
+      "ar": "التحقيق في تسريب بيانات وربط سجلات وملفات وأدلة.",
+      "en": "Investigate a synthetic data leak by correlating authentication, network and file evidence."
+    },
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-cybertrace-player.zip",
+      "folder": "biuret-cybertrace-player",
+      "launch": "cybertrace.py",
+      "python": "3.10+",
+      "minutes": "60–120",
+      "bytes": 16346,
+      "sha256": "00e42481506fd2b711849ca9ecda6e380ff17beb3f4c85d1b671da932b87e83c",
+      "files": [
+        {
+          "name": "biuret-cybertrace-player/.gitignore",
+          "sha256": "927848bf5f1986d34b543f6c4ce20d5de1b3466830d3e7af20cdf6d6ced89905",
+          "bytes": 43
+        },
+        {
+          "name": "biuret-cybertrace-player/CHALLENGE_CARD.txt",
+          "sha256": "a7846953ca5d3394fee75c5484e2e57901ca394d6fda687660e1bc46c9f6f878",
+          "bytes": 446
+        },
+        {
+          "name": "biuret-cybertrace-player/cybertrace.py",
+          "sha256": "e392a747838ec234773a9507a358918929118b6a784fb5f8bcc19b820e002034",
+          "bytes": 11120
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/auth_logs.csv",
+          "sha256": "3de2511d1ed8bdd183b5a59677d7c88fdcdf17fb5cea990b7298cf269f57a315",
+          "bytes": 1146
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/employees.json",
+          "sha256": "fc6a05176202486ba63d1a6e64ad27f0613410eef542e162bab8a154961f30eb",
+          "bytes": 808
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/file_events.csv",
+          "sha256": "e5b3328945b39c95511e5f53e49e18d4146edd70ede0c13b0325e258b89419e2",
+          "bytes": 787
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/fragments.csv",
+          "sha256": "7704500cf1501ec5e803cb3345db9c5f505fc718e4c76e91b5940ead060338e6",
+          "bytes": 527
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/integrity_baseline.json",
+          "sha256": "344870ed386215581f2734bc72af421bdc9d2e7372ee232503b6389d4487217d",
+          "bytes": 622
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/network_connections.json",
+          "sha256": "109f7139c4b080a5d93a070cf1e18be170d2e06b2cd1bd9f7798eb4a86558b73",
+          "bytes": 3947
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/notes/investigation_brief.txt",
+          "sha256": "2f4c92b9209c613d325c2b6c623b0d86c6b4e2aef48140a085d1ad57b686a5d9",
+          "bytes": 619
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/notes/migration_memo.txt",
+          "sha256": "8d3593d872cafdcb38d41d645335f04b14aacdc02f5570f007cb40f069cd1671",
+          "bytes": 404
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/notes/network_context.txt",
+          "sha256": "d4aa01ef2148edd614078df924fc0430eb0a955b6e7271c4e5e9b4d89bbbc792",
+          "bytes": 348
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/notes/report_template.txt",
+          "sha256": "06bc061277ab56b58fa0c96bd82d257d14347a47087ec04f0827f3103a699846",
+          "bytes": 352
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/workstation/maintenance_codes.txt",
+          "sha256": "9a1ddf1722080ce9601b7eb1a684959368dbc1d436f6d01b48747aff4385e956",
+          "bytes": 120
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/workstation/shift_note.txt",
+          "sha256": "d2d14e606f74b44c714e6dec18409beb389de13458521d489db0effac0bb828b",
+          "bytes": 173
+        },
+        {
+          "name": "biuret-cybertrace-player/evidence/workstation/transfer_manifest.json",
+          "sha256": "5bdf71f59097689bc300e374e826afc3906594b1b108b199291795b63727975f",
+          "bytes": 249
+        },
+        {
+          "name": "biuret-cybertrace-player/PLAYER_CASE_REPORT.md",
+          "sha256": "2e9e2d6e51306b8bbeff1ee70fd6de7e9305ba5b44077cfd4c982d04227fe9a7",
+          "bytes": 995
+        },
+        {
+          "name": "biuret-cybertrace-player/README_AR.md",
+          "sha256": "7d2e5f5fa2590ae085896e1bc669323b9c6f029777e72b04399b2bb70cc33da2",
+          "bytes": 3766
+        },
+        {
+          "name": "biuret-cybertrace-player/README_EN.md",
+          "sha256": "f79e34af16033aaae8306516248b600ae0f98b8f83ac96b0529403457c3833e5",
+          "bytes": 1810
+        },
+        {
+          "name": "biuret-cybertrace-player/requirements.txt",
+          "sha256": "c074161c889d8f8b10edbf80202d345f4b2165282392f0a753dd5dba2baa2430",
+          "bytes": 67
+        },
+        {
+          "name": "biuret-cybertrace-player/restricted/seal-017.json",
+          "sha256": "b5932311fd2dadd342f2429990f3688616e1df7caad13bf89991e0b18ed9b14e",
+          "bytes": 519
+        },
+        {
+          "name": "biuret-cybertrace-player/start_linux.sh",
+          "sha256": "8f825fac7ca0af5cbd370fb58ca5272bed2ced51d117f60a6202ea09302b3388",
+          "bytes": 68
+        },
+        {
+          "name": "biuret-cybertrace-player/start_windows.bat",
+          "sha256": "4008b3aa47bb2a09eddaa8740658e32f47b57e38ae04e6730acaec3e3a4499d5",
+          "bytes": 244
+        }
+      ]
+    }
+  },
+  {
+    "id": "audio-whisper",
+    "title": {
+      "ar": "همس الصوت",
+      "en": "Audio Whisper"
+    },
+    "category": "steganography",
+    "level": 3,
+    "brief": {
+      "ar": "استخراج رسالة من ملف صوتي باستخدام تحليل الإشارة.",
+      "en": "Extract a hidden message from an audio sample using signal analysis."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "hidden-endpoint",
+    "title": {
+      "ar": "نقطة الوصول المخفية",
+      "en": "Hidden Endpoint"
+    },
+    "category": "web",
+    "level": 3,
+    "brief": {
+      "ar": "اكتشاف API endpoint غير موثق يحتوي معلومات لازمة للتحدي.",
+      "en": "Discover an undocumented API endpoint holding a challenge clue."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "idor-challenge",
+    "title": {
+      "ar": "تحدي صلاحيات السجلات",
+      "en": "IDOR Challenge"
+    },
+    "category": "web",
+    "level": 3,
+    "brief": {
+      "ar": "اكتشاف ضعف في صلاحيات الوصول إلى سجلات حسابات تجريبية.",
+      "en": "Identify an object-access authorization flaw in fictional account records."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "license-breaker",
+    "title": {
+      "ar": "محلل الترخيص",
+      "en": "License Breaker"
+    },
+    "category": "reverse",
+    "level": 3,
+    "brief": {
+      "ar": "فهم آلية فحص مفتاح ترخيص في برنامج تجريبي.",
+      "en": "Understand the license-key verification logic of a training program."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "buffer-overflow-101",
+    "title": {
+      "ar": "مقدمة تجاوز سعة المخزن",
+      "en": "Buffer Overflow 101"
+    },
+    "category": "pwn",
+    "level": 3,
+    "brief": {
+      "ar": "فهم تجاوز حدود الذاكرة داخل برنامج C تدريبي.",
+      "en": "Understand a memory-boundary error in a local C training program."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "lost-packets",
+    "title": {
+      "ar": "الحزم المفقودة",
+      "en": "Lost Packets"
+    },
+    "category": "network",
+    "level": 3,
+    "brief": {
+      "ar": "إعادة بناء رسالة مقسمة بين حزم شبكة مختلفة.",
+      "en": "Reconstruct a message split across multiple network packets."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "broken-validator",
+    "title": {
+      "ar": "التحقق المعيب",
+      "en": "Broken Validator"
+    },
+    "category": "programming",
+    "level": 3,
+    "brief": {
+      "ar": "تحليل منطق التحقق واكتشاف مدخلات تكشف خللًا فيه.",
+      "en": "Analyze validation logic and find inputs that expose its flaw."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "biuret-vault",
+    "title": {
+      "ar": "Biuret Vault · الخزنة",
+      "en": "Biuret Vault"
+    },
+    "category": "misc",
+    "level": 3,
+    "brief": {
+      "ar": "تجاوز ضعف منطقي في برنامج Vault والوصول إلى Flag مشفر.",
+      "en": "Investigate a local vault application, analyze its authorization weakness and recover an encrypted flag."
+    },
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-vault-player.zip",
+      "folder": "biuret-vault-player",
+      "launch": "challenge.py",
+      "python": "3.9+",
+      "minutes": null,
+      "bytes": 6398,
+      "sha256": "25b26cc5b942c43cbdc65fcb463d963af239f6f9bfebcada23ed7fe82f5ebefa",
+      "files": [
+        {
+          "name": "biuret-vault-player/.gitignore",
+          "sha256": "4ffa9b7e3d13b46ed5a632a6355b3984f9bdef8359de51fa25a205726cb57245",
+          "bytes": 30
+        },
+        {
+          "name": "biuret-vault-player/challenge.py",
+          "sha256": "786c99e4801012e159686f8842db0a5746c4750d8a090dd9ae51c1bfc6780f9c",
+          "bytes": 6294
+        },
+        {
+          "name": "biuret-vault-player/data/backups/users_legacy.json",
+          "sha256": "46a118703937e63b9c049917d0a0d0e11d5eb3d384c39f0c4c03e0c2d85b9c97",
+          "bytes": 337
+        },
+        {
+          "name": "biuret-vault-player/data/notes/changelog.txt",
+          "sha256": "f3097b62212360b4e952f7dd6bc41ba7422fc41985cf013670b650b292b550e1",
+          "bytes": 341
+        },
+        {
+          "name": "biuret-vault-player/data/notes/project_codes.txt",
+          "sha256": "75dc1fa4367bee4bdddd2cd938902f9d74e40ebe804676d5a5c64aa605b76885",
+          "bytes": 266
+        },
+        {
+          "name": "biuret-vault-player/data/notes/team_history.txt",
+          "sha256": "1ec95b2f561a1bd2e2b9bf81a3711e9c364dc48a6b31bd80d3df7e20840c637d",
+          "bytes": 158
+        },
+        {
+          "name": "biuret-vault-player/data/notes/welcome.txt",
+          "sha256": "be3d71d6e8d54a831cdb81869e86aad73339be0b6709ca95aebeef1cfbf002db",
+          "bytes": 211
+        },
+        {
+          "name": "biuret-vault-player/data/users.json",
+          "sha256": "414a690315e01c69883dd8808c74646c12374ce9ab2469972309bb3dabd72fa2",
+          "bytes": 256
+        },
+        {
+          "name": "biuret-vault-player/data/vault/vault.enc",
+          "sha256": "1c87a89cfbd53b53627f77d850500bc2f553df6bc0a82c2cd2b527be0ab87ddb",
+          "bytes": 37
+        },
+        {
+          "name": "biuret-vault-player/README_PLAYER.md",
+          "sha256": "4c6ac5e51f7966512793d73634ad4adcfef41eadedc7b44b4a947928358194ab",
+          "bytes": 1415
+        },
+        {
+          "name": "biuret-vault-player/requirements.txt",
+          "sha256": "fcf7e0107a7387fd3c35c0158a626746003a99b533cb66d09a40e7dac93d35e7",
+          "bytes": 63
+        },
+        {
+          "name": "biuret-vault-player/reset_challenge.py",
+          "sha256": "344ba85f0a8cfeda62241e54c31cc3e6235575b4801c7a1f3e6c32d1c07366cd",
+          "bytes": 481
+        }
+      ]
+    }
+  },
+  {
+    "id": "escape-terminal",
+    "title": {
+      "ar": "الهروب من الطرفية",
+      "en": "Escape Terminal"
+    },
+    "category": "misc",
+    "level": 3,
+    "brief": {
+      "ar": "استكشاف Terminal وهمي وحل أوامر وألغاز مترابطة.",
+      "en": "Explore a simulated terminal and solve a connected series of command puzzles."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "app-secrets",
+    "title": {
+      "ar": "أسرار التطبيق",
+      "en": "App Secrets"
+    },
+    "category": "mobile",
+    "level": 3,
+    "brief": {
+      "ar": "تحليل تطبيق Android تجريبي للعثور على بيانات مخزنة بطريقة غير آمنة.",
+      "en": "Analyze a training Android application for insecurely stored data."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "broken-rsa",
+    "title": {
+      "ar": "إعداد RSA المعيب",
+      "en": "Broken RSA"
+    },
+    "category": "cryptography",
+    "level": 4,
+    "brief": {
+      "ar": "استغلال إعدادات RSA ضعيفة لاسترجاع رسالة.",
+      "en": "Analyze weak RSA parameters to recover an encrypted message."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "the-phantom-company",
+    "title": {
+      "ar": "الشركة الوهمية",
+      "en": "The Phantom Company"
+    },
+    "category": "osint",
+    "level": 4,
+    "brief": {
+      "ar": "تحقيق متعدد المصادر في شركة خيالية لكشف ارتباطات مخفية.",
+      "en": "Conduct a multi-source investigation of a fictional company to reveal hidden connections."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "memory-secrets",
+    "title": {
+      "ar": "أسرار الذاكرة",
+      "en": "Memory Secrets"
+    },
+    "category": "forensics",
+    "level": 4,
+    "brief": {
+      "ar": "تحليل صورة ذاكرة تدريبية لاستخراج معلومات عن عملية مشبوهة.",
+      "en": "Analyze a training memory image for evidence about a suspicious process."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "the-invisible-layers",
+    "title": {
+      "ar": "الطبقات غير المرئية",
+      "en": "The Invisible Layers"
+    },
+    "category": "steganography",
+    "level": 4,
+    "brief": {
+      "ar": "جمع أجزاء Flag موزعة داخل طبقات أو قنوات متعددة من صورة.",
+      "en": "Combine flag fragments concealed in multiple image layers or channels."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "template-trap",
+    "title": {
+      "ar": "فخ القالب",
+      "en": "Template Trap"
+    },
+    "category": "web",
+    "level": 4,
+    "brief": {
+      "ar": "تحليل ثغرة SSTI داخل موقع مختبري مخصص للتحدي.",
+      "en": "Analyze server-side template injection in a dedicated training web application."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "bytecode-maze",
+    "title": {
+      "ar": "متاهة الشيفرة الوسيطة",
+      "en": "Bytecode Maze"
+    },
+    "category": "reverse",
+    "level": 4,
+    "brief": {
+      "ar": "تحليل Python bytecode لاستنتاج المدخلات الصحيحة.",
+      "en": "Analyze Python bytecode to infer the correct program inputs."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "format-string-leak",
+    "title": {
+      "ar": "تسريب صيغة النص",
+      "en": "Format String Leak"
+    },
+    "category": "pwn",
+    "level": 4,
+    "brief": {
+      "ar": "اكتشاف تسريب بيانات عبر خطأ format string في برنامج محلي.",
+      "en": "Identify a format-string information leak in a local training program."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "dns-mystery",
+    "title": {
+      "ar": "لغز DNS",
+      "en": "DNS Mystery"
+    },
+    "category": "network",
+    "level": 4,
+    "brief": {
+      "ar": "كشف بيانات مشفرة مخفية داخل استعلامات DNS تدريبية.",
+      "en": "Uncover encoded data concealed in training DNS queries."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "algorithmic-lock",
+    "title": {
+      "ar": "القفل الخوارزمي",
+      "en": "Algorithmic Lock"
+    },
+    "category": "programming",
+    "level": 4,
+    "brief": {
+      "ar": "استنتاج خوارزمية تحقق معقدة وكتابة Solver لها.",
+      "en": "Infer a complex verification algorithm and write a solver."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "permission-maze",
+    "title": {
+      "ar": "متاهة الصلاحيات",
+      "en": "Permission Maze"
+    },
+    "category": "cloud",
+    "level": 4,
+    "brief": {
+      "ar": "تحليل صلاحيات IAM تجريبية لتحديد مسار وصول غير متوقع.",
+      "en": "Analyze simulated IAM permissions to identify an unexpected access path."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "firmware-clues",
+    "title": {
+      "ar": "أدلة البرنامج الثابت",
+      "en": "Firmware Clues"
+    },
+    "category": "iot",
+    "level": 4,
+    "brief": {
+      "ar": "استخراج إعدادات أو مفتاح مخفي من صورة Firmware تدريبية.",
+      "en": "Extract a concealed setting or key from a training firmware image."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "obfuscated-core",
+    "title": {
+      "ar": "النواة المموهة",
+      "en": "Obfuscated Core"
+    },
+    "category": "reverse",
+    "level": 5,
+    "brief": {
+      "ar": "تحليل برنامج متعدد طبقات إخفاء الكود لكشف منطقه الداخلي.",
+      "en": "Analyze multiple layers of code obfuscation to uncover the program logic."
+    },
+    "status": "planned"
+  },
+  {
+    "id": "return-control",
+    "title": {
+      "ar": "التحكم بالتنفيذ",
+      "en": "Return Control"
+    },
+    "category": "pwn",
+    "level": 5,
+    "brief": {
+      "ar": "تحليل ملف تنفيذي لاستغلال ضعف في التحكم بتدفق التنفيذ.",
+      "en": "Analyze an executable with a control-flow weakness in a training environment."
+    },
+    "status": "planned"
+  }
+]
