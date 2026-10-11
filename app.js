@@ -1,14 +1,14 @@
-import { renderAvatar } from './identity.js?v=20261011-ui2';
-import { mountLessonNotes } from './lesson-notes.js?v=20261011-ui2';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ui2';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-ui2';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-ui2';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-ui2';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-ui2';
-import { fullName } from './full-name.js?v=20261011-ui2';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-ui2';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261011-ui2';
-import { workspaceHref } from './workspace-model.js?v=20261011-ui2';
+import { renderAvatar } from './identity.js?v=20261011-ui3';
+import { mountLessonNotes } from './lesson-notes.js?v=20261011-ui3';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ui3';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-ui3';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-ui3';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-ui3';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-ui3';
+import { fullName } from './full-name.js?v=20261011-ui3';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-ui3';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261011-ui3';
+import { workspaceHref } from './workspace-model.js?v=20261011-ui3';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -336,7 +336,7 @@ function showAuth() {
   $('#auth-title').textContent = signedIn ? t('welcomeBack') : t('saveProgress');
   $('#auth-subtitle').textContent = signedIn ? t('synced') : t('oneAccount');
   if (signedIn) {
-    $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || t('learner'))}</div><div>${esc(user().email || '')}</div><form id="full-name-form" class="full-name-form"><label for="full-name-input">${isEnglish() ? 'Your real full name (two or three parts)' : 'اسمك الحقيقي الثنائي أو الثلاثي'}</label><input id="full-name-input" name="fullName" type="text" autocomplete="name" maxlength="100" value="${esc(user().name || '')}" required><small>${isEnglish() ? 'This name appears on new credentials. For an existing credential, use its correction button after saving.' : 'سيظهر هذا الاسم على الشهادات الجديدة. للشهادة الحالية، استخدم زر تصحيح الاسم بعد الحفظ.'}</small><button class="button button-primary" type="submit">${isEnglish() ? 'Save full name' : 'حفظ الاسم الكامل'}</button><p class="auth-error" id="full-name-error" role="alert" hidden></p></form><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">${t('signOut')}</button></div>`;
+    $('#signed-in-box').innerHTML = `<div class="signed-in-name">${esc(user().name || t('learner'))}</div><div>${esc(user().email || '')}</div><form id="full-name-form" class="full-name-form"><label for="full-name-input">${isEnglish() ? 'Your real full name (two or three parts)' : 'اسمك الحقيقي الثنائي أو الثلاثي'}</label><input id="full-name-input" name="fullName" type="text" dir="auto" autocomplete="name" maxlength="100" value="${esc(user().name || '')}" required><small>${isEnglish() ? 'This name appears on new credentials. For an existing credential, use its correction button after saving.' : 'سيظهر هذا الاسم على الشهادات الجديدة. للشهادة الحالية، استخدم زر تصحيح الاسم بعد الحفظ.'}</small><button class="button button-primary" type="submit">${isEnglish() ? 'Save full name' : 'حفظ الاسم الكامل'}</button><p class="auth-error" id="full-name-error" role="alert" hidden></p></form><div class="signed-in-actions"><button class="button button-outline" id="signout-button" type="button">${t('signOut')}</button></div>`;
     $('#full-name-form').addEventListener('submit', async (event) => {
       event.preventDefault();
       const button = event.target.querySelector('button[type="submit"]');
@@ -465,7 +465,11 @@ function bindEvents() {
     try { signInWithProvider(button.dataset.provider); }
     catch (cause) { $('#auth-error').textContent = cause.message; $('#auth-error').hidden = false; }
   }));
-  for (const dialog of [$('#challenge-dialog'), $('#auth-dialog')]) dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  for (const dialog of [$('#challenge-dialog'), $('#auth-dialog')]) dialog.addEventListener('click', (event) => {
+    if (event.target !== dialog) return;
+    const box = dialog.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+  });
 }
 function initNavigationPrefetch() {
   if (navigator.connection?.saveData) return;
