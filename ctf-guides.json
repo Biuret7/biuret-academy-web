@@ -1,40 +1,338 @@
 {
- "biuret-vault": {
-  "objectives": [
-   {"ar":"استكشف الأوامر وملفات الملاحظات وابحث عن السلوك غير الموثق.","en":"Explore commands and notes to identify undocumented behavior."},
-   {"ar":"اجمع أدلة الحساب الإداري القديم، وحلل منطق المصادقة والصلاحيات في الشيفرة.","en":"Gather evidence about the legacy administrator account and analyze authentication and authorization logic."},
-   {"ar":"استنتج مفتاح الخزنة من أدلة المشروع وافتح الحمولة المشفرة داخل التطبيق المحلي.","en":"Derive the vault key from project evidence and open the encrypted payload in the local application."},
-   {"ar":"دوّن خطواتك ودليلك واقتراح إصلاح يمنع تكرار ضعف الوصول.","en":"Document your steps, supporting evidence and a repair that prevents the access weakness."}
-  ],
-  "setup": [
-   {"ar":"ثبّت Python 3.9 أو أحدث. لا تحتاج إلى تثبيت أي مكتبات إضافية.","en":"Install Python 3.9 or newer. No third-party packages are required."},
-   {"ar":"نزّل ZIP واستخرجه في مجلد تدريب مستقل. افتح الطرفية داخل biuret-vault-player.","en":"Download and extract the ZIP into a separate training folder. Open a terminal inside biuret-vault-player."},
-   {"ar":"اقرأ README_PLAYER.md ثم شغّل challenge.py. يبدأ البرنامج تلقائياً بجلسة ضيف.","en":"Read README_PLAYER.md and launch challenge.py. The program starts in a guest session automatically."}
-  ],
-  "rules": [
-   {"ar":"المسموح هو تحليل نسختك المحلية وكتابة سكربتات مساعدة. احصر تجربة الثغرات في ملفات التحدي.","en":"Analyze your local copy and write helper scripts. Keep vulnerability testing within the challenge files."},
-   {"ar":"البرنامج يتضمن أخطاء أمنية مقصودة، ومنها قراءة مسارات غير مقيدة. لا تستخدمه لمعالجة ملفاتك الشخصية أو كنظام حقيقي.","en":"This program deliberately contains security flaws, including unbounded path reads. Do not use it with personal files or as a real system."},
-   {"ar":"لا يتطلب الحل حذف ملفات أو مهاجمة جهاز آخر أو البحث على الإنترنت عن العلم النهائي.","en":"The solution requires no file deletion, attacks on other machines or internet searches for the final flag."},
-   {"ar":"يمكن تعديل نسختك الخاصة حسب قواعد الحزمة، لكن تعديل البرنامج لطباعة النجاح لا يثبت فهم الثغرة.","en":"You may modify your own copy under the package rules, but editing the program to print success does not demonstrate understanding."}
-  ]
- },
- "biuret-cybertrace": {
-  "objectives": [
-   {"ar":"حلل وجهة الاتصال الصادر ووقته وكمية البيانات، ثم اربط الموظف والجلسة والجهاز والأرشيف.","en":"Analyze the outbound destination, timestamp and byte count, then correlate the employee, session, workstation and archive."},
-   {"ar":"قارن الأدلة بمرجع SHA-256 الموثوق لتحديد الملف المعدّل.","en":"Compare evidence with the trusted SHA-256 baseline to identify the altered file."},
-   {"ar":"أعد بناء مذكرة مجزأة باستخدام Python مع التحقق من CRC32 وترتيب الأجزاء وفك ترميز Base64.","en":"Reconstruct a fragmented memo with Python by validating CRC32, ordering parts and decoding Base64."},
-   {"ar":"راجع مسار أمر التحقق، واستخرج إيصال سلسلة الحيازة المختوم ضمن المحاكاة، ثم تحقق من العلم داخل البرنامج.","en":"Review the verification command path, recover the sealed custody receipt within the simulation and check the derived flag in the program."},
-   {"ar":"اكتب استنتاجاً يستند إلى الأدلة ويذكر حدود التحقيق، مستعيناً بقالب PLAYER_CASE_REPORT.md.","en":"Write an evidence-based conclusion with investigation limits using PLAYER_CASE_REPORT.md."}
-  ],
-  "setup": [
-   {"ar":"ثبّت Python 3.10 أو أحدث. جميع الاعتماديات من المكتبة القياسية.","en":"Install Python 3.10 or newer. All dependencies are in the standard library."},
-   {"ar":"استخرج الحزمة وافتح الطرفية داخل biuret-cybertrace-player. اقرأ README_AR.md أو README_EN.md.","en":"Extract the package and open a terminal inside biuret-cybertrace-player. Read README_EN.md or README_AR.md."},
-   {"ar":"شغّل cybertrace.py، أو استخدم start_windows.bat في Windows وstart_linux.sh في Linux.","en":"Run cybertrace.py, or use start_windows.bat on Windows and start_linux.sh on Linux."}
-  ],
-  "rules": [
-   {"ar":"كل الأدلة خيالية. حلل شيفرة البرنامج وملفات evidence واكتب سكربتات مساعدة محلية.","en":"All evidence is fictional. Analyze the program source and evidence files, and write local helper scripts."},
-   {"ar":"لا تعدّل الأدلة أو تتجاوز فاحص العلم. حسب قواعد الحزمة، استخرج الإيصال من مسار المحاكاة بدلاً من فتح restricted مباشرة.","en":"Do not alter evidence or bypass the flag checker. Under the package rules, recover the receipt through the simulation rather than opening restricted directly."},
-   {"ar":"موزع الأوامر محاكاة للقراءة فقط؛ لا ينفذ أوامر نظام التشغيل ولا يتصل بأهداف على الشبكة.","en":"The command dispatcher is a read-only simulation; it does not execute operating-system commands or contact network targets."}
-  ]
- }
+  "biuret-vault": {
+    "objectives": [
+      {
+        "ar": "استكشف الأوامر وملفات الملاحظات وابحث عن السلوك غير الموثق.",
+        "en": "Explore commands and notes to identify undocumented behavior."
+      },
+      {
+        "ar": "اجمع أدلة الحساب الإداري القديم، وحلل منطق المصادقة والصلاحيات في الشيفرة.",
+        "en": "Gather evidence about the legacy administrator account and analyze authentication and authorization logic."
+      },
+      {
+        "ar": "استنتج مفتاح الخزنة من أدلة المشروع وافتح الحمولة المشفرة داخل التطبيق المحلي.",
+        "en": "Derive the vault key from project evidence and open the encrypted payload in the local application."
+      },
+      {
+        "ar": "دوّن خطواتك ودليلك واقتراح إصلاح يمنع تكرار ضعف الوصول.",
+        "en": "Document your steps, supporting evidence and a repair that prevents the access weakness."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "ثبّت Python 3.9 أو أحدث. لا تحتاج إلى تثبيت أي مكتبات إضافية.",
+        "en": "Install Python 3.9 or newer. No third-party packages are required."
+      },
+      {
+        "ar": "نزّل ZIP واستخرجه في مجلد تدريب مستقل. افتح الطرفية داخل biuret-vault-player.",
+        "en": "Download and extract the ZIP into a separate training folder. Open a terminal inside biuret-vault-player."
+      },
+      {
+        "ar": "اقرأ README_PLAYER.md ثم شغّل challenge.py. يبدأ البرنامج تلقائياً بجلسة ضيف.",
+        "en": "Read README_PLAYER.md and launch challenge.py. The program starts in a guest session automatically."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "المسموح هو تحليل نسختك المحلية وكتابة سكربتات مساعدة. احصر تجربة الثغرات في ملفات التحدي.",
+        "en": "Analyze your local copy and write helper scripts. Keep vulnerability testing within the challenge files."
+      },
+      {
+        "ar": "البرنامج يتضمن أخطاء أمنية مقصودة، ومنها قراءة مسارات غير مقيدة. لا تستخدمه لمعالجة ملفاتك الشخصية أو كنظام حقيقي.",
+        "en": "This program deliberately contains security flaws, including unbounded path reads. Do not use it with personal files or as a real system."
+      },
+      {
+        "ar": "لا يتطلب الحل حذف ملفات أو مهاجمة جهاز آخر أو البحث على الإنترنت عن العلم النهائي.",
+        "en": "The solution requires no file deletion, attacks on other machines or internet searches for the final flag."
+      },
+      {
+        "ar": "يمكن تعديل نسختك الخاصة حسب قواعد الحزمة، لكن تعديل البرنامج لطباعة النجاح لا يثبت فهم الثغرة.",
+        "en": "You may modify your own copy under the package rules, but editing the program to print success does not demonstrate understanding."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "شغّل غرفة التحقيق المحلية",
+          "en": "Launch the local investigation console"
+        },
+        "file": "challenge.py",
+        "note": {
+          "ar": "اكتب help لاستكشاف الأوامر وexit للخروج.",
+          "en": "Type help to explore commands and exit to close the console."
+        }
+      }
+    ]
+  },
+  "biuret-cybertrace": {
+    "objectives": [
+      {
+        "ar": "حلل وجهة الاتصال الصادر ووقته وكمية البيانات، ثم اربط الموظف والجلسة والجهاز والأرشيف.",
+        "en": "Analyze the outbound destination, timestamp and byte count, then correlate the employee, session, workstation and archive."
+      },
+      {
+        "ar": "قارن الأدلة بمرجع SHA-256 الموثوق لتحديد الملف المعدّل.",
+        "en": "Compare evidence with the trusted SHA-256 baseline to identify the altered file."
+      },
+      {
+        "ar": "أعد بناء مذكرة مجزأة باستخدام Python مع التحقق من CRC32 وترتيب الأجزاء وفك ترميز Base64.",
+        "en": "Reconstruct a fragmented memo with Python by validating CRC32, ordering parts and decoding Base64."
+      },
+      {
+        "ar": "راجع مسار أمر التحقق، واستخرج إيصال سلسلة الحيازة المختوم ضمن المحاكاة، ثم تحقق من العلم داخل البرنامج.",
+        "en": "Review the verification command path, recover the sealed custody receipt within the simulation and check the derived flag in the program."
+      },
+      {
+        "ar": "اكتب استنتاجاً يستند إلى الأدلة ويذكر حدود التحقيق، مستعيناً بقالب PLAYER_CASE_REPORT.md.",
+        "en": "Write an evidence-based conclusion with investigation limits using PLAYER_CASE_REPORT.md."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "ثبّت Python 3.10 أو أحدث. جميع الاعتماديات من المكتبة القياسية.",
+        "en": "Install Python 3.10 or newer. All dependencies are in the standard library."
+      },
+      {
+        "ar": "استخرج الحزمة وافتح الطرفية داخل biuret-cybertrace-player. اقرأ README_AR.md أو README_EN.md.",
+        "en": "Extract the package and open a terminal inside biuret-cybertrace-player. Read README_EN.md or README_AR.md."
+      },
+      {
+        "ar": "شغّل cybertrace.py، أو استخدم start_windows.bat في Windows وstart_linux.sh في Linux.",
+        "en": "Run cybertrace.py, or use start_windows.bat on Windows and start_linux.sh on Linux."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "كل الأدلة خيالية. حلل شيفرة البرنامج وملفات evidence واكتب سكربتات مساعدة محلية.",
+        "en": "All evidence is fictional. Analyze the program source and evidence files, and write local helper scripts."
+      },
+      {
+        "ar": "لا تعدّل الأدلة أو تتجاوز فاحص العلم. حسب قواعد الحزمة، استخرج الإيصال من مسار المحاكاة بدلاً من فتح restricted مباشرة.",
+        "en": "Do not alter evidence or bypass the flag checker. Under the package rules, recover the receipt through the simulation rather than opening restricted directly."
+      },
+      {
+        "ar": "موزع الأوامر محاكاة للقراءة فقط؛ لا ينفذ أوامر نظام التشغيل ولا يتصل بأهداف على الشبكة.",
+        "en": "The command dispatcher is a read-only simulation; it does not execute operating-system commands or contact network targets."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "شغّل غرفة التحقيق المحلية",
+          "en": "Launch the local investigation console"
+        },
+        "file": "cybertrace.py",
+        "note": {
+          "ar": "اكتب help لاستكشاف الأوامر وexit للخروج.",
+          "en": "Type help to explore commands and exit to close the console."
+        }
+      }
+    ]
+  },
+  "hidden-message": {
+    "objectives": [
+      {
+        "ar": "حلّل رسالة مشفرة وحدد التحويل المناسب، ثم استخرج العلم مع شرح طريقتك.",
+        "en": "Analyze an encrypted message, identify the appropriate transformation, and recover the flag with an explanation of your method."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-hidden-message-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-hidden-message-player."
+      },
+      {
+        "ar": "نزّل الحزمة واستخرجها، ثم اقرأ README_AR.md وافتح cipher.txt.",
+        "en": "Download and extract the package, then read README_EN.md and open cipher.txt."
+      },
+      {
+        "ar": "تحتاج Python 3.9 أو أحدث. starter.py قالب اختياري يمكنك إكماله؛ لا تحتاج مكتبات إضافية.",
+        "en": "Use Python 3.9 or newer. starter.py is an optional template to complete; no extra packages are needed."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "حلل الأدلة بنفسك. لا تعدّل verify.py للحصول على نجاح وهمي.",
+        "en": "Investigate the evidence yourself. Do not modify verify.py to manufacture a successful result."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من إجابتك بعد حل اللغز",
+          "en": "Check your answer after solving the puzzle"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل العلم الذي استنتجته. هذه أداة تحقق وليست برنامج تشغيل اللغز.",
+          "en": "Enter the flag you derived. This checks an answer; it does not launch the puzzle."
+        }
+      }
+    ]
+  },
+  "username-hunter": {
+    "objectives": [
+      {
+        "ar": "اربط حسابات شخصية خيالية باستخدام أكثر من دليل، وميّز التطابق الحقيقي من أسماء المستخدمين المتشابهة.",
+        "en": "Correlate fictional profiles using multiple evidence points and distinguish a supported match from similar usernames."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-username-hunter-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-username-hunter-player."
+      },
+      {
+        "ar": "اقرأ CASE_BRIEF.txt، ثم افتح sites/index.html مباشرة في المتصفح من المجلد المستخرج.",
+        "en": "Read CASE_BRIEF.txt, then open sites/index.html directly in your browser from the extracted folder."
+      },
+      {
+        "ar": "كل المواقع والأشخاص خياليون ومحليون. لا تحتاج خادم ويب أو اتصالاً بأهداف خارجية. تحتاج Python 3.9+ للتحقق النهائي فقط.",
+        "en": "All sites and people are fictional and local. No web server or external targets are needed. Python 3.9+ is only needed for the final answer check."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "ابقَ داخل مواقع الحزمة. لا تبحث عن أشخاص حقيقيين أو تتواصل معهم، وسجّل الأدلة التي تدعم استنتاجك.",
+        "en": "Stay inside the packaged sites. Do not investigate or contact real people; record evidence that supports your conclusion."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق بعد إكمال التحقيق",
+          "en": "Check after completing the investigation"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "جرى تصحيح فاحص الحزمة ليتوافق مع الدليل المرفق. بيانات التحقيق لم تتغير.",
+          "en": "The package checker has been corrected to match the supplied evidence. Investigation data is unchanged."
+        }
+      }
+    ]
+  },
+  "hidden-pixel": {
+    "objectives": [
+      {
+        "ar": "افحص صورة تدريبية واكتب أداة استخراج اعتماداً على تنسيق البيانات الموصوف في تعليمات الحزمة.",
+        "en": "Inspect a training image and write an extractor using the data format documented in the package."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-hidden-pixel-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-hidden-pixel-player."
+      },
+      {
+        "ar": "اقرأ README_AR.md قبل العمل على evidence.png، ثم أكمل extract_starter.py.",
+        "en": "Read README_EN.md before examining evidence.png, then complete extract_starter.py."
+      },
+      {
+        "ar": "تحتاج Python 3.9+ ومكتبة Pillow. ثبّت requirements.txt داخل بيئة Python افتراضية خاصة بالتحدي.",
+        "en": "Use Python 3.9+ and Pillow. Install requirements.txt inside a Python virtual environment for this challenge."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "احتفظ بالصورة الأصلية؛ إعادة ضغطها أو تعديل ألوانها قد يغيّر الدليل. لا تعدّل فاحص الإجابة.",
+        "en": "Keep the original image; recompression or color changes can alter the evidence. Do not modify the answer checker."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تثبيت مكتبة الصورة",
+          "en": "Install the image library"
+        },
+        "file": "-m pip install -r requirements.txt",
+        "note": {
+          "ar": "أنشئ بيئة خاصة بالتحدي وثبّت Pillow فيها؛ استخدم Python الموجود داخل .venv لتشغيل أداة الاستخراج أيضاً.",
+          "en": "Create an isolated environment and install Pillow inside it. Also use the Python executable inside .venv to run your extractor."
+        },
+        "windows": "py -3 -m venv .venv\n.venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+        "unix": "python3 -m venv .venv\n.venv/bin/python -m pip install -r requirements.txt"
+      },
+      {
+        "title": {
+          "ar": "تحقق من النتيجة المستخرجة",
+          "en": "Check the extracted result"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل العلم الذي حصلت عليه من أداة الاستخراج.",
+          "en": "Enter the flag obtained with your extractor."
+        },
+        "windows": ".venv\\Scripts\\python.exe -X utf8 verify.py",
+        "unix": ".venv/bin/python verify.py"
+      }
+    ]
+  },
+  "buggy-calculator": {
+    "objectives": [
+      {
+        "ar": "أصلح خمس دوال حسابية واستوعب الحالات الحدية حتى تجتاز الاختبارات السبعة عشر الأصلية.",
+        "en": "Repair five arithmetic functions and handle edge cases until all seventeen original tests pass."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-buggy-calculator-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-buggy-calculator-player."
+      },
+      {
+        "ar": "اقرأ README_AR.md، ثم راجع calculator.py والاختبارات لتفهم السلوك المطلوب.",
+        "en": "Read README_EN.md, then inspect calculator.py and the tests to understand the required behavior."
+      },
+      {
+        "ar": "تحتاج Python 3.9+ فقط. فشل الاختبارات في البداية مقصود، وهو نقطة بداية التحدي.",
+        "en": "Only Python 3.9+ is needed. Initial test failures are intentional and form the starting point of the challenge."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "عدّل calculator.py فقط. لا تعدّل tests أو run_tests.py أو prize.dat أو verify.py.",
+        "en": "Edit calculator.py only. Do not modify tests, run_tests.py, prize.dat, or verify.py."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "شغّل الاختبارات قبل الإصلاح وبعده",
+          "en": "Run tests before and after your repair"
+        },
+        "file": "run_tests.py",
+        "note": {
+          "ar": "بعد اجتياز 17/17 اختباراً سيعرض البرنامج علم المكافأة.",
+          "en": "After all 17/17 tests pass, the program displays the reward flag."
+        }
+      },
+      {
+        "title": {
+          "ar": "تحقق من العلم",
+          "en": "Validate the flag"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل العلم الذي أعطتك إياه الاختبارات.",
+          "en": "Enter the flag produced by the tests."
+        }
+      }
+    ]
+  }
 }

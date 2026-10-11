@@ -11,7 +11,51 @@
       "ar": "فك رسالة مشفرة بطريقة Caesar للوصول إلى Flag.",
       "en": "Decode a Caesar-cipher message to recover a flag."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-hidden-message-player.zip",
+      "folder": "biuret-hidden-message-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "10–20",
+      "mode": "cipher",
+      "dependencies": [],
+      "points": 10,
+      "bytes": 3080,
+      "sha256": "1cb905332485799cb66c130bde328a7da7d30757fab78c03237793f35737b69f",
+      "files": [
+        {
+          "name": "biuret-hidden-message-player/HINTS.md",
+          "sha256": "480a09f8450f1c5c93340d0c804684ceb89f62d38cab935a42afb06d0ccc8724",
+          "bytes": 505
+        },
+        {
+          "name": "biuret-hidden-message-player/README_AR.md",
+          "sha256": "87058b49cb144176d27c888f1b529c47232be6cd290ab8019555b20e4f455bd9",
+          "bytes": 1122
+        },
+        {
+          "name": "biuret-hidden-message-player/README_EN.md",
+          "sha256": "57af238eeb81c40717184b8f067c2c2f062b0e533d43ea6c9693879c801a03f0",
+          "bytes": 427
+        },
+        {
+          "name": "biuret-hidden-message-player/cipher.txt",
+          "sha256": "b2827ac55278ca4068ac544536ae08fd9f2cb3418d5ffc66e88aa13e2cb53e6b",
+          "bytes": 150
+        },
+        {
+          "name": "biuret-hidden-message-player/starter.py",
+          "sha256": "962db419bf66ea36818f0f9b35632aba3e4067e1eeae140d4598cf5f18883563",
+          "bytes": 442
+        },
+        {
+          "name": "biuret-hidden-message-player/verify.py",
+          "sha256": "8c774467e15dc97a5cafedb14043279d34fca4cbb876239a844529d5f06e0f18",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "username-hunter",
@@ -25,7 +69,106 @@
       "ar": "البحث عن اسم مستخدم خيالي في ملفات شخصية عامة.",
       "en": "Investigate a fictional username across public-profile samples."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-username-hunter-player.zip",
+      "folder": "biuret-username-hunter-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "10–20",
+      "mode": "offline-sites",
+      "dependencies": [],
+      "points": 10,
+      "bytes": 11674,
+      "sha256": "0aa5498e065a1e3e7641923c659f04d4447ef5bf3e64cf2000a717c69dcb44a7",
+      "files": [
+        {
+          "name": "biuret-username-hunter-player/CASE_BRIEF.txt",
+          "sha256": "e0ca9582f6e247c3b5e740d9688c0e89ebfaecf6b5e3bffa58235693a5952d03",
+          "bytes": 231
+        },
+        {
+          "name": "biuret-username-hunter-player/HINTS.md",
+          "sha256": "23745b3e353fa63b514d796e9a0bba3991cfe3b40121aed4c1e74d36b178f8df",
+          "bytes": 589
+        },
+        {
+          "name": "biuret-username-hunter-player/README_AR.md",
+          "sha256": "c08c79097bbe753c91ab26740c7a40362fca57da18816301c6ed2d722e11decb",
+          "bytes": 1242
+        },
+        {
+          "name": "biuret-username-hunter-player/README_EN.md",
+          "sha256": "9e84106fff26608e90798b8706b0ce54421ca36a7a2a61bbdd6a675b2d84d205",
+          "bytes": 454
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/assets/theme.css",
+          "sha256": "4e1360f47af84ebec8166d0a2bfd9d485bce4373e98e047776241fb5e70239fe",
+          "bytes": 1811
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/blackframe.html",
+          "sha256": "22d266daf8bc7b18d128f26b711a50c53eaeaef71533691fbd81ea53b445b778",
+          "bytes": 684
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/cipherfern.html",
+          "sha256": "9fa294d93556b0f28950b2630d12fe9f25bcb9c6582be652b7bc2de43c1de5a4",
+          "bytes": 958
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/index.html",
+          "sha256": "eb01deb6e034b64dde673a0f31ae76d1115deed4fdf5ef71064e49bb97767ed0",
+          "bytes": 1228
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/packetmint.html",
+          "sha256": "93b106255a3b97a73fa47e75cefca5be678f5eed37b03ef6e8a8ed3a57fb3ec5",
+          "bytes": 696
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/starlint.html",
+          "sha256": "b828413725d45f03971bdd7ad98e5d16aab41e4a4ebf9fd2d2178b20ef5630e0",
+          "bytes": 688
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/eventhub/index.html",
+          "sha256": "54803908422907c84b186f5accf31a64213b98ee263adf88fdd400841f9fb0d8",
+          "bytes": 845
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/index.html",
+          "sha256": "ba9b0e7d804abf657f4df829e41596c71dc1e89decd99389ae8d4ff8cc461115",
+          "bytes": 1504
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/index.html",
+          "sha256": "049969ec6570b0ee38ab228e35533f4febd1649b2c71b2b26c60726f82aa2002",
+          "bytes": 1118
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/packetmint_photos.html",
+          "sha256": "1d9cf25984fa2b9eb9776940e6deb289c1d54c5b1199a6bb4e681819f56c8c2e",
+          "bytes": 688
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/pixel_fern21.html",
+          "sha256": "ce2c63ee09822da38376636d3bdbcd6ee1de219e29c1e05e1a0c02c2cd8db696",
+          "bytes": 1021
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/skyline_pixel.html",
+          "sha256": "66e29dd4063a1d1c4cf45449252bf555875a9f3f89a91d54f751ee1e4a9aba51",
+          "bytes": 680
+        },
+        {
+          "name": "biuret-username-hunter-player/verify.py",
+          "sha256": "0f5b9a71f5e89b920ef0361c6ed0413770465397a43a800454a34668e65b95e2",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "hidden-pixel",
@@ -39,7 +182,58 @@
       "ar": "اكتشاف رسالة مخفية داخل صورة عبر قيم البكسلات.",
       "en": "Find information concealed in image pixels."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-hidden-pixel-player.zip",
+      "folder": "biuret-hidden-pixel-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "20–35",
+      "mode": "image",
+      "dependencies": [
+        "Pillow>=10.0"
+      ],
+      "points": 10,
+      "bytes": 27340,
+      "sha256": "0b7d6c002a71c8e382e650456ec073769e80994ebc7e3a52003dba7b0af0979f",
+      "files": [
+        {
+          "name": "biuret-hidden-pixel-player/HINTS.md",
+          "sha256": "7b05f990bfbe347e3158e44de758aa7bc271d32bb6cc47195909988e1c154cb3",
+          "bytes": 577
+        },
+        {
+          "name": "biuret-hidden-pixel-player/README_AR.md",
+          "sha256": "6e1cfb0bb36c8aa0d3ed13af89104d102ba778deb1a1f9124c51a73aa330241f",
+          "bytes": 1779
+        },
+        {
+          "name": "biuret-hidden-pixel-player/README_EN.md",
+          "sha256": "0f8e43c49b407fbf26f015f3e5430e0eb67cf36332c7cdc8f3e0b97ecb19ebbe",
+          "bytes": 526
+        },
+        {
+          "name": "biuret-hidden-pixel-player/evidence.png",
+          "sha256": "ad771857631c463eebc032f0ff816aef5b80766e5361cc3efc7b65dba6922108",
+          "bytes": 23880
+        },
+        {
+          "name": "biuret-hidden-pixel-player/extract_starter.py",
+          "sha256": "9b7861d8342cdb663f0b8cd1acc005e428dcc362c68618394e6da0117a2a9008",
+          "bytes": 625
+        },
+        {
+          "name": "biuret-hidden-pixel-player/requirements.txt",
+          "sha256": "dce978a554b00caca70d59f539d25c61fcc89681e02d7fec42948cd5c3c0a127",
+          "bytes": 13
+        },
+        {
+          "name": "biuret-hidden-pixel-player/verify.py",
+          "sha256": "66b7003405919e65b19a24067e8f00a157674a4a85f91b38d68a3d5306841d91",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "buggy-calculator",
@@ -53,7 +247,66 @@
       "ar": "اكتشاف عدة أخطاء في برنامج حسابي وتصحيحها.",
       "en": "Repair several bugs in a small calculator program."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-buggy-calculator-player.zip",
+      "folder": "biuret-buggy-calculator-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "15–30",
+      "mode": "debugging",
+      "dependencies": [],
+      "points": 10,
+      "bytes": 5187,
+      "sha256": "4670d66a58a8a4898f3423d342ac229eeaddb47d4431e2b274bac0905b7a499e",
+      "files": [
+        {
+          "name": "biuret-buggy-calculator-player/HINTS.md",
+          "sha256": "fb128b896147bf267b395c47e26fb557d0ba80a85e35242eff4bbbc2a2fe719b",
+          "bytes": 521
+        },
+        {
+          "name": "biuret-buggy-calculator-player/README_AR.md",
+          "sha256": "d6749384e6426b394622b008217426446f911ef3e9c2e328c5dc744af298490c",
+          "bytes": 1612
+        },
+        {
+          "name": "biuret-buggy-calculator-player/README_EN.md",
+          "sha256": "024ebaefe32f9c7ba0945b4769a7e4238846c732830e763d5cdb77d08d477afb",
+          "bytes": 500
+        },
+        {
+          "name": "biuret-buggy-calculator-player/calculator.py",
+          "sha256": "9ce7f444e68738ad43bcea3a8959b5cea87a74b240b3efe25838beb76eb4760d",
+          "bytes": 1526
+        },
+        {
+          "name": "biuret-buggy-calculator-player/prize.dat",
+          "sha256": "d40e8a730073a65c7cb932a7ad73ab9ea56dba3206ffd46127cb5747c14b219c",
+          "bytes": 37
+        },
+        {
+          "name": "biuret-buggy-calculator-player/run_tests.py",
+          "sha256": "ba4f41e2831f597f7539ad725811ced7a0f1ab2bc5911343c5fc93736041475f",
+          "bytes": 1025
+        },
+        {
+          "name": "biuret-buggy-calculator-player/tests/__init__.py",
+          "sha256": "c9e5e2f78004d6ae9f46ab5aca4b76bb7e0f2638d1f648b6adabed7ec6e923fc",
+          "bytes": 48
+        },
+        {
+          "name": "biuret-buggy-calculator-player/tests/test_calculator.py",
+          "sha256": "28fa710d4ddaf4dcfaf1cb26b66b74b3a30bb3feca4bd0e33c44e30492f899f4",
+          "bytes": 1500
+        },
+        {
+          "name": "biuret-buggy-calculator-player/verify.py",
+          "sha256": "4e538020670f366f00b987d45602692f8feef2f7f379b22b73e148fd45959692",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "xor-mystery",

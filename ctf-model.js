@@ -12,7 +12,51 @@ export const ctfChallenges=[
       "ar": "فك رسالة مشفرة بطريقة Caesar للوصول إلى Flag.",
       "en": "Decode a Caesar-cipher message to recover a flag."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-hidden-message-player.zip",
+      "folder": "biuret-hidden-message-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "10–20",
+      "mode": "cipher",
+      "dependencies": [],
+      "points": 10,
+      "bytes": 3080,
+      "sha256": "1cb905332485799cb66c130bde328a7da7d30757fab78c03237793f35737b69f",
+      "files": [
+        {
+          "name": "biuret-hidden-message-player/HINTS.md",
+          "sha256": "480a09f8450f1c5c93340d0c804684ceb89f62d38cab935a42afb06d0ccc8724",
+          "bytes": 505
+        },
+        {
+          "name": "biuret-hidden-message-player/README_AR.md",
+          "sha256": "87058b49cb144176d27c888f1b529c47232be6cd290ab8019555b20e4f455bd9",
+          "bytes": 1122
+        },
+        {
+          "name": "biuret-hidden-message-player/README_EN.md",
+          "sha256": "57af238eeb81c40717184b8f067c2c2f062b0e533d43ea6c9693879c801a03f0",
+          "bytes": 427
+        },
+        {
+          "name": "biuret-hidden-message-player/cipher.txt",
+          "sha256": "b2827ac55278ca4068ac544536ae08fd9f2cb3418d5ffc66e88aa13e2cb53e6b",
+          "bytes": 150
+        },
+        {
+          "name": "biuret-hidden-message-player/starter.py",
+          "sha256": "962db419bf66ea36818f0f9b35632aba3e4067e1eeae140d4598cf5f18883563",
+          "bytes": 442
+        },
+        {
+          "name": "biuret-hidden-message-player/verify.py",
+          "sha256": "8c774467e15dc97a5cafedb14043279d34fca4cbb876239a844529d5f06e0f18",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "username-hunter",
@@ -26,7 +70,106 @@ export const ctfChallenges=[
       "ar": "البحث عن اسم مستخدم خيالي في ملفات شخصية عامة.",
       "en": "Investigate a fictional username across public-profile samples."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-username-hunter-player.zip",
+      "folder": "biuret-username-hunter-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "10–20",
+      "mode": "offline-sites",
+      "dependencies": [],
+      "points": 10,
+      "bytes": 11674,
+      "sha256": "0aa5498e065a1e3e7641923c659f04d4447ef5bf3e64cf2000a717c69dcb44a7",
+      "files": [
+        {
+          "name": "biuret-username-hunter-player/CASE_BRIEF.txt",
+          "sha256": "e0ca9582f6e247c3b5e740d9688c0e89ebfaecf6b5e3bffa58235693a5952d03",
+          "bytes": 231
+        },
+        {
+          "name": "biuret-username-hunter-player/HINTS.md",
+          "sha256": "23745b3e353fa63b514d796e9a0bba3991cfe3b40121aed4c1e74d36b178f8df",
+          "bytes": 589
+        },
+        {
+          "name": "biuret-username-hunter-player/README_AR.md",
+          "sha256": "c08c79097bbe753c91ab26740c7a40362fca57da18816301c6ed2d722e11decb",
+          "bytes": 1242
+        },
+        {
+          "name": "biuret-username-hunter-player/README_EN.md",
+          "sha256": "9e84106fff26608e90798b8706b0ce54421ca36a7a2a61bbdd6a675b2d84d205",
+          "bytes": 454
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/assets/theme.css",
+          "sha256": "4e1360f47af84ebec8166d0a2bfd9d485bce4373e98e047776241fb5e70239fe",
+          "bytes": 1811
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/blackframe.html",
+          "sha256": "22d266daf8bc7b18d128f26b711a50c53eaeaef71533691fbd81ea53b445b778",
+          "bytes": 684
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/cipherfern.html",
+          "sha256": "9fa294d93556b0f28950b2630d12fe9f25bcb9c6582be652b7bc2de43c1de5a4",
+          "bytes": 958
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/index.html",
+          "sha256": "eb01deb6e034b64dde673a0f31ae76d1115deed4fdf5ef71064e49bb97767ed0",
+          "bytes": 1228
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/packetmint.html",
+          "sha256": "93b106255a3b97a73fa47e75cefca5be678f5eed37b03ef6e8a8ed3a57fb3ec5",
+          "bytes": 696
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/devboard/starlint.html",
+          "sha256": "b828413725d45f03971bdd7ad98e5d16aab41e4a4ebf9fd2d2178b20ef5630e0",
+          "bytes": 688
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/eventhub/index.html",
+          "sha256": "54803908422907c84b186f5accf31a64213b98ee263adf88fdd400841f9fb0d8",
+          "bytes": 845
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/index.html",
+          "sha256": "ba9b0e7d804abf657f4df829e41596c71dc1e89decd99389ae8d4ff8cc461115",
+          "bytes": 1504
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/index.html",
+          "sha256": "049969ec6570b0ee38ab228e35533f4febd1649b2c71b2b26c60726f82aa2002",
+          "bytes": 1118
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/packetmint_photos.html",
+          "sha256": "1d9cf25984fa2b9eb9776940e6deb289c1d54c5b1199a6bb4e681819f56c8c2e",
+          "bytes": 688
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/pixel_fern21.html",
+          "sha256": "ce2c63ee09822da38376636d3bdbcd6ee1de219e29c1e05e1a0c02c2cd8db696",
+          "bytes": 1021
+        },
+        {
+          "name": "biuret-username-hunter-player/sites/photoshelf/skyline_pixel.html",
+          "sha256": "66e29dd4063a1d1c4cf45449252bf555875a9f3f89a91d54f751ee1e4a9aba51",
+          "bytes": 680
+        },
+        {
+          "name": "biuret-username-hunter-player/verify.py",
+          "sha256": "0f5b9a71f5e89b920ef0361c6ed0413770465397a43a800454a34668e65b95e2",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "hidden-pixel",
@@ -40,7 +183,58 @@ export const ctfChallenges=[
       "ar": "اكتشاف رسالة مخفية داخل صورة عبر قيم البكسلات.",
       "en": "Find information concealed in image pixels."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-hidden-pixel-player.zip",
+      "folder": "biuret-hidden-pixel-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "20–35",
+      "mode": "image",
+      "dependencies": [
+        "Pillow>=10.0"
+      ],
+      "points": 10,
+      "bytes": 27340,
+      "sha256": "0b7d6c002a71c8e382e650456ec073769e80994ebc7e3a52003dba7b0af0979f",
+      "files": [
+        {
+          "name": "biuret-hidden-pixel-player/HINTS.md",
+          "sha256": "7b05f990bfbe347e3158e44de758aa7bc271d32bb6cc47195909988e1c154cb3",
+          "bytes": 577
+        },
+        {
+          "name": "biuret-hidden-pixel-player/README_AR.md",
+          "sha256": "6e1cfb0bb36c8aa0d3ed13af89104d102ba778deb1a1f9124c51a73aa330241f",
+          "bytes": 1779
+        },
+        {
+          "name": "biuret-hidden-pixel-player/README_EN.md",
+          "sha256": "0f8e43c49b407fbf26f015f3e5430e0eb67cf36332c7cdc8f3e0b97ecb19ebbe",
+          "bytes": 526
+        },
+        {
+          "name": "biuret-hidden-pixel-player/evidence.png",
+          "sha256": "ad771857631c463eebc032f0ff816aef5b80766e5361cc3efc7b65dba6922108",
+          "bytes": 23880
+        },
+        {
+          "name": "biuret-hidden-pixel-player/extract_starter.py",
+          "sha256": "9b7861d8342cdb663f0b8cd1acc005e428dcc362c68618394e6da0117a2a9008",
+          "bytes": 625
+        },
+        {
+          "name": "biuret-hidden-pixel-player/requirements.txt",
+          "sha256": "dce978a554b00caca70d59f539d25c61fcc89681e02d7fec42948cd5c3c0a127",
+          "bytes": 13
+        },
+        {
+          "name": "biuret-hidden-pixel-player/verify.py",
+          "sha256": "66b7003405919e65b19a24067e8f00a157674a4a85f91b38d68a3d5306841d91",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "buggy-calculator",
@@ -54,7 +248,66 @@ export const ctfChallenges=[
       "ar": "اكتشاف عدة أخطاء في برنامج حسابي وتصحيحها.",
       "en": "Repair several bugs in a small calculator program."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-buggy-calculator-player.zip",
+      "folder": "biuret-buggy-calculator-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "15–30",
+      "mode": "debugging",
+      "dependencies": [],
+      "points": 10,
+      "bytes": 5187,
+      "sha256": "4670d66a58a8a4898f3423d342ac229eeaddb47d4431e2b274bac0905b7a499e",
+      "files": [
+        {
+          "name": "biuret-buggy-calculator-player/HINTS.md",
+          "sha256": "fb128b896147bf267b395c47e26fb557d0ba80a85e35242eff4bbbc2a2fe719b",
+          "bytes": 521
+        },
+        {
+          "name": "biuret-buggy-calculator-player/README_AR.md",
+          "sha256": "d6749384e6426b394622b008217426446f911ef3e9c2e328c5dc744af298490c",
+          "bytes": 1612
+        },
+        {
+          "name": "biuret-buggy-calculator-player/README_EN.md",
+          "sha256": "024ebaefe32f9c7ba0945b4769a7e4238846c732830e763d5cdb77d08d477afb",
+          "bytes": 500
+        },
+        {
+          "name": "biuret-buggy-calculator-player/calculator.py",
+          "sha256": "9ce7f444e68738ad43bcea3a8959b5cea87a74b240b3efe25838beb76eb4760d",
+          "bytes": 1526
+        },
+        {
+          "name": "biuret-buggy-calculator-player/prize.dat",
+          "sha256": "d40e8a730073a65c7cb932a7ad73ab9ea56dba3206ffd46127cb5747c14b219c",
+          "bytes": 37
+        },
+        {
+          "name": "biuret-buggy-calculator-player/run_tests.py",
+          "sha256": "ba4f41e2831f597f7539ad725811ced7a0f1ab2bc5911343c5fc93736041475f",
+          "bytes": 1025
+        },
+        {
+          "name": "biuret-buggy-calculator-player/tests/__init__.py",
+          "sha256": "c9e5e2f78004d6ae9f46ab5aca4b76bb7e0f2638d1f648b6adabed7ec6e923fc",
+          "bytes": 48
+        },
+        {
+          "name": "biuret-buggy-calculator-player/tests/test_calculator.py",
+          "sha256": "28fa710d4ddaf4dcfaf1cb26b66b74b3a30bb3feca4bd0e33c44e30492f899f4",
+          "bytes": 1500
+        },
+        {
+          "name": "biuret-buggy-calculator-player/verify.py",
+          "sha256": "4e538020670f366f00b987d45602692f8feef2f7f379b22b73e148fd45959692",
+          "bytes": 645
+        }
+      ]
+    }
   },
   {
     "id": "xor-mystery",
@@ -885,6 +1138,19 @@ export const ctfGuides={
         "ar": "يمكن تعديل نسختك الخاصة حسب قواعد الحزمة، لكن تعديل البرنامج لطباعة النجاح لا يثبت فهم الثغرة.",
         "en": "You may modify your own copy under the package rules, but editing the program to print success does not demonstrate understanding."
       }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "شغّل غرفة التحقيق المحلية",
+          "en": "Launch the local investigation console"
+        },
+        "file": "challenge.py",
+        "note": {
+          "ar": "اكتب help لاستكشاف الأوامر وexit للخروج.",
+          "en": "Type help to explore commands and exit to close the console."
+        }
+      }
     ]
   },
   "biuret-cybertrace": {
@@ -937,9 +1203,463 @@ export const ctfGuides={
         "ar": "موزع الأوامر محاكاة للقراءة فقط؛ لا ينفذ أوامر نظام التشغيل ولا يتصل بأهداف على الشبكة.",
         "en": "The command dispatcher is a read-only simulation; it does not execute operating-system commands or contact network targets."
       }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "شغّل غرفة التحقيق المحلية",
+          "en": "Launch the local investigation console"
+        },
+        "file": "cybertrace.py",
+        "note": {
+          "ar": "اكتب help لاستكشاف الأوامر وexit للخروج.",
+          "en": "Type help to explore commands and exit to close the console."
+        }
+      }
+    ]
+  },
+  "hidden-message": {
+    "objectives": [
+      {
+        "ar": "حلّل رسالة مشفرة وحدد التحويل المناسب، ثم استخرج العلم مع شرح طريقتك.",
+        "en": "Analyze an encrypted message, identify the appropriate transformation, and recover the flag with an explanation of your method."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-hidden-message-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-hidden-message-player."
+      },
+      {
+        "ar": "نزّل الحزمة واستخرجها، ثم اقرأ README_AR.md وافتح cipher.txt.",
+        "en": "Download and extract the package, then read README_EN.md and open cipher.txt."
+      },
+      {
+        "ar": "تحتاج Python 3.9 أو أحدث. starter.py قالب اختياري يمكنك إكماله؛ لا تحتاج مكتبات إضافية.",
+        "en": "Use Python 3.9 or newer. starter.py is an optional template to complete; no extra packages are needed."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "حلل الأدلة بنفسك. لا تعدّل verify.py للحصول على نجاح وهمي.",
+        "en": "Investigate the evidence yourself. Do not modify verify.py to manufacture a successful result."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من إجابتك بعد حل اللغز",
+          "en": "Check your answer after solving the puzzle"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل العلم الذي استنتجته. هذه أداة تحقق وليست برنامج تشغيل اللغز.",
+          "en": "Enter the flag you derived. This checks an answer; it does not launch the puzzle."
+        }
+      }
+    ]
+  },
+  "username-hunter": {
+    "objectives": [
+      {
+        "ar": "اربط حسابات شخصية خيالية باستخدام أكثر من دليل، وميّز التطابق الحقيقي من أسماء المستخدمين المتشابهة.",
+        "en": "Correlate fictional profiles using multiple evidence points and distinguish a supported match from similar usernames."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-username-hunter-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-username-hunter-player."
+      },
+      {
+        "ar": "اقرأ CASE_BRIEF.txt، ثم افتح sites/index.html مباشرة في المتصفح من المجلد المستخرج.",
+        "en": "Read CASE_BRIEF.txt, then open sites/index.html directly in your browser from the extracted folder."
+      },
+      {
+        "ar": "كل المواقع والأشخاص خياليون ومحليون. لا تحتاج خادم ويب أو اتصالاً بأهداف خارجية. تحتاج Python 3.9+ للتحقق النهائي فقط.",
+        "en": "All sites and people are fictional and local. No web server or external targets are needed. Python 3.9+ is only needed for the final answer check."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "ابقَ داخل مواقع الحزمة. لا تبحث عن أشخاص حقيقيين أو تتواصل معهم، وسجّل الأدلة التي تدعم استنتاجك.",
+        "en": "Stay inside the packaged sites. Do not investigate or contact real people; record evidence that supports your conclusion."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق بعد إكمال التحقيق",
+          "en": "Check after completing the investigation"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "جرى تصحيح فاحص الحزمة ليتوافق مع الدليل المرفق. بيانات التحقيق لم تتغير.",
+          "en": "The package checker has been corrected to match the supplied evidence. Investigation data is unchanged."
+        }
+      }
+    ]
+  },
+  "hidden-pixel": {
+    "objectives": [
+      {
+        "ar": "افحص صورة تدريبية واكتب أداة استخراج اعتماداً على تنسيق البيانات الموصوف في تعليمات الحزمة.",
+        "en": "Inspect a training image and write an extractor using the data format documented in the package."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-hidden-pixel-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-hidden-pixel-player."
+      },
+      {
+        "ar": "اقرأ README_AR.md قبل العمل على evidence.png، ثم أكمل extract_starter.py.",
+        "en": "Read README_EN.md before examining evidence.png, then complete extract_starter.py."
+      },
+      {
+        "ar": "تحتاج Python 3.9+ ومكتبة Pillow. ثبّت requirements.txt داخل بيئة Python افتراضية خاصة بالتحدي.",
+        "en": "Use Python 3.9+ and Pillow. Install requirements.txt inside a Python virtual environment for this challenge."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "احتفظ بالصورة الأصلية؛ إعادة ضغطها أو تعديل ألوانها قد يغيّر الدليل. لا تعدّل فاحص الإجابة.",
+        "en": "Keep the original image; recompression or color changes can alter the evidence. Do not modify the answer checker."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تثبيت مكتبة الصورة",
+          "en": "Install the image library"
+        },
+        "file": "-m pip install -r requirements.txt",
+        "note": {
+          "ar": "أنشئ بيئة خاصة بالتحدي وثبّت Pillow فيها؛ استخدم Python الموجود داخل .venv لتشغيل أداة الاستخراج أيضاً.",
+          "en": "Create an isolated environment and install Pillow inside it. Also use the Python executable inside .venv to run your extractor."
+        },
+        "windows": "py -3 -m venv .venv\n.venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+        "unix": "python3 -m venv .venv\n.venv/bin/python -m pip install -r requirements.txt"
+      },
+      {
+        "title": {
+          "ar": "تحقق من النتيجة المستخرجة",
+          "en": "Check the extracted result"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل العلم الذي حصلت عليه من أداة الاستخراج.",
+          "en": "Enter the flag obtained with your extractor."
+        },
+        "windows": ".venv\\Scripts\\python.exe -X utf8 verify.py",
+        "unix": ".venv/bin/python verify.py"
+      }
+    ]
+  },
+  "buggy-calculator": {
+    "objectives": [
+      {
+        "ar": "أصلح خمس دوال حسابية واستوعب الحالات الحدية حتى تجتاز الاختبارات السبعة عشر الأصلية.",
+        "en": "Repair five arithmetic functions and handle edge cases until all seventeen original tests pass."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "افتح الطرفية داخل biuret-buggy-calculator-player بعد استخراج ZIP.",
+        "en": "After extracting the ZIP, open a terminal inside biuret-buggy-calculator-player."
+      },
+      {
+        "ar": "اقرأ README_AR.md، ثم راجع calculator.py والاختبارات لتفهم السلوك المطلوب.",
+        "en": "Read README_EN.md, then inspect calculator.py and the tests to understand the required behavior."
+      },
+      {
+        "ar": "تحتاج Python 3.9+ فقط. فشل الاختبارات في البداية مقصود، وهو نقطة بداية التحدي.",
+        "en": "Only Python 3.9+ is needed. Initial test failures are intentional and form the starting point of the challenge."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "عدّل calculator.py فقط. لا تعدّل tests أو run_tests.py أو prize.dat أو verify.py.",
+        "en": "Edit calculator.py only. Do not modify tests, run_tests.py, prize.dat, or verify.py."
+      },
+      {
+        "ar": "التلميحات التدريجية موجودة في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة وحاول مجدداً.",
+        "en": "Progressive hints are in HINTS.md. Read one when needed, then try again."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "شغّل الاختبارات قبل الإصلاح وبعده",
+          "en": "Run tests before and after your repair"
+        },
+        "file": "run_tests.py",
+        "note": {
+          "ar": "بعد اجتياز 17/17 اختباراً سيعرض البرنامج علم المكافأة.",
+          "en": "After all 17/17 tests pass, the program displays the reward flag."
+        }
+      },
+      {
+        "title": {
+          "ar": "تحقق من العلم",
+          "en": "Validate the flag"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل العلم الذي أعطتك إياه الاختبارات.",
+          "en": "Enter the flag produced by the tests."
+        }
+      }
     ]
   }
 };
+export const ctfBeginnerPack={
+  "url": "assets/biuret-beginner-player.zip",
+  "folder": "Biuret_CTF_Beginner_Player_Pack",
+  "bytes": 51860,
+  "sha256": "a9453c5efd1df4d1567e8b18caa62745304b3be0122445e1b3899c88bf54f02f",
+  "challengeIds": [
+    "hidden-message",
+    "username-hunter",
+    "hidden-pixel",
+    "buggy-calculator"
+  ],
+  "files": [
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/01_Hidden_Message/HINTS.md",
+      "sha256": "480a09f8450f1c5c93340d0c804684ceb89f62d38cab935a42afb06d0ccc8724",
+      "bytes": 505
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/01_Hidden_Message/README_AR.md",
+      "sha256": "87058b49cb144176d27c888f1b529c47232be6cd290ab8019555b20e4f455bd9",
+      "bytes": 1122
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/01_Hidden_Message/README_EN.md",
+      "sha256": "57af238eeb81c40717184b8f067c2c2f062b0e533d43ea6c9693879c801a03f0",
+      "bytes": 427
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/01_Hidden_Message/cipher.txt",
+      "sha256": "b2827ac55278ca4068ac544536ae08fd9f2cb3418d5ffc66e88aa13e2cb53e6b",
+      "bytes": 150
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/01_Hidden_Message/starter.py",
+      "sha256": "962db419bf66ea36818f0f9b35632aba3e4067e1eeae140d4598cf5f18883563",
+      "bytes": 442
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/01_Hidden_Message/verify.py",
+      "sha256": "8c774467e15dc97a5cafedb14043279d34fca4cbb876239a844529d5f06e0f18",
+      "bytes": 645
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/CASE_BRIEF.txt",
+      "sha256": "e0ca9582f6e247c3b5e740d9688c0e89ebfaecf6b5e3bffa58235693a5952d03",
+      "bytes": 231
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/HINTS.md",
+      "sha256": "23745b3e353fa63b514d796e9a0bba3991cfe3b40121aed4c1e74d36b178f8df",
+      "bytes": 589
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/README_AR.md",
+      "sha256": "c08c79097bbe753c91ab26740c7a40362fca57da18816301c6ed2d722e11decb",
+      "bytes": 1242
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/README_EN.md",
+      "sha256": "9e84106fff26608e90798b8706b0ce54421ca36a7a2a61bbdd6a675b2d84d205",
+      "bytes": 454
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/assets/theme.css",
+      "sha256": "4e1360f47af84ebec8166d0a2bfd9d485bce4373e98e047776241fb5e70239fe",
+      "bytes": 1811
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/devboard/blackframe.html",
+      "sha256": "22d266daf8bc7b18d128f26b711a50c53eaeaef71533691fbd81ea53b445b778",
+      "bytes": 684
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/devboard/cipherfern.html",
+      "sha256": "9fa294d93556b0f28950b2630d12fe9f25bcb9c6582be652b7bc2de43c1de5a4",
+      "bytes": 958
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/devboard/index.html",
+      "sha256": "eb01deb6e034b64dde673a0f31ae76d1115deed4fdf5ef71064e49bb97767ed0",
+      "bytes": 1228
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/devboard/packetmint.html",
+      "sha256": "93b106255a3b97a73fa47e75cefca5be678f5eed37b03ef6e8a8ed3a57fb3ec5",
+      "bytes": 696
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/devboard/starlint.html",
+      "sha256": "b828413725d45f03971bdd7ad98e5d16aab41e4a4ebf9fd2d2178b20ef5630e0",
+      "bytes": 688
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/eventhub/index.html",
+      "sha256": "54803908422907c84b186f5accf31a64213b98ee263adf88fdd400841f9fb0d8",
+      "bytes": 845
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/index.html",
+      "sha256": "ba9b0e7d804abf657f4df829e41596c71dc1e89decd99389ae8d4ff8cc461115",
+      "bytes": 1504
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/photoshelf/index.html",
+      "sha256": "049969ec6570b0ee38ab228e35533f4febd1649b2c71b2b26c60726f82aa2002",
+      "bytes": 1118
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/photoshelf/packetmint_photos.html",
+      "sha256": "1d9cf25984fa2b9eb9776940e6deb289c1d54c5b1199a6bb4e681819f56c8c2e",
+      "bytes": 688
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/photoshelf/pixel_fern21.html",
+      "sha256": "ce2c63ee09822da38376636d3bdbcd6ee1de219e29c1e05e1a0c02c2cd8db696",
+      "bytes": 1021
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/sites/photoshelf/skyline_pixel.html",
+      "sha256": "66e29dd4063a1d1c4cf45449252bf555875a9f3f89a91d54f751ee1e4a9aba51",
+      "bytes": 680
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/02_Username_Hunter/verify.py",
+      "sha256": "0f5b9a71f5e89b920ef0361c6ed0413770465397a43a800454a34668e65b95e2",
+      "bytes": 645
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/HINTS.md",
+      "sha256": "7b05f990bfbe347e3158e44de758aa7bc271d32bb6cc47195909988e1c154cb3",
+      "bytes": 577
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/README_AR.md",
+      "sha256": "6e1cfb0bb36c8aa0d3ed13af89104d102ba778deb1a1f9124c51a73aa330241f",
+      "bytes": 1779
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/README_EN.md",
+      "sha256": "0f8e43c49b407fbf26f015f3e5430e0eb67cf36332c7cdc8f3e0b97ecb19ebbe",
+      "bytes": 526
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/evidence.png",
+      "sha256": "ad771857631c463eebc032f0ff816aef5b80766e5361cc3efc7b65dba6922108",
+      "bytes": 23880
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/extract_starter.py",
+      "sha256": "9b7861d8342cdb663f0b8cd1acc005e428dcc362c68618394e6da0117a2a9008",
+      "bytes": 625
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/requirements.txt",
+      "sha256": "dce978a554b00caca70d59f539d25c61fcc89681e02d7fec42948cd5c3c0a127",
+      "bytes": 13
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/03_Hidden_Pixel/verify.py",
+      "sha256": "66b7003405919e65b19a24067e8f00a157674a4a85f91b38d68a3d5306841d91",
+      "bytes": 645
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/HINTS.md",
+      "sha256": "fb128b896147bf267b395c47e26fb557d0ba80a85e35242eff4bbbc2a2fe719b",
+      "bytes": 521
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/README_AR.md",
+      "sha256": "d6749384e6426b394622b008217426446f911ef3e9c2e328c5dc744af298490c",
+      "bytes": 1612
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/README_EN.md",
+      "sha256": "024ebaefe32f9c7ba0945b4769a7e4238846c732830e763d5cdb77d08d477afb",
+      "bytes": 500
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/calculator.py",
+      "sha256": "9ce7f444e68738ad43bcea3a8959b5cea87a74b240b3efe25838beb76eb4760d",
+      "bytes": 1526
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/prize.dat",
+      "sha256": "d40e8a730073a65c7cb932a7ad73ab9ea56dba3206ffd46127cb5747c14b219c",
+      "bytes": 37
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/run_tests.py",
+      "sha256": "ba4f41e2831f597f7539ad725811ced7a0f1ab2bc5911343c5fc93736041475f",
+      "bytes": 1025
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/tests/__init__.py",
+      "sha256": "c9e5e2f78004d6ae9f46ab5aca4b76bb7e0f2638d1f648b6adabed7ec6e923fc",
+      "bytes": 48
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/tests/test_calculator.py",
+      "sha256": "28fa710d4ddaf4dcfaf1cb26b66b74b3a30bb3feca4bd0e33c44e30492f899f4",
+      "bytes": 1500
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/04_Buggy_Calculator/verify.py",
+      "sha256": "4e538020670f366f00b987d45602692f8feef2f7f379b22b73e148fd45959692",
+      "bytes": 645
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/SCOREBOARD.csv",
+      "sha256": "aa6201c33ec1cd033064c99401acdd4e977ea6123bfde7c2eca06990c550936d",
+      "bytes": 198
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/START_HERE_AR.md",
+      "sha256": "c741113e5eab7cf498932c970f9da1d73269e834acbd9dab9c760744def8f9b9",
+      "bytes": 1884
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/START_HERE_EN.md",
+      "sha256": "03850c1047ad469ef135ff28bbdee6976fbf68c0a191849495ac5a782167538a",
+      "bytes": 822
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/SUBMISSION_TEMPLATE.md",
+      "sha256": "7d36811fe53a1997188c60bac0653b2ebe27e697e7ad761c21cf7395f81efd89",
+      "bytes": 351
+    },
+    {
+      "name": "Biuret_CTF_Beginner_Player_Pack/manifest.json",
+      "sha256": "797928f444fea71b3475711f9987135a053ebcd7609eb85c0fb2620552c96731",
+      "bytes": 920
+    }
+  ]
+};
+export const ctfStats={total:ctfChallenges.length,ready:ctfChallenges.filter(c=>c.status==='ready').length,planned:ctfChallenges.filter(c=>c.status==='planned').length};
 export function filterCTFChallenges({availability='all',category='all',level='all',query=''}={}) {
  const term=String(query).trim().toLowerCase();
  return ctfChallenges.filter(c=>(availability==='all'||c.status===availability)&&(category==='all'||c.category===category)&&(level==='all'||c.level===Number(level))&&[c.title.ar,c.title.en,c.brief.ar,c.brief.en,ctfCategories[c.category].ar,ctfCategories[c.category].en].join(' ').toLowerCase().includes(term)).sort((a,b)=>Number(b.status==='ready')-Number(a.status==='ready')||a.level-b.level);

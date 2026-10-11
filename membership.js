@@ -1,6 +1,6 @@
-import { loadUser, loadMembership, loadBilling } from './auth.js?v=20261011-ctf1';
-import { currentLanguage } from './i18n.js?v=20261011-ctf1';
-import { checkout, portal } from './billing-checkout.js?v=20261011-ctf1';
+import { loadUser, loadMembership, loadBilling } from './auth.js?v=20261011-ctf2';
+import { currentLanguage } from './i18n.js?v=20261011-ctf2';
+import { checkout, portal } from './billing-checkout.js?v=20261011-ctf2';
 
 const root = document.querySelector('#membership-main');
 let signedIn = false;
