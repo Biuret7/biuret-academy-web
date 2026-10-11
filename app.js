@@ -1,14 +1,14 @@
-import { renderAvatar } from './identity.js?v=20261011-workspace1';
-import { mountLessonNotes } from './lesson-notes.js?v=20261011-workspace1';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-workspace1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-workspace1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-workspace1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-workspace1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-workspace1';
-import { fullName } from './full-name.js?v=20261011-workspace1';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-workspace1';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261011-workspace1';
-import { workspaceHref } from './workspace-model.js?v=20261011-workspace1';
+import { renderAvatar } from './identity.js?v=20261011-ui2';
+import { mountLessonNotes } from './lesson-notes.js?v=20261011-ui2';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ui2';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261011-ui2';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261011-ui2';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261011-ui2';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261011-ui2';
+import { fullName } from './full-name.js?v=20261011-ui2';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261011-ui2';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261011-ui2';
+import { workspaceHref } from './workspace-model.js?v=20261011-ui2';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -96,14 +96,14 @@ const j = (ar, en) => isEnglish() ? en : ar;
 
 function renderJourney() {
   const root = $('#journey-guide');
-  if (!root) return;
+  if (!root && !$('#home-next-step')) return;
   const count = foundationsCount(learningProgress().lessons);
   const pending = Boolean(user()) && rewardStatus !== 'ready';
   const next = nextLearningStep(learningProgress().lessons, examPassed);
   const title = pending ? j('نجهّز خطوتك التالية', 'Preparing your next step') : next.kind === 'lesson' ? lc(next.lesson.title) : next.kind === 'practical' ? j('طبّق ما تعلمته', 'Apply what you learned') : j('حان وقت اختيار التخصص', 'Time to choose a specialization');
   const action = next.kind === 'lesson' ? j('تابع هذا الدرس', 'Continue this lesson') : next.kind === 'practical' ? j('افتح التقييم العملي', 'Open practical assessment') : j('استكشف التخصصات', 'Explore specializations');
   const detail = next.kind === 'lesson' ? j('أكمل الدرس ثم طبّق الفكرة في تمرين مرتبط به.', 'Finish the lesson, then apply the idea in related practice.') : next.kind === 'practical' ? j('أنهيت الدروس التسعة. حلّل ثلاث عينات تدريبية، ثم اجتز الامتحان النهائي.', 'You finished nine lessons. Analyze three training samples, then take the final exam.') : j('أنجزت الأساسيات. استكشف خرائط التخصصات ومحتواها المتاح.', 'Foundations complete. Explore specialization roadmaps and available content.');
-  root.innerHTML = `<div class="journey-heading"><span class="section-kicker">YOUR LEARNING ROUTE / 01 → 04</span><span class="journey-percent" dir="ltr">${pending ? '…' : `${count.completed} / ${count.total}`}</span></div><h2>${j('طريقك واضح من أول يوم.', 'A clear route from day one.')}</h2><p>${j('ابدأ بالأساسيات، ثم طبّق على أدلة تدريبية، واجتز الامتحان، وبعدها اختر تخصصك.', 'Learn the foundations, practice with training evidence, pass the exam, then choose your specialty.')}</p><div class="journey-stages"><div class="journey-stage ${count.completed < count.total ? 'is-current' : 'is-complete'}"><b>01</b><span>${j('الأساسيات', 'Foundations')}</span><small>${count.completed}/${count.total} ${j('دروس', 'lessons')}</small></div><div class="journey-stage ${count.completed === count.total && !examPassed ? 'is-current' : examPassed ? 'is-complete' : ''}"><b>02</b><span>${j('تقييم عملي', 'Practical assessment')}</span><small>${count.completed === count.total ? j('بعد الدروس', 'After lessons') : j('أكمل الدروس', 'Finish lessons')}</small></div><div class="journey-stage ${examPassed ? 'is-complete' : ''}"><b>03</b><span>${j('امتحان وشهادة', 'Exam and credential')}</span><small>${j('بعد التطبيق العملي', 'After practice')}</small></div><div class="journey-stage ${examPassed ? 'is-current' : ''}"><b>04</b><span>${j('اختر تخصصك', 'Choose a specialty')}</span><small>${examPassed ? j('استكشف الآن', 'Explore now') : j('بعد الأساسيات', 'After Foundations')}</small></div></div><div class="journey-next"><div><small>${j('خطوتك التالية', 'Your next step')}</small><h3>${esc(title)}</h3><p>${detail}</p></div>${pending ? '' : `<a class="button button-primary" href="${next.href}">${action} ↗</a>`}</div>`;
+  if (root) root.innerHTML = `<div class="journey-heading"><span class="section-kicker">YOUR LEARNING ROUTE / 01 → 04</span><span class="journey-percent" dir="ltr">${pending ? '…' : `${count.completed} / ${count.total}`}</span></div><h2>${j('طريقك واضح من أول يوم.', 'A clear route from day one.')}</h2><p>${j('ابدأ بالأساسيات، ثم طبّق على أدلة تدريبية، واجتز الامتحان، وبعدها اختر تخصصك.', 'Learn the foundations, practice with training evidence, pass the exam, then choose your specialty.')}</p><div class="journey-stages"><div class="journey-stage ${count.completed < count.total ? 'is-current' : 'is-complete'}"><b>01</b><span>${j('الأساسيات', 'Foundations')}</span><small>${count.completed}/${count.total} ${j('دروس', 'lessons')}</small></div><div class="journey-stage ${count.completed === count.total && !examPassed ? 'is-current' : examPassed ? 'is-complete' : ''}"><b>02</b><span>${j('تقييم عملي', 'Practical assessment')}</span><small>${count.completed === count.total ? j('بعد الدروس', 'After lessons') : j('أكمل الدروس', 'Finish lessons')}</small></div><div class="journey-stage ${examPassed ? 'is-complete' : ''}"><b>03</b><span>${j('امتحان وشهادة', 'Exam and credential')}</span><small>${j('بعد التطبيق العملي', 'After practice')}</small></div><div class="journey-stage ${examPassed ? 'is-current' : ''}"><b>04</b><span>${j('اختر تخصصك', 'Choose a specialty')}</span><small>${examPassed ? j('استكشف الآن', 'Explore now') : j('بعد الأساسيات', 'After Foundations')}</small></div></div><div class="journey-next"><div><small>${j('خطوتك التالية', 'Your next step')}</small><h3>${esc(title)}</h3><p>${detail}</p></div>${pending ? '' : `<a class="button button-primary" href="${next.href}">${action} ↗</a>`}</div>`;
   const start = $('#start-button');
   if (start) {
     start.disabled = pending;

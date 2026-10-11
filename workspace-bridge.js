@@ -1,4 +1,4 @@
-import { workspaces, workspaceHref } from './workspace-model.js?v=20261011-workspace1';
+import { workspaces, workspaceHref } from './workspace-model.js?v=20261011-ui2';
 
 let embedded = false;
 try { embedded = window.parent !== window && window.parent.location.origin === location.origin && Boolean(workspaces[window.parent.location.pathname.split('/').pop().replace(/\.html$/, '')]); } catch {}
@@ -43,9 +43,18 @@ if (embedded) {
     if (event.origin !== location.origin || event.source !== window.parent || event.data?.channel !== 'biuret-workspace') return;
     if (event.data.type === 'language' && ['ar', 'en'].includes(event.data.language) && document.documentElement.lang !== event.data.language) document.querySelector('#language-toggle')?.click();
     if (event.data.type === 'anchor' && /^#[a-zA-Z0-9_-]*$/.test(event.data.hash || '')) {
-      selectPathSection(event.data.hash);
-      const target = document.getElementById(event.data.hash.slice(1)) || (event.data.hash === '#' ? document.querySelector('main') : null);
-      if (target) { history.replaceState(null, '', event.data.hash === '#' ? location.pathname + location.search : event.data.hash); target.scrollIntoView({ block: 'start', behavior: 'smooth' }); target.tabIndex = -1; target.focus({ preventScroll: true }); announce(); }
+      const update = () => {
+        selectPathSection(event.data.hash);
+        const target = document.getElementById(event.data.hash.slice(1)) || (event.data.hash === '#' ? document.querySelector('main') : null);
+        if (target) {
+          history.replaceState(null, '', event.data.hash === '#' ? location.pathname + location.search : event.data.hash);
+          // Path tabs select a new view. Start at its heading, without a long scroll.
+          (pathView ? document.querySelector('main') : target).scrollIntoView({ block: 'start', behavior: 'instant' });
+          target.tabIndex = -1; target.focus({ preventScroll: true }); announce();
+        }
+      };
+      if (pathView && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(update);
+      else update();
     }
   });
   announce();

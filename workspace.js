@@ -1,8 +1,8 @@
-import { workspaces, parseWorkspace, workspaceHref, activeTab } from './workspace-model.js?v=20261011-workspace1';
-import { academyPaths } from './path-catalog-data.js?v=20261011-workspace1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-workspace1';
-import { user } from './auth.js?v=20261011-workspace1';
-import { fullName } from './full-name.js?v=20261011-workspace1';
+import { workspaces, parseWorkspace, workspaceHref, activeTab } from './workspace-model.js?v=20261011-ui2';
+import { academyPaths } from './path-catalog-data.js?v=20261011-ui2';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ui2';
+import { user } from './auth.js?v=20261011-ui2';
+import { fullName } from './full-name.js?v=20261011-ui2';
 
 const root = document.querySelector('#workspace-main');
 if (root) {
@@ -17,6 +17,7 @@ if (root) {
   const titleOf = value => value[currentLanguage() === 'en' ? 1 : 0];
   const pathOf = () => academyPaths.find(p => p.id === route.path);
   function controls() {
+    const focusedHref = tabs.contains(document.activeElement) ? document.activeElement.href : null;
     const config = workspaces[route.workspace], path = pathOf();
     back.textContent = tr('رجوع', 'Back'); back.hidden = depth < 1;
     back.setAttribute('aria-label', tr('العودة إلى الخطوة السابقة', 'Return to the previous step'));
@@ -38,6 +39,7 @@ if (root) {
       return a;
     }));
     if (path) { const all = document.createElement('a'); all.textContent = tr('كل المسارات', 'All paths'); all.href = 'learn.html'; all.className = 'workspace-all'; tabs.append(all); }
+    if (focusedHref) [...tabs.querySelectorAll('a')].find(a => a.href === focusedHref)?.focus({ preventScroll: true });
     setPageHeaderTitle({ ar: childTitle || config.title[0], en: childTitle || config.title[1] });
   }
   function mount(force = false) {
@@ -53,8 +55,9 @@ if (root) {
     }
     const replacing = Boolean(loaded);
     owner = nextOwner; loaded = childURL.href; childTitle = ''; busy.hidden = false;
+    root.dataset.state = 'loading';
     retry.hidden = true; frame.inert = true; frame.setAttribute('aria-busy', 'true'); clearTimeout(loadTimer);
-    loadTimer = setTimeout(() => { loadText.textContent = tr('لم يكتمل تحميل المحتوى. تحقّق من اتصالك ثم أعد المحاولة.', 'Content has not finished loading. Check your connection, then try again.'); retry.hidden = false; }, 25000);
+    loadTimer = setTimeout(() => { root.dataset.state = 'error'; loadText.textContent = tr('لم يكتمل تحميل المحتوى. تحقّق من اتصالك ثم أعد المحاولة.', 'Content has not finished loading. Check your connection, then try again.'); retry.hidden = false; }, 25000);
     if (replacing) frame.contentWindow.location.replace(childURL.href);
     else frame.src = childURL.href;
   }
@@ -103,7 +106,7 @@ if (root) {
       return;
     }
     childTitle = typeof message.title === 'string' ? message.title.trim().slice(0, 180) : '';
-    clearTimeout(loadTimer); busy.hidden = true; frame.inert = false; frame.removeAttribute('aria-busy'); controls();
+    clearTimeout(loadTimer); busy.hidden = true; root.dataset.state = 'ready'; frame.inert = false; frame.removeAttribute('aria-busy'); controls();
   });
   document.querySelector('#language-toggle')?.addEventListener('click', () => {
     childTitle = ''; controls(); clearTimeout(languageTimer);

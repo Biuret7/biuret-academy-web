@@ -1,4 +1,4 @@
-import { currentLanguage } from './i18n.js?v=20261011-workspace1';
+import { currentLanguage } from './i18n.js?v=20261011-ui2';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';
@@ -138,3 +138,25 @@ document.querySelector('main')?.addEventListener('click', event => {
   target.tabIndex = -1;
   requestAnimationFrame(() => target.focus({preventScroll:true}));
 });
+
+// Brief entry feedback for newly displayed cards; content is never hidden first.
+// Disconnecting after each entry keeps long lessons and quiz forms stable.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const seen = new WeakSet();
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) if (entry.isIntersecting) {
+      entry.target.classList.add('ui-enter'); observer.unobserve(entry.target);
+    }
+  }, { threshold: .08 });
+  const watch = () => document.querySelectorAll('.path-card,.catalog-card,.library-card,.overview-card').forEach(card => {
+    if (seen.has(card)) return; seen.add(card); observer.observe(card);
+  });
+  const main = document.querySelector('main');
+  if (main) new MutationObserver(watch).observe(main, { childList:true, subtree:true });
+  watch();
+}
+
+const localizeReward = () => document.querySelector('.reward-chip')?.setAttribute('aria-label', text('مستوى التعلم ورصيد العملات', 'Learning level and coin balance'));
+if (header) new MutationObserver(localizeReward).observe(header, {childList:true,subtree:true});
+document.querySelector('#language-toggle')?.addEventListener('click', () => setTimeout(localizeReward, 0));
+localizeReward();
