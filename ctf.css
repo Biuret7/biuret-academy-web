@@ -18,6 +18,7 @@
 .ctf-emblem svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.ctf-card.planned .ctf-emblem{color:#a4bcc7;border-color:#546572;background:#577a8910}
 .ctf-card .section-kicker{font-size:10px;line-height:1.7}.ctf-card h2{font-size:22px;line-height:1.5;margin:0;overflow-wrap:anywhere}
 .ctf-card-link{color:#f1f7ee;text-decoration:none}.ctf-card-link:after{content:'';position:absolute;inset:0;border-radius:18px;z-index:1}.ctf-card:focus-within{outline:2px solid #c8fa66;outline-offset:4px}
+.ctf-card-link:focus-visible{outline:none}
 .ctf-card>p{font-size:13px;color:#bdcdc2;line-height:1.9;flex:1;margin:0}.ctf-card .ctf-facts{margin-block:5px}.ctf-workflow{font-size:12px;color:#d2e5bc}.ctf-card>p.ctf-requirements{font-size:11px;color:#a9bba9;flex:0}
 .ctf-card-footer{display:flex;justify-content:space-between;gap:12px;align-items:center;border-block-start:1px solid #ffffff13;padding-top:17px;margin-top:8px;font-size:12px;font-weight:650;color:#d2efad}.ctf-card.planned .ctf-card-footer{color:#b1c7d1}.ctf-arrow{font-size:24px;line-height:1}
 .ctf-status{display:inline-flex;align-self:flex-start;padding:5px 9px;border-radius:7px;font-size:11px;line-height:1.6}.ctf-status.ready{background:#26391c;color:#d4f5a8;border:1px solid #547836}.ctf-status.ready:before{content:'';width:5px;height:5px;border-radius:50%;background:#ccf78c;align-self:center;margin-inline-end:6px}.ctf-status.planned{background:#1d252a;color:#c1ced7;border:1px solid #47545c}

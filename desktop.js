@@ -1,15 +1,15 @@
-import { mountWorkbench } from './workbench.js?v=20261011-ctf2';
-import { mountAuthorizationLab } from './authorization-lab.js?v=20261011-ctf2';
-import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261011-ctf2';
-import { mountSpecialist } from './specialist-lab.js?v=20261011-ctf2';
-import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261011-ctf2';
-import { mountReverse } from './reverse-lab.js?v=20261011-ctf2';
-import { reversePractice } from './reverse-model.js?v=20261011-ctf2';
-import { mountAssurance } from './assurance-lab.js?v=20261011-ctf2';
-import { assurancePractice } from './assurance-model.js?v=20261011-ctf2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf2';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261011-ctf2';
-import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261011-ctf2';
+import { mountWorkbench } from './workbench.js?v=20261011-ctf3';
+import { mountAuthorizationLab } from './authorization-lab.js?v=20261011-ctf3';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261011-ctf3';
+import { mountSpecialist } from './specialist-lab.js?v=20261011-ctf3';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261011-ctf3';
+import { mountReverse } from './reverse-lab.js?v=20261011-ctf3';
+import { reversePractice } from './reverse-model.js?v=20261011-ctf3';
+import { mountAssurance } from './assurance-lab.js?v=20261011-ctf3';
+import { assurancePractice } from './assurance-model.js?v=20261011-ctf3';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf3';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261011-ctf3';
+import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261011-ctf3';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');

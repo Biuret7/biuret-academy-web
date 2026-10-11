@@ -1,6 +1,6 @@
-import { adminReportQueue, adminReportDetail, adminReviewReport, user } from './auth.js?v=20261011-ctf2';
-import { currentLanguage } from './i18n.js?v=20261011-ctf2';
-import { reportLabels, reviewStatus, reportPathName, escReport as esc, reportError, reportHistoryHTML } from './report-review-ui.js?v=20261011-ctf2';
+import { adminReportQueue, adminReportDetail, adminReviewReport, user } from './auth.js?v=20261011-ctf3';
+import { currentLanguage } from './i18n.js?v=20261011-ctf3';
+import { reportLabels, reviewStatus, reportPathName, escReport as esc, reportError, reportHistoryHTML } from './report-review-ui.js?v=20261011-ctf3';
 
 const t = (ar,en) => currentLanguage() === 'ar' ? ar : en;
 let owner, state = { items: [], nextCursor: null }, selected = null, cursor, previous = [], loaded = false, message = '', busy = false;

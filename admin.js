@@ -1,6 +1,6 @@
-import { user, loadUser, academyAdminStatus, academyAdminCredential, academyAdminRevoke } from './auth.js?v=20261011-ctf2';
-import { currentLanguage, applyLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf2';
-import { attachAdminReports } from './admin-reports.js?v=20261011-ctf2';
+import { user, loadUser, academyAdminStatus, academyAdminCredential, academyAdminRevoke } from './auth.js?v=20261011-ctf3';
+import { currentLanguage, applyLanguage, setPageHeaderTitle } from './i18n.js?v=20261011-ctf3';
+import { attachAdminReports } from './admin-reports.js?v=20261011-ctf3';
 
 const root = document.querySelector('#admin-main');
 const tr = (ar, en) => currentLanguage() === 'en' ? en : ar;

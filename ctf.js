@@ -1,7 +1,7 @@
-import {user,loadUser} from './auth.js?v=20261011-ctf2';
-import {fullName} from './full-name.js?v=20261011-ctf2';
-import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261011-ctf2';
-import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261011-ctf2';
+import {user,loadUser} from './auth.js?v=20261011-ctf3';
+import {fullName} from './full-name.js?v=20261011-ctf3';
+import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261011-ctf3';
+import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261011-ctf3';
 const root=document.getElementById('ctf-main');
 const tr=(ar,en)=>currentLanguage()==='ar'?ar:en,localized=value=>value[currentLanguage()];
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
@@ -27,7 +27,7 @@ function badge(c){return el('span',c.status==='ready'?tr('جاهز الآن','Re
 function download(pkg,text,cls='button button-primary'){const a=el('a',text,cls);a.href=pkg.url;a.download=pkg.url.split('/').pop();return a;}
 function facts(c){
  const n=el('div',null,'ctf-facts');n.append(el('span',localized(ctfLevels[c.level])+' · '+c.level+'/5'));
- if(c.package?.minutes)n.append(el('span',tr(c.package.minutes+' دقيقة',c.package.minutes+' min')));
+ if(c.package?.minutes){const duration=el('span'),range=el('bdi',c.package.minutes);range.dir='ltr';duration.append(range,' '+tr('دقيقة','min'));n.append(duration);}
  return n;
 }
 function reset(){category=level='all';query='';render();}
@@ -60,7 +60,7 @@ function render(){
    const top=el('div',null,'ctf-card-top'),emblem=el('span',null,'ctf-emblem');emblem.append(icon(c));top.append(emblem,badge(c));card.append(top,el('span',localized(ctfCategories[c.category]),'section-kicker'));
    const heading=el('h2'),link=el('a',localized(c.title),'ctf-card-link');link.href='#'+c.id;
    link.addEventListener('click',event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();navigate(c.id);}});heading.append(link);card.append(heading,el('p',localized(c.brief)),facts(c));
-   if(c.package){card.append(el('span',mode(c),'ctf-workflow'),el('p',c.package.dependencies?.length?'Python '+c.package.python+' · Pillow':'Python '+c.package.python+' · '+tr('دون مكتبات إضافية','No extra packages'),'ctf-requirements'));}
+   if(c.package){const requirements=el('p',null,'ctf-requirements'),python=el('bdi','Python '+c.package.python);python.dir='ltr';requirements.append(python,' · '+(c.package.dependencies?.length?'Pillow':tr('دون مكتبات إضافية','No extra packages')));card.append(el('span',mode(c),'ctf-workflow'),requirements);}
    const footer=el('div',null,'ctf-card-footer');footer.append(el('span',c.package?tr('اقرأ المهمة وابدأ','Read briefing & begin'):tr('استكشف الفكرة','Explore the concept')),el('span',tr('←','→'),'ctf-arrow'));card.append(footer);list.append(card);
   }
   if(!match.length){const empty=el('div',null,'section-frame ctf-empty');empty.append(el('h2',tr('لا توجد تحديات مطابقة','No matching challenges')),el('p',tr('جرّب كلمة أخرى أو أعد ضبط المرشحات.','Try another search or reset your filters.')),button(tr('إعادة ضبط المرشحات','Reset filters'),'button button-outline',()=>reset()));list.append(empty);}

@@ -1,5 +1,5 @@
-import { challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ctf2';
-import { courseById, lessonById } from './learning-content.js?v=20261011-ctf2';
+import { challenges, challengeById, challengesForTrack } from './content.js?v=20261011-ctf3';
+import { courseById, lessonById } from './learning-content.js?v=20261011-ctf3';
 
 export const DAILY_BONUS_XP = 30;
 export const STORAGE_KEY = 'biuret-academy-progress-v1';
