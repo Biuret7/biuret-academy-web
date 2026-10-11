@@ -1,5 +1,5 @@
 // Public navigation only. Learning access and awards remain server controlled.
-import { academyPaths } from './path-catalog-data.js?v=20261011-ctf1';
+import { academyPaths } from './path-catalog-data.js?v=20261012-submit-bottom1';
 export const workspaces = Object.freeze(Object.assign(Object.create(null), {
   learn: { title: ['التعلّم', 'Learning'], tabs: [['paths', 'المسارات', 'Paths'], ['courses', 'الدورات', 'Courses'], ['free-studio', 'تعمّق في الأساسيات', 'Foundations practice'], ['search', 'البحث في الدروس', 'Find lessons']] },
   practice: { title: ['التدريب', 'Practice'], tabs: [['labs', 'المختبرات', 'Labs'], ['quizzes', 'الكويزات', 'Quizzes'], ['challenges', 'التحديات', 'Challenges'], ['operations', 'غرف العمليات', 'Operations rooms']] },
