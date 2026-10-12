@@ -1,4 +1,4 @@
-import {specialistPractices,mobileRequests,mobileDecision,sourceCases,assessSources,controlCases,assessControl,sanitizeSpecialist,specialistReport} from './specialist-model.js?v=20261012-theme1';
+import {specialistPractices,mobileRequests,mobileDecision,sourceCases,assessSources,controlCases,assessControl,sanitizeSpecialist,specialistReport} from './specialist-model.js?v=20261012-ui3';
 
 export function mountSpecialist(root,{owner,language,kind}){
   if(!root||!owner||!Object.hasOwn(specialistPractices,kind))return;

@@ -1,4 +1,4 @@
-import { englishTracks, englishChallenges } from './content-en.js?v=20261012-theme1';
+import { englishTracks, englishChallenges } from './content-en.js?v=20261012-ui3';
 
 const KEY = 'biuret-academy-language';
 let language;

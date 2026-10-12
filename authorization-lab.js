@@ -1,4 +1,4 @@
-import { identities, actions, variants, simulate, sanitizeAttempts, reviewAttempts, authorizationReport } from './authorization-model.js?v=20261012-theme1';
+import { identities, actions, variants, simulate, sanitizeAttempts, reviewAttempts, authorizationReport } from './authorization-model.js?v=20261012-ui3';
 
 export function mountAuthorizationLab(root, { owner, language }) {
   if (!root || !owner) return;
