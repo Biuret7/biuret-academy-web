@@ -13,3 +13,7 @@ QA: all three sites switched to Light; preference survived page navigation. Acad
 Owner explicitly approved publication to all three public domains. Implementation: `a899596e5922492b6c294d6d27e1c9dbc8703963`. [Pages run 38284738947](https://github.com/Biuret7/biuret-academy-web/actions/runs/38284738947) completed successfully. The production button switched Dark to Light, the Light preference survived reload, and the button switched back to Dark after verification.
 
 Proof screenshot: `C:/Users/Extreme/Desktop/Projects/tmp/biuret-academy-light-live-20261012.png`.
+
+## Light interface refinement — 2026-10-12
+
+The Light canvas stays pale while working surfaces use deeper sage and slate tones. Dark ink, charcoal header actions, darker badges/icons and clearer field boundaries improve hierarchy. Secondary actions, selected tabs and cards share restrained hover shadows and short transitions; reduced-motion preferences suppress movement. Logo tiles and certificate image mats retain their dark backgrounds. Native inputs/selects and autofill use the Light palette. CSS cache version: `20261012-light2` (JavaScript unchanged).
