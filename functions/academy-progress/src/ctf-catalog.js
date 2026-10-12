@@ -36,6 +36,60 @@ export const ctfCatalog = [
     "packageSha256": "4670d66a58a8a4898f3423d342ac229eeaddb47d4431e2b274bac0905b7a499e"
   },
   {
+    "id": "xor-mystery",
+    "title": {
+      "ar": "لغز XOR",
+      "en": "XOR Mystery"
+    },
+    "level": 2,
+    "packageSha256": "4dc99ca1a24dd24e4c826a8ba3afe9c009eabdc79337c225d14dce24cf3c318a"
+  },
+  {
+    "id": "log-hunter",
+    "title": {
+      "ar": "باحث السجلات",
+      "en": "Log Hunter"
+    },
+    "level": 2,
+    "packageSha256": "209ba66a0a28754cc0d219b244bcab6d2abf6d91629eb91286f7a04ce8522166"
+  },
+  {
+    "id": "digital-footprint",
+    "title": {
+      "ar": "باحث أسماء المستخدمين ٢",
+      "en": "Username Hunter 2"
+    },
+    "level": 2,
+    "packageSha256": "b9f22186545497be900dad844c06abfedc991ed8993bc9bff97f73cd3c59e942"
+  },
+  {
+    "id": "broken-login",
+    "title": {
+      "ar": "تسجيل الدخول المعيب",
+      "en": "Broken Login"
+    },
+    "level": 2,
+    "packageSha256": "edff03e783b47a9c2f9f7e07dc10f12a2d48fd1bc51ac3dd41d2d4a9b56fbc9d"
+  },
+  {
+    "id": "secret-function",
+    "title": {
+      "ar": "الدالة السرية",
+      "en": "Secret Function"
+    },
+    "level": 2,
+    "packageSha256": "54f22d0e3f3be1a0cbff2415a6ab87e0683bcc8c63e45e02038330de152e8c62"
+  },
+  {
+    "id": "data-recovery-script",
+    "title": {
+      "ar": "استعادة البيانات",
+      "en": "Data Recovery"
+    },
+    "level": 2,
+    "packageSha256": "0bf330c8221a429e5191f180131fc26ab2644daa34235b929acdaa4365528fff"
+  },
+  {
     "id": "biuret-cybertrace",
     "title": {
       "ar": "Biuret CyberTrace · التهديد الداخلي",

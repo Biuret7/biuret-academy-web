@@ -1,15 +1,15 @@
-import {user,loadUser,loadCTFState,submitCTFFlag} from './auth.js?v=20261012-submit-bottom1';
-import {ctfRewards,CTF_MAX_ATTEMPTS} from './ctf-rewards.js?v=20261012-submit-bottom1';
-import {fullName} from './full-name.js?v=20261012-submit-bottom1';
-import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261012-submit-bottom1';
-import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261012-submit-bottom1';
+import {user,loadUser,loadCTFState,submitCTFFlag} from './auth.js?v=20261012-easy1';
+import {ctfRewards,CTF_MAX_ATTEMPTS} from './ctf-rewards.js?v=20261012-easy1';
+import {fullName} from './full-name.js?v=20261012-easy1';
+import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261012-easy1';
+import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfEasyPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261012-easy1';
 const root=document.getElementById('ctf-main');
 const tr=(ar,en)=>currentLanguage()==='ar'?ar:en,localized=value=>value[currentLanguage()];
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
 const number=value=>new Intl.NumberFormat(currentLanguage()).format(value);
-const modes={cipher:['لغز تشفير','Cipher puzzle'], 'offline-sites':['تحقيق في مواقع محلية','Offline web investigation'],image:['تحليل صورة','Image analysis'],debugging:['إصلاح شيفرة واختبارها','Debug & test'],console:['غرفة تحقيق محلية','Local investigation console']};
+const modes={cipher:['لغز تشفير','Cipher puzzle'], 'offline-sites':['تحقيق في مواقع محلية','Offline web investigation'],image:['تحليل صورة','Image analysis'],debugging:['تحليل شيفرة وبيانات','Code & data analysis'],console:['تحقيق محلي','Local investigation'],'local-web':['تطبيق ويب محلي','Local web application']};
 const mode=c=>localized({ar:modes[c.package?.mode||'console'][0],en:modes[c.package?.mode||'console'][1]});
-const symbols={cipher:'notes','offline-sites':'search',image:'labs',debugging:'tools',console:'operations'};
+const symbols={cipher:'notes','offline-sites':'search',image:'labs',debugging:'tools',console:'operations','local-web':'labs'};
 let owner=null,generation=0,availability='ready',category='all',level='all',query='',returnTo=null;
 let verified=null,verifiedStatus='loading',submitting=false;
 const completion=c=>verified?.completions?.find(p=>p.challengeId===c.id);
@@ -52,6 +52,9 @@ function render(){
  const beginner=el('section',null,'section-frame ctf-beginner'),copy=el('div');
  copy.append(el('span',tr('ابدأ هنا · سهل جداً','START HERE · VERY EASY'),'section-kicker'),el('h2',tr('أربع مهام. بداية واحدة واضحة.','Four missions. One clear starting point.')),el('p',tr('رسالة مشفرة ← تحقيق OSINT ← صورة مخفية ← إصلاح برنامج. اقرأ التعليمات، جرّب، ثم تحقق محلياً من إجابتك.','A cipher → an OSINT case → hidden image data → a broken program. Read the briefing, experiment, then check your answer locally.')));
  const actions=el('div',null,'ctf-beginner-actions');actions.append(button(tr('اعرض تحديات البداية','Explore beginner missions'),'button button-primary',()=>{availability='ready';category='all';level='1';query='';render();root.querySelector('.ctf-toolbar')?.scrollIntoView({block:'start'});}),download(ctfBeginnerPack,tr('تنزيل حزمة المبتدئين','Download beginner pack'),'button button-outline'));beginner.append(copy,actions);root.append(beginner);
+ const easy=el('section',null,'section-frame ctf-beginner'),easyCopy=el('div');
+ easyCopy.append(el('span',tr('خطوتك التالية · Easy · ٢/٥','NEXT STEP · EASY · 2/5'),'section-kicker'),el('h2',tr('ست مهام. مهارات أعمق.','Six missions. Deeper skills.')),el('p',tr('تشفير، سجلات، OSINT، أمن ويب، تحليل شيفرة واستعادة بيانات. كلها محلية؛ ابدأ بعد تحديات البداية، ثم سلّم الـflag أسفل صفحة المهمة.','Cryptography, logs, OSINT, web security, code analysis and data recovery. All run locally. Continue after the beginner missions, then submit the flag at the bottom of the briefing.')));
+ const easyActions=el('div',null,'ctf-beginner-actions');easyActions.append(button(tr('اعرض تحديات Easy','Explore Easy missions'),'button button-outline',()=>{availability='ready';category='all';level='2';query='';render();root.querySelector('.ctf-toolbar')?.scrollIntoView({block:'start'});}),download(ctfEasyPack,tr('تنزيل حزمة Easy','Download Easy pack'),'button button-outline'));easy.append(easyCopy,easyActions);root.append(easy);
  const note=el('details',null,'section-frame ctf-note');note.append(el('summary',tr('كيف ألعب؟ وما الذي يُحفظ في حسابي؟','How do I play, and what is saved to my account?')),el('p',tr('نزّل الملفات وشغّلها محلياً. Username Hunter يستخدم مواقع خيالية تفتح من مجلدك في المتصفح؛ بقية الحزم تستخدم Python. Hidden Pixel وحده يحتاج Pillow. التحديات قيد التخطيط ليس لها ملفات بعد. أدخل الـflag في صفحة المهمة ليحفظ الخادم إنجازك ويمنحك نقاط CTF وXP مرة واحدة. العملات لـPlus وPro فقط. التحقق المحلي وحده لا يحفظ التقدم، وشهادات المسارات مستقلة.','Download the files and work locally. Username Hunter uses fictional sites opened from your folder in a browser; the other packages use Python. Only Hidden Pixel needs Pillow. Planned challenges have no files yet. Submit the flag on the mission page to save a server-verified completion and earn CTF points and XP once. Coins require Plus or Pro. Local checks alone do not save progress; path credentials remain separate.')));root.append(note);
  const toolbar=el('section',null,'section-frame ctf-toolbar'),tabs=el('div',null,'ctf-filters');tabs.setAttribute('role','group');tabs.setAttribute('aria-label',tr('توفر التحديات','Challenge availability'));const tabButtons=[];
  for(const [value,label]of [['ready',tr('جاهز الآن','Ready now')],['all',tr('المجموعة كاملة','All challenges')],['planned',tr('قيد التخطيط','Planned')]]){const count=value==='all'?ctfStats.total:ctfStats[value];const b=button(label+' ('+number(count)+')','button button-outline',()=>{availability=value;cards();});b.dataset.availability=value;tabs.append(b);tabButtons.push(b);}

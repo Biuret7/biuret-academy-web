@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {inflateRawSync} from 'node:zlib';
-import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfStats,filterCTFChallenges} from '../ctf-model.js';
+import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfEasyPack,ctfStats,filterCTFChallenges} from '../ctf-model.js';
 const sha=data=>createHash('sha256').update(data).digest('hex');
 function unzip(data,beginnerBundle=false){
  let end=-1;for(let n=data.length-22;n>=Math.max(0,data.length-65557);n--)if(data.readUInt32LE(n)===0x06054b50){end=n;break;}
@@ -18,13 +18,13 @@ function unzip(data,beginnerBundle=false){
 test('the archive replaces the old six missions with all 40 localized concepts',()=>{
  assert.equal(ctfChallenges.length,40);assert.equal(new Set(ctfChallenges.map(c=>c.id)).size,40);
  assert.deepEqual([1,2,3,4,5].map(level=>ctfChallenges.filter(c=>c.level===level).length),[4,10,13,11,2]);
- assert.deepEqual(ctfChallenges.filter(c=>c.status==='ready').map(c=>c.id).sort(),['biuret-cybertrace','biuret-vault','buggy-calculator','hidden-message','hidden-pixel','username-hunter']);
- assert.deepEqual(ctfStats,{total:40,ready:6,planned:34});
+ assert.deepEqual(ctfChallenges.filter(c=>c.status==='ready').map(c=>c.id).sort(),['biuret-cybertrace','biuret-vault','broken-login','buggy-calculator','data-recovery-script','digital-footprint','hidden-message','hidden-pixel','log-hunter','secret-function','username-hunter','xor-mystery']);
+ assert.deepEqual(ctfStats,{total:40,ready:12,planned:28});
  for(const c of ctfChallenges){assert.ok(ctfCategories[c.category]&&ctfLevels[c.level]);for(const lang of ['ar','en'])assert.ok(c.title[lang]&&c.brief[lang]);assert.ok(!('flag' in c)&&!('solution' in c));assert.equal(Boolean(c.package),c.status==='ready');}
  assert.ok(!ctfChallenges.some(c=>['real-host','encoding','session-correlation','permissions','transport','timeline'].includes(c.id)));
 });
 test('availability, specialty, level and bilingual search compose without inventing ready packages',()=>{
- assert.equal(filterCTFChallenges({availability:'planned'}).length,34);assert.equal(filterCTFChallenges({availability:'ready'}).length,6);
+ assert.equal(filterCTFChallenges({availability:'planned'}).length,28);assert.equal(filterCTFChallenges({availability:'ready'}).length,12);
  assert.equal(filterCTFChallenges({availability:'ready',category:'forensics',level:'3',query:'CYBERTRACE'}).length,1);
  assert.equal(filterCTFChallenges({availability:'planned',query:'الخزنة'}).length,0);
  assert.equal(filterCTFChallenges({query:'الخزنة'})[0].id,'biuret-vault');assert.equal(filterCTFChallenges({level:'5'}).length,2);
@@ -60,4 +60,34 @@ test('beginner bundle includes every separate challenge unchanged and a blank sc
  const scoreboard=bundle.get(ctfBeginnerPack.folder+'/SCOREBOARD.csv').toString().trim().split(/\r?\n/);
  assert.equal(scoreboard.length,5);for(const row of scoreboard.slice(1))assert.match(row,/,10,,$/);
  for(const file of ['START_HERE_AR.md','START_HERE_EN.md','SUBMISSION_TEMPLATE.md','manifest.json'])assert.ok(bundle.has(ctfBeginnerPack.folder+'/'+file));
+});
+
+test('all six supplied Easy missions have bilingual instructions, original evidence and correct reward metadata',()=>{
+ const easy=filterCTFChallenges({availability:'ready',level:2});
+ assert.deepEqual(easy.map(c=>c.id),ctfEasyPack.challengeIds);
+ assert.equal(easy.length,6);
+ for(const c of easy){
+  assert.equal(c.package.points,25);assert.deepEqual(c.package.dependencies,[]);
+  const files=unzip(readFileSync(new URL('../'+c.package.url,import.meta.url)));
+  for(const name of ['README.md','README_AR.md','README_EN.md','HINTS.md','HINTS_AR.md','verify.py'])assert.ok(files.has(c.package.folder+'/'+name));
+  assert.match(files.get(c.package.folder+'/README_EN.md').toString(),/25 platform CTF points/);
+  assert.doesNotMatch(files.get(c.package.folder+'/README_EN.md').toString(),/organizer may apply point penalties/);
+ }
+ const web=easy.find(c=>c.id==='broken-login');
+ assert.equal(web.package.mode,'local-web');
+ const server=unzip(readFileSync(new URL('../'+web.package.url,import.meta.url))).get(web.package.folder+'/server.py').toString();
+ assert.match(server,/HTTPServer\(\('127\.0\.0\.1',8765\),Handler\)/);
+ assert.match(ctfGuides[web.id].setup.map(s=>s.en).join(' '),/127\.0\.0\.1:8765/);
+ assert.ok(ctfGuides[web.id].commands.some(c=>c.file==='server.py'));
+});
+
+test('Easy bundle matches every separate player archive without introducing solution files',()=>{
+ const data=readFileSync(new URL('../'+ctfEasyPack.url,import.meta.url));assert.equal(sha(data),ctfEasyPack.sha256);assert.equal(data.length,ctfEasyPack.bytes);
+ const bundle=unzip(data);assert.equal(bundle.size,ctfEasyPack.files.length);
+ for(const f of ctfEasyPack.files){assert.equal(bundle.get(f.name)?.length,f.bytes);assert.equal(sha(bundle.get(f.name)),f.sha256);}
+ const directories=['01_XOR_Mystery','02_Log_Hunter','03_Username_Hunter_2','04_Broken_Login','05_Secret_Function','06_Data_Recovery'];
+ for(const [i,id]of ctfEasyPack.challengeIds.entries()){
+  const c=ctfChallenges.find(c=>c.id===id),files=unzip(readFileSync(new URL('../'+c.package.url,import.meta.url)));
+  for(const [name,body]of files)assert.deepEqual(body,bundle.get(ctfEasyPack.folder+'/'+directories[i]+'/'+name.slice(c.package.folder.length+1)));
+ }
 });

@@ -1,4 +1,4 @@
-import { canAccess } from './plan-access.js?v=20261012-submit-bottom1';
+import { canAccess } from './plan-access.js?v=20261012-easy1';
 
 export function pathAccess(path, membership, foundationsPassed, ready = true) {
   if (!ready || !membership) return 'unavailable';

@@ -1,4 +1,4 @@
-import {branchInputs,reversePractice,traceBranch,sanitizeReverse,reverseReport} from './reverse-model.js?v=20261012-submit-bottom1';
+import {branchInputs,reversePractice,traceBranch,sanitizeReverse,reverseReport} from './reverse-model.js?v=20261012-easy1';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function mountReverse(root,{owner,language='ar'}){
  if(!root||!owner)return;

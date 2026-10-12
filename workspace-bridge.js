@@ -1,4 +1,4 @@
-import { workspaces, workspaceHref } from './workspace-model.js?v=20261012-submit-bottom1';
+import { workspaces, workspaceHref } from './workspace-model.js?v=20261012-easy1';
 
 let embedded = false;
 try { embedded = window.parent !== window && window.parent.location.origin === location.origin && Boolean(workspaces[window.parent.location.pathname.split('/').pop().replace(/\.html$/, '')]); } catch {}

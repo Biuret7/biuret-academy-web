@@ -10,7 +10,7 @@
 | Hard | 100 | 350 | 35 |
 | Advanced | 150 | 500 | 50 |
 
-Points and XP are available to every signed-in learner with a real full name. Coins require current Plus/Pro eligibility or the existing administrator entitlement. Free completions earn no coins and cannot mint coins after an upgrade; previously earned coins survive a downgrade. All rewards are granted once per account and challenge. Planned concepts cannot be submitted. The six ready packages have private validators.
+Points and XP are available to every signed-in learner with a real full name. Coins require current Plus/Pro eligibility or the existing administrator entitlement. Free completions earn no coins and cannot mint coins after an upgrade; previously earned coins survive a downgrade. All rewards are granted once per account and challenge. Planned concepts cannot be submitted. The twelve ready packages have private validators.
 
 The browser displays the flag field, real server errors, a saved completion badge, account totals and a downloadable JSON achievement record. Completion records include the learner name at completion, challenge, difficulty, date, package fingerprint, fixed rewards and private record ID. Language changes preserve account progress. A downloadable record is a copy of an authenticated account record, not a signed offline certificate or a public verification link.
 
@@ -24,6 +24,6 @@ Ten persisted `r_` attempt slots per account/challenge/UTC day limit guesses acr
 
 ## Release
 
-Include `ctf-bank.private.json` and all `src/ctf*.js` in the Academy Progress archive alongside the existing private banks. Keep the bank and archives out of GitHub. Deploy the function before publishing the matching browser UI. The shared module cache revision is `20261011-ctf1` so all pages share one authentication singleton. `build-ctf-catalog.mjs` regenerates public reward rules and the server's ready metadata inventory; never copy private validators into the public model or staging folder.
+Include `ctf-bank.private.json` and all `src/ctf*.js` in the Academy Progress archive alongside the existing private banks. Keep the bank and archives out of GitHub. Deploy the function before publishing the matching browser UI. The shared module cache revision is `20261012-easy1` so all pages share one authentication singleton. `build-ctf-catalog.mjs` regenerates public reward rules and the server's ready metadata inventory; never copy private validators into the public model or staging folder.
 
 Verification covers malformed/wrong flags, original ready inventory, every reward tier, Free eligibility, downgrade/upgrade behavior, concurrent submissions, ownership isolation, JWT/full-name gates, ignored client reward claims, UTC reset and storage failures. Browser QA uses an isolated local fake account and a synthetic flag, never a real learner reward.

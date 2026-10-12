@@ -318,24 +318,409 @@ export const ctfChallenges=[
     "category": "cryptography",
     "level": 2,
     "brief": {
-      "ar": "استرجاع نص مخفي باستخدام XOR ومفتاح مجهول.",
-      "en": "Recover hidden text encrypted with XOR and an unknown key."
+      "ar": "استرجع رسالة من بيانات hex ومفتاح XOR من بايت واحد، وميّز فك الترميز عن فك التشفير.",
+      "en": "Recover a message from hex data and a one-byte XOR key; distinguish decoding from decryption."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-xor-mystery-player.zip",
+      "folder": "biuret-xor-mystery-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "20–35",
+      "mode": "cipher",
+      "dependencies": [],
+      "points": 25,
+      "bytes": 3725,
+      "sha256": "4dc99ca1a24dd24e4c826a8ba3afe9c009eabdc79337c225d14dce24cf3c318a",
+      "files": [
+        {
+          "name": "biuret-xor-mystery-player/HINTS.md",
+          "bytes": 133,
+          "sha256": "97d06f9bb5697437ea0b8969397a3b6111a5e27deada25700f9156da846076b5"
+        },
+        {
+          "name": "biuret-xor-mystery-player/HINTS_AR.md",
+          "bytes": 184,
+          "sha256": "e8159f4da302d5823a6d3dfeb9d583d3e40024a27de9a52255a9488651f90530"
+        },
+        {
+          "name": "biuret-xor-mystery-player/README.md",
+          "bytes": 823,
+          "sha256": "69f064f3b26dd3c893631b79b5a0871be978e7dfdf2c11fc36b55371e47f5338"
+        },
+        {
+          "name": "biuret-xor-mystery-player/README_AR.md",
+          "bytes": 1573,
+          "sha256": "4b760d8236de180314d12ba61d153f79d3ca2d467769bc0d3f1c88624367074e"
+        },
+        {
+          "name": "biuret-xor-mystery-player/README_EN.md",
+          "bytes": 823,
+          "sha256": "69f064f3b26dd3c893631b79b5a0871be978e7dfdf2c11fc36b55371e47f5338"
+        },
+        {
+          "name": "biuret-xor-mystery-player/intercept.txt",
+          "bytes": 115,
+          "sha256": "436ca7e30723b77077b40df49b4416c6d4415bf60b234ccfc408e26e9c6590dc"
+        },
+        {
+          "name": "biuret-xor-mystery-player/packet_note.txt",
+          "bytes": 97,
+          "sha256": "7b7df6bfac448a21a580bbc3cdc06dfe11ea1c7ab9915f6f53b061d89aeedf17"
+        },
+        {
+          "name": "biuret-xor-mystery-player/verify.py",
+          "bytes": 341,
+          "sha256": "52ad1c87b3a07a9095809bdc850e6e325e90aa2b2c290eeae02710e3c9a7a94e"
+        }
+      ]
+    }
+  },
+  {
+    "id": "log-hunter",
+    "title": {
+      "ar": "باحث السجلات",
+      "en": "Log Hunter"
+    },
+    "category": "forensics",
+    "level": 2,
+    "brief": {
+      "ar": "اربط فشل الدخول والنجاح اللاحق ونقل البيانات بمعرّف الجلسة، ثم حدد رقم الحادث من الفهرس.",
+      "en": "Correlate failed logins, a later success and a data transfer by session ID, then identify the incident in the index."
+    },
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-log-hunter-player.zip",
+      "folder": "biuret-log-hunter-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "25–40",
+      "mode": "console",
+      "dependencies": [],
+      "points": 25,
+      "bytes": 4348,
+      "sha256": "209ba66a0a28754cc0d219b244bcab6d2abf6d91629eb91286f7a04ce8522166",
+      "files": [
+        {
+          "name": "biuret-log-hunter-player/HINTS.md",
+          "bytes": 145,
+          "sha256": "ff02e7d722a7a3c44f42701c3a3edbd378915adfc4809b6c28848a55416112cb"
+        },
+        {
+          "name": "biuret-log-hunter-player/HINTS_AR.md",
+          "bytes": 239,
+          "sha256": "588a4c0077ce8f1a793d23a02b5c6025afc51b4950337ff473422676b0261474"
+        },
+        {
+          "name": "biuret-log-hunter-player/README.md",
+          "bytes": 967,
+          "sha256": "0439219a2aa80a07a19538bc0af3e40494ea9494ea846ed7b149f04c6ac02133"
+        },
+        {
+          "name": "biuret-log-hunter-player/README_AR.md",
+          "bytes": 1841,
+          "sha256": "c67642504357f1d84deacfcd7b1408cc60318315d3fa1a616a012d63f48d982e"
+        },
+        {
+          "name": "biuret-log-hunter-player/README_EN.md",
+          "bytes": 967,
+          "sha256": "0439219a2aa80a07a19538bc0af3e40494ea9494ea846ed7b149f04c6ac02133"
+        },
+        {
+          "name": "biuret-log-hunter-player/audit_index.csv",
+          "bytes": 98,
+          "sha256": "ce97c6ab6669fe76f954fafaf1734db0e71cc3c7e9a2b149ba763ff3085d0c51"
+        },
+        {
+          "name": "biuret-log-hunter-player/auth.log",
+          "bytes": 726,
+          "sha256": "81753c9ddb3512737071a355e1cbb7c1ce016ab3b9d285342cca79ce503316fe"
+        },
+        {
+          "name": "biuret-log-hunter-player/network.log",
+          "bytes": 263,
+          "sha256": "7e311100ab8a9c9e02a2a0674bd6ea007adc564a5627ff8a83b4af7a6286080f"
+        },
+        {
+          "name": "biuret-log-hunter-player/verify.py",
+          "bytes": 341,
+          "sha256": "f5c108744e147e84ed5268781d3cb06b1b69a3aa4eae70099c513ac322ca14e2"
+        }
+      ]
+    }
   },
   {
     "id": "digital-footprint",
     "title": {
-      "ar": "البصمة الرقمية",
-      "en": "Digital Footprint"
+      "ar": "باحث أسماء المستخدمين ٢",
+      "en": "Username Hunter 2"
     },
     "category": "osint",
     "level": 2,
     "brief": {
-      "ar": "ربط حسابات ومعلومات منشورة لتحديد هوية شخصية خيالية.",
-      "en": "Connect published accounts and clues to identify a fictional person."
+      "ar": "اربط الاسم الحالي لشخصية خيالية باسمها السابق، ثم استخرج الدليل من منشور الأرشيف المطابق.",
+      "en": "Connect a fictional profile’s current handle to its older alias, then recover evidence from the matching archived post."
     },
-    "status": "planned"
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-digital-footprint-player.zip",
+      "folder": "biuret-digital-footprint-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "20–35",
+      "mode": "offline-sites",
+      "dependencies": [],
+      "points": 25,
+      "bytes": 5158,
+      "sha256": "b9f22186545497be900dad844c06abfedc991ed8993bc9bff97f73cd3c59e942",
+      "files": [
+        {
+          "name": "biuret-digital-footprint-player/HINTS.md",
+          "bytes": 173,
+          "sha256": "a251fb7bc63cf9300413a5468eb1a89272caf2b99c69d491bd5a49d2e8833759"
+        },
+        {
+          "name": "biuret-digital-footprint-player/HINTS_AR.md",
+          "bytes": 221,
+          "sha256": "3c4cd8c3ce0db8f42fc5b996f4ac3f7e48c0718b89e766e5be7cbbc2b175407f"
+        },
+        {
+          "name": "biuret-digital-footprint-player/README.md",
+          "bytes": 975,
+          "sha256": "c86528689f2a7e96201e06c3b960c11057e06745e170169e4019e650cc927f7d"
+        },
+        {
+          "name": "biuret-digital-footprint-player/README_AR.md",
+          "bytes": 1752,
+          "sha256": "9135ffa920c3e3070fde30ffd230414ca9f637c713c585e108aebf626f716a10"
+        },
+        {
+          "name": "biuret-digital-footprint-player/README_EN.md",
+          "bytes": 975,
+          "sha256": "c86528689f2a7e96201e06c3b960c11057e06745e170169e4019e650cc927f7d"
+        },
+        {
+          "name": "biuret-digital-footprint-player/hub/archive.html",
+          "bytes": 389,
+          "sha256": "363c776ee39a77daec60438ec20a411cb545b23c1d80bbb7a8875b2df5be3df2"
+        },
+        {
+          "name": "biuret-digital-footprint-player/hub/gardener.html",
+          "bytes": 156,
+          "sha256": "4a74954c69dec55b8b3e3b3c203224668a15ebb9c1ef7ffee81693915fbfa7e2"
+        },
+        {
+          "name": "biuret-digital-footprint-player/hub/index.html",
+          "bytes": 648,
+          "sha256": "009f4d023962d7661ddecf51761b3924b83efcd05f1b0733fa95f093db6e00d0"
+        },
+        {
+          "name": "biuret-digital-footprint-player/hub/researcher.html",
+          "bytes": 283,
+          "sha256": "d7211377f3dc30e54aad6c471e01be2e50065162d4b62f21c798c2daa1c79759"
+        },
+        {
+          "name": "biuret-digital-footprint-player/verify.py",
+          "bytes": 341,
+          "sha256": "c79981143c70682199982df2f405dce09466de127bb47487e10589c9b073b91e"
+        }
+      ]
+    }
+  },
+  {
+    "id": "broken-login",
+    "title": {
+      "ar": "تسجيل الدخول المعيب",
+      "en": "Broken Login"
+    },
+    "category": "web",
+    "level": 2,
+    "brief": {
+      "ar": "حلل شرط التفويض في تطبيق محلي، واختبر سلوكه، ثم استخرج دليل الوصول إلى التشخيصات.",
+      "en": "Analyze an authorization condition in a local app, test its behavior and recover the diagnostic access proof."
+    },
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-broken-login-player.zip",
+      "folder": "biuret-broken-login-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "25–45",
+      "mode": "local-web",
+      "dependencies": [],
+      "points": 25,
+      "bytes": 4703,
+      "sha256": "edff03e783b47a9c2f9f7e07dc10f12a2d48fd1bc51ac3dd41d2d4a9b56fbc9d",
+      "files": [
+        {
+          "name": "biuret-broken-login-player/HINTS.md",
+          "bytes": 184,
+          "sha256": "2b91fa365907a87ff5b034b11a8cae44442b16a6191b99813753b745daad2642"
+        },
+        {
+          "name": "biuret-broken-login-player/HINTS_AR.md",
+          "bytes": 212,
+          "sha256": "3cc57b24662019bcdc8ade8adc99fd4314605f1dd48d5f57df363a6825404fb1"
+        },
+        {
+          "name": "biuret-broken-login-player/README.md",
+          "bytes": 987,
+          "sha256": "f0e84cea69f46240b40d855deadaff0a1499e6a76b9c0fb1b023024e9b896960"
+        },
+        {
+          "name": "biuret-broken-login-player/README_AR.md",
+          "bytes": 1856,
+          "sha256": "81713ba9ecd1e85ea0d9af93138408b9c18eb88b4dc5a90eef3408b0b626aa5f"
+        },
+        {
+          "name": "biuret-broken-login-player/README_EN.md",
+          "bytes": 987,
+          "sha256": "f0e84cea69f46240b40d855deadaff0a1499e6a76b9c0fb1b023024e9b896960"
+        },
+        {
+          "name": "biuret-broken-login-player/server.py",
+          "bytes": 1907,
+          "sha256": "b22f4151288254cec19fb5c893ca24689dc26ee5a5a3d3c0be26e475a820d7bb"
+        },
+        {
+          "name": "biuret-broken-login-player/verify.py",
+          "bytes": 341,
+          "sha256": "46e1b3b2e99a5fd91ef13d81cdca1f0b7a3adbfcced32c308028ca5ae2760f9f"
+        }
+      ]
+    }
+  },
+  {
+    "id": "secret-function",
+    "title": {
+      "ar": "الدالة السرية",
+      "en": "Secret Function"
+    },
+    "category": "reverse",
+    "level": 2,
+    "brief": {
+      "ar": "تتبّع مسار تشغيل برنامج صغير، واكتشف دالة غير مستخدمة، وافهم تحويل البايتات لإظهار مخرجاتها.",
+      "en": "Trace a small program’s execution, discover an unused function and understand its byte transformation to recover the output."
+    },
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-secret-function-player.zip",
+      "folder": "biuret-secret-function-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "20–35",
+      "mode": "console",
+      "dependencies": [],
+      "points": 25,
+      "bytes": 3760,
+      "sha256": "54f22d0e3f3be1a0cbff2415a6ab87e0683bcc8c63e45e02038330de152e8c62",
+      "files": [
+        {
+          "name": "biuret-secret-function-player/HINTS.md",
+          "bytes": 160,
+          "sha256": "c979e05813a75758b9bcda8caa3a72e5aadfb97f24fa5abca7d38bf1123722d6"
+        },
+        {
+          "name": "biuret-secret-function-player/HINTS_AR.md",
+          "bytes": 202,
+          "sha256": "c24ccc1814e13acf22d8555e5612dd785b7d3755799fa580683110455827540b"
+        },
+        {
+          "name": "biuret-secret-function-player/README.md",
+          "bytes": 875,
+          "sha256": "bc8b444113ae7405b5328d7c504ff7cab0361081d7e9c3805d8e981d01efcca1"
+        },
+        {
+          "name": "biuret-secret-function-player/README_AR.md",
+          "bytes": 1650,
+          "sha256": "30bc380e058253a238577c1947102af8a95743b5f46c8710ec5aa3297ca36f30"
+        },
+        {
+          "name": "biuret-secret-function-player/README_EN.md",
+          "bytes": 875,
+          "sha256": "bc8b444113ae7405b5328d7c504ff7cab0361081d7e9c3805d8e981d01efcca1"
+        },
+        {
+          "name": "biuret-secret-function-player/console.py",
+          "bytes": 453,
+          "sha256": "4ca07e40d16902c4ff6c0ab983fb3fb6480458c0b2cb500024c00c6cdad340a2"
+        },
+        {
+          "name": "biuret-secret-function-player/verify.py",
+          "bytes": 341,
+          "sha256": "b184cc6292c91b570ae6e8219d7b1516dfa46641b2ae4a04fb19ba4e8e8d1635"
+        }
+      ]
+    }
+  },
+  {
+    "id": "data-recovery-script",
+    "title": {
+      "ar": "استعادة البيانات",
+      "en": "Data Recovery"
+    },
+    "category": "programming",
+    "level": 2,
+    "brief": {
+      "ar": "أصلح سجلات JSONL المشوهة، ورشّح السجلات وفق المخطط، ثم أعد ترتيب الأجزاء لبناء الرمز الصحيح.",
+      "en": "Repair malformed JSONL records, filter them using the schema and order the fragments to reconstruct the correct token."
+    },
+    "status": "ready",
+    "package": {
+      "url": "assets/biuret-data-recovery-script-player.zip",
+      "folder": "biuret-data-recovery-script-player",
+      "launch": "verify.py",
+      "python": "3.9+",
+      "minutes": "25–45",
+      "mode": "debugging",
+      "dependencies": [],
+      "points": 25,
+      "bytes": 4207,
+      "sha256": "0bf330c8221a429e5191f180131fc26ab2644daa34235b929acdaa4365528fff",
+      "files": [
+        {
+          "name": "biuret-data-recovery-script-player/HINTS.md",
+          "bytes": 139,
+          "sha256": "33e19ab86c70bcf8c5dc776a86c760fbd1335cbf63c76463f562bc80a10f24fc"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/HINTS_AR.md",
+          "bytes": 227,
+          "sha256": "823ef5adee1b92feec5c8f9fe4e3d43a3dd001efd4c6aa8dd5b1982ce2b72262"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/README.md",
+          "bytes": 887,
+          "sha256": "598230131a7b1543baf2404038199dbe01ed66d5242051e56b95f9869b5b3dca"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/README_AR.md",
+          "bytes": 1696,
+          "sha256": "0250b2e68a7ca5e653d39b1aa1e0771ba4e7497f3d7e606380e7c64444dbff56"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/README_EN.md",
+          "bytes": 887,
+          "sha256": "598230131a7b1543baf2404038199dbe01ed66d5242051e56b95f9869b5b3dca"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/damaged_export.jsonl",
+          "bytes": 334,
+          "sha256": "525a54b1458d39728d86e9fd62823913ef53f3448d3b3b503a08581b965bf9c7"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/schema_note.md",
+          "bytes": 352,
+          "sha256": "edef1723716bc0a07d6637f9487bbc984a775ad61b916aeab9027be04842b891"
+        },
+        {
+          "name": "biuret-data-recovery-script-player/verify.py",
+          "bytes": 341,
+          "sha256": "8a503f4985cc111d0e6541d42b95b5a2d141807c991a836b34ba637dd3888edb"
+        }
+      ]
+    }
   },
   {
     "id": "deleted-evidence",
@@ -348,20 +733,6 @@ export const ctfChallenges=[
     "brief": {
       "ar": "استرجاع دليل مخفي داخل نسخة أرشيف أو ملف تالف جزئيًا.",
       "en": "Recover hidden evidence from an archive or partially damaged file."
-    },
-    "status": "planned"
-  },
-  {
-    "id": "log-hunter",
-    "title": {
-      "ar": "باحث السجلات",
-      "en": "Log Hunter"
-    },
-    "category": "forensics",
-    "level": 2,
-    "brief": {
-      "ar": "تحليل سجلات الدخول لتحديد مصدر نشاط مشبوه.",
-      "en": "Analyze authentication logs to locate suspicious activity."
     },
     "status": "planned"
   },
@@ -380,34 +751,6 @@ export const ctfChallenges=[
     "status": "planned"
   },
   {
-    "id": "broken-login",
-    "title": {
-      "ar": "تسجيل الدخول المعيب",
-      "en": "Broken Login"
-    },
-    "category": "web",
-    "level": 2,
-    "brief": {
-      "ar": "اكتشاف خلل منطقي في تسجيل الدخول بتطبيق تجريبي.",
-      "en": "Find a login-logic flaw in a training application."
-    },
-    "status": "planned"
-  },
-  {
-    "id": "secret-function",
-    "title": {
-      "ar": "الدالة السرية",
-      "en": "Secret Function"
-    },
-    "category": "reverse",
-    "level": 2,
-    "brief": {
-      "ar": "تحليل برنامج لاكتشاف وظيفة مخفية تقود إلى Flag.",
-      "en": "Analyze a program to uncover a hidden function leading to a flag."
-    },
-    "status": "planned"
-  },
-  {
     "id": "packet-detective",
     "title": {
       "ar": "محقق الحزم",
@@ -418,20 +761,6 @@ export const ctfChallenges=[
     "brief": {
       "ar": "تحليل ملف PCAP لاستخراج عنوان IP واتصال مثير للشك.",
       "en": "Analyze a PCAP sample to identify an IP address and suspicious connection."
-    },
-    "status": "planned"
-  },
-  {
-    "id": "data-recovery-script",
-    "title": {
-      "ar": "سكربت استعادة البيانات",
-      "en": "Data Recovery Script"
-    },
-    "category": "programming",
-    "level": 2,
-    "brief": {
-      "ar": "كتابة سكربت لإصلاح ملفات JSON مشوهة واسترجاع بيانات.",
-      "en": "Write a script to repair malformed JSON files and recover their data."
     },
     "status": "planned"
   },
@@ -1423,6 +1752,306 @@ export const ctfGuides={
         }
       }
     ]
+  },
+  "xor-mystery": {
+    "objectives": [
+      {
+        "ar": "حدّد ترميز البيانات، واختبر مفاتيح XOR من بايت واحد، ثم قدّم النص المقروء بالصيغة المطلوبة.",
+        "en": "Identify the encoding, test one-byte XOR keys and submit the readable text in the required format."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-xor-mystery-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-xor-mystery-player."
+      },
+      {
+        "ar": "اقرأ intercept.txt وpacket_note.txt، ثم اكتب سكربت تحليل خاصاً بك.",
+        "en": "Read intercept.txt and packet_note.txt, then write your own analysis script."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "log-hunter": {
+    "objectives": [
+      {
+        "ar": "ابحث عن ٣ محاولات فاشلة أو أكثر يتبعها نجاح للحساب والعنوان نفسيهما. تحقق من نقل البيانات وربط رقم الحادث بالجلسة.",
+        "en": "Find at least three failed attempts followed by success for the same account and IP. Confirm the transfer and connect its incident ID to the session."
+      },
+      {
+        "ar": "صيغة الإجابة: FLAG{INCIDENT_IP}، حيث INCIDENT رقم الحادث وIP العنوان مع استبدال النقاط بشرطات سفلية.",
+        "en": "Answer format: FLAG{INCIDENT_IP}, using the incident ID and the IP address with dots replaced by underscores."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-log-hunter-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-log-hunter-player."
+      },
+      {
+        "ar": "قارن auth.log وnetwork.log وaudit_index.csv. راعِ الحساب والعنوان والتسلسل الزمني معاً.",
+        "en": "Compare auth.log, network.log and audit_index.csv. Consider the account, address and chronological sequence together."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "digital-footprint": {
+    "objectives": [
+      {
+        "ar": "حدّد الاسم الحالي، واربطه بالاسم السابق وفق الأدلة، ثم اجمع الأجزاء الثلاثة من المنشور المطابق بالترتيب داخل FLAG{PART1_PART2_PART3}.",
+        "en": "Identify the current handle, connect the evidence to its older alias and combine the matching post’s three fragments in order as FLAG{PART1_PART2_PART3}."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-digital-footprint-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-digital-footprint-player."
+      },
+      {
+        "ar": "افتح hub/index.html من المجلد المستخرج. جميع الصفحات محلية؛ لا تحتاج خادم ويب أو بحثاً خارجياً.",
+        "en": "Open hub/index.html from the extracted folder. All pages are local; no web server or external searches are needed."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "broken-login": {
+    "objectives": [
+      {
+        "ar": "راقب نموذج الدخول، وحلل الشرط المنطقي في معالج POST. اثبت الوصول إلى التشخيصات دون معرفة كلمة مرور المسؤول وفك ترميز الدليل المعروض.",
+        "en": "Observe the sign-in form and analyze the Boolean condition in the POST handler. Demonstrate diagnostic access without the admin password and decode the displayed proof."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-broken-login-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-broken-login-player."
+      },
+      {
+        "ar": "راجع server.py، ثم شغّل الخادم وافتح http://127.0.0.1:8765/ في متصفحك. أوقفه بـCtrl+C عند الانتهاء.",
+        "en": "Review server.py, start the server and open http://127.0.0.1:8765/ in your browser. Stop it with Ctrl+C when finished."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      },
+      {
+        "ar": "الخادم التجريبي يرتبط بـ127.0.0.1 فقط. لا ترفعه إلى استضافة عامة وأوقفه بعد المهمة.",
+        "en": "The training server binds to 127.0.0.1 only. Do not deploy it publicly; stop it after the mission."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تشغيل المهمة المحلية",
+          "en": "Start the local mission"
+        },
+        "file": "server.py",
+        "note": {
+          "ar": "راجع server.py، ثم شغّل الخادم وافتح http://127.0.0.1:8765/ في متصفحك. أوقفه بـCtrl+C عند الانتهاء.",
+          "en": "Review server.py, start the server and open http://127.0.0.1:8765/ in your browser. Stop it with Ctrl+C when finished."
+        }
+      },
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "secret-function": {
+    "objectives": [
+      {
+        "ar": "ابحث عن دالة لا تستدعيها القائمة، وافهم تحويل البايتات، ثم استدعها أو أعد إنتاج التحويل في سكربتك.",
+        "en": "Find a function the menu never calls, understand its byte transformation and invoke it or reproduce the transformation in your own script."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-secret-function-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-secret-function-player."
+      },
+      {
+        "ar": "شغّل console.py ثم افتحه في محرر. اكتب تحليلك أو سكربتك في ملف منفصل.",
+        "en": "Run console.py, then inspect it in an editor. Keep your analysis or helper script in a separate file."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تشغيل المهمة المحلية",
+          "en": "Start the local mission"
+        },
+        "file": "console.py",
+        "note": {
+          "ar": "شغّل console.py ثم افتحه في محرر. اكتب تحليلك أو سكربتك في ملف منفصل.",
+          "en": "Run console.py, then inspect it in an editor. Keep your analysis or helper script in a separate file."
+        }
+      },
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "data-recovery-script": {
+    "objectives": [
+      {
+        "ar": "أصلح JSONL وفق schema_note.md. احتفظ فقط بسجلات case_id = 204 وvalid = true، ورتّبها حسب seq الرقمي، واجمع fragment بشرطات سفلية داخل FLAG{...}.",
+        "en": "Repair JSONL according to schema_note.md. Keep only case_id = 204 and valid = true, sort by numeric seq and join fragment values with underscores inside FLAG{...}."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-data-recovery-script-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-data-recovery-script-player."
+      },
+      {
+        "ar": "اقرأ damaged_export.jsonl وschema_note.md. احتفظ بالملف الأصلي وأنشئ سكربت استعادة منفصلاً.",
+        "en": "Read damaged_export.jsonl and schema_note.md. Keep the original file and create a separate recovery script."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
   }
 };
 export const ctfBeginnerPack={
@@ -1664,3 +2293,275 @@ export function filterCTFChallenges({availability='all',category='all',level='al
  const term=String(query).trim().toLowerCase();
  return ctfChallenges.filter(c=>(availability==='all'||c.status===availability)&&(category==='all'||c.category===category)&&(level==='all'||c.level===Number(level))&&[c.title.ar,c.title.en,c.brief.ar,c.brief.en,ctfCategories[c.category].ar,ctfCategories[c.category].en].join(' ').toLowerCase().includes(term)).sort((a,b)=>Number(b.status==='ready')-Number(a.status==='ready')||a.level-b.level);
 }
+
+export const ctfEasyPack={
+  "url": "assets/biuret-easy-player.zip",
+  "folder": "Biuret_Easy_CTF_Player_Pack",
+  "bytes": 29097,
+  "sha256": "2778b6212c250c4a4ed5564f0992d706b560c5fb2e6300614d37781f030daeaf",
+  "challengeIds": [
+    "xor-mystery",
+    "log-hunter",
+    "digital-footprint",
+    "broken-login",
+    "secret-function",
+    "data-recovery-script"
+  ],
+  "files": [
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/HINTS.md",
+      "bytes": 133,
+      "sha256": "97d06f9bb5697437ea0b8969397a3b6111a5e27deada25700f9156da846076b5"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/HINTS_AR.md",
+      "bytes": 184,
+      "sha256": "e8159f4da302d5823a6d3dfeb9d583d3e40024a27de9a52255a9488651f90530"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/README.md",
+      "bytes": 823,
+      "sha256": "69f064f3b26dd3c893631b79b5a0871be978e7dfdf2c11fc36b55371e47f5338"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/README_AR.md",
+      "bytes": 1573,
+      "sha256": "4b760d8236de180314d12ba61d153f79d3ca2d467769bc0d3f1c88624367074e"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/README_EN.md",
+      "bytes": 823,
+      "sha256": "69f064f3b26dd3c893631b79b5a0871be978e7dfdf2c11fc36b55371e47f5338"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/intercept.txt",
+      "bytes": 115,
+      "sha256": "436ca7e30723b77077b40df49b4416c6d4415bf60b234ccfc408e26e9c6590dc"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/packet_note.txt",
+      "bytes": 97,
+      "sha256": "7b7df6bfac448a21a580bbc3cdc06dfe11ea1c7ab9915f6f53b061d89aeedf17"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/01_XOR_Mystery/verify.py",
+      "bytes": 341,
+      "sha256": "52ad1c87b3a07a9095809bdc850e6e325e90aa2b2c290eeae02710e3c9a7a94e"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/HINTS.md",
+      "bytes": 145,
+      "sha256": "ff02e7d722a7a3c44f42701c3a3edbd378915adfc4809b6c28848a55416112cb"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/HINTS_AR.md",
+      "bytes": 239,
+      "sha256": "588a4c0077ce8f1a793d23a02b5c6025afc51b4950337ff473422676b0261474"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/README.md",
+      "bytes": 967,
+      "sha256": "0439219a2aa80a07a19538bc0af3e40494ea9494ea846ed7b149f04c6ac02133"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/README_AR.md",
+      "bytes": 1841,
+      "sha256": "c67642504357f1d84deacfcd7b1408cc60318315d3fa1a616a012d63f48d982e"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/README_EN.md",
+      "bytes": 967,
+      "sha256": "0439219a2aa80a07a19538bc0af3e40494ea9494ea846ed7b149f04c6ac02133"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/audit_index.csv",
+      "bytes": 98,
+      "sha256": "ce97c6ab6669fe76f954fafaf1734db0e71cc3c7e9a2b149ba763ff3085d0c51"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/auth.log",
+      "bytes": 726,
+      "sha256": "81753c9ddb3512737071a355e1cbb7c1ce016ab3b9d285342cca79ce503316fe"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/network.log",
+      "bytes": 263,
+      "sha256": "7e311100ab8a9c9e02a2a0674bd6ea007adc564a5627ff8a83b4af7a6286080f"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/02_Log_Hunter/verify.py",
+      "bytes": 341,
+      "sha256": "f5c108744e147e84ed5268781d3cb06b1b69a3aa4eae70099c513ac322ca14e2"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/HINTS.md",
+      "bytes": 173,
+      "sha256": "a251fb7bc63cf9300413a5468eb1a89272caf2b99c69d491bd5a49d2e8833759"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/HINTS_AR.md",
+      "bytes": 221,
+      "sha256": "3c4cd8c3ce0db8f42fc5b996f4ac3f7e48c0718b89e766e5be7cbbc2b175407f"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/README.md",
+      "bytes": 975,
+      "sha256": "c86528689f2a7e96201e06c3b960c11057e06745e170169e4019e650cc927f7d"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/README_AR.md",
+      "bytes": 1752,
+      "sha256": "9135ffa920c3e3070fde30ffd230414ca9f637c713c585e108aebf626f716a10"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/README_EN.md",
+      "bytes": 975,
+      "sha256": "c86528689f2a7e96201e06c3b960c11057e06745e170169e4019e650cc927f7d"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/hub/archive.html",
+      "bytes": 389,
+      "sha256": "363c776ee39a77daec60438ec20a411cb545b23c1d80bbb7a8875b2df5be3df2"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/hub/gardener.html",
+      "bytes": 156,
+      "sha256": "4a74954c69dec55b8b3e3b3c203224668a15ebb9c1ef7ffee81693915fbfa7e2"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/hub/index.html",
+      "bytes": 648,
+      "sha256": "009f4d023962d7661ddecf51761b3924b83efcd05f1b0733fa95f093db6e00d0"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/hub/researcher.html",
+      "bytes": 283,
+      "sha256": "d7211377f3dc30e54aad6c471e01be2e50065162d4b62f21c798c2daa1c79759"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/03_Username_Hunter_2/verify.py",
+      "bytes": 341,
+      "sha256": "c79981143c70682199982df2f405dce09466de127bb47487e10589c9b073b91e"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/HINTS.md",
+      "bytes": 184,
+      "sha256": "2b91fa365907a87ff5b034b11a8cae44442b16a6191b99813753b745daad2642"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/HINTS_AR.md",
+      "bytes": 212,
+      "sha256": "3cc57b24662019bcdc8ade8adc99fd4314605f1dd48d5f57df363a6825404fb1"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/README.md",
+      "bytes": 987,
+      "sha256": "f0e84cea69f46240b40d855deadaff0a1499e6a76b9c0fb1b023024e9b896960"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/README_AR.md",
+      "bytes": 1856,
+      "sha256": "81713ba9ecd1e85ea0d9af93138408b9c18eb88b4dc5a90eef3408b0b626aa5f"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/README_EN.md",
+      "bytes": 987,
+      "sha256": "f0e84cea69f46240b40d855deadaff0a1499e6a76b9c0fb1b023024e9b896960"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/server.py",
+      "bytes": 1907,
+      "sha256": "b22f4151288254cec19fb5c893ca24689dc26ee5a5a3d3c0be26e475a820d7bb"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/04_Broken_Login/verify.py",
+      "bytes": 341,
+      "sha256": "46e1b3b2e99a5fd91ef13d81cdca1f0b7a3adbfcced32c308028ca5ae2760f9f"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/HINTS.md",
+      "bytes": 160,
+      "sha256": "c979e05813a75758b9bcda8caa3a72e5aadfb97f24fa5abca7d38bf1123722d6"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/HINTS_AR.md",
+      "bytes": 202,
+      "sha256": "c24ccc1814e13acf22d8555e5612dd785b7d3755799fa580683110455827540b"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/README.md",
+      "bytes": 875,
+      "sha256": "bc8b444113ae7405b5328d7c504ff7cab0361081d7e9c3805d8e981d01efcca1"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/README_AR.md",
+      "bytes": 1650,
+      "sha256": "30bc380e058253a238577c1947102af8a95743b5f46c8710ec5aa3297ca36f30"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/README_EN.md",
+      "bytes": 875,
+      "sha256": "bc8b444113ae7405b5328d7c504ff7cab0361081d7e9c3805d8e981d01efcca1"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/console.py",
+      "bytes": 453,
+      "sha256": "4ca07e40d16902c4ff6c0ab983fb3fb6480458c0b2cb500024c00c6cdad340a2"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/05_Secret_Function/verify.py",
+      "bytes": 341,
+      "sha256": "b184cc6292c91b570ae6e8219d7b1516dfa46641b2ae4a04fb19ba4e8e8d1635"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/HINTS.md",
+      "bytes": 139,
+      "sha256": "33e19ab86c70bcf8c5dc776a86c760fbd1335cbf63c76463f562bc80a10f24fc"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/HINTS_AR.md",
+      "bytes": 227,
+      "sha256": "823ef5adee1b92feec5c8f9fe4e3d43a3dd001efd4c6aa8dd5b1982ce2b72262"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/README.md",
+      "bytes": 887,
+      "sha256": "598230131a7b1543baf2404038199dbe01ed66d5242051e56b95f9869b5b3dca"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/README_AR.md",
+      "bytes": 1696,
+      "sha256": "0250b2e68a7ca5e653d39b1aa1e0771ba4e7497f3d7e606380e7c64444dbff56"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/README_EN.md",
+      "bytes": 887,
+      "sha256": "598230131a7b1543baf2404038199dbe01ed66d5242051e56b95f9869b5b3dca"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/damaged_export.jsonl",
+      "bytes": 334,
+      "sha256": "525a54b1458d39728d86e9fd62823913ef53f3448d3b3b503a08581b965bf9c7"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/schema_note.md",
+      "bytes": 352,
+      "sha256": "edef1723716bc0a07d6637f9487bbc984a775ad61b916aeab9027be04842b891"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/06_Data_Recovery/verify.py",
+      "bytes": 341,
+      "sha256": "8a503f4985cc111d0e6541d42b95b5a2d141807c991a836b34ba637dd3888edb"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/README_AR.md",
+      "bytes": 1786,
+      "sha256": "12a1a3a9e1426809b95f8b5b06b456cb7f8eee41145fddc6397568cbb43fcbcc"
+    },
+    {
+      "name": "Biuret_Easy_CTF_Player_Pack/README_EN.md",
+      "bytes": 732,
+      "sha256": "85784a2c219e3182b7a6e77a63aff5cb700c788503784576c39b74163e3848b2"
+    }
+  ]
+};

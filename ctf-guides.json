@@ -334,5 +334,305 @@
         }
       }
     ]
+  },
+  "xor-mystery": {
+    "objectives": [
+      {
+        "ar": "حدّد ترميز البيانات، واختبر مفاتيح XOR من بايت واحد، ثم قدّم النص المقروء بالصيغة المطلوبة.",
+        "en": "Identify the encoding, test one-byte XOR keys and submit the readable text in the required format."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-xor-mystery-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-xor-mystery-player."
+      },
+      {
+        "ar": "اقرأ intercept.txt وpacket_note.txt، ثم اكتب سكربت تحليل خاصاً بك.",
+        "en": "Read intercept.txt and packet_note.txt, then write your own analysis script."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "log-hunter": {
+    "objectives": [
+      {
+        "ar": "ابحث عن ٣ محاولات فاشلة أو أكثر يتبعها نجاح للحساب والعنوان نفسيهما. تحقق من نقل البيانات وربط رقم الحادث بالجلسة.",
+        "en": "Find at least three failed attempts followed by success for the same account and IP. Confirm the transfer and connect its incident ID to the session."
+      },
+      {
+        "ar": "صيغة الإجابة: FLAG{INCIDENT_IP}، حيث INCIDENT رقم الحادث وIP العنوان مع استبدال النقاط بشرطات سفلية.",
+        "en": "Answer format: FLAG{INCIDENT_IP}, using the incident ID and the IP address with dots replaced by underscores."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-log-hunter-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-log-hunter-player."
+      },
+      {
+        "ar": "قارن auth.log وnetwork.log وaudit_index.csv. راعِ الحساب والعنوان والتسلسل الزمني معاً.",
+        "en": "Compare auth.log, network.log and audit_index.csv. Consider the account, address and chronological sequence together."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "digital-footprint": {
+    "objectives": [
+      {
+        "ar": "حدّد الاسم الحالي، واربطه بالاسم السابق وفق الأدلة، ثم اجمع الأجزاء الثلاثة من المنشور المطابق بالترتيب داخل FLAG{PART1_PART2_PART3}.",
+        "en": "Identify the current handle, connect the evidence to its older alias and combine the matching post’s three fragments in order as FLAG{PART1_PART2_PART3}."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-digital-footprint-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-digital-footprint-player."
+      },
+      {
+        "ar": "افتح hub/index.html من المجلد المستخرج. جميع الصفحات محلية؛ لا تحتاج خادم ويب أو بحثاً خارجياً.",
+        "en": "Open hub/index.html from the extracted folder. All pages are local; no web server or external searches are needed."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "broken-login": {
+    "objectives": [
+      {
+        "ar": "راقب نموذج الدخول، وحلل الشرط المنطقي في معالج POST. اثبت الوصول إلى التشخيصات دون معرفة كلمة مرور المسؤول وفك ترميز الدليل المعروض.",
+        "en": "Observe the sign-in form and analyze the Boolean condition in the POST handler. Demonstrate diagnostic access without the admin password and decode the displayed proof."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-broken-login-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-broken-login-player."
+      },
+      {
+        "ar": "راجع server.py، ثم شغّل الخادم وافتح http://127.0.0.1:8765/ في متصفحك. أوقفه بـCtrl+C عند الانتهاء.",
+        "en": "Review server.py, start the server and open http://127.0.0.1:8765/ in your browser. Stop it with Ctrl+C when finished."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      },
+      {
+        "ar": "الخادم التجريبي يرتبط بـ127.0.0.1 فقط. لا ترفعه إلى استضافة عامة وأوقفه بعد المهمة.",
+        "en": "The training server binds to 127.0.0.1 only. Do not deploy it publicly; stop it after the mission."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تشغيل المهمة المحلية",
+          "en": "Start the local mission"
+        },
+        "file": "server.py",
+        "note": {
+          "ar": "راجع server.py، ثم شغّل الخادم وافتح http://127.0.0.1:8765/ في متصفحك. أوقفه بـCtrl+C عند الانتهاء.",
+          "en": "Review server.py, start the server and open http://127.0.0.1:8765/ in your browser. Stop it with Ctrl+C when finished."
+        }
+      },
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "secret-function": {
+    "objectives": [
+      {
+        "ar": "ابحث عن دالة لا تستدعيها القائمة، وافهم تحويل البايتات، ثم استدعها أو أعد إنتاج التحويل في سكربتك.",
+        "en": "Find a function the menu never calls, understand its byte transformation and invoke it or reproduce the transformation in your own script."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-secret-function-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-secret-function-player."
+      },
+      {
+        "ar": "شغّل console.py ثم افتحه في محرر. اكتب تحليلك أو سكربتك في ملف منفصل.",
+        "en": "Run console.py, then inspect it in an editor. Keep your analysis or helper script in a separate file."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تشغيل المهمة المحلية",
+          "en": "Start the local mission"
+        },
+        "file": "console.py",
+        "note": {
+          "ar": "شغّل console.py ثم افتحه في محرر. اكتب تحليلك أو سكربتك في ملف منفصل.",
+          "en": "Run console.py, then inspect it in an editor. Keep your analysis or helper script in a separate file."
+        }
+      },
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
+  },
+  "data-recovery-script": {
+    "objectives": [
+      {
+        "ar": "أصلح JSONL وفق schema_note.md. احتفظ فقط بسجلات case_id = 204 وvalid = true، ورتّبها حسب seq الرقمي، واجمع fragment بشرطات سفلية داخل FLAG{...}.",
+        "en": "Repair JSONL according to schema_note.md. Keep only case_id = 204 and valid = true, sort by numeric seq and join fragment values with underscores inside FLAG{...}."
+      }
+    ],
+    "setup": [
+      {
+        "ar": "استخرج ZIP وافتح الطرفية داخل biuret-data-recovery-script-player.",
+        "en": "Extract the ZIP and open a terminal inside biuret-data-recovery-script-player."
+      },
+      {
+        "ar": "اقرأ damaged_export.jsonl وschema_note.md. احتفظ بالملف الأصلي وأنشئ سكربت استعادة منفصلاً.",
+        "en": "Read damaged_export.jsonl and schema_note.md. Keep the original file and create a separate recovery script."
+      },
+      {
+        "ar": "اقرأ README_AR.md؛ تحتاج Python 3.9+ والمكتبة القياسية فقط.",
+        "en": "Read README_EN.md; Python 3.9+ and its standard library are all you need."
+      }
+    ],
+    "rules": [
+      {
+        "ar": "استخدم الأدلة الخيالية المحلية فقط، واحتفظ بنسختها الأصلية. لا تعدّل verify.py.",
+        "en": "Use only fictional local evidence and keep the original files. Do not modify verify.py."
+      },
+      {
+        "ar": "التلميحات العربية في HINTS_AR.md والإنجليزية في HINTS.md؛ اقرأ تلميحاً واحداً عند الحاجة. لا تُخصم نقاط المنصة بسبب التلميحات.",
+        "en": "Arabic hints are in HINTS_AR.md and English hints in HINTS.md. Read one when needed; platform points are not deducted for hints."
+      }
+    ],
+    "commands": [
+      {
+        "title": {
+          "ar": "تحقق من حلك ثم سلّمه في الأكاديمية",
+          "en": "Check your solution, then submit it to Academy"
+        },
+        "file": "verify.py",
+        "note": {
+          "ar": "أدخل الـflag الناتج من تحليلك، ثم سلّمه أسفل صفحة المهمة لحفظ الإنجاز.",
+          "en": "Enter the flag from your analysis, then submit it at the bottom of the mission page to save your achievement."
+        }
+      }
+    ]
   }
 }

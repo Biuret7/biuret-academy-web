@@ -4,13 +4,15 @@ The archive replaces the previous six browser CTF missions. Existing course exer
 
 ## Inventory
 
-The supplied archive contains 40 distinct catalog entries across five levels: 4 very easy, 10 easy, 13 medium, 11 hard and 2 advanced. Only two entries contain complete player packages: **Biuret Vault** and **Biuret CyberTrace**. The other 38 are concepts, explicitly marked **Planned**, with no start or download action.
+The catalog contains 40 distinct entries across five levels: 4 very easy, 10 easy, 13 medium, 11 hard and 2 advanced. Twelve have complete player packages: four Very Easy missions, six Easy missions from the supplied Easy player pack, and **Biuret Vault** and **Biuret CyberTrace** at Medium. The remaining 28 concepts are explicitly marked **Planned**, with no start or download action.
+
+Easy includes XOR Mystery, Log Hunter, Username Hunter 2 (the existing `digital-footprint` concept), Broken Login, Secret Function and Data Recovery. Separate downloads and the combined Easy bundle contain identical player files. Evidence and Python code are unchanged. Added Arabic instructions/hints and aligned score text explain the platform's 25 CTF points, 100 XP and 10 coins for eligible accounts; the original pack's 10-point organizer scoring is not used by the platform. Hints do not deduct platform rewards.
 
 Vault is displayed as Medium, consistent with its player README and catalog, although its original archive directory was named Easy.
 
 ## Player downloads
 
-Public ZIPs contain the original player files without modifying code or evidence. Their renamed enclosing folders match the website launch instructions. Organizer solutions, solver scripts, organizer scoring sheets and the original combined archive are not published.
+Public ZIPs preserve original code and evidence; enclosing folders match the website launch instructions. Documentation additions and scoring corrections are described above. Organizer solutions and solver scripts are not published. Normalized beginner and Easy player bundles are available alongside the separate downloads.
 
 Each archive has a SHA-256 digest and a per-file manifest in `ctf-catalog.json`. Changes to a download must update these values. Original organizer material is retained outside this repository.
 
