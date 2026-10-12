@@ -1,8 +1,8 @@
-import { workspaces, parseWorkspace, workspaceHref, activeTab } from './workspace-model.js?v=20261012-easy1';
-import { academyPaths } from './path-catalog-data.js?v=20261012-easy1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261012-easy1';
-import { user } from './auth.js?v=20261012-easy1';
-import { fullName } from './full-name.js?v=20261012-easy1';
+import { workspaces, parseWorkspace, workspaceHref, activeTab } from './workspace-model.js?v=20261012-theme1';
+import { academyPaths } from './path-catalog-data.js?v=20261012-theme1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261012-theme1';
+import { user } from './auth.js?v=20261012-theme1';
+import { fullName } from './full-name.js?v=20261012-theme1';
 
 const root = document.querySelector('#workspace-main');
 if (root) {

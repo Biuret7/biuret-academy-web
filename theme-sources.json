@@ -1,0 +1,13 @@
+{
+  "css": [
+    "style.css",
+    "experience.css",
+    "workspace.css",
+    "ctf.css",
+    "free-studio.css",
+    "paths.css",
+    "soc-investigation.css",
+    "guide/widget.css",
+    "academy-ui.css"
+  ]
+}
