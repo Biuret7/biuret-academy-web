@@ -128,6 +128,18 @@ html[data-theme=light] .top .brand img { background:#132116; border-radius:6px; 
 html[data-theme=light] :is(button:disabled,[aria-disabled=true]):is(:hover,:active) { transform:none!important; box-shadow:none!important; }
 
 /* Dark controls anchor the calm light learning canvas. */
+html[data-theme=light] .learner-route,html[data-theme=light] .lesson-next-step{background:#e1ecd9;border-color:#95af81}
+html[data-theme=light] :is(.learner-route-heading p,.learner-route-footnote,.lesson-next-step p,.lesson-course-return){color:#496348}
+html[data-theme=light] .learner-milestones li{background:#edf4f6;border-color:#adc5ce}
+html[data-theme=light] .learner-milestones strong{color:#294550}
+html[data-theme=light] .learner-milestones small,html[data-theme=light] .milestone-number{color:#526d78}
+html[data-theme=light] .learner-milestones .is-current{background:#d4e5c8;border-color:#8baa6b}
+html[data-theme=light] .learner-milestones :is(.is-current,.is-complete) .milestone-number{background:#375a2a;border-color:#375a2a;color:#f4f9ee}
+html[data-theme=light] :is(.lesson-route-bar,.lesson-contents){background:#e1edf0;border-color:#a0bbc6}
+html[data-theme=light] .lesson-route-meta,html[data-theme=light] .lesson-route-meta strong{color:#3a5b63}
+html[data-theme=light] .lesson-route-bar a{background:#f4f8fa;color:#355460;border-color:#a0bbc6}
+html[data-theme=light] .lesson-route-bar a[aria-current]{background:#294b53;color:#f1f8f0;border-color:#557e83}
+@media(hover:hover) and (pointer:fine){html[data-theme=light] .lesson-route-bar a:hover{background:#d4e5e9;color:#274b57}html[data-theme=light] .path-resource-row[href]:hover{background:#d7e8ec;color:#274b57}}
 html[data-theme=light]{--refresh-surface:#e7eff2;--refresh-line:#a4bbc5;--refresh-copy:#435f6b}
 html[data-theme=light] body,html[data-theme=light] .workspace-surface,html[data-theme=light] #workspace-content{background:#f3f7f9}
 html[data-theme=light] .academy-sidebar,html[data-theme=light][dir=rtl] .academy-sidebar{background:#e8f0f3;border-color:#a7c0ca}

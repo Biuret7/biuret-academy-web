@@ -1,8 +1,8 @@
-import {user,loadUser,loadCTFState,submitCTFFlag} from './auth.js?v=20261013-journey1';
-import {ctfRewards,CTF_MAX_ATTEMPTS} from './ctf-rewards.js?v=20261013-journey1';
-import {fullName} from './full-name.js?v=20261013-journey1';
-import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261013-journey1';
-import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfEasyPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261013-journey1';
+import {user,loadUser,loadCTFState,submitCTFFlag} from './auth.js?v=20261013-learning2';
+import {ctfRewards,CTF_MAX_ATTEMPTS} from './ctf-rewards.js?v=20261013-learning2';
+import {fullName} from './full-name.js?v=20261013-learning2';
+import {currentLanguage,setPageHeaderTitle} from './i18n.js?v=20261013-learning2';
+import {ctfChallenges,ctfCategories,ctfLevels,ctfGuides,ctfBeginnerPack,ctfEasyPack,ctfStats,filterCTFChallenges} from './ctf-model.js?v=20261013-learning2';
 const root=document.getElementById('ctf-main');
 const tr=(ar,en)=>currentLanguage()==='ar'?ar:en,localized=value=>value[currentLanguage()];
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};

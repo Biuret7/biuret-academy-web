@@ -54,3 +54,46 @@ html[lang=ar] .site-shell[data-page=home] .hero h1{line-height:1.55;font-size:cl
 @media(hover:hover) and (pointer:fine){:is(.overview-card,.catalog-card,.library-card,.path-card,.ctf-card):hover{border-color:#81a783;transform:translateY(-3px);box-shadow:0 10px 24px #0002}.nav-actions>:is(a,button):hover{background:#294a52;border-color:#80a99a;transform:translateY(-1px);box-shadow:none}.sidebar-nav a:hover{background:#20343c;border-color:#4b6e73;transform:none}}
 @media(hover:none){:is(.overview-card,.catalog-card,.library-card,.path-card,.ctf-card,.button,.nav-actions button):hover{transform:none;box-shadow:none}}
 @media(prefers-reduced-motion:reduce){:is(.overview-card,.catalog-card,.library-card,.path-card,.ctf-card,.button,.nav-actions button){transition:none!important;animation:none!important}:is(.overview-card,.catalog-card,.library-card,.path-card,.ctf-card,.button,.nav-actions button):hover{transform:none!important}}
+
+/* The learner's route stays separate from the content inventory. */
+.learner-route{border:1px solid #557851;background:#172b28;border-radius:17px;padding:24px;margin-block:8px 24px}
+.learner-route-heading{display:flex;align-items:center;justify-content:space-between;gap:22px}
+.learner-route-heading>div{min-width:0}.learner-route-heading h2{font-size:23px;line-height:1.5;margin-block:8px}
+.learner-route-heading p{font-size:13px;line-height:1.85;max-width:72ch;margin:0;color:#bdcec7}
+.learner-route-heading .button{flex:none;max-width:300px}
+.learner-milestones{list-style:none;padding:0;margin-block:22px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.learner-milestones li{display:flex;align-items:flex-start;gap:10px;padding:14px 12px;background:#142126;border:1px solid #3b5259;border-radius:12px;min-width:0}
+.milestone-number{width:26px;height:26px;border:1px solid #506873;border-radius:50%;display:grid;place-items:center;flex:none;font:600 11px var(--font-en);color:#a8bcc4}
+.learner-milestones strong{display:block;font-size:12px;line-height:1.7;color:#dce9e9}
+.learner-milestones small{display:block;font-size:10px;line-height:1.85;color:#a9bec5;margin-top:4px}
+.learner-milestones .is-current{background:#263e2d;border-color:#88a762}.learner-milestones .is-current .milestone-number,.learner-milestones .is-complete .milestone-number{background:#c9f779;color:#1a300d;border-color:#c9f779}
+.learner-route-footnote{font-size:11px;line-height:1.8;color:#acc1b8;margin-block:16px 0}
+.path-detail-hero{padding-block:20px 16px}.path-access-card{padding:20px}.path-access-card h2{font-size:21px;line-height:1.5}.path-access-card p{font-size:13px;line-height:1.85}
+.path-resource-row{border-radius:12px;min-height:72px;padding:14px 16px;transition:background .18s,border-color .18s}
+.path-resource-row strong{font-size:15px;line-height:1.7}.path-resource-row small{font-size:12px;line-height:1.8}.path-resource-section{scroll-margin-top:30px}
+.lesson-route-bar{margin:0 clamp(20px,4vw,56px) 24px;border:1px solid #47646b;background:#172b31;border-radius:14px;padding:16px 18px}
+.lesson-route-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 18px;font-size:11px;color:#aec7ce;margin-bottom:12px}
+.lesson-route-meta strong{font-size:12px;color:#d2e8c0}.lesson-route-meta>span:last-child{margin-inline-start:auto}
+.lesson-route-bar nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.lesson-route-bar a{display:flex;align-items:center;gap:9px;font-size:12px;line-height:1.7;padding:9px 12px;border:1px solid #3e5c65;border-radius:10px;color:#d6e6eb;background:#112127;min-height:44px}
+.lesson-route-bar a b{font:600 10px var(--font-en);width:22px;height:22px;display:grid;place-items:center;border:1px solid #547078;border-radius:50%}
+.lesson-route-bar a[aria-current]{background:#2b4333;border-color:#83a364;color:#e6f5d7}
+.lesson-contents{margin-block:0 22px;border:1px solid #3e5861;border-radius:12px;padding:12px 16px;background:#192c31}
+.lesson-contents summary{font-size:13px;font-weight:600;line-height:1.8;cursor:pointer;min-height:24px}
+.lesson-contents .lesson-study-nav{margin-block:14px 0;padding-bottom:0;display:flex;flex-wrap:wrap;border:0}.lesson-contents .lesson-study-nav a{font-size:12px;min-height:36px}
+.lesson-article>.lesson-copy,.lesson-original-content{max-width:76ch;margin-inline:auto}
+.site-shell[data-page=lesson] .learning-hero{padding-block:20px}
+.learning-hero .learning-back{margin-bottom:8px;min-height:32px}
+.learning-hero h1{margin-block:10px}.learning-hero>p{margin-block:8px;font-size:14px}
+.learning-hero .learning-facts{margin-top:14px}
+.lesson-article{padding-top:24px;padding-bottom:48px}.lesson-copy h2{font-size:26px;line-height:1.5}.lesson-copy p{font-size:16px;line-height:2}
+.lesson-copy{scroll-margin-top:30px}.library-reading :is(h2,h3),.lesson-article :is(h2,h3){scroll-margin-top:30px}
+.lesson-next-step{border:1px solid #618254;border-radius:16px;padding:24px;margin:26px clamp(20px,4vw,56px);background:#1a3029;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.lesson-article .lesson-next-step{margin-inline:0}.lesson-next-step h2{font-size:22px;line-height:1.5;margin-block:8px}
+.lesson-next-step p{font-size:13px;line-height:1.85;color:#bfd2c5;max-width:62ch;margin:0}
+.lesson-next-actions{display:flex;flex-direction:column;align-items:center;gap:10px;flex:none;max-width:280px}.lesson-next-actions .button{width:100%}.lesson-course-return{font-size:12px;min-height:32px;display:inline-flex;align-items:center;color:#c1d2c5}
+.lesson-checkpoint,.lesson-check,#foundation-response,#lesson-application{scroll-margin-top:30px}
+@media(max-width:800px){.learner-milestones{grid-template-columns:repeat(2,minmax(0,1fr))}.learner-route-heading{align-items:flex-start;flex-direction:column}.learner-route-heading .button{max-width:100%}}
+@media(max-width:760px){.learner-route{padding:20px}.learner-milestones{grid-template-columns:1fr;gap:8px;margin-top:18px}.learner-milestones li{padding:12px}.learner-route-heading h2{font-size:21px}.learner-route-heading .button{width:100%}.lesson-route-bar{padding:14px;margin-inline:20px}.lesson-route-bar nav{grid-template-columns:1fr}.lesson-route-meta{gap:6px 10px}.lesson-route-meta>span:last-child{margin-inline-start:0}.lesson-next-step{flex-direction:column;align-items:stretch;padding:20px;margin-inline:20px;gap:18px}.lesson-next-actions{max-width:none}.lesson-next-step h2{font-size:21px}.lesson-contents{padding:12px}.path-resource-row{padding:12px;gap:10px}.path-resource-row strong{font-size:14px}}
+@media(hover:hover) and (pointer:fine){.lesson-route-bar a:hover{background:#29464e;border-color:#84a699}.path-resource-row[href]:hover{background:#20373e;border-color:#83a49a;transform:none}}
+@media(prefers-reduced-motion:reduce){.lesson-route-bar a,.path-resource-row{transition:none!important}}

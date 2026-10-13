@@ -1,15 +1,16 @@
-import { renderAvatar } from './identity.js?v=20261013-journey1';
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261013-journey1';
-import { mountLessonNotes } from './lesson-notes.js?v=20261013-journey1';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261013-journey1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261013-journey1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261013-journey1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261013-journey1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261013-journey1';
-import { fullName } from './full-name.js?v=20261013-journey1';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261013-journey1';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261013-journey1';
-import { workspaceHref } from './workspace-model.js?v=20261013-journey1';
+import { renderAvatar } from './identity.js?v=20261013-learning2';
+import { mountLessonExperience } from './learning-journey-ui.js?v=20261013-learning2';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261013-learning2';
+import { mountLessonNotes } from './lesson-notes.js?v=20261013-learning2';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261013-learning2';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261013-learning2';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261013-learning2';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261013-learning2';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261013-learning2';
+import { fullName } from './full-name.js?v=20261013-learning2';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261013-learning2';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261013-learning2';
+import { workspaceHref } from './workspace-model.js?v=20261013-learning2';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -295,6 +296,12 @@ function renderLesson() {
   }
   if (!user()) root.querySelector('.lesson-check').insertAdjacentHTML('beforeend', `<p class="lesson-reward-note">${ll('signInReward')}</p>`);
   attachAssessmentProgress(root, `foundations-lesson:${lesson.id}`, { showProgress: false });
+  const followingCourse = courses[courses.indexOf(course) + 1];
+  mountLessonExperience(root, { language: currentLanguage(), position: course.lessonIds.indexOf(lesson.id) + 1,
+    total: course.lessonIds.length, minutes: lesson.minutes, complete: done, ready: unlocked,
+    courseHref: `course.html?id=${encodeURIComponent(course.id)}`, checkpointId: 'lesson-check', readId: 'lesson-section-0',
+    nextHref: nextId ? `lesson.html?id=${encodeURIComponent(nextId)}` : followingCourse ? `course.html?id=${encodeURIComponent(followingCourse.id)}` : 'practical.html?id=foundations',
+    nextLabel: nextId ? j('الدرس التالي', 'Next lesson') : followingCourse ? j('الدورة التالية', 'Next course') : j('التقييم العملي للأساسيات', 'Foundations practical assessment') });
 }
 function render() { renderJourney(); renderSpecializations(); renderTracks(); renderCurriculum(); renderChallenges(); renderProgress(); renderRoadmap(); renderCourse(); renderLesson(); }
 

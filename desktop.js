@@ -1,15 +1,16 @@
-import { mountWorkbench } from './workbench.js?v=20261013-journey1';
-import { mountAuthorizationLab } from './authorization-lab.js?v=20261013-journey1';
-import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261013-journey1';
-import { mountSpecialist } from './specialist-lab.js?v=20261013-journey1';
-import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261013-journey1';
-import { mountReverse } from './reverse-lab.js?v=20261013-journey1';
-import { reversePractice } from './reverse-model.js?v=20261013-journey1';
-import { mountAssurance } from './assurance-lab.js?v=20261013-journey1';
-import { assurancePractice } from './assurance-model.js?v=20261013-journey1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-journey1';
-import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261013-journey1';
-import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261013-journey1';
+import { mountWorkbench } from './workbench.js?v=20261013-learning2';
+import { mountLessonExperience } from './learning-journey-ui.js?v=20261013-learning2';
+import { mountAuthorizationLab } from './authorization-lab.js?v=20261013-learning2';
+import { mountCloudDfir } from './cloud-dfir-lab.js?v=20261013-learning2';
+import { mountSpecialist } from './specialist-lab.js?v=20261013-learning2';
+import { specialistPractices, specialistVariant } from './specialist-model.js?v=20261013-learning2';
+import { mountReverse } from './reverse-lab.js?v=20261013-learning2';
+import { reversePractice } from './reverse-model.js?v=20261013-learning2';
+import { mountAssurance } from './assurance-lab.js?v=20261013-learning2';
+import { assurancePractice } from './assurance-model.js?v=20261013-learning2';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning2';
+import { user, loadUser, loadProgramLibrary, markProgramLesson, checkProgramPractice, loadProgramLessonState } from './auth.js?v=20261013-learning2';
+import { requiredPlan, canAccess, coursePracticeTarget } from './plan-access.js?v=20261013-learning2';
 
 const page = document.querySelector('.site-shell')?.dataset.page;
 const root = document.querySelector('#desktop-main');
@@ -311,6 +312,19 @@ function render() {
   }[page];
   const currentSearch = page === 'search' ? document.querySelector('#library-search')?.value || '' : '';
   root.innerHTML = renderer ? renderer() : '';
+  if (page === 'library-lesson') {
+    const lesson = lessonById(selected);
+    if (lesson?.guide) {
+      const siblings = lesson.category.lessons, position = siblings.findIndex(item => item.id === lesson.id);
+      const next = siblings[position + 1];
+      mountLessonExperience(root, { language: currentLanguage(), position: position + 1, total: siblings.length,
+        minutes: lesson.guide.minutes, complete: lessonStatus?.read === true, ready: lessonStatus?.ready,
+        checkpointId: 'lesson-checkpoint', readId: 'lesson-explanation',
+        courseHref: `library-course.html?id=${encodeURIComponent(lesson.category.id)}`,
+        nextHref: next ? `library-lesson.html?id=${encodeURIComponent(next.id)}` : `course-exam.html?order=${lesson.category.order}`,
+        nextLabel: next ? tr('الدرس التالي','Next lesson') : tr('امتحان الدورة','Course exam') });
+    }
+  }
   const supplier=page==='practice-lab'&&Number(params.get('id'))===assurancePractice.index&&params.get('context')==='supplier';
   if(supplier&&user())mountAssurance(root.querySelector('#supplier-workbench'),{owner:user().$id,language:currentLanguage()});
   const reverse=page==='practice-lab'&&Number(params.get('id'))===reversePractice.index&&params.get('context')==='reverse';
