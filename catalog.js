@@ -1,6 +1,6 @@
-import { courses, localized } from './learning-content.js?v=20261013-learning3';
-import { labs } from './labs.js?v=20261013-learning3';
-import { currentLanguage } from './i18n.js?v=20261013-learning3';
+import { courses, localized } from './learning-content.js?v=20261013-learning4';
+import { labs } from './labs.js?v=20261013-learning4';
+import { currentLanguage } from './i18n.js?v=20261013-learning4';
 
 const root = document.querySelector('#catalog-main');
 const page = document.querySelector('.site-shell')?.dataset.page;

@@ -3,12 +3,13 @@ const openAccess = new Set(['free', 'owned', 'existing', 'admin']);
 // UI milestones describe verified state; they never grant access or completion.
 export function pathJourney({ path, access, pending = false, failed = false, signedIn = false, admin = false, completed = null, status = null, foundationNext = null }) {
   const total = path.courses.reduce((sum, course) => sum + course.lessonIds.length, 0);
-  const known = Number.isInteger(completed) && completed >= 0 && !admin;
+  const bypass = admin && !path.free;
+  const known = Number.isInteger(completed) && completed >= 0 && !bypass;
   const lessons = known ? Math.min(total, completed) : null;
   const coursesDone = path.free || !admin && status?.completedCourses === path.courses.length;
   const passed = status?.passed === true;
   const practical = status?.practicalPassed === true;
-  const learned = !admin && (passed || lessons === total && coursesDone);
+  const learned = !bypass && (passed || lessons === total && coursesDone);
   const current = passed ? 'certificate' : practical ? 'exam' : learned ? 'practical' : 'learn';
   const steps = ['learn', 'practical', 'exam', 'certificate'].map(id => ({ id,
     state: id === 'learn' && learned || id === 'practical' && practical || id === 'exam' && passed ? 'complete'
@@ -24,7 +25,7 @@ export function pathJourney({ path, access, pending = false, failed = false, sig
       : path.free ? foundationNext?.href : '#path-course';
     if (href) action = { kind: current, href };
   }
-  return { total, lessons, current, steps, action, reason, admin, coursesDone };
+  return { total, lessons, current, steps, action, reason, admin: bypass, coursesDone };
 }
 
 export function lessonContinuation({ complete, ready, nextHref, courseHref, checkpointId }) {

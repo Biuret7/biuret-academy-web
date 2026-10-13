@@ -12,7 +12,7 @@
 - Embedded HTML is keyed to the module release, preventing old inner pages after an outer-shell update. Path section changes reuse the loaded frame and preserve navigation guards.
 
 ## Verification
-- 171 tests pass, including six milestone and continuation state tests.
+- 172 tests pass, including seven milestone and continuation state tests. Foundations use actual awards for administrators; only specialty bypass counts are treated as unknown.
 - Local synthetic Free learner: wrong Foundations answer stayed incomplete; correct answer earned existing XP and unlocked the next-step action.
 - Followed that action to the second Foundations lesson. Radio selection survived Arabic/English switching.
 - Completed the first program library lesson through the local service; its panel offered the next library lesson.

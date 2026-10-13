@@ -1,4 +1,4 @@
-import { pathJourney, lessonContinuation } from './learning-journey-model.js?v=20261013-learning3';
+import { pathJourney, lessonContinuation } from './learning-journey-model.js?v=20261013-learning4';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 const trFor = language => (ar,en) => language === 'ar' ? ar : en;
 const observers = new WeakMap();

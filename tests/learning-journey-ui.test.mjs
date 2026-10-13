@@ -25,6 +25,10 @@ test('Foundations use the next verified lesson and then practical, exam and cred
  assert.equal(pathJourney({...base,path:free,status:{}}).action.href,path.practical);
  assert.equal(pathJourney({...base,path:free,status:{practicalPassed:true}}).action.href,path.exam);
 });
+test('Foundations administrator progress uses real awards rather than specialty bypass counts',()=>{
+ const state=pathJourney({...base,path:{...path,free:true},admin:true,completed:1,status:{},foundationNext:{href:'lesson.html?id=b'}});
+ assert.equal(state.lessons,1);assert.equal(state.admin,false);assert.equal(state.current,'learn');
+});
 test('lesson continuation does not offer the next lesson before a verified checkpoint',()=>{
  const input={nextHref:'lesson.html?id=next',courseHref:'course.html?id=current',checkpointId:'lesson-check'};
  assert.equal(lessonContinuation({...input,complete:false,ready:true}).href,'#lesson-check');

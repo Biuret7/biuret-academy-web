@@ -1,8 +1,8 @@
-import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261013-learning3';
-import { academyPaths } from './path-catalog-data.js?v=20261013-learning3';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning3';
-import { user } from './auth.js?v=20261013-learning3';
-import { fullName } from './full-name.js?v=20261013-learning3';
+import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261013-learning4';
+import { academyPaths } from './path-catalog-data.js?v=20261013-learning4';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning4';
+import { user } from './auth.js?v=20261013-learning4';
+import { fullName } from './full-name.js?v=20261013-learning4';
 
 const root = document.querySelector('#workspace-main');
 if (root) {
@@ -46,7 +46,7 @@ if (root) {
   function mount(force = false) {
     const requested = new URL(route.child, location.href);
     // Embedded HTML needs the same release boundary as its module imports.
-    requested.searchParams.set('ui', new URL(import.meta.url).searchParams.get('v') || '20261013-learning3');
+    requested.searchParams.set('ui', new URL(import.meta.url).searchParams.get('v') || '20261013-learning4');
     if (requested.href.split('#')[0] !== loaded.split('#')[0] || force) childTitle = '';
     controls();
     const nextOwner = user()?.$id || null;
