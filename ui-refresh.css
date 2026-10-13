@@ -57,6 +57,7 @@ html[lang=ar] .site-shell[data-page=home] .hero h1{line-height:1.55;font-size:cl
 
 /* The learner's route stays separate from the content inventory. */
 .learner-route{border:1px solid #557851;background:#172b28;border-radius:17px;padding:24px;margin-block:8px 24px}
+html.workspace-embedded:not([data-workspace-section=overview]) .learner-route{display:none}
 .learner-route-heading{display:flex;align-items:center;justify-content:space-between;gap:22px}
 .learner-route-heading>div{min-width:0}.learner-route-heading h2{font-size:23px;line-height:1.5;margin-block:8px}
 .learner-route-heading p{font-size:13px;line-height:1.85;max-width:72ch;margin:0;color:#bdcec7}

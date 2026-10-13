@@ -1,8 +1,8 @@
-import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261013-learning2';
-import { academyPaths } from './path-catalog-data.js?v=20261013-learning2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning2';
-import { user } from './auth.js?v=20261013-learning2';
-import { fullName } from './full-name.js?v=20261013-learning2';
+import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261013-learning3';
+import { academyPaths } from './path-catalog-data.js?v=20261013-learning3';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning3';
+import { user } from './auth.js?v=20261013-learning3';
+import { fullName } from './full-name.js?v=20261013-learning3';
 
 const root = document.querySelector('#workspace-main');
 if (root) {
@@ -45,11 +45,13 @@ if (root) {
   }
   function mount(force = false) {
     const requested = new URL(route.child, location.href);
+    // Embedded HTML needs the same release boundary as its module imports.
+    requested.searchParams.set('ui', new URL(import.meta.url).searchParams.get('v') || '20261013-learning3');
     if (requested.href.split('#')[0] !== loaded.split('#')[0] || force) childTitle = '';
     controls();
     const nextOwner = user()?.$id || null;
     if (!nextOwner || !fullName(user()?.name)) { clearTimeout(loadTimer); frame.removeAttribute('src'); loaded = ''; owner = null; return; }
-    const childURL = new URL(route.child, location.href);
+    const childURL = requested;
     if (!force && loaded && loaded.split('#')[0] === childURL.href.split('#')[0] && owner === nextOwner) {
       frame.contentWindow.postMessage({ channel: 'biuret-workspace', type: 'anchor', hash: childURL.hash || '#' }, location.origin);
       return;

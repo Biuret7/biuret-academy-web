@@ -1,10 +1,10 @@
-import { academyPaths } from './path-catalog-data.js?v=20261013-learning2';
-import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261013-learning2';
-import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261013-learning2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning2';
-import { fullName } from './full-name.js?v=20261013-learning2';
-import { nextLearningStep } from './journey.js?v=20261013-learning2';
-import { mountPathJourney } from './learning-journey-ui.js?v=20261013-learning2';
+import { academyPaths } from './path-catalog-data.js?v=20261013-learning3';
+import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261013-learning3';
+import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261013-learning3';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning3';
+import { fullName } from './full-name.js?v=20261013-learning3';
+import { nextLearningStep } from './journey.js?v=20261013-learning3';
+import { mountPathJourney } from './learning-journey-ui.js?v=20261013-learning3';
 
 const root = document.querySelector('#paths-main');
 const detail = document.querySelector('.site-shell')?.dataset.page === 'path';

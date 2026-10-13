@@ -9,6 +9,7 @@
 - The next lesson/course is offered in the new panel only after verified completion.
 - Duplicate checkpoint continuation links are removed; notes, detailed explanations, references and knowledge checks remain.
 - Responsive RTL/LTR layout, readable text and authored light/dark colors.
+- Embedded HTML is keyed to the module release, preventing old inner pages after an outer-shell update. Path section changes reuse the loaded frame and preserve navigation guards.
 
 ## Verification
 - 171 tests pass, including six milestone and continuation state tests.

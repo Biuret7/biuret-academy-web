@@ -1,8 +1,8 @@
-import { user, loadUser, loadSocInvestigation, checkSocFindings, loadPractical } from './auth.js?v=20261013-learning2';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning2';
-import { fullName } from './full-name.js?v=20261013-learning2';
-import { attachPracticalReport } from './practical-report.js?v=20261013-learning2';
-import { investigationRows, cleanInvestigation, investigationFindings, evidenceFileText, evidenceCsv, verifyEvidenceFile } from './soc-investigation-model.js?v=20261013-learning2';
+import { user, loadUser, loadSocInvestigation, checkSocFindings, loadPractical } from './auth.js?v=20261013-learning3';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-learning3';
+import { fullName } from './full-name.js?v=20261013-learning3';
+import { attachPracticalReport } from './practical-report.js?v=20261013-learning3';
+import { investigationRows, cleanInvestigation, investigationFindings, evidenceFileText, evidenceCsv, verifyEvidenceFile } from './soc-investigation-model.js?v=20261013-learning3';
 
 const root = document.querySelector('#soc-investigation-main');
 const tr = (ar, en) => currentLanguage() === 'ar' ? ar : en;
