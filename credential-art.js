@@ -101,7 +101,14 @@ export async function downloadCredential(data, language, format) {
   const blob = format === 'pdf' ? pdfFromJpeg(canvas.toDataURL('image/jpeg', .94), canvas.width, canvas.height)
     : await new Promise((resolve) => canvas.toBlob(resolve, `image/${format}`, .96));
   if (!blob) throw new Error('Download could not be created');
-  const url = URL.createObjectURL(blob); const link = document.createElement('a');
-  link.href = url; link.download = `Biuret-Academy-${data.id}.${format === 'jpeg' ? 'jpg' : format}`;
-  document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+  const filename = `Biuret-Academy-${data.id}.${format === 'jpeg' ? 'jpg' : format}`;
+  let embedded = false;
+  try { embedded = window.parent !== window && window.parent.location.origin === location.origin && document.documentElement.classList.contains('workspace-embedded'); } catch {}
+  if (embedded) window.parent.postMessage({ channel: 'biuret-workspace', type: 'download', blob, filename }, location.origin);
+  else {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a'); link.href = url; link.download = filename;
+    document.body.append(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
 }

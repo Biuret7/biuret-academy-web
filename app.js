@@ -1,14 +1,15 @@
-import { renderAvatar } from './identity.js?v=20261012-ui3';
-import { mountLessonNotes } from './lesson-notes.js?v=20261012-ui3';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261012-ui3';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261012-ui3';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261012-ui3';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261012-ui3';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261012-ui3';
-import { fullName } from './full-name.js?v=20261012-ui3';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261012-ui3';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261012-ui3';
-import { workspaceHref } from './workspace-model.js?v=20261012-ui3';
+import { renderAvatar } from './identity.js?v=20261013-journey1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261013-journey1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261013-journey1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261013-journey1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261013-journey1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261013-journey1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261013-journey1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261013-journey1';
+import { fullName } from './full-name.js?v=20261013-journey1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261013-journey1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261013-journey1';
+import { workspaceHref } from './workspace-model.js?v=20261013-journey1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -25,6 +26,7 @@ let syncQueue = Promise.resolve();
 let rewards = null;
 let rewardStatus = 'idle';
 let examPassed = false;
+let foundationAssessment = null, assessmentUnavailable = false, rewardRevision = 0;
 let quizAnchorFocused = false;
 const currentPage = document.querySelector('.site-shell')?.dataset.page || 'home';
 const publicCredential = currentPage === 'certificate' && /^c_[a-f0-9]{32}$/.test(new URLSearchParams(location.search).get('id') || '');
@@ -53,14 +55,40 @@ function learningProgress() {
   const lessons = Object.fromEntries((rewards?.awards || []).map((award) => [award.lessonId, award.completedAt]));
   return { ...progress, lessons };
 }
+function recommendedLearningStep() {
+  if (user() && rewardStatus === 'error') return { kind: 'retry' };
+  if (assessmentUnavailable) return { kind: 'assessment', href: 'exam.html' };
+  return nextLearningStep(learningProgress().lessons, foundationAssessment || examPassed);
+}
+function continueLearning() {
+  const next = recommendedLearningStep();
+  if (next.kind === 'retry') return refreshRewards();
+  navigateLearning(next.href);
+}
 async function refreshRewards() {
-  if (!user()) { rewards = null; rewardStatus = 'idle'; examPassed = false; render(); return; }
+  const revision = ++rewardRevision, owner = user()?.$id;
+  foundationAssessment = null; assessmentUnavailable = false; examPassed = false;
+  if (!owner) { rewards = null; rewardStatus = 'idle'; render(); return; }
   rewardStatus = 'loading'; render();
-  try { rewards = await loadLearningRewards(); rewardStatus = 'ready'; }
-  catch (cause) { rewards = null; rewardStatus = 'error'; console.warn('Learning rewards unavailable:', cause); toast(ll('rewardError')); }
+  try {
+    const loadedRewards = await loadLearningRewards();
+    if (revision !== rewardRevision || user()?.$id !== owner) return;
+    rewards = loadedRewards; rewardStatus = 'ready';
+  }
+  catch (cause) {
+    if (revision !== rewardRevision || user()?.$id !== owner) return;
+    rewards = null; rewardStatus = 'error'; console.warn('Learning rewards unavailable:', cause); toast(ll('rewardError'));
+  }
   render();
   if (rewardStatus === 'ready' && foundationsCount(learningProgress().lessons).completed === 9) {
-    try { examPassed = Boolean((await loadExam()).passed); } catch { examPassed = false; }
+    try {
+      const state = await loadExam();
+      if (revision !== rewardRevision || user()?.$id !== owner) return;
+      foundationAssessment = state; examPassed = Boolean(state.passed);
+    } catch {
+      if (revision !== rewardRevision || user()?.$id !== owner) return;
+      assessmentUnavailable = true;
+    }
     render();
   }
 }
@@ -98,19 +126,19 @@ function renderJourney() {
   const root = $('#journey-guide');
   if (!root && !$('#home-next-step')) return;
   const count = foundationsCount(learningProgress().lessons);
-  const pending = Boolean(user()) && rewardStatus !== 'ready';
-  const next = nextLearningStep(learningProgress().lessons, examPassed);
-  const title = pending ? j('نجهّز خطوتك التالية', 'Preparing your next step') : next.kind === 'lesson' ? lc(next.lesson.title) : next.kind === 'practical' ? j('طبّق ما تعلمته', 'Apply what you learned') : j('حان وقت اختيار التخصص', 'Time to choose a specialization');
-  const action = next.kind === 'lesson' ? j('تابع هذا الدرس', 'Continue this lesson') : next.kind === 'practical' ? j('افتح التقييم العملي', 'Open practical assessment') : j('استكشف التخصصات', 'Explore specializations');
-  const detail = next.kind === 'lesson' ? j('أكمل الدرس ثم طبّق الفكرة في تمرين مرتبط به.', 'Finish the lesson, then apply the idea in related practice.') : next.kind === 'practical' ? j('أنهيت الدروس التسعة. حلّل ثلاث عينات تدريبية، ثم اجتز الامتحان النهائي.', 'You finished nine lessons. Analyze three training samples, then take the final exam.') : j('أنجزت الأساسيات. استكشف خرائط التخصصات ومحتواها المتاح.', 'Foundations complete. Explore specialization roadmaps and available content.');
-  if (root) root.innerHTML = `<div class="journey-heading"><span class="section-kicker">YOUR LEARNING ROUTE / 01 → 04</span><span class="journey-percent" dir="ltr">${pending ? '…' : `${count.completed} / ${count.total}`}</span></div><h2>${j('طريقك واضح من أول يوم.', 'A clear route from day one.')}</h2><p>${j('ابدأ بالأساسيات، ثم طبّق على أدلة تدريبية، واجتز الامتحان، وبعدها اختر تخصصك.', 'Learn the foundations, practice with training evidence, pass the exam, then choose your specialty.')}</p><div class="journey-stages"><div class="journey-stage ${count.completed < count.total ? 'is-current' : 'is-complete'}"><b>01</b><span>${j('الأساسيات', 'Foundations')}</span><small>${count.completed}/${count.total} ${j('دروس', 'lessons')}</small></div><div class="journey-stage ${count.completed === count.total && !examPassed ? 'is-current' : examPassed ? 'is-complete' : ''}"><b>02</b><span>${j('تقييم عملي', 'Practical assessment')}</span><small>${count.completed === count.total ? j('بعد الدروس', 'After lessons') : j('أكمل الدروس', 'Finish lessons')}</small></div><div class="journey-stage ${examPassed ? 'is-complete' : ''}"><b>03</b><span>${j('امتحان وشهادة', 'Exam and credential')}</span><small>${j('بعد التطبيق العملي', 'After practice')}</small></div><div class="journey-stage ${examPassed ? 'is-current' : ''}"><b>04</b><span>${j('اختر تخصصك', 'Choose a specialty')}</span><small>${examPassed ? j('استكشف الآن', 'Explore now') : j('بعد الأساسيات', 'After Foundations')}</small></div></div><div class="journey-next"><div><small>${j('خطوتك التالية', 'Your next step')}</small><h3>${esc(title)}</h3><p>${detail}</p></div>${pending ? '' : `<a class="button button-primary" href="${next.href}">${action} ↗</a>`}</div>`;
+  const pending = Boolean(user()) && (['idle', 'loading'].includes(rewardStatus) || count.completed === count.total && !foundationAssessment && !assessmentUnavailable);
+  const next = recommendedLearningStep();
+  const title = pending ? j('نجهّز خطوتك التالية', 'Preparing your next step') : next.kind === 'lesson' ? lc(next.lesson.title) : next.kind === 'retry' ? j('تعذر تحميل تقدمك', 'Could not load your progress') : next.kind === 'exam' ? j('جاهز لامتحان الأساسيات', 'Ready for the Foundations exam') : next.kind === 'assessment' ? j('تحقق من حالة التقييم', 'Check your assessment status') : next.kind === 'practical' ? j('طبّق ما تعلمته', 'Apply what you learned') : j('حان وقت اختيار التخصص', 'Time to choose a specialization');
+  const action = next.kind === 'lesson' ? j('تابع هذا الدرس', 'Continue this lesson') : next.kind === 'retry' ? j('أعد المحاولة', 'Retry loading progress') : next.kind === 'exam' ? j('افتح الامتحان النهائي', 'Open the final exam') : next.kind === 'assessment' ? j('اعرض حالة الامتحان', 'View exam status') : next.kind === 'practical' ? j('افتح التقييم العملي', 'Open practical assessment') : j('استكشف التخصصات', 'Explore specializations');
+  const detail = next.kind === 'lesson' ? j('أكمل الدرس ثم طبّق الفكرة في تمرين مرتبط به.', 'Finish the lesson, then apply the idea in related practice.') : next.kind === 'retry' ? j('أعد تحميل تقدمك قبل بدء الخطوة التالية.', 'Reload your verified progress before starting your next step.') : next.kind === 'exam' ? j('اجتزت التقييم العملي. راجع متطلبات الامتحان ثم أثبت فهمك لتستحق الشهادة.', 'You passed the practical assessment. Review the exam requirements and demonstrate your understanding to earn the credential.') : next.kind === 'assessment' ? j('تعذر تحميل حالة التقييم؛ افتح صفحة الامتحان للتحقق والمحاولة مجدداً.', 'Assessment status could not load. Open the exam page to verify it and retry.') : next.kind === 'practical' ? j('أنهيت الدروس التسعة. حلّل ثلاث عينات تدريبية، ثم اجتز الامتحان النهائي.', 'You finished nine lessons. Analyze three training samples, then take the final exam.') : j('أنجزت الأساسيات. استكشف خرائط التخصصات ومحتواها المتاح.', 'Foundations complete. Explore specialization roadmaps and available content.');
+  if (root) root.innerHTML = `<div class="journey-heading"><span class="section-kicker">YOUR LEARNING ROUTE / 01 → 04</span><span class="journey-percent" dir="ltr">${pending ? '…' : rewardStatus === 'error' ? '—' : `${count.completed} / ${count.total}`}</span></div><h2>${j('طريقك واضح من أول يوم.', 'A clear route from day one.')}</h2><p>${j('ابدأ بالأساسيات، ثم طبّق على أدلة تدريبية، واجتز الامتحان، وبعدها اختر تخصصك.', 'Learn the foundations, practice with training evidence, pass the exam, then choose your specialty.')}</p><div class="journey-stages" ${rewardStatus === 'error' ? 'hidden' : ''}><div class="journey-stage ${count.completed < count.total ? 'is-current' : 'is-complete'}"><b>01</b><span>${j('الأساسيات', 'Foundations')}</span><small>${count.completed}/${count.total} ${j('دروس', 'lessons')}</small></div><div class="journey-stage ${count.completed === count.total && !foundationAssessment?.practicalPassed && !examPassed ? 'is-current' : foundationAssessment?.practicalPassed || examPassed ? 'is-complete' : ''}"><b>02</b><span>${j('تقييم عملي', 'Practical assessment')}</span><small>${count.completed === count.total ? j('بعد الدروس', 'After lessons') : j('أكمل الدروس', 'Finish lessons')}</small></div><div class="journey-stage ${examPassed ? 'is-complete' : foundationAssessment?.practicalPassed ? 'is-current' : ''}"><b>03</b><span>${j('امتحان وشهادة', 'Exam and credential')}</span><small>${j('بعد التطبيق العملي', 'After practice')}</small></div><div class="journey-stage ${examPassed ? 'is-current' : ''}"><b>04</b><span>${j('اختر تخصصك', 'Choose a specialty')}</span><small>${examPassed ? j('استكشف الآن', 'Explore now') : j('بعد الأساسيات', 'After Foundations')}</small></div></div><div class="journey-next"><div><small>${j('خطوتك التالية', 'Your next step')}</small><h3>${esc(title)}</h3><p>${detail}</p></div>${pending ? '' : `<a class="button button-primary" href="${next.href || '#'}" ${next.kind === 'retry' ? 'data-retry-progress' : ''}>${action} ↗</a>`}</div>`;
   const start = $('#start-button');
   if (start) {
     start.disabled = pending;
-    start.innerHTML = `${!user() ? j('سجّل وابدأ مسار الشهادة', 'Sign in and start the credential path') : pending ? j('جارٍ التحقق…', 'Checking progress…') : count.completed===0&&!examPassed ? j('ابدأ أول درس للشهادة', 'Start the first credential lesson') : action} <span aria-hidden="true">↗</span>`;
+    start.innerHTML = `${!user() ? j('سجّل وابدأ مسار الشهادة', 'Sign in and start the credential path') : pending ? j('جارٍ التحقق…', 'Checking progress…') : rewardStatus==='ready'&&count.completed===0&&!examPassed ? j('ابدأ أول درس للشهادة', 'Start the first credential lesson') : action} <span aria-hidden="true">↗</span>`;
   }
   const homeNext = $('#home-next-step');
-  if (homeNext) homeNext.innerHTML = `<small>${j('خطوتك التالية', 'Your next step')} · ${pending ? '…' : `${count.completed}/${count.total}`} ${j('دروس الأساسيات', 'Foundations lessons')}</small><strong>${esc(title)}</strong>`;
+  if (homeNext) homeNext.innerHTML = `<small>${j('خطوتك التالية', 'Your next step')} · ${pending ? '…' : rewardStatus === 'error' ? '—' : `${count.completed}/${count.total}`} ${j('دروس الأساسيات', 'Foundations lessons')}</small><strong>${esc(title)}</strong>`;
 }
 
 function renderSpecializations() {
@@ -266,6 +294,7 @@ function renderLesson() {
     root.querySelector('.lesson-check > a')?.insertAdjacentHTML('beforebegin', `<a class="button button-primary" href="${href}">${label} ↗</a>`);
   }
   if (!user()) root.querySelector('.lesson-check').insertAdjacentHTML('beforeend', `<p class="lesson-reward-note">${ll('signInReward')}</p>`);
+  attachAssessmentProgress(root, `foundations-lesson:${lesson.id}`, { showProgress: false });
 }
 function render() { renderJourney(); renderSpecializations(); renderTracks(); renderCurriculum(); renderChallenges(); renderProgress(); renderRoadmap(); renderCourse(); renderLesson(); }
 
@@ -381,12 +410,13 @@ async function handleAuthSubmit(event) {
   finally { button.disabled = false; }
 }
 function bindEvents() {
+  document.addEventListener('click', event => { if (event.target.closest('[data-retry-progress]')) { event.preventDefault(); refreshRewards(); } });
   const onChallengesPage = Boolean($('#challenge-list'));
   $('#start-button')?.addEventListener('click', onChallengesPage ? openNext : () => {
     if (!user()) { showAuth(); return; }
-    navigateLearning(nextLearningStep(learningProgress().lessons, examPassed).href);
+    continueLearning();
   });
-  $('#closing-button')?.addEventListener('click', () => { navigateLearning(nextLearningStep(learningProgress().lessons, examPassed).href); });
+  $('#closing-button')?.addEventListener('click', () => { continueLearning(); });
   $('#daily-button')?.addEventListener('click', () => onChallengesPage ? openChallenge(dailyChallenge(progress).id) : visitChallenge(dailyChallenge(progress).id));
   $('#challenge-list')?.addEventListener('click', (event) => { const card = event.target.closest('[data-challenge]'); if (card) openChallenge(card.dataset.challenge); });
   $('#filters')?.addEventListener('click', (event) => { const button = event.target.closest('[data-filter]'); if (button) setFilter(button.dataset.filter); });

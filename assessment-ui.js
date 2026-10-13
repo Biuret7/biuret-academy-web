@@ -1,5 +1,5 @@
-import { user } from './auth.js?v=20261012-ui3';
-import { currentLanguage } from './i18n.js?v=20261012-ui3';
+import { user } from './auth.js?v=20261013-journey1';
+import { currentLanguage } from './i18n.js?v=20261013-journey1';
 
 // Keep answers while switching languages or rerendering an assessment, scoped
 // to the signed-in account and this page. Answers are never stored on disk.
@@ -8,7 +8,7 @@ let formKey;
 const answers = new Map();
 const bound = new WeakSet();
 
-export function attachAssessmentProgress(root, formId = '') {
+export function attachAssessmentProgress(root, formId = '', { showProgress = true } = {}) {
   if (!root) return;
   if (owner !== user()?.$id) { owner = user()?.$id; answers.clear(); }
   const form = root.querySelector('form');
@@ -22,7 +22,7 @@ export function attachAssessmentProgress(root, formId = '') {
   bar.className = 'assessment-progress';
   bar.setAttribute('role', 'status');
   bar.setAttribute('aria-live', 'polite');
-  form.prepend(bar);
+  if (showProgress) form.prepend(bar);
   const update = () => {
     const done = new Set([...form.querySelectorAll('input:checked')].map((radio) => radio.name)).size;
     const ar = currentLanguage() === 'ar';

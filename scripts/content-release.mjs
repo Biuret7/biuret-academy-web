@@ -29,7 +29,7 @@ switch (command) {
     const state = active();
     const pack = checkedPack(packPath('releases', state.activeRelease));
     if (digest(pack) !== state.activeDigest) fail('Published release checksum differs from active manifest');
-    if (readFileSync(modulePath, 'utf8') !== renderLearningModule(pack)) fail('learning-content.js differs from the published release');
+    if (readFileSync(modulePath, 'utf8').replace(/\r\n/g, '\n') !== renderLearningModule(pack)) fail('learning-content.js differs from the published release');
     if (!Array.isArray(state.history) || state.history.at(-1)?.releaseId !== state.activeRelease) fail('Release history is inconsistent');
     console.log(`Verified ${state.activeRelease} (${state.activeDigest.slice(0, 12)})`);
     break;

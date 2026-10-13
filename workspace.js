@@ -1,8 +1,8 @@
-import { workspaces, parseWorkspace, workspaceHref, activeTab } from './workspace-model.js?v=20261012-ui3';
-import { academyPaths } from './path-catalog-data.js?v=20261012-ui3';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261012-ui3';
-import { user } from './auth.js?v=20261012-ui3';
-import { fullName } from './full-name.js?v=20261012-ui3';
+import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261013-journey1';
+import { academyPaths } from './path-catalog-data.js?v=20261013-journey1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261013-journey1';
+import { user } from './auth.js?v=20261013-journey1';
+import { fullName } from './full-name.js?v=20261013-journey1';
 
 const root = document.querySelector('#workspace-main');
 if (root) {
@@ -40,6 +40,7 @@ if (root) {
     }));
     if (path) { const all = document.createElement('a'); all.textContent = tr('كل المسارات', 'All paths'); all.href = 'learn.html'; all.className = 'workspace-all'; tabs.append(all); }
     if (focusedHref) [...tabs.querySelectorAll('a')].find(a => a.href === focusedHref)?.focus({ preventScroll: true });
+    else if (tabs.scrollWidth > tabs.clientWidth) tabs.querySelector('[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
     setPageHeaderTitle({ ar: childTitle || config.title[0], en: childTitle || config.title[1] });
   }
   function mount(force = false) {
@@ -92,6 +93,17 @@ if (root) {
       return;
     }
     if (!loaded || !user()) return;
+    if (message.type === 'download') {
+      const file = workspaceDownload(message);
+      if (file) {
+        const url = URL.createObjectURL(file.blob);
+        const anchor = document.createElement('a');
+        anchor.href = url; anchor.download = file.filename;
+        document.body.append(anchor); anchor.click(); anchor.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      }
+      return;
+    }
     const canonical = workspaceHref(message.href, route, location.href);
     if (message.type === 'navigate') { if (canonical) navigate(canonical); return; }
     if (message.type !== 'ready' || !canonical) return;

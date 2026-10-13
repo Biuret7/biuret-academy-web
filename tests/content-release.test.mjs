@@ -36,6 +36,11 @@ test('reviewed draft publishes and rollback restores the prior release', () => {
     writeFileSync(join(temp, 'learning-content.js'), renderLearningModule(livePack));
     writeFileSync(join(temp, 'content', 'active.json'), `${JSON.stringify({ activeRelease: base, activeDigest: digest(livePack), history: [{ releaseId: base }] })}\n`);
     assert.equal(run('verify').status, 0);
+    writeFileSync(join(temp, 'learning-content.js'), renderLearningModule(livePack).replace(/\n/g, '\r\n'));
+    assert.equal(run('verify').status, 0, 'Windows line endings preserve the reviewed content');
+    writeFileSync(join(temp, 'learning-content.js'), renderLearningModule(livePack) + '// unreviewed edit\n');
+    assert.equal(run('verify').status, 1, 'Actual edits still fail release verification');
+    writeFileSync(join(temp, 'learning-content.js'), renderLearningModule(livePack));
     assert.equal(run('start', 'copy-update', 'author').status, 0);
     const draftPath = join(temp, 'content', 'drafts', 'copy-update.json');
     const draft = JSON.parse(readFileSync(draftPath, 'utf8'));

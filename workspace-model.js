@@ -1,5 +1,5 @@
 // Public navigation only. Learning access and awards remain server controlled.
-import { academyPaths } from './path-catalog-data.js?v=20261012-ui3';
+import { academyPaths } from './path-catalog-data.js?v=20261013-journey1';
 export const workspaces = Object.freeze(Object.assign(Object.create(null), {
   learn: { title: ['التعلّم', 'Learning'], tabs: [['paths', 'المسارات', 'Paths'], ['courses', 'الدورات', 'Courses'], ['free-studio', 'تعمّق في الأساسيات', 'Foundations practice'], ['search', 'البحث في الدروس', 'Find lessons']] },
   practice: { title: ['التدريب', 'Practice'], tabs: [['labs', 'المختبرات', 'Labs'], ['quizzes', 'الكويزات', 'Quizzes'], ['challenges', 'التحديات', 'Challenges'], ['operations', 'غرف العمليات', 'Operations rooms']] },
@@ -58,4 +58,13 @@ export function workspaceHref(input, context = {}, base = 'https://academy.biure
 export function primarySection(page) { return workspaces[page] ? page : destinations[page] || (page === 'home' ? 'index' : page === 'ctf' ? 'ctf' : null); }
 export function activeTab(screen) {
   return ({ path: 'paths', course: 'courses', lesson: 'courses', 'library-course': 'courses', 'library-lesson': 'courses', lab: 'labs', 'practice-lab': 'labs', 'soc-investigation': 'labs', 'practice-quiz': 'quizzes', 'practice-challenge': 'challenges', operation: 'operations' })[screen] || screen;
+}
+
+// Structured-cloned files let the parent own the download URL in embedded browsers.
+export function workspaceDownload(message) {
+  if (!message || typeof message.filename !== 'string' ||
+    !/^Biuret-Academy-c_[a-f0-9]{32}\.(png|jpg|pdf)$/.test(message.filename)) return null;
+  const type = { png: 'image/png', jpg: 'image/jpeg', pdf: 'application/pdf' }[message.filename.split('.').at(-1)];
+  if (!(message.blob instanceof Blob) || message.blob.type !== type || message.blob.size < 1 || message.blob.size > 8 * 1024 * 1024) return null;
+  return { blob: message.blob, filename: message.filename };
 }

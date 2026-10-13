@@ -1,4 +1,4 @@
-import { courses, lessonById } from './learning-content.js?v=20261012-ui3';
+import { courses, lessonById } from './learning-content.js?v=20261013-journey1';
 
 // The verified Academy library supplies the course, practical and exam steps.
 // This overview points learners to those path requirements after Foundations.
@@ -14,13 +14,15 @@ export const specializations = [
   { id: 'intel', pathId: 'path_threat_intel', title: { ar: 'استخبارات التهديدات وOSINT', en: 'Threat intelligence and OSINT' }, summary: { ar: 'اجمع إشارات مصرّحاً بها، قيّم الثقة، واربطها بالدليل والدفاع.', en: 'Collect authorized leads, assess confidence and connect them to evidence and defense.' }, topics: [{ ar: 'نطاق البحث', en: 'Research scope' }, { ar: 'تقييم المصادر', en: 'Source assessment' }, { ar: 'تحليل المؤشرات', en: 'Indicator analysis' }, { ar: 'تقرير الاستخبارات', en: 'Intelligence report' }] },
 ];
 
-export function nextLearningStep(lessons = {}, passed = false) {
+export function nextLearningStep(lessons = {}, assessment = false) {
+  const status = assessment && typeof assessment === 'object' ? assessment : { passed: Boolean(assessment) };
   for (const course of courses) {
     for (const id of course.lessonIds) {
       if (!lessons[id]) return { kind: 'lesson', courseId: course.id, lessonId: id, lesson: lessonById[id], href: `lesson.html?id=${encodeURIComponent(id)}` };
     }
   }
-  if (!passed) return { kind: 'practical', href: 'practical.html?id=foundations' };
+  if (!status.passed && status.practicalPassed) return { kind: 'exam', href: 'exam.html' };
+  if (!status.passed) return { kind: 'practical', href: 'practical.html?id=foundations' };
   return { kind: 'specialization', href: 'paths.html#specializations' };
 }
 

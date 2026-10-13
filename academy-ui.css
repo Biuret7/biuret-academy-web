@@ -198,6 +198,14 @@ progress::-moz-progress-bar { background:var(--lime); border-radius:99px; }
 .ui-enter { animation:ui-content-in 320ms var(--ui-ease) both; }
 @keyframes ui-content-in { from { opacity:.4; transform:translateY(8px); } to { opacity:1; transform:none; } }
 @keyframes ui-content-out { to { opacity:.5; } }
+
+/* Assessment pages use the same readable scale as courses, including small screens. */
+.assessment-hero.section-frame { padding-block:24px 16px; }
+.assessment-hero h1 { font-size:clamp(28px,3vw,36px); line-height:1.35; margin-block:12px; }
+.assessment-hero p { font-size:14px; line-height:1.8; margin-block:10px; }
+.workspace-tabs { scroll-snap-type:x proximity; }
+.workspace-tabs a { scroll-snap-align:start; }
+@media(max-width:600px) { .assessment-hero.section-frame { padding-block:18px 12px; }.assessment-hero h1 { font-size:28px; }.assessment-body { padding-block-start:12px; } }
 @keyframes ui-spin { to { transform:rotate(360deg); } }
 @keyframes ui-load { from { background-position:100% 0; } to { background-position:0 0; } }
 ::view-transition-old(root) { animation:100ms ease-out both ui-content-out; }

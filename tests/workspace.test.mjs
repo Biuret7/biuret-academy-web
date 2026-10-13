@@ -1,9 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { workspaces, destinations, parseWorkspace, workspaceHref } from '../workspace-model.js';
+import { workspaces, destinations, parseWorkspace, workspaceHref, workspaceDownload } from '../workspace-model.js';
 const base = 'https://academy.biuret.dev/';
 const context = { workspace: 'learn', path: 'soc' };
+test('workspace exports accept only bounded certificate files with matching MIME and safe filenames', () => {
+  const filename = `Biuret-Academy-c_${'a'.repeat(32)}.png`, blob = new Blob(['synthetic'], {type:'image/png'});
+  assert.deepEqual(workspaceDownload({blob,filename}), {blob,filename});
+  for (const bad of ['https://other.example/file', new Blob(['script'],{type:'text/html'}), new Blob(), new Blob([new Uint8Array(8*1024*1024+1)],{type:'image/png'})]) assert.equal(workspaceDownload({blob:bad,filename}),null);
+  for (const bad of ['../secret.png', 'credential.html', filename.replace('.png','.exe')]) assert.equal(workspaceDownload({blob,filename:bad}),null);
+});
 test('every learning destination opens an allowed document, preserving its query', () => {
   for (const [screen, workspace] of Object.entries(destinations)) {
     const href = workspaceHref(`${screen}.html?id=training&track=network#example`);

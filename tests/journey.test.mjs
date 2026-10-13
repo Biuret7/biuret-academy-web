@@ -15,7 +15,14 @@ test('the recommended route walks every Foundations lesson before the exam and s
     lessons[id] = '2026-09-28T00:00:00.000Z';
   }
   assert.equal(nextLearningStep(lessons).kind, 'practical');
+  assert.equal(nextLearningStep(lessons, { passed: false, practicalPassed: true }).kind, 'exam');
+  assert.equal(nextLearningStep(lessons, { passed: false, practicalPassed: true }).href, 'exam.html');
+  assert.equal(nextLearningStep(lessons, { passed: true, practicalPassed: true }).kind, 'specialization');
   assert.equal(nextLearningStep(lessons, true).kind, 'specialization');
+});
+
+test('a later assessment state cannot skip an unfinished Foundations lesson', () => {
+  assert.equal(nextLearningStep({}, { passed: true, practicalPassed: true }).lessonId, courses[0].lessonIds[0]);
 });
 
 test('specialty previews and guided labs point to real material without claiming unbuilt courses', () => {
