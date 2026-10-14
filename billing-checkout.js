@@ -1,5 +1,5 @@
-import { startBillingCheckout, openBillingPortal } from './auth.js?v=20261013-learning4';
-import { currentLanguage } from './i18n.js?v=20261013-learning4';
+import { startBillingCheckout, openBillingPortal } from './auth.js?v=20261014-restore1';
+import { currentLanguage } from './i18n.js?v=20261014-restore1';
 
 let sdk;
 let initialized = false;

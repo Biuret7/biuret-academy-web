@@ -8,7 +8,6 @@
     "paths.css",
     "soc-investigation.css",
     "guide/widget.css",
-    "academy-ui.css",
-    "ui-refresh.css"
+    "academy-ui.css"
   ]
 }
