@@ -1,8 +1,8 @@
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261014-restore1';
-import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261014-restore1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261014-restore1';
-import { credentialFacts, downloadCredential } from './credential-art.js?v=20261014-restore1';
-import { fullName } from './full-name.js?v=20261014-restore1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261014-notify1';
+import { user, loadUser, loadPathExam, submitPathExam, loadPathCredential, sharePathCredential, correctPathCredentialName } from './auth.js?v=20261014-notify1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261014-notify1';
+import { credentialFacts, downloadCredential } from './credential-art.js?v=20261014-notify1';
+import { fullName } from './full-name.js?v=20261014-notify1';
 
 const root = document.querySelector('#path-assessment-main');
 const pathId = new URLSearchParams(location.search).get('id');

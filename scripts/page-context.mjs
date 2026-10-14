@@ -36,6 +36,7 @@ export const pageContexts = {
   notes: ['NOTES', 'اجمع أفكارك أثناء التعلّم.', 'Keep your learning notes together.'],
   favorites: ['FAVORITES', 'ارجع سريعاً إلى ما حفظته.', 'Return to what you saved.'],
   search: ['SEARCH', 'ابحث في محتوى الأكاديمية.', 'Search Academy content.'],
+  notifications: ['NOTIFICATIONS', 'إنجازاتك ومراجعة تقاريرك وتفضيلات البريد.', 'Your achievements, report reviews and email preferences.'],
   settings: ['SETTINGS', 'اضبط تجربة تعلّمك.', 'Adjust your learning experience.'],
   profile: ['PROFILE', 'حسابك ومسار تقدّمك.', 'Your account and learning route.'],
   'library-course': ['COURSE LIBRARY', 'دروس الكورس في مكان واحد.', 'All course lessons in one place.'],

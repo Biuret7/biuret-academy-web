@@ -1,15 +1,15 @@
-import { renderAvatar } from './identity.js?v=20261014-restore1';
-import { attachAssessmentProgress } from './assessment-ui.js?v=20261014-restore1';
-import { mountLessonNotes } from './lesson-notes.js?v=20261014-restore1';
-import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261014-restore1';
-import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261014-restore1';
-import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261014-restore1';
-import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261014-restore1';
-import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261014-restore1';
-import { fullName } from './full-name.js?v=20261014-restore1';
-import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261014-restore1';
-import { canAccess, requiredPlan } from './plan-access.js?v=20261014-restore1';
-import { workspaceHref } from './workspace-model.js?v=20261014-restore1';
+import { renderAvatar } from './identity.js?v=20261014-notify1';
+import { attachAssessmentProgress } from './assessment-ui.js?v=20261014-notify1';
+import { mountLessonNotes } from './lesson-notes.js?v=20261014-notify1';
+import { tracks, challenges, challengeById, challengesForTrack } from './content.js?v=20261014-notify1';
+import { learningPath, courses, courseById, lessonById, localized } from './learning-content.js?v=20261014-notify1';
+import { specializations, nextLearningStep, foundationsCount } from './journey.js?v=20261014-notify1';
+import { STORAGE_KEY, dayKey, assignDaily, cleanProgress, mergeProgress, isUnlocked, totalXp, streak, weekActivity, dailyChallenge, completeChallenge, nextChallenge, trackProgress, isLessonUnlocked, completeLesson, courseLearningProgress } from './engine.js?v=20261014-notify1';
+import { user, available, loadUser, signIn, signUp, signInWithProvider, signOut, updateAccountName, cloudProgress, saveCloudProgress, loadLearningRewards, awardLesson, loadExam } from './auth.js?v=20261014-notify1';
+import { fullName } from './full-name.js?v=20261014-notify1';
+import { applyLanguage, toggleLanguage, currentLanguage, isEnglish, t, trackText, challengeText, setPageHeaderTitle } from './i18n.js?v=20261014-notify1';
+import { canAccess, requiredPlan } from './plan-access.js?v=20261014-notify1';
+import { workspaceHref } from './workspace-model.js?v=20261014-notify1';
 
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);

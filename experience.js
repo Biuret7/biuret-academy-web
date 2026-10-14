@@ -1,4 +1,5 @@
-import { currentLanguage } from './i18n.js?v=20261014-restore1';
+import { currentLanguage } from './i18n.js?v=20261014-notify1';
+import './notifications-ui.js?v=20261014-notify1';
 
 // Navigation preferences contain no learning or membership authority.
 const en = () => currentLanguage() === 'en';

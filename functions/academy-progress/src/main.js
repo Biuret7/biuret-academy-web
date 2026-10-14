@@ -12,6 +12,7 @@ import { fullName } from './name.js';
 import { reportReviewService } from './report-review.js';
 import { socCase, checkSocInvestigation } from './soc-investigation.js';
 import { ctfService } from './ctf.js';
+import { notificationService } from './notifications.js';
 
 const ENDPOINT = process.env.APPWRITE_FUNCTION_API_ENDPOINT || 'https://fra.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.APPWRITE_FUNCTION_PROJECT_ID || '6aa55a88003959a536e9';
@@ -119,6 +120,15 @@ function ctfFor(key) {
     request: (url, options = {}) => appwrite(url, { ...options, headers: { 'X-Appwrite-Key': key, 'Content-Type': 'application/json' } }) });
 }
 
+function notificationsFor(key) {
+  return notificationService({base:ENDPOINT,request:(url,options={})=>appwrite(url,{...options,headers:{'X-Appwrite-Key':key,'Content-Type':'application/json'}})});
+}
+async function recordCredentialNotification(notifications,owner,record,error) {
+  if(!notifications.enabled || record?.status!=='active')return;
+  try { await notifications.enqueue(owner,{type:'credential-ready',reference:record.id,pathId:record.pathId || 'foundations',occurredAt:record.issuedAt}); }
+  catch { error('Credential saved; notification will be reconciled when the learner opens notifications.'); }
+}
+
 async function complete(key, account, lessonId, answerIndex) {
   const userId = account.$id;
   const course = COURSE_LESSONS.find((items) => items.some((lesson) => lesson.id === lessonId));
@@ -191,6 +201,14 @@ export default async ({ req, res, error }) => {
     const key = headers['x-appwrite-key'];
     if (!key) throw new Error('Function key unavailable');
     const input = req.bodyJson || JSON.parse(req.bodyText || '{}');
+    const notifications=notificationsFor(key);
+    if(input.action==='notificationSummary')return res.json(await notifications.summary(account.$id));
+    if(input.action==='notificationState'){
+      if(!input.cursor)await notifications.reconcile(account.$id);
+      return res.json(await notifications.state(account.$id,input.cursor));
+    }
+    if(input.action==='notificationPreferences')return res.json({preferences:await notifications.save(account.$id,input.preferences)});
+    if(input.action==='notificationRead')return res.json(await notifications.markRead(account.$id,input.ids));
     if (input.action === 'billingState') return res.json(await billing.state(account.$id, isAcademyAdmin(account)));
     if (input.action === 'billingCheckout') return res.json(await billing.checkout(account, input.plan, isAcademyAdmin(account)));
     if (input.action === 'billingPortal') return res.json(await billing.portal(account.$id, isAcademyAdmin(account)));
@@ -218,7 +236,14 @@ export default async ({ req, res, error }) => {
     if (input.action === 'reportState') return res.json(await reports.state(account.$id, input.pathId));
     if (input.action === 'adminReportQueue') return res.json(await reports.queue(account, input.cursor));
     if (input.action === 'adminReportDetail') return res.json(await reports.detail(account, input.reportId));
-    if (input.action === 'adminReportReview') return res.json(await reports.decide(account, input));
+    if (input.action === 'adminReportReview') {
+      const reviewed=await reports.decide(account,input);
+      if(notifications.enabled && reviewed.review){
+        try { await notifications.enqueue(reviewed.userId,{type:'report-reviewed',reference:reviewed.id,pathId:reviewed.pathId,decision:reviewed.review.decision,occurredAt:reviewed.review.createdAt}); }
+        catch { error('Review saved; notification will be reconciled when the learner opens notifications.'); }
+      }
+      return res.json(reviewed);
+    }
     if (input.action === 'libraryData') {
       const language = input.language === 'en' ? 'en' : 'ar';
       const context = await libraryContext(key, account);
@@ -289,6 +314,12 @@ export default async ({ req, res, error }) => {
           : input.action === 'pathCredential' ? await paths.credential(account.$id, input.pathId)
             : input.action === 'pathCorrectCredentialName' ? fullName(account.name) ? await paths.correctName(account.$id, input.pathId, fullName(account.name)) : { code: 403, data: { error: 'Set your real full name first' } }
               : await paths.share(account.$id, input.pathId, input.enabled);
+      if(notifications.enabled && result.code===200){
+        if(input.action==='pathSubmitExam' && result.data.passed){
+          try { const record=await paths.credential(account.$id,input.pathId);await recordCredentialNotification(notifications,account.$id,record.data,error); }
+          catch { error('Path result saved; notification reconciliation is pending.'); }
+        } else if(input.action==='pathCredential')await recordCredentialNotification(notifications,account.$id,result.data,error);
+      }
       return res.json(result.data, result.code);
     }
     if (input.action === 'completeLesson') {
@@ -306,10 +337,15 @@ export default async ({ req, res, error }) => {
     if (input.action === 'examState') return res.json(await exam.state(account.$id));
     if (input.action === 'submitExam') {
       const result = await exam.submit(account.$id, fullName(account.name), input.answers, input.formId);
+      if(notifications.enabled && result.code===200 && result.data.passed){
+        try { const record=await exam.credential(account.$id);await recordCredentialNotification(notifications,account.$id,record.data,error); }
+        catch { error('Exam result saved; notification reconciliation is pending.'); }
+      }
       return res.json(result.data, result.code);
     }
     if (input.action === 'credential') {
       const result = await exam.credential(account.$id);
+      if(result.code===200)await recordCredentialNotification(notifications,account.$id,result.data,error);
       return res.json(result.data, result.code);
     }
     if (input.action === 'correctCredentialName') {

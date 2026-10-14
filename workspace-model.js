@@ -1,16 +1,16 @@
 // Public navigation only. Learning access and awards remain server controlled.
-import { academyPaths } from './path-catalog-data.js?v=20261014-restore1';
+import { academyPaths } from './path-catalog-data.js?v=20261014-notify1';
 export const workspaces = Object.freeze(Object.assign(Object.create(null), {
   learn: { title: ['التعلّم', 'Learning'], tabs: [['paths', 'المسارات', 'Paths'], ['courses', 'الدورات', 'Courses'], ['free-studio', 'تعمّق في الأساسيات', 'Foundations practice'], ['search', 'البحث في الدروس', 'Find lessons']] },
   practice: { title: ['التدريب', 'Practice'], tabs: [['labs', 'المختبرات', 'Labs'], ['quizzes', 'الكويزات', 'Quizzes'], ['challenges', 'التحديات', 'Challenges'], ['operations', 'غرف العمليات', 'Operations rooms']] },
   resources: { title: ['الموارد', 'Resources'], tabs: [['tools', 'الأدوات', 'Tools'], ['certifications', 'الشهادات المهنية', 'Professional certifications'], ['professional', 'الاستعداد المهني', 'Career preparation']] },
   notebook: { title: ['دفتر التعلّم', 'Learning notebook'], tabs: [['notes', 'ملاحظاتي', 'My notes'], ['favorites', 'المفضلة', 'Saved lessons'], ['review', 'المراجعة', 'Review']] },
-  account: { title: ['حسابك', 'Your account'], tabs: [['profile', 'الملف الشخصي', 'Profile'], ['progress', 'تقدّمك', 'Progress'], ['certificate', 'شهادة الأساسيات', 'Foundations credential'], ['membership', 'الوصول', 'Access'], ['settings', 'الإعدادات', 'Settings']] },
+  account: { title: ['حسابك', 'Your account'], tabs: [['profile', 'الملف الشخصي', 'Profile'], ['progress', 'تقدّمك', 'Progress'], ['notifications', 'الإشعارات', 'Notifications'], ['certificate', 'شهادة الأساسيات', 'Foundations credential'], ['membership', 'الوصول', 'Access'], ['settings', 'الإعدادات', 'Settings']] },
 }));
 export const destinations = Object.freeze(Object.assign(Object.create(null), {
   paths: 'learn', path: 'learn', courses: 'learn', course: 'learn', lesson: 'learn', 'library-course': 'learn', 'library-lesson': 'learn', 'free-studio': 'learn', search: 'learn', exam: 'learn', 'path-exam': 'learn', 'course-exam': 'learn', practical: 'learn',
   labs: 'practice', lab: 'practice', 'practice-lab': 'practice', quizzes: 'practice', 'practice-quiz': 'practice', challenges: 'practice', 'practice-challenge': 'practice', operations: 'practice', operation: 'practice', 'soc-investigation': 'practice',
-  tools: 'resources', certifications: 'resources', professional: 'resources', notes: 'notebook', favorites: 'notebook', review: 'notebook', profile: 'account', progress: 'account', certificate: 'account', membership: 'account', settings: 'account',
+  tools: 'resources', certifications: 'resources', professional: 'resources', notes: 'notebook', favorites: 'notebook', review: 'notebook', profile: 'account', progress: 'account', notifications:'account', certificate: 'account', membership: 'account', settings: 'account',
 }));
 const idPattern = /^[a-z0-9_-]{1,120}$/i;
 const queryKeys = ['id', 'challenge', 'track', 'category', 'q', 'auth_error'];

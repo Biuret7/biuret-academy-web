@@ -1,9 +1,9 @@
-import { academyPaths } from './path-catalog-data.js?v=20261014-restore1';
-import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261014-restore1';
-import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261014-restore1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261014-restore1';
-import { fullName } from './full-name.js?v=20261014-restore1';
-import { nextLearningStep } from './journey.js?v=20261014-restore1';
+import { academyPaths } from './path-catalog-data.js?v=20261014-notify1';
+import { pathAccess, pathCounts, resourceAccess } from './path-model.js?v=20261014-notify1';
+import { user, loadUser, loadMembership, loadLearningRewards, loadExam, loadPathExam } from './auth.js?v=20261014-notify1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261014-notify1';
+import { fullName } from './full-name.js?v=20261014-notify1';
+import { nextLearningStep } from './journey.js?v=20261014-notify1';
 
 const root = document.querySelector('#paths-main');
 const detail = document.querySelector('.site-shell')?.dataset.page === 'path';

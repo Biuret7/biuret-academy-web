@@ -1,8 +1,8 @@
-import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261014-restore1';
-import { academyPaths } from './path-catalog-data.js?v=20261014-restore1';
-import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261014-restore1';
-import { user } from './auth.js?v=20261014-restore1';
-import { fullName } from './full-name.js?v=20261014-restore1';
+import { workspaces, parseWorkspace, workspaceHref, activeTab, workspaceDownload } from './workspace-model.js?v=20261014-notify1';
+import { academyPaths } from './path-catalog-data.js?v=20261014-notify1';
+import { currentLanguage, setPageHeaderTitle } from './i18n.js?v=20261014-notify1';
+import { user } from './auth.js?v=20261014-notify1';
+import { fullName } from './full-name.js?v=20261014-notify1';
 
 const root = document.querySelector('#workspace-main');
 if (root) {
@@ -46,7 +46,7 @@ if (root) {
   function mount(force = false) {
     const requested = new URL(route.child, location.href);
     // Refresh embedded markup together with the public UI release.
-    requested.searchParams.set('ui', new URL(import.meta.url).searchParams.get('v') || '20261014-restore1');
+    requested.searchParams.set('ui', new URL(import.meta.url).searchParams.get('v') || '20261014-notify1');
     if (requested.href.split('#')[0] !== loaded.split('#')[0] || force) childTitle = '';
     controls();
     const nextOwner = user()?.$id || null;
